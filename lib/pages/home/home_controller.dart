@@ -79,8 +79,8 @@ class HomeController extends BaseController {
     }
 
     if (index == 2) {
-      // 显示创建帖子对话框
-      _showHintDialog();
+      // 直接跳转到创建帖子页面
+      Get.toNamed(Routes.CREATE_TOPIC);
       return;
     }
 

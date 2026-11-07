@@ -23,6 +23,7 @@ import 'package:linux_do/pages/settings/profile_settings_controller.dart';
 import 'package:linux_do/pages/settings/profile_settings_page.dart';
 import 'package:linux_do/pages/settings/security_settings_controller.dart';
 import 'package:linux_do/pages/settings/security_settings_page.dart';
+import 'package:linux_do/pages/settings/network_settings_page.dart';
 import 'package:linux_do/pages/topics/details/web_post_read_controller.dart';
 import 'package:linux_do/pages/topics/details/web_post_read_page.dart';
 import 'package:linux_do/utils/bookmark_service.dart';
@@ -104,6 +105,15 @@ class AppPages {
       page: () => const SettingsPage(),
       binding: BindingsBuilder(() {
         Get.lazyPut(() => SettingsController());
+      }),
+    ),
+
+    /// 网络与 DoH 设置页
+    GetPage(
+      name: Routes.NETWORK_SETTINGS,
+      page: () => const NetworkSettingsPage(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut(() => NetworkSettingsController());
       }),
     ),
 

@@ -101,16 +101,21 @@ class MyApp extends StatelessWidget {
           builder: (context, child) {
             // 获取当前主题模式
             final isDark = Theme.of(context).brightness == Brightness.dark;
+            final isAmoled = _getSavedTheme() == 'amoled';
             final themeColor = AppColors.getStoredColor();
             
             // 使用主题数据包装子组件
             Widget? result = child;
-            if (themeColor != null) {
+            if (isAmoled || themeColor != null) {
+              var themeData = Theme.of(context);
+              if (isAmoled && isDark) {
+                themeData = AppTheme.amoledTheme;
+              }
+              if (themeColor != null) {
+                themeData = themeData.copyWith(primaryColor: themeColor);
+              }
               result = Theme(
-                data: ThemeData(
-                  primaryColor: themeColor,
-                  brightness: isDark ? Brightness.dark : Brightness.light,
-                ),
+                data: themeData,
                 child: child!,
               );
             }
@@ -122,7 +127,7 @@ class MyApp extends StatelessWidget {
                 statusBarIconBrightness:
                     isDark ? Brightness.light : Brightness.dark,
                 systemNavigationBarColor:
-                    isDark ? const Color(0xFF121212) : Colors.white,
+                    isDark ? (isAmoled ? Colors.black : const Color(0xFF121212)) : Colors.white,
                 systemNavigationBarIconBrightness:
                     isDark ? Brightness.light : Brightness.dark,
                 systemNavigationBarDividerColor: Colors.transparent,
@@ -140,10 +145,13 @@ class MyApp extends StatelessWidget {
     );
   }
 
-// 从存储中获取保存的主题模式
+  String _getSavedTheme() {
+    return StorageManager.getString(AppConst.identifier.theme) ?? 'system';
+  }
+
+  // 从存储中获取保存的主题模式
   ThemeMode _getSavedThemeMode() {
-    final savedTheme = StorageManager.getString(AppConst.identifier.theme);
-    switch (savedTheme) {
+    switch (_getSavedTheme()) {
       case 'light':
         return ThemeMode.light;
       case 'dark':

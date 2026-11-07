@@ -9,6 +9,8 @@ import 'package:linux_do/utils/device_util.dart';
 import 'package:path_provider/path_provider.dart';
 import 'api_response.dart';
 import 'http_config.dart';
+import 'user_api_key_auth_service.dart';
+import 'proxy_service.dart';
 import '../controller/global_controller.dart';
 import '../const/app_const.dart';
 import '../utils/storage_manager.dart';
@@ -54,6 +56,14 @@ class NetClient {
     await _initCookieManager();
 
     _initInterceptors();
+
+    // 应用已保存的 HTTP 代理（网络线路）
+    ProxyService().applyToDio(_dio);
+  }
+
+  /// 重新应用代理设置（保存代理后调用）
+  void applyProxy() {
+    ProxyService().applyToDio(_dio);
   }
 
   /// 初始化options
@@ -164,6 +174,12 @@ class NetClient {
     // 添加错误处理拦截器
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) {
+        // 优先检查官方 User API Key
+        final userApiKey = UserApiKeyAuthService().apiKey;
+        if (userApiKey != null && userApiKey.isNotEmpty) {
+          options.headers['User-Api-Key'] = userApiKey;
+        }
+
         // 从本地存储获取CSRF Token
         final csrfToken =
             StorageManager.getString(AppConst.identifier.csrfToken);

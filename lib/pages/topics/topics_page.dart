@@ -674,15 +674,7 @@ class TopicSearchDelegate extends SearchDelegate<String> {
                         ),
                       ),
                     4.vGap,
-                    Text(
-                      topic.title ?? '',
-                      style: TextStyle(
-                        fontSize: 14.w,
-                        color: Theme.of(context).textTheme.bodyMedium?.color,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    _buildHighlightedTitle(context, topic.title ?? ''),
                   ],
                 ),
               ),
@@ -691,6 +683,54 @@ class TopicSearchDelegate extends SearchDelegate<String> {
         },
       );
     });
+  }
+
+  Widget _buildHighlightedTitle(BuildContext context, String title) {
+    final keyword = query.trim();
+    final baseStyle = TextStyle(
+      fontSize: 14.w,
+      color: Theme.of(context).textTheme.bodyMedium?.color,
+    );
+    if (keyword.isEmpty) {
+      return Text(
+        title,
+        style: baseStyle,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      );
+    }
+
+    final lowerTitle = title.toLowerCase();
+    final lowerKeyword = keyword.toLowerCase();
+    final spans = <InlineSpan>[];
+    var cursor = 0;
+    while (cursor < title.length) {
+      final matchIndex = lowerTitle.indexOf(lowerKeyword, cursor);
+      if (matchIndex < 0) {
+        spans.add(TextSpan(text: title.substring(cursor)));
+        break;
+      }
+      if (matchIndex > cursor) {
+        spans.add(TextSpan(text: title.substring(cursor, matchIndex)));
+      }
+      final matchEnd = matchIndex + keyword.length;
+      spans.add(TextSpan(
+        text: title.substring(matchIndex, matchEnd),
+        style: baseStyle.copyWith(
+          color: Theme.of(context).primaryColor,
+          fontWeight: FontWeight.bold,
+          backgroundColor:
+              Theme.of(context).primaryColor.withValues(alpha: 0.16),
+        ),
+      ));
+      cursor = matchEnd;
+    }
+
+    return Text.rich(
+      TextSpan(style: baseStyle, children: spans),
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+    );
   }
 
   @override

@@ -40,7 +40,7 @@ class AppTheme {
       ),
 
       // 卡片主题
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: AppColors.light.card,
         elevation: 0,
         shape: RoundedRectangleBorder(
@@ -146,6 +146,27 @@ class AppTheme {
   }
 
   /// 暗色主题
+  static ThemeData get amoledTheme {
+    final theme = darkTheme;
+    return theme.copyWith(
+      scaffoldBackgroundColor: Colors.black,
+      canvasColor: Colors.black,
+      cardColor: Colors.black,
+      appBarTheme: theme.appBarTheme.copyWith(
+        backgroundColor: Colors.black,
+      ),
+      cardTheme: theme.cardTheme.copyWith(color: Colors.black),
+      dialogTheme: theme.dialogTheme.copyWith(backgroundColor: Colors.black),
+      bottomNavigationBarTheme: theme.bottomNavigationBarTheme.copyWith(
+        backgroundColor: Colors.black,
+      ),
+      inputDecorationTheme: theme.inputDecorationTheme.copyWith(
+        fillColor: const Color(0xFF121212),
+      ),
+    );
+  }
+
+  /// 暗色主题
   static ThemeData get darkTheme {
     return ThemeData(
       brightness: Brightness.dark,
@@ -182,7 +203,7 @@ class AppTheme {
       ),
 
       // 卡片主题
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: AppColors.dark.card,
         elevation: 0,
         shape: RoundedRectangleBorder(

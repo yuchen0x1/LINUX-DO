@@ -255,6 +255,7 @@ class _Settings {
   String get themeSystem => '跟随系统';
   String get themeLight => '浅色模式';
   String get themeDark => '深色模式';
+  String get themeAmoled => 'AMOLED 纯黑';
   String get themeCustom => '自定义主题';
   String get fontSize => '字体大小';
   String get helpAndSupport => '帮助与支持';

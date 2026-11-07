@@ -98,7 +98,7 @@ class SecuritySettingsPage extends GetView<SecuritySettingsController> {
                         Theme.of(context).primaryColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8.w),
                   ),
-                  child: Icon(
+                  child: FaIcon(
                     _getDeviceIcon(device.icon),
                     size: 20.w,
                     color: Theme.of(context).primaryColor,
@@ -248,7 +248,7 @@ class SecuritySettingsPage extends GetView<SecuritySettingsController> {
     );
   }
 
-  IconData _getDeviceIcon(String? icon) {
+  FaIconData _getDeviceIcon(String? icon) {
     if (icon == null) {
       return FontAwesomeIcons.desktop;
     }

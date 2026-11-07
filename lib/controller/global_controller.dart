@@ -7,6 +7,7 @@ import 'package:linux_do/models/topic_model.dart';
 import '../models/user.dart';
 import '../net/api_service.dart';
 import '../net/http_client.dart';
+import '../net/message_bus_service.dart';
 import '../utils/log.dart';
 import '../utils/mixins/concatenated.dart';
 import '../utils/storage_manager.dart';
@@ -129,5 +130,9 @@ class GlobalController extends BaseController with Concatenated {
 
   Future<void> initService() async {
     await _apiService.getTopics('latest');
+    // 登录态就绪后启动 MessageBus 实时推送监听
+    if (_isLogin.value && !_isAnonymousMode.value) {
+      MessageBusService().start();
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:convert';
 import 'dart:io' as dart_io;
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:linux_do/const/app_spacing.dart';
@@ -13,14 +14,19 @@ import '../../utils/log.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:path_provider/path_provider.dart';
 import '../net/http_client.dart';
+import '../net/proxy_service.dart';
+import '../net/user_api_key_auth_service.dart';
 import '../widgets/state_view.dart';
+import '../utils/mixins/toast_mixin.dart';
 import '../utils/storage_manager.dart';
 
 /// 很无奈,解决不了CF验证的问题,
 /// 跳转系统浏览器由于无法共享cookie,目前唯一能想到方法
 /// 使用webview加载,然后检查cookie,如果cookie存在,则认为登录成功
 class WebPage extends StatefulWidget {
-  const WebPage({super.key});
+  final String? initialUrl;
+
+  const WebPage({super.key, this.initialUrl});
 
   /// 清理所有 WebView 缓存
   static Future<void> clearCache() async {
@@ -41,7 +47,7 @@ class WebPage extends StatefulWidget {
   State<WebPage> createState() => _WebPageState();
 }
 
-class _WebPageState extends State<WebPage> {
+class _WebPageState extends State<WebPage> with ToastMixin {
   InAppWebViewController? _controller;
   bool isLoading = true;
   String? _error;
@@ -51,6 +57,8 @@ class _WebPageState extends State<WebPage> {
   @override
   void initState() {
     super.initState();
+    // WebView 也要走同样的代理线路（登录授权页需可达 linux.do）
+    ProxyService().applyToWebView();
     _initCookieJar();
     _initUserAgent();
   }
@@ -254,7 +262,8 @@ class _WebPageState extends State<WebPage> {
       body: Stack(
         children: [
           InAppWebView(
-            initialUrlRequest: URLRequest(url: WebUri(HttpConfig.baseUrl)),
+            initialUrlRequest: URLRequest(
+                url: WebUri(widget.initialUrl ?? HttpConfig.baseUrl)),
             initialSettings: InAppWebViewSettings(
               javaScriptEnabled: true,
               useOnDownloadStart: true,
@@ -325,6 +334,34 @@ class _WebPageState extends State<WebPage> {
             },
             shouldOverrideUrlLoading: (controller, navigationAction) async {
               final uri = navigationAction.request.url!;
+
+              // 拦截官方 User API Key 授权回跳
+              if (uri.scheme == 'linuxdo' && uri.host == 'auth') {
+                final payload = uri.queryParameters['payload'];
+                if (payload != null && payload.isNotEmpty) {
+                  try {
+                    final decrypted =
+                        UserApiKeyAuthService().decryptPayload(payload);
+                    final data =
+                        decrypted.startsWith('{') ? decrypted : '{"key":"$decrypted"}';
+                    final Map<String, dynamic> decoded = jsonDecode(data);
+                    final key = decoded['key'] as String?;
+                    if (key != null && key.isNotEmpty) {
+                      await UserApiKeyAuthService().saveApiKey(key);
+                      await StorageManager.setData(
+                          AppConst.identifier.isLogin, true);
+                      Get.find<GlobalController>().setIsLogin(true);
+                      showSuccess('官方 API Key 授权成功');
+                      Get.back(result: true);
+                      return NavigationActionPolicy.CANCEL;
+                    }
+                  } catch (e) {
+                    l.e('User API Key 授权回跳处理失败: $e');
+                  }
+                }
+                showError('API Key 授权失败');
+                return NavigationActionPolicy.CANCEL;
+              }
 
               if (['about', 'data', 'javascript'].contains(uri.scheme)) {
                 return NavigationActionPolicy.ALLOW;

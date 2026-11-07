@@ -5,6 +5,7 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart' hide Category;
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart' as emoji
     show Category;
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:linux_do/utils/storage_manager.dart';
 
 class EmojiManager {
   static final EmojiManager _instance = EmojiManager._internal();
@@ -152,6 +153,7 @@ class CustomEmojiGroup {
 }
 
 List<InlineSpan> parseTextWithEmojis(String text, double? fontSize, BuildContext context) {
+  final bool isAnimated = StorageManager.getBool('animated_emoji_enabled') ?? true;
   final RegExp emojiRegex = RegExp(r':([a-zA-Z0-9_]+):');
   final List<InlineSpan> spans = [];
   int lastIndex = 0;
@@ -164,20 +166,24 @@ List<InlineSpan> parseTextWithEmojis(String text, double? fontSize, BuildContext
     final shortcode = match.group(1)!;
     final emoji = EmojiManager().getEmoji(shortcode);
     if (emoji != null) {
-      spans.add(
-        WidgetSpan(
-          alignment: PlaceholderAlignment.middle,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 2),
-            child: Image.asset(
-              emoji.url,
-              width: fontSize,
-              height: fontSize,
-              errorBuilder: (context, error, stackTrace) => Text(':$shortcode:'),
+      if (!isAnimated && emoji.url.toLowerCase().endsWith('.gif')) {
+        spans.add(TextSpan(text: '[$shortcode]'));
+      } else {
+        spans.add(
+          WidgetSpan(
+            alignment: PlaceholderAlignment.middle,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 2),
+              child: Image.asset(
+                emoji.url,
+                width: fontSize,
+                height: fontSize,
+                errorBuilder: (context, error, stackTrace) => Text(':$shortcode:'),
+              ),
             ),
           ),
-        ),
-      );
+        );
+      }
     } else {
       spans.add(TextSpan(text: match.group(0)));
     }

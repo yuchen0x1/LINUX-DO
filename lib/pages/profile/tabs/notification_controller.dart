@@ -67,4 +67,39 @@ class NotificationController extends BaseController with Concatenated {
     }
     await _loadNotifications();
   }
+
+  /// 将通知按 今天/昨天/更早 分组，返回 (组标题, 通知列表) 有序列表
+  List<(String, List<NotificationItem>)> buildGroupedList() {
+    if (notifications.isEmpty) return const [];
+
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = today.subtract(const Duration(days: 1));
+
+    final todayList = <NotificationItem>[];
+    final yesterdayList = <NotificationItem>[];
+    final earlierList = <NotificationItem>[];
+
+    for (final n in notifications) {
+      final date = DateTime.tryParse(n.createdAt);
+      if (date == null) {
+        earlierList.add(n);
+        continue;
+      }
+      final day = DateTime(date.year, date.month, date.day);
+      if (day.isAtSameMomentAs(today)) {
+        todayList.add(n);
+      } else if (day.isAtSameMomentAs(yesterday)) {
+        yesterdayList.add(n);
+      } else {
+        earlierList.add(n);
+      }
+    }
+
+    final result = <(String, List<NotificationItem>)>[];
+    if (todayList.isNotEmpty) result.add(('今天', todayList));
+    if (yesterdayList.isNotEmpty) result.add(('昨天', yesterdayList));
+    if (earlierList.isNotEmpty) result.add(('更早', earlierList));
+    return result;
+  }
 } 

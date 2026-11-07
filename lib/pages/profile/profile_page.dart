@@ -19,6 +19,7 @@ import '../../models/user.dart';
 import '../../utils/mixins/toast_mixin.dart';
 import '../../widgets/dis_button.dart';
 import '../../widgets/switch.dart';
+import '../../widgets/trust_level_badge.dart';
 import 'profile_controller.dart';
 import '../../widgets/dis_loading.dart';
 import 'package:slide_switcher/slide_switcher.dart';
@@ -368,7 +369,10 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                                   CupertinoIcons.pencil,
                                   color: AppColors.white.withValues(alpha: .9),
                                   size: 20.w,
-                                ))
+                                )),
+                        if (!globalController.isAnonymousMode &&
+                            (user?.trustLevel != null))
+                          TrustLevelBadge(level: user!.trustLevel)
                       ],
                     ),
                     globalController.isAnonymousMode

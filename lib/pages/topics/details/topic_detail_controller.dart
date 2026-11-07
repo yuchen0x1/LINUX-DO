@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:linux_do/const/app_theme.dart';
 import 'package:linux_do/const/app_const.dart';
+import 'package:linux_do/widgets/dis_button.dart';
+import 'package:linux_do/utils/expand/num_expand.dart';
+import 'package:linux_do/const/app_spacing.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:linux_do/controller/base_controller.dart';
 import 'package:linux_do/controller/share_controller.dart';
 import 'package:linux_do/net/http_config.dart';
@@ -69,8 +74,11 @@ class TopicDetailController extends BaseController
   Timer? _debounceTimer;
   static const _debounceDelay = Duration(milliseconds: 2000);
 
-  // 用于存储帖子树结构
+  // 存储帖子树结构
   final replyTree = <PostNode>[].obs;
+
+  // 是否只看楼主
+  final onlyAuthor = false.obs;
 
   // 存储点赞状态的Map
   final likedPosts = <int, bool>{}.obs;
@@ -706,7 +714,34 @@ class TopicDetailController extends BaseController
       return PostNode(post, replies.map((reply) => PostNode(reply)).toList());
     }).toList();
 
+    // 只看楼主时，仅保留楼主（主题作者）的楼层及其楼中楼
+    if (onlyAuthor.value) {
+      final authorId = topic.value?.userId;
+      final filtered = <PostNode>[];
+      for (final node in replyTree) {
+        final isAuthorPost =
+            node.post.userId != null && node.post.userId == authorId;
+        final authorReplies =
+            node.children.where((c) => c.post.userId == authorId).toList();
+        if (isAuthorPost || authorReplies.isNotEmpty) {
+          filtered.add(PostNode(node.post, authorReplies));
+        }
+      }
+      replyTree.value = filtered;
+    }
+
     // ('构建树完成，节点数量: ${replyTree.length}');
+  }
+
+  /// 切换"只看楼主"模式
+  void toggleOnlyAuthor() {
+    onlyAuthor.value = !onlyAuthor.value;
+    if (onlyAuthor.value) {
+      showSuccess('已切换为只看楼主');
+    }
+    // 重新构建过滤后的回复树
+    _buildReplyTree();
+    replyTree.refresh();
   }
 
   // 点赞/取消点赞
@@ -1174,6 +1209,80 @@ class TopicDetailController extends BaseController
       l.e('打开浏览器失败: $e');
       showError('打开浏览器失败');
     }
+  }
+
+  /// 展示话题统计数据弹窗
+  void showStatsDialog() {
+    final t = topic.value;
+    if (t == null) return;
+
+    final items = <(String, String)>[
+      (AppConst.posts.views, (t.views ?? 0).toThousands()),
+      (AppConst.posts.likeCount, (t.likeCount ?? 0).toString()),
+      (AppConst.posts.reply, (t.replyCount ?? 0).toString()),
+      ('回复总数', (t.postsCount ?? 0).toString()),
+      ('参与人数', (t.participantsCount ?? 0).toString()),
+    ];
+
+    Get.dialog(
+      Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.w),
+        ),
+        child: Container(
+          width: 260.w,
+          padding: EdgeInsets.all(16.w),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '话题统计',
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(Get.context!).textTheme.titleLarge?.color,
+                ),
+              ),
+              12.vGap,
+              ...items.map((e) => Padding(
+                    padding: EdgeInsets.symmetric(vertical: 6.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          e.$1,
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            color: Theme.of(Get.context!)
+                                .textTheme
+                                .bodyMedium
+                                ?.color,
+                          ),
+                        ),
+                        Text(
+                          e.$2,
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: AppFontFamily.dinPro,
+                            color: Theme.of(Get.context!).primaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )),
+              16.vGap,
+              DisButton(
+                text: AppConst.confirm,
+                type: ButtonType.outline,
+                onPressed: () => Get.back(),
+              ),
+            ],
+          ),
+        ),
+      ),
+      barrierColor: Colors.black.withValues(alpha: 0.5),
+    );
   }
 
   // 收藏主题到指定分类

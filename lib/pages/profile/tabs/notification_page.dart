@@ -23,17 +23,27 @@ class NotificationPage extends GetView<NotificationController> {
             enablePullDown: false,
             enablePullUp: true,
             onLoading: controller.onLoadMore,
-            child: ListView.separated(
+            child: ListView(
               padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.w),
-              itemCount: controller.notifications.length,
-              separatorBuilder: (context, index) => 4.vGap,
-              itemBuilder: (context, index) {
-                final notification = controller.notifications[index];
-                return _NotificationItem(notification: notification);
-              },
+              children: _buildGroupedChildren(context),
             ),
           ),
         ));
+  }
+
+  List<Widget> _buildGroupedChildren(BuildContext context) {
+    final grouped = controller.buildGroupedList();
+    if (grouped.isEmpty) return const [];
+
+    final children = <Widget>[];
+    for (final (header, items) in grouped) {
+      children.add(_GroupHeader(title: header));
+      children.addAll(items.map((n) => Padding(
+            padding: EdgeInsets.only(bottom: 4.w),
+            child: _NotificationItem(notification: n),
+          )));
+    }
+    return children;
   }
 }
 
@@ -116,6 +126,39 @@ class _NotificationItem extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _GroupHeader extends StatelessWidget {
+  final String title;
+
+  const _GroupHeader({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: EdgeInsets.fromLTRB(4.w, 10.w, 4.w, 4.w),
+      child: Row(
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 13.sp,
+              fontWeight: FontWeight.bold,
+              color: theme.primaryColor,
+            ),
+          ),
+          8.hGap,
+          Expanded(
+            child: Container(
+              height: 1,
+              color: theme.dividerColor.withValues(alpha: 0.5),
+            ),
+          ),
+        ],
       ),
     );
   }

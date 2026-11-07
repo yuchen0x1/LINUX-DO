@@ -87,20 +87,23 @@ class TopicContent extends StatelessWidget {
                       //     density: density,
                       //   ),
 
-                      // 话题标签
-                      if (topic.tags != null && topic.tags!.isNotEmpty)
+                      // 话题标签（含分类徽章，对齐网页 /latest 布局）
+                      if ((topic.tags != null && topic.tags!.isNotEmpty) ||
+                          topic.categoryId != null)
                         Padding(
                           padding: EdgeInsets.only(top: (spacing / 2).w),
                           child: TopicTags(
-                            tags: topic.tags!,
+                            tags: topic.tags ?? [],
                             density: density,
+                            categoryId: topic.categoryId,
                           ),
                         ),
                     ],
                   ),
                   
                   // 标签和底部信息之间的间距
-                  if (topic.tags != null && topic.tags!.isNotEmpty)
+                  if ((topic.tags != null && topic.tags!.isNotEmpty) ||
+                      topic.categoryId != null)
                     SizedBox(height: (spacing / 2).w),
                   
                   // 底部信息

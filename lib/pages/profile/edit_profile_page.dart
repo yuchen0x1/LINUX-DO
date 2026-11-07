@@ -459,7 +459,7 @@ class EditProfilePage extends GetView<EditProfileController> {
     );
   }
 
-  IconData _getAccountIcon(String? type) {
+  FaIconData _getAccountIcon(String? type) {
     switch (type) {
       case 'google_oauth2':
         return FontAwesomeIcons.google;
@@ -470,7 +470,7 @@ class EditProfilePage extends GetView<EditProfileController> {
       case 'discord':
         return FontAwesomeIcons.discord;
       default:
-        return CupertinoIcons.link;
+        return FontAwesomeIcons.link;
     }
   }
 

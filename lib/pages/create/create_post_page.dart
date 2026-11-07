@@ -42,6 +42,20 @@ class CreatePostPage extends GetView<CreatePostController> {
         leadingWidth: 60.w,
         actions: [
           Container(
+            padding: EdgeInsets.only(right: 4.w),
+            height: 30.w,
+            child: TextButton(
+              onPressed: controller.saveDraft,
+              child: Text(
+                AppConst.createPost.draft,
+                style: TextStyle(
+                  fontSize: 13.w,
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
+                ),
+              ),
+            ),
+          ),
+          Container(
             padding: EdgeInsets.only(right: 16.w),
             height: 30.w,
             child: DisButton(

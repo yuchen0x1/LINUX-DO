@@ -62,7 +62,7 @@ class BookmarkPage extends GetView<BookmarkController> {
               child: Theme(
                 data: Theme.of(context).copyWith(
                   dividerColor: Colors.transparent,
-                  tabBarTheme: const TabBarTheme(
+                  tabBarTheme: const TabBarThemeData(
                     dividerColor: Colors.transparent,
                     indicatorColor: Colors.transparent,
                     indicatorSize: TabBarIndicatorSize.label,

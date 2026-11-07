@@ -93,7 +93,40 @@ class MoreMenu extends StatelessWidget with ToastMixin, Concatenated {
                     ),
                   ),
                 ],
-              ))
+              )),
+          8.vGap,
+          Obx(() {
+            final isOnlyAuthor = controller.onlyAuthor.value;
+            return GestureDetector(
+              onTap: controller.toggleOnlyAuthor,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    isOnlyAuthor
+                        ? CupertinoIcons.person_fill
+                        : CupertinoIcons.person,
+                    size: 16.w,
+                    color: isOnlyAuthor
+                        ? Theme.of(context).primaryColor
+                        : Theme.of(context).textTheme.bodyLarge?.color,
+                  ),
+                  2.hGap,
+                  Text(
+                    isOnlyAuthor ? '查看全部楼层' : '只看楼主',
+                    style: TextStyle(
+                      fontSize: 14.w,
+                      color: isOnlyAuthor
+                          ? Theme.of(context).primaryColor
+                          : Theme.of(context).textTheme.bodyMedium?.color,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }),
         ],
       ),
       child: const Icon(CupertinoIcons.ellipsis_circle),

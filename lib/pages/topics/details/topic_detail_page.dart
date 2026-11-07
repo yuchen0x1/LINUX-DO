@@ -408,7 +408,7 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
                           2.hGap,
                           GestureDetector(
                             onTap: () {
-                              //TODO 显示统计数据 后续添加
+                              controller.showStatsDialog();
                             },
                             child: Text(
                               '${topic.views?.toThousandsUnit()}',
@@ -434,9 +434,7 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
                           ),
                           2.hGap,
                           GestureDetector(
-                            onTap: () {
-                              //TODO 显示点赞数据统计,如 : Heart  +1 Clap 后续添加
-                            },
+                            onTap: controller.showStatsDialog,
                             child: Text(
                               '${topic.likeCount}',
                               style: TextStyle(

@@ -35,13 +35,15 @@ class SettingsPage extends GetView<SettingsController> {
             context,
             AppConst.settings.accountAndProfile,
             [
-              // _buildNavigationItem(
-              //   context,
-              //   AppConst.settings.accountSettings,
-              //   CupertinoIcons.person_fill,
-              //   iconColor: const Color(0xFF5C6BC0),
-              //   onTap: () {},
-              // ),
+              _buildNavigationItem(
+                context,
+                '我的等级特权',
+                CupertinoIcons.rosette,
+                iconColor: const Color(0xFFFF9800),
+                onTap: () {
+                  controller.showTrustLevelPrivileges();
+                },
+              ),
               _buildNavigationItem(
                 context,
                 AppConst.settings.security,
@@ -85,6 +87,16 @@ class SettingsPage extends GetView<SettingsController> {
             context,
             AppConst.settings.notificationsAndPrivacy,
             [
+              _buildSwitchItem(
+                context,
+                '实时推送通知',
+                controller.isPushEnabled,
+                CupertinoIcons.antenna_radiowaves_left_right,
+                (value) {
+                  controller.updatePushNotification(value);
+                },
+                const Color(0xFFEF5350),
+              ),
               _buildNavigationItem(
                 context,
                 AppConst.settings.notifications,
@@ -154,6 +166,22 @@ class SettingsPage extends GetView<SettingsController> {
           16.vGap,
           _buildSection(
             context,
+            '网络与连接',
+            [
+              _buildNavigationItem(
+                context,
+                '网络与 DoH 设置',
+                CupertinoIcons.wifi,
+                iconColor: const Color(0xFF00ACC1),
+                onTap: () {
+                  controller.toNetworkSettings();
+                },
+              ),
+            ],
+          ),
+          16.vGap,
+          _buildSection(
+            context,
             AppConst.settings.other,
             [
               _buildSwitchItem(
@@ -165,6 +193,16 @@ class SettingsPage extends GetView<SettingsController> {
                   controller.updateBrowserTips(value);
                 },
                 const Color(0xFF10B086),
+              ),
+              _buildSwitchItem(
+                context,
+                '动态 Emoji 表情',
+                controller.isAnimatedEmojiEnabled,
+                CupertinoIcons.smiley_fill,
+                (value) {
+                  controller.updateAnimatedEmoji(value);
+                },
+                const Color(0xFFFF9800),
               ),
             ],
           ),

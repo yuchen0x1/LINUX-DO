@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.8+10
+version: 1.0.9+11
 license: MIT
 repository: https://github.com/R-lz/LINUX-DO
 
@@ -66,7 +66,7 @@ dependencies:
   flutter_markdown: ^0.6.18+2
   flutter_highlighter: ^0.1.1
   markdown: ^7.2.1
-  font_awesome_flutter: ^10.7.0
+  font_awesome_flutter: ^11.0.0
   flutter_custom_tabs: ^2.1.0
   mobile_scanner: ^3.5.6
   video_player: ^2.9.3
@@ -79,23 +79,17 @@ dependencies:
   share_plus: ^10.1.4
   flutter_keyboard_visibility: ^6.0.0
   qr_flutter: ^4.1.0
-  salomon_bottom_bar:
-    git:
-      url: https://github.com/R-lz/salomon_bottom_bar.git
-      ref: 900f2ad66dc2785bd1518b20f9bc52a58d09ae88
+  salomon_bottom_bar: ^3.3.2
   emoji_picker_flutter:
     git:
       url: https://github.com/R-lz/emoji_picker_flutter.git
       ref: eef3d77b37701d45628f66702557a037d433eab0
-  image_gallery_saver:
-    git:
-      url: https://github.com/R-lz/image_gallery_saver.git
-      ref: 467f4dcbce79c0779290a53b00d44efee027805c
-  cached_network_image: 
-    git:
-      url: https://github.com/R-lz/flutter_cached_network_image.git
-      path: cached_network_image
-      ref: c2e1db8df0899cafc9e692617d4bb01c64a9863e
+  image_gallery_saver: ^2.0.3
+  cached_network_image: ^3.3.1
+  pointycastle: 3.9.1
+  flutter_local_notifications: 17.2.4
+  cronet_http: 1.3.0
+  http: ^1.6.0
 
 dev_dependencies:
   flutter_test:

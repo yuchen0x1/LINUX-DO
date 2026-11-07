@@ -58,6 +58,9 @@ abstract class Routes {
   // 字体设置页
   static const FONT_SIZE_SETTINGS = '/settings/font-size';
 
+  // 网络与 DoH 设置页
+  static const NETWORK_SETTINGS = '/settings/network';
+
   // 关于页
   static const ABOUT = '/about';
 

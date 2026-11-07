@@ -3,6 +3,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:convert';
 import '../../const/app_const.dart';
 import '../../controller/base_controller.dart';
 import '../../controller/global_controller.dart';
@@ -11,6 +12,7 @@ import '../../models/category_data.dart';
 import '../../models/tag_data.dart';
 import '../../models/image_size.dart';
 import '../../models/upload_image_response.dart';
+import '../../utils/storage_manager.dart';
 import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart' as dio;
@@ -127,6 +129,9 @@ class CreatePostController extends BaseController {
       /// 默认选中第一个分类
       selectedCategory.value = categories.first;
       await searchTags('');
+
+      // 加载本地草稿，恢复之前未发布的内容
+      restoreDraft();
     } catch (e) {
       debugPrint('Error loading categories: $e');
       showToast('加载分类数据失败');
@@ -377,6 +382,7 @@ class CreatePostController extends BaseController {
       );
 
       if (response.success == true) {
+        await clearDraft();
         Get.back(result: response);
         showToast(AppConst.createPost.publishSuccess);
       } else {
@@ -389,21 +395,86 @@ class CreatePostController extends BaseController {
     }
   }
 
-  // 保存草稿
-  Future<void> saveDraft() async {
-    if (!validateInputs()) return;
+  static const _draftKey = 'create_post_draft';
 
+  /// 将当前编辑内容保存为本地草稿
+  Future<bool> saveDraft() async {
+    final data = <String, dynamic>{
+      'title': titleController.text,
+      'content': contentController.text,
+      'categoryId': selectedCategory.value?.id,
+      'categoryName': selectedCategoryName.value,
+      'tags': tags,
+      'images': uploadedImages
+          .map((e) => {
+                'url': e.url,
+                'shortUrl': e.shortUrl,
+                'originalFilename': e.originalFilename,
+                'width': e.width,
+                'height': e.height,
+              })
+          .toList(),
+      'savedAt': DateTime.now().millisecondsSinceEpoch,
+    };
     try {
-      isSubmitting.value = true;
-
-      await Future.delayed(const Duration(seconds: 1));
-      Get.back();
+      await StorageManager.setData(_draftKey, data);
       showToast(AppConst.createPost.draftSuccess);
+      return true;
     } catch (e) {
       showToast(AppConst.createPost.draftFailed);
-    } finally {
-      isSubmitting.value = false;
+      return false;
     }
+  }
+
+  /// 判断是否存在未保存的草稿
+  bool hasDraft() => StorageManager.getString(_draftKey) != null;
+
+  /// 加载草稿并填充编辑界面
+  void restoreDraft() {
+    final jsonString = StorageManager.getString(_draftKey);
+    if (jsonString == null) return;
+    try {
+      final data = jsonDecode(jsonString) as Map<String, dynamic>;
+      titleController.text = data['title'] as String? ?? '';
+      contentController.text = data['content'] as String? ?? '';
+      final categoryId = data['categoryId'] as int?;
+      if (categoryId != null && categories.isNotEmpty) {
+        for (final c in categories) {
+          if (c.id == categoryId) {
+            selectedCategory.value = c;
+            break;
+          }
+        }
+      }
+      selectedCategoryName.value = data['categoryName'] as String?;
+      tags.value = (data['tags'] as List?)?.cast<String>() ?? [];
+      final images = data['images'] as List? ?? [];
+      uploadedImages.value = images.map((e) {
+        final m = (e as Map).cast<String, dynamic>();
+        return UploadImageResponse(
+          id: 0,
+          url: m['url'] as String? ?? '',
+          originalFilename: m['originalFilename'] as String? ?? '',
+          filesize: 0,
+          width: m['width'] as int? ?? 0,
+          height: m['height'] as int? ?? 0,
+          thumbnailWidth: m['width'] as int? ?? 0,
+          thumbnailHeight: m['height'] as int? ?? 0,
+          extension: '',
+          shortUrl: m['shortUrl'] as String? ?? '',
+          shortPath: '',
+          humanFilesize: '',
+          dominantColor: '',
+        );
+      }).toList();
+    } catch (e) {
+      l.e('恢复草稿失败: $e');
+    }
+  }
+
+  /// 清除草稿（发布成功后调用）
+  Future<void> clearDraft() async {
+    await StorageManager.remove(_draftKey);
   }
 
   // 验证输入

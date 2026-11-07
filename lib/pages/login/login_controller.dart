@@ -10,6 +10,8 @@ import '../../controller/global_controller.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:linux_do/net/http_config.dart';
+import 'package:linux_do/net/user_api_key_auth_service.dart';
+import 'package:linux_do/net/message_bus_service.dart';
 import 'package:linux_do/pages/qr_scanner/qr_scanner_page.dart';
 import 'package:linux_do/utils/storage_manager.dart';
 import 'package:cookie_jar/cookie_jar.dart';
@@ -42,6 +44,8 @@ class LoginController extends BaseController {
       try {
         // 保存登录状态
         Get.find<GlobalController>().setIsLogin(true);
+        // 启动实时消息推送监听
+        MessageBusService().start();
         // 跳转到首页
         Get.offAllNamed(Routes.HOME);
          
@@ -59,6 +63,45 @@ class LoginController extends BaseController {
 
   void loginTips() {
     showError('请先使用WEB授权登录');
+  }
+
+  /// 官方 User API Key 授权登录（Discourse 推荐的客户端专用机制）
+  Future<void> apiKeyLogin() async {
+    if (!isAgreementChecked.value) {
+      showError('请先阅读并同意服务协议');
+      return;
+    }
+
+    try {
+      isLoading.value = true;
+      // 生成 RSA 密钥对并构建授权链接
+      UserApiKeyAuthService().generateRsaKeyPair();
+      final publicKeyPem =
+          StorageManager.getString('discourse_user_public_key') ?? '';
+      final authUrl = UserApiKeyAuthService().buildAuthUrl(
+        baseUrl: HttpConfig.baseUrl,
+        applicationName: 'Linux DO Android',
+        clientId: GlobalController.clientId,
+        publicKeyPem: publicKeyPem,
+      );
+
+      final result = await Get.to(() => WebPage(initialUrl: authUrl));
+      if (result == true) {
+        Get.find<GlobalController>().setIsLogin(true);
+        Get.find<GlobalController>().initService();
+        MessageBusService().start();
+        Get.offAllNamed(Routes.HOME);
+      }
+    } catch (e, s) {
+      l.e('API Key 登录失败: $e - $s');
+      showSnackbar(
+        title: AppConst.login.loginFailedTitle,
+        message: 'API Key 授权失败，请重试',
+        type: SnackbarType.error,
+      );
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   Future<void> login() async {

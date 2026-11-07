@@ -35,7 +35,7 @@ class HomePage extends GetView<HomeController> {
   Widget build(BuildContext context) {
     // 计算底部导航栏总高度 = 基础高度 + 底部安全区域
     final bottomPadding = MediaQuery.of(context).padding.bottom;
-    final navBarHeight = 40.w + bottomPadding;
+    final navBarHeight = 46.w + bottomPadding;
 
     return Scaffold(
       body: Obx(
@@ -75,13 +75,14 @@ class HomePage extends GetView<HomeController> {
               unselectedItemColor: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
               backgroundColor: Colors.transparent,
               currentIndex: controller.currentTab.value,
-              onTap: controller.switchTab,
-              itemPadding: EdgeInsets.symmetric(vertical: 6.w, horizontal: 11.w),
-              onDoubleTap: (index) {
-                if (index == 0) {
+              onTap: (index) {
+                if (index == controller.currentTab.value && index == 0) {
                   controller.topicsController.currentTabController.onRefresh();
+                } else {
+                  controller.switchTab(index);
                 }
               },
+              itemPadding: EdgeInsets.symmetric(vertical: 6.w, horizontal: 11.w),
               items: [
                 SalomonBottomBarItem(
                   icon: const Icon(CupertinoIcons.square_list_fill),
@@ -91,10 +92,37 @@ class HomePage extends GetView<HomeController> {
                   icon: const Icon(CupertinoIcons.square_split_2x2_fill),
                   title: const Text('分类',style: TextStyle(fontSize: 12),),
                 ),
-                // 中间按钮暂时使用普通样式
+                // 中间发布按钮 - 凸起 FAB 样式
                 SalomonBottomBarItem(
-                  icon: const Icon(CupertinoIcons.add),
-                  title: const Text(''),
+                  icon: Container(
+                    width: 44.w,
+                    height: 44.w,
+                    margin: EdgeInsets.only(bottom: 8.w),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Theme.of(context).primaryColor,
+                          Theme.of(context).primaryColor.withValues(alpha: 0.75),
+                        ],
+                      ),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context)
+                              .primaryColor
+                              .withValues(alpha: 0.4),
+                          blurRadius: 8,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      CupertinoIcons.add,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                  ),
+                  title: const Text('发布', style: TextStyle(fontSize: 12)),
                 ),
                 SalomonBottomBarItem(
                   icon: Stack(

@@ -11,6 +11,7 @@ import '../../const/app_spacing.dart';
 import '../../const/app_images.dart';
 import '../../const/app_const.dart';
 import '../../widgets/dis_button.dart';
+import '../../widgets/proxy_settings_dialog.dart';
 import 'login_controller.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/gestures.dart';
@@ -342,6 +343,34 @@ class LoginPage extends GetView<LoginController> {
                         type: ButtonType.outline,
                         size: ButtonSize.large,
                         onPressed: controller.webLogin,
+                      ),
+                    ),
+                    10.vGap,
+                    // 官方 User API Key 登录按钮
+                    SizedBox(
+                      width: double.infinity,
+                      height: 44.w,
+                      child: DisButton(
+                        text: '官方 API Key 授权登录',
+                        type: ButtonType.primary,
+                        size: ButtonSize.large,
+                        onPressed: controller.apiKeyLogin,
+                      ),
+                    ),
+                    8.vGap,
+                    // 网络线路 / 代理入口（国内直连不通时使用）
+                    ProxyEntryTile(),
+                    4.vGap,
+                    // 全部网页登录方式提示
+                    Center(
+                      child: Text(
+                        '网页授权登录内支持 Google / GitHub / Discord /\nApple / 通行密钥 等全部登录方式',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 11.sp,
+                          color: theme.hintColor,
+                          height: 1.5,
+                        ),
                       ),
                     ),
                     const Spacer(),

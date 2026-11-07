@@ -75,6 +75,37 @@ class TopicFooter extends StatelessWidget {
 
           const Spacer(),
 
+          // 浏览量（对齐网页 /latest 的"浏览量"列）
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                CupertinoIcons.eye,
+                size: fontSize.w + 3,
+                color: Theme.of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.color
+                    ?.withValues(alpha: 0.5),
+              ),
+              SizedBox(width: 4.w),
+              Text(
+                _formatCount(topic.views),
+                style: TextStyle(
+                  fontSize: fontSize.w + 3,
+                  fontFamily: AppFontFamily.dinPro,
+                  color: Theme.of(context)
+                      .textTheme
+                      .bodySmall
+                      ?.color
+                      ?.withValues(alpha: 0.5),
+                ),
+              ),
+            ],
+          ),
+
+          SizedBox(width: 10.w),
+
           // 回复数
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -114,6 +145,16 @@ class TopicFooter extends StatelessWidget {
     final time = topic.bumpedAt ?? topic.lastPostedAt ?? topic.createdAt;
     if (time == null) return '';
     return DateTime.parse(time).friendlyDateTime;
+  }
+
+  /// 数字格式化：对齐网页显示（9.5k）
+  String _formatCount(int? n) {
+    if (n == null || n < 0) return '0';
+    if (n >= 1000) {
+      final v = (n / 1000).toStringAsFixed(1);
+      return '${v.endsWith('.0') ? v.substring(0, v.length - 2) : v}k';
+    }
+    return '$n';
   }
 }
 
