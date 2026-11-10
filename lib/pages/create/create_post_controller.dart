@@ -68,6 +68,8 @@ class CreatePostController extends BaseController {
   @override
   void onInit() {
     super.onInit();
+    // 从「分享到」等入口进来时，arguments 里可能带着预填正文
+    _applyInitialArguments();
     // 初始化时加载所有分类的统计数据
     loadAllCategoryStats();
 
@@ -90,6 +92,22 @@ class CreatePostController extends BaseController {
         focusedInput.value = 'content';
       }
     });
+  }
+
+  /// 支持 arguments 形如 `{'content': '...'}` 或 `{'title': '...', 'content': '...'}`。
+  /// 用于「分享到 App」时把外部文本预填为正文。
+  void _applyInitialArguments() {
+    final args = Get.arguments;
+    if (args is! Map) return;
+
+    final content = args['content'];
+    if (content is String && content.trim().isNotEmpty) {
+      contentController.text = content;
+    }
+    final title = args['title'];
+    if (title is String && title.trim().isNotEmpty) {
+      titleController.text = title;
+    }
   }
 
   @override
@@ -149,8 +167,9 @@ class CreatePostController extends BaseController {
   // 更新选中的分类
   Future<void> updateSelectedCategory(Category category, [int? level]) async {
     selectedCategory.value = category;
-    String displayName =
-        level == null ? category.name ?? '' : '${category.name} (Lv $level)';
+    String displayName = level == null
+        ? category.name ?? ''
+        : '${category.name} (Lv $level)';
     selectedCategoryName.value = displayName;
     // 清空标签搜索结果
     tagResults.clear();
@@ -228,16 +247,20 @@ class CreatePostController extends BaseController {
           // 处理 upload:// 短链接
           if (url.startsWith('upload://')) {
             // 查找对应的上传图片记录
-            final uploadedImage = uploadedImages.firstWhereOrNull((img) =>
-                img.shortUrl == url || img.url.contains(url.substring(9)));
+            final uploadedImage = uploadedImages.firstWhereOrNull(
+              (img) =>
+                  img.shortUrl == url || img.url.contains(url.substring(9)),
+            );
 
             if (uploadedImage != null) {
               url = uploadedImage.url;
             } else {
               // 如果找不到记录，使用基础URL
               final baseUrl = HttpConfig.baseUrl.endsWith('/')
-                  ? HttpConfig.baseUrl
-                      .substring(0, HttpConfig.baseUrl.length - 1)
+                  ? HttpConfig.baseUrl.substring(
+                      0,
+                      HttpConfig.baseUrl.length - 1,
+                    )
                   : HttpConfig.baseUrl;
               url = '$baseUrl/uploads/default/${url.substring(9)}';
             }
@@ -262,14 +285,19 @@ class CreatePostController extends BaseController {
     if (!validateInputs()) return;
 
     // 预览不重要, 碰到问题了,先不做
-    Get.to(() => const PreviewPostPage(), binding: BindingsBuilder(() {
-      Get.put(PreviewPostController(
-        title: titleController.text,
-        content: _formatContentToHtml(),
-        category: selectedCategory.value!,
-        tags: tags,
-      ));
-    }));
+    Get.to(
+      () => const PreviewPostPage(),
+      binding: BindingsBuilder(() {
+        Get.put(
+          PreviewPostController(
+            title: titleController.text,
+            content: _formatContentToHtml(),
+            category: selectedCategory.value!,
+            tags: tags,
+          ),
+        );
+      }),
+    );
   }
 
   // 计算文件的SHA1
@@ -280,8 +308,9 @@ class CreatePostController extends BaseController {
   // 生成短文件名
   String _generateShortFileName(String originalFileName) {
     final extension = originalFileName.split('.').last;
-    final timestamp =
-        DateTime.now().millisecondsSinceEpoch.toString().substring(8);
+    final timestamp = DateTime.now().millisecondsSinceEpoch
+        .toString()
+        .substring(8);
     final random = (1000 + Random().nextInt(9000)).toString();
     return 'img_${timestamp}_$random.$extension';
   }
@@ -319,7 +348,9 @@ class CreatePostController extends BaseController {
         );
 
         // 打印上传响应信息
-        l.d('Image upload response - shortUrl: ${response.shortUrl}, url: ${response.url}');
+        l.d(
+          'Image upload response - shortUrl: ${response.shortUrl}, url: ${response.url}',
+        );
 
         uploadedImages.add(response);
 
@@ -330,7 +361,8 @@ class CreatePostController extends BaseController {
         final cursorPosition = contentController.selection.baseOffset;
 
         if (cursorPosition >= 0) {
-          final newContent = currentContent.substring(0, cursorPosition) +
+          final newContent =
+              currentContent.substring(0, cursorPosition) +
               imageMarkdown +
               currentContent.substring(cursorPosition);
           contentController.text = newContent;
@@ -407,13 +439,15 @@ class CreatePostController extends BaseController {
       'categoryName': selectedCategoryName.value,
       'tags': tags,
       'images': uploadedImages
-          .map((e) => {
-                'url': e.url,
-                'shortUrl': e.shortUrl,
-                'originalFilename': e.originalFilename,
-                'width': e.width,
-                'height': e.height,
-              })
+          .map(
+            (e) => {
+              'url': e.url,
+              'shortUrl': e.shortUrl,
+              'originalFilename': e.originalFilename,
+              'width': e.width,
+              'height': e.height,
+            },
+          )
           .toList(),
       'savedAt': DateTime.now().millisecondsSinceEpoch,
     };
@@ -493,8 +527,9 @@ class CreatePostController extends BaseController {
       isHideKeyboard.value = false;
 
       // 检查当前焦点是否在 titleFocusNode 或 contentFocusNode 上
-      FocusNode targetFocusNode =
-          focusedInput.value == 'title' ? titleFocusNode : contentFocusNode;
+      FocusNode targetFocusNode = focusedInput.value == 'title'
+          ? titleFocusNode
+          : contentFocusNode;
 
       Future.delayed(const Duration(milliseconds: 100), () {
         FocusScope.of(Get.context!).requestFocus(targetFocusNode);

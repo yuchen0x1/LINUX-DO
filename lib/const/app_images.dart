@@ -8,14 +8,16 @@ class AppImages {
 
   // 图片名称
   static const String _logoName = 'logo.webp';
-  static const String _bannerName = 'search-banner.png';
+  // 大图统一使用 WebP（体积约为原 PNG 的 5%），原图保留在 assets/design/source/
+  static const String _bannerName = 'search-banner.webp';
   static const String _inputAccount = 'input-account.png';
   static const String _inputPassword = 'input-password.png';
   static const String _headerBackground = 'header-background.png';
-  static const String profileHeaderBg = 'assets/images/profile-header-bg.png';
+  static const String profileHeaderBg = 'assets/images/profile-header-bg.webp';
   static const String logoCircle = 'assets/images/logo-circle.png';
-  static const String _chatListBg = 'chat-list-background.png';
-  static const String _chatBg = 'chat-background.png';
+  // 上游文件名把 background 拼成了 backgroud，这里沿用实际文件名
+  static const String _chatListBg = 'chat-list-background.webp';
+  static const String _chatBg = 'chat-backgroud.webp';
   static const String searchIcon = 'assets/images/search-icon.png';
   static const String leaderboardTop = 'assets/images/leaderboard-top.png';
   static const String crown = 'assets/images/crown.png';

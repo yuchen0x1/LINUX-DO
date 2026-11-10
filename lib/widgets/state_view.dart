@@ -8,12 +8,7 @@ import 'package:shimmer/shimmer.dart';
 import '../const/app_images.dart';
 import 'dis_button.dart';
 
-enum ViewState {
-  loading,
-  error,
-  empty,
-  content,
-}
+enum ViewState { loading, error, empty, content }
 
 class StateView extends GetView {
   final ViewState state;
@@ -85,8 +80,9 @@ class StateView extends GetView {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Shimmer.fromColors(
       baseColor: isDark ? const Color(0xFF262626) : Colors.white,
-      highlightColor:
-          isDark ? const Color(0xFF303030) : const Color(0xFFF5F5F5),
+      highlightColor: isDark
+          ? const Color(0xFF303030)
+          : const Color(0xFFF5F5F5),
       child: ListView.builder(
         physics: const NeverScrollableScrollPhysics(),
         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.w),
@@ -97,10 +93,7 @@ class StateView extends GetView {
   }
 
   Widget _buildError(BuildContext context) {
-    return StateViewError(
-      errorMessage: errorMessage,
-      onRetry: onRetry,
-    );
+    return StateViewError(errorMessage: errorMessage, onRetry: onRetry);
   }
 
   Widget _buildEmpty(BuildContext context) {
@@ -109,13 +102,12 @@ class StateView extends GetView {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           30.vGap,
-          Image.asset(
-            AppImages.getEmpty(context),
-            width: 180.w,
-          ),
+          Image.asset(AppImages.getEmpty(context), width: 180.w),
           16.vGap,
           Text(
-            AppConst.stateHint.empty,
+            // 调用方传入的自定义文案优先，否则用默认空态提示
+            emptyMessage ?? AppConst.stateHint.empty,
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 11.w,
               color: Theme.of(context).hintColor,
@@ -132,18 +124,16 @@ class StateView extends GetView {
 }
 
 class ShimmerItem extends StatelessWidget {
-  const ShimmerItem({
-    super.key,
-    required this.context,
-  });
+  const ShimmerItem({super.key, required this.context});
 
   final BuildContext context;
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final shimmerColor =
-        isDark ? const Color(0xFF303030) : const Color(0xFFF5F5F5);
+    final shimmerColor = isDark
+        ? const Color(0xFF303030)
+        : const Color(0xFFF5F5F5);
 
     return Container(
       margin: EdgeInsets.symmetric(vertical: 4.w),
@@ -233,8 +223,9 @@ class ShimmerDetails extends GetView {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Shimmer.fromColors(
       baseColor: isDark ? const Color(0xFF262626) : Colors.white,
-      highlightColor:
-          isDark ? const Color(0xFF303030) : const Color(0xFFF5F5F5),
+      highlightColor: isDark
+          ? const Color(0xFF303030)
+          : const Color(0xFFF5F5F5),
       child: Container(
         width: double.infinity,
         height: double.infinity,
@@ -267,13 +258,11 @@ class StateViewError extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           30.vGap,
-          Image.asset(
-            AppImages.getEmpty(context),
-            width: 180.w,
-          ),
+          Image.asset(AppImages.getNetError(context), width: 180.w),
           16.vGap,
           Text(
             errorMessage ?? AppConst.stateHint.error,
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 14.w,
               color: Theme.of(context).hintColor,

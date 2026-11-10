@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:linux_do/controller/base_controller.dart';
 import 'package:linux_do/net/api_service.dart';
 import 'package:linux_do/net/deep_link_service.dart';
+import 'package:linux_do/net/share_intent_service.dart';
 import 'package:linux_do/net/update_checker.dart';
 import 'package:linux_do/utils/emoji_manager.dart';
 import 'package:linux_do/utils/log.dart';
@@ -56,6 +57,10 @@ class HomeController extends BaseController {
     // 首页就绪后再接管深链，避免冷启动时路由表尚未准备好
     DeepLinkService().start();
     DeepLinkService().markConsumerReady();
+
+    // 外部 App「分享到」进来的文本：命中帖子直接跳，否则进发帖页预填
+    ShareIntentService().start();
+    ShareIntentService().markConsumerReady();
   }
 
   @override
