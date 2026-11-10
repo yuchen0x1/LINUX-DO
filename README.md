@@ -208,6 +208,57 @@ base64 -i release.jks
 如果这个项目有帮助到你，请献上你的 Star ⭐️
 你的认可，是我们前进的动力。
 
+## 🛠 本地开发
+
+### 环境要求
+
+| 组件 | 版本 |
+|---|---|
+| Flutter | 3.35.7（stable） |
+| Dart | 3.9+ |
+| JDK | 17 |
+| Android compileSdk | 36 |
+| Android targetSdk | 35 |
+
+CI 固定同一套版本（`.github/workflows/ci.yml`），本地请保持一致，避免依赖解析差异。
+`pubspec.lock` 已入库，修改依赖后请一并提交锁文件。
+
+### 签名配置
+
+签名口令**不入库**。release 构建前创建 `android/keystore/key.properties`：
+
+```properties
+storePassword=<你的口令>
+keyPassword=<你的口令>
+storeFile=app/release-key.jks
+keyAlias=linuxdo
+```
+
+该文件与 `*.jks` 均被 `.gitignore` 排除。缺少此文件时 release 构建会跳过签名并打印警告。
+
+### 16KB 页对齐校验
+
+Android 15 起的新硬件使用 16KB 内存页。若 APK 内 native 库的 ELF `LOAD` 段未按 16KB
+对齐（`p_align < 0x4000`），应用会启动即崩溃；Google Play 也已要求新提交支持 16KB。
+
+构建后执行：
+
+```bash
+bash scripts/check_16k_alignment.sh build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+```
+
+脚本逐个检查 `.so` 并输出 `OK` / `FAIL`。CI 的 `build-android` job 会自动运行，存在未对齐
+库时构建失败。常见来源是 MLKit（`mobile_scanner`）、CameraX 与 `jni`；遇到 `FAIL` 优先升级
+对应插件。
+
+### 代码规范
+
+```bash
+dart format lib test          # 格式化
+flutter analyze --no-pub      # 静态分析（CI 要求 0 warning / 0 error）
+flutter test --no-pub         # 单元测试
+```
+
 ## 📜 开源协议
 
 本项目采用MIT许可证 - 请参阅[LICENSE](LICENSE)文件以获取详细信息。

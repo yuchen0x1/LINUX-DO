@@ -32,7 +32,9 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
   // 将缩略图URL转换为原图URL
   String _getOriginalImageUrl(String url) {
     if (url.contains('/optimized/')) {
-      return url.replaceFirst('/optimized/', '/original/').replaceAll(RegExp(r'_\d+_\d+x\d+'), '');
+      return url
+          .replaceFirst('/optimized/', '/original/')
+          .replaceAll(RegExp(r'_\d+_\d+x\d+'), '');
     }
     return url;
   }
@@ -221,7 +223,7 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
       if (Platform.isIOS) {
         status = await Permission.photos.status;
         l.d('Initial photos permission status: $status');
-        
+
         if (status.isPermanentlyDenied) {
           _showSettingsDialog();
           return;
@@ -231,7 +233,7 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
       } else {
         status = await Permission.storage.status;
         l.d('Initial storage permission status: $status');
-        
+
         if (status.isPermanentlyDenied) {
           _showSettingsDialog();
           return;
@@ -287,7 +289,9 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
                 width: 60.w,
                 height: 60.w,
                 decoration: BoxDecoration(
-                  color: Theme.of(Get.context!).primaryColor.withValues(alpha: 0.1),
+                  color: Theme.of(Get.context!)
+                      .primaryColor
+                      .withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -327,7 +331,9 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.w),
                           ),
-                          backgroundColor: Theme.of(Get.context!).primaryColor.withValues(alpha: 0.1),
+                          backgroundColor: Theme.of(Get.context!)
+                              .primaryColor
+                              .withValues(alpha: 0.1),
                         ),
                         child: Text(
                           '取消',
@@ -393,7 +399,8 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
           }
 
           // 让用户选择保存位置
-          String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+          String? selectedDirectory =
+              await FilePicker.platform.getDirectoryPath();
           if (selectedDirectory == null) {
             print('User cancelled directory selection');
             return;

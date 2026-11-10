@@ -126,15 +126,14 @@ Future<void> showProxySettingsDialog(BuildContext context) async {
                           snackPosition: SnackPosition.BOTTOM);
                       return;
                     }
-                    await ProxyService().save(
-                        enabled: enabled, host: h, port: p);
+                    await ProxyService()
+                        .save(enabled: enabled, host: h, port: p);
                     // 立即应用到 Dio 网络层
                     try {
                       NetClient.getInstance().applyProxy();
                     } catch (_) {}
                     Get.back();
-                    Get.snackbar(
-                        '已保存', enabled ? '代理已生效：$h:$p' : '已恢复直连',
+                    Get.snackbar('已保存', enabled ? '代理已生效：$h:$p' : '已恢复直连',
                         snackPosition: SnackPosition.BOTTOM);
                   },
                   child: Text(

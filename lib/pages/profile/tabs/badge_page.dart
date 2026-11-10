@@ -57,7 +57,8 @@ class BadgePage extends GetView<BadgeController> {
                                 initialIndex: controller.selectedIndex.value,
                                 containerColor: AppColors.transparent,
                                 containerBorder: Border.all(
-                                    color: Theme.of(context).primaryColor, width: .4.w),
+                                    color: Theme.of(context).primaryColor,
+                                    width: .4.w),
                                 slidersColors: [Theme.of(context).cardColor],
                                 isAllContainerTap: true,
                                 onSelect: (index) =>
@@ -67,23 +68,25 @@ class BadgePage extends GetView<BadgeController> {
                                     '全部',
                                     style: TextStyle(
                                         fontSize: 10.sp,
-                                        color: controller.selectedIndex.value == 0
-                                            ? Theme.of(context).primaryColor
-                                            : Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium
-                                                ?.color),
+                                        color:
+                                            controller.selectedIndex.value == 0
+                                                ? Theme.of(context).primaryColor
+                                                : Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.color),
                                   ),
                                   Text(
                                     '已获得',
                                     style: TextStyle(
                                         fontSize: 10.sp,
-                                        color: controller.selectedIndex.value == 1
-                                            ? Theme.of(context).primaryColor
-                                            : Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium
-                                                ?.color),
+                                        color:
+                                            controller.selectedIndex.value == 1
+                                                ? Theme.of(context).primaryColor
+                                                : Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.color),
                                   )
                                 ],
                               ),
@@ -161,8 +164,6 @@ class BadgeCard extends GetView<BadgeController> {
       ),
     );
   }
-
-  
 
   void _showBadgeDetail(BuildContext context, Color badgeColor) {
     Get.dialog(
@@ -268,13 +269,12 @@ class BadgeCard extends GetView<BadgeController> {
                       ),
                     ),
                     12.vGap,
-                    HtmlWidget(
-                              html: badge.description, onLinkTap: (url) {}),
+                    HtmlWidget(html: badge.description, onLinkTap: (url) {}),
                     if (badge.longDescription != null &&
                         badge.longDescription!.isNotEmpty) ...[
                       8.vGap,
                       HtmlWidget(
-                              html: badge.longDescription!, onLinkTap: (url) {})
+                          html: badge.longDescription!, onLinkTap: (url) {})
                     ],
                     16.vGap,
                     Row(
@@ -336,7 +336,7 @@ class BadgeCard extends GetView<BadgeController> {
     );
   }
 
-   /// 转换K单位
+  /// 转换K单位
   String formatNumber(int number) {
     if (number >= 1000) {
       double value = number / 1000;

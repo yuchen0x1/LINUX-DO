@@ -83,7 +83,7 @@ extension DateTimeExpand on DateTime {
       return '${difference.inMinutes}分钟前';
     } else if (difference.inHours < 24) {
       return '${difference.inHours}小时前';
-    }else if (difference.inDays > 1) {
+    } else if (difference.inDays > 1) {
       return format('MM-dd');
     } else {
       return format('HH:mm');
@@ -101,7 +101,7 @@ extension DateTimeExpand on DateTime {
       return '${difference.inMinutes}分钟前';
     } else if (difference.inHours < 24) {
       return '${difference.inHours}小时前';
-    }else if (difference.inDays > 1) {
+    } else if (difference.inDays > 1) {
       return format('yyyy-MM-dd');
     } else {
       return format('yyyy-MM-dd');

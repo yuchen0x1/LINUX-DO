@@ -389,7 +389,7 @@ class BookmarkPage extends GetView<BookmarkController> {
   // 显示提示弹窗
   void _showInfoDialog(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColor;
-    
+
     Get.generalDialog(
       pageBuilder: (context, animation, secondaryAnimation) {
         return Dialog(
@@ -420,9 +420,9 @@ class BookmarkPage extends GetView<BookmarkController> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-
                 Padding(
-                  padding: const EdgeInsets.only(top: 20, left: 24, right: 24).w,
+                  padding:
+                      const EdgeInsets.only(top: 20, left: 24, right: 24).w,
                   child: Row(
                     children: [
                       Icon(
@@ -442,16 +442,19 @@ class BookmarkPage extends GetView<BookmarkController> {
                     ],
                   ),
                 ),
-                
+
                 // 分割线
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24).w,
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 24)
+                          .w,
                   child: Divider(
                     height: 1.h,
-                    color: Theme.of(context).dividerColor.withValues(alpha: 0.1),
+                    color:
+                        Theme.of(context).dividerColor.withValues(alpha: 0.1),
                   ),
                 ),
-                
+
                 // 内容
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24).w,
@@ -491,18 +494,19 @@ class BookmarkPage extends GetView<BookmarkController> {
       },
       // 自定义从上向下的转场动画
       transitionBuilder: (context, animation, secondaryAnimation, child) {
-        const begin = Offset(0.0, -1.0); 
+        const begin = Offset(0.0, -1.0);
         const end = Offset.zero;
         const curve = Curves.easeOutQuint;
-        
-        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
         var offsetAnimation = animation.drive(tween);
-        
+
         final fadeAnimation = CurvedAnimation(
           parent: animation,
           curve: const Interval(0.0, 1.0, curve: Curves.easeOut),
         );
-        
+
         return FadeTransition(
           opacity: fadeAnimation,
           child: SlideTransition(

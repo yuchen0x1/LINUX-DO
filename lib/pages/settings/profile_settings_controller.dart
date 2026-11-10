@@ -28,7 +28,7 @@ class ProfileSettingsController extends BaseController with Concatenated {
   final enableSignatureFlag = false.obs;
   final timezone = ''.obs;
   final region = ''.obs;
-  
+
   final selectedTimezone = ''.obs;
   final profileTitleImage = Rxn<String>();
   final cardBackgroundImage = Rxn<String>();
@@ -57,9 +57,7 @@ class ProfileSettingsController extends BaseController with Concatenated {
       final userInfo = _globalController.userInfo;
       if (userInfo != null) {
         final user = userInfo.user;
-        if (user != null) {
-          
-        }
+        if (user != null) {}
       }
     } catch (e) {
       l.e('加载用户偏好设置失败: $e');
@@ -74,7 +72,7 @@ class ProfileSettingsController extends BaseController with Concatenated {
     try {
       final picker = ImagePicker();
       final pickedFile = await picker.pickImage(source: source);
-      
+
       if (pickedFile != null) {
         if (isProfileTitle) {
           isUploadingProfileTitle.value = true;
@@ -165,9 +163,7 @@ class ProfileSettingsController extends BaseController with Concatenated {
   Future<void> savePreferences() async {
     try {
       isLoading.value = true;
-      final request = UserPreferencesRequest(
-       
-      );
+      final request = UserPreferencesRequest();
 
       await _apiService.updateUserPreferences(userName, request);
       await _globalController.fetchUserInfo();
@@ -180,4 +176,4 @@ class ProfileSettingsController extends BaseController with Concatenated {
       isLoading.value = false;
     }
   }
-} 
+}

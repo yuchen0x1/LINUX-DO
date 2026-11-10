@@ -49,6 +49,17 @@ app.*.map.json
 .vscode/
 .idea/
 
+# 应用工程的依赖必须锁定版本：CI 与发布构建的可复现性依赖它。
+# （库工程才忽略 lock 文件，本仓库是 App。）
+# pubspec.lock
 
-pubspec.lock
 local_build.sh
+
+# 构建/混淆产物
+build/symbols/
+
+# 本地调试遗留物
+ui.xml
+final_list.png
+final_list2.png
+guest_try2.png

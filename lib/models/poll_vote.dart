@@ -21,7 +21,6 @@ class PollVote {
   }
 }
 
-
 class PollVotersResponse {
   final Map<String, List<PollVoter>>? voters;
 
@@ -29,20 +28,17 @@ class PollVotersResponse {
 
   factory PollVotersResponse.fromJson(Map<String, dynamic> json) {
     Map<String, List<PollVoter>>? votersMap;
-    
+
     if (json['voters'] != null) {
       votersMap = {};
       (json['voters'] as Map<String, dynamic>).forEach((key, value) {
         votersMap![key] = List<PollVoter>.from(
-          (value as List).map((x) => PollVoter.fromJson(x))
-        );
+            (value as List).map((x) => PollVoter.fromJson(x)));
       });
     }
-    
+
     return PollVotersResponse(
       voters: votersMap,
     );
   }
 }
-
-

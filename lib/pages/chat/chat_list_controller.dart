@@ -9,7 +9,7 @@ import '../../utils/log.dart';
 
 class ChatListController extends BaseController {
   final ApiService apiService = Get.find();
-  
+
   // 深色模式
   final RxBool isDarkMode = false.obs;
   // 字体大小
@@ -25,7 +25,7 @@ class ChatListController extends BaseController {
 
   // 搜索控制器
   final searchController = TextEditingController();
-  
+
   // 消息列表
   final _messages = <ChatMessage>[].obs;
 
@@ -45,13 +45,13 @@ class ChatListController extends BaseController {
       name: 'LUNIX DO Bot',
       avatarTemplate: null,
     );
-    
+
     final chatableData = ChatableData(
       group: false,
       users: [robotUser],
       uploadedLogo: null,
     );
-    
+
     final meta = Meta(
       messageBusLastIds: MessageBusLastIds(
         channelMessageBusLastId: 0,
@@ -65,7 +65,7 @@ class ChatListController extends BaseController {
       canDeleteSelf: false,
       canDeleteOthers: false,
     );
-    
+
     return ChatMessage(
       id: robotId,
       allowChannelWideMentions: false,
@@ -121,8 +121,7 @@ class ChatListController extends BaseController {
   }
 
   // 清除缓存
-  Future<void> clearCache() async {
-  }
+  Future<void> clearCache() async {}
 
   // 加载聊天列表
   Future<void> loadChannels() async {
@@ -130,18 +129,17 @@ class ChatListController extends BaseController {
       isLoading.value = true;
 
       final response = await apiService.getChannels();
-      
+
       _messages.clear();
-      
+
       _messages.add(_createRobotChatItem());
-      
+
       _messages.addAll(response.publicChannels ?? []);
       _messages.addAll(response.directMessageChannels ?? []);
-      
     } catch (e, s) {
       l.e('加载聊天列表失败 $e $s');
       showError(e.toString());
-      
+
       if (_messages.isEmpty || !_messages.any((m) => m.id == robotId)) {
         _messages.clear();
         _messages.add(_createRobotChatItem());
@@ -153,8 +151,7 @@ class ChatListController extends BaseController {
   }
 
   // 搜索变化
-  void onSearchChanged(String value) {
-  }
+  void onSearchChanged(String value) {}
 
   // 判断是否是机器人聊天
   bool isRobotChat(ChatMessage message) {
@@ -163,7 +160,6 @@ class ChatListController extends BaseController {
 
   // 点击消息
   void onMessageTap(ChatMessage message) async {
-
     if (message.id == robotId) {
       await Get.toNamed(Routes.ROBOT_CHAT);
       return;
@@ -171,8 +167,8 @@ class ChatListController extends BaseController {
 
     // 使用 await 等待导航返回结果
     await Get.toNamed(Routes.CHAT_DETAIL, arguments: message);
-    
+
     // 直接刷新 因为进入后标记已读
     loadChannels();
   }
-} 
+}

@@ -21,7 +21,6 @@ import '../web_page.dart';
 
 class LoginController extends BaseController {
   final ApiService _apiService = Get.find<ApiService>();
-  final GlobalController _globalController = Get.find<GlobalController>();
   final username = ''.obs;
   final password = ''.obs;
   final isPasswordVisible = false.obs;
@@ -48,7 +47,6 @@ class LoginController extends BaseController {
         MessageBusService().start();
         // 跳转到首页
         Get.offAllNamed(Routes.HOME);
-         
       } catch (e) {
         showSnackbar(
           title: AppConst.login.loginFailedTitle,
@@ -112,17 +110,14 @@ class LoginController extends BaseController {
       return;
     }
     if (password.value.isEmpty) {
-      showError( AppConst.login.emptyPassword);
+      showError(AppConst.login.emptyPassword);
       return;
     }
 
     try {
       isLoading.value = true;
-
-     
     } catch (e, s) {
       l.e('登录失败: $e - $s');
-      
     } finally {
       isLoading.value = false;
     }

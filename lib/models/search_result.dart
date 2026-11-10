@@ -42,7 +42,8 @@ class SearchResult {
     required this.groupIds,
   });
 
-  factory SearchResult.fromJson(Map<String, dynamic> json) => _$SearchResultFromJson(json);
+  factory SearchResult.fromJson(Map<String, dynamic> json) =>
+      _$SearchResultFromJson(json);
   Map<String, dynamic> toJson() => _$SearchResultToJson(this);
 }
 
@@ -75,7 +76,8 @@ class SearchPost {
     required this.topicId,
   });
 
-  factory SearchPost.fromJson(Map<String, dynamic> json) => _$SearchPostFromJson(json);
+  factory SearchPost.fromJson(Map<String, dynamic> json) =>
+      _$SearchPostFromJson(json);
   Map<String, dynamic> toJson() => _$SearchPostToJson(this);
 }
 
@@ -112,6 +114,7 @@ class GroupedSearchResult {
     required this.postIds,
   });
 
-  factory GroupedSearchResult.fromJson(Map<String, dynamic> json) => _$GroupedSearchResultFromJson(json);
+  factory GroupedSearchResult.fromJson(Map<String, dynamic> json) =>
+      _$GroupedSearchResultFromJson(json);
   Map<String, dynamic> toJson() => _$GroupedSearchResultToJson(this);
-} 
+}

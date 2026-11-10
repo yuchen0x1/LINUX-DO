@@ -276,183 +276,179 @@ class FontSizePage extends GetView<FontSizeController> {
   }
 
   Widget _buildDensitySection() {
-    return Obx((){
+    return Obx(() {
       if (controller.simplified.value) {
         return const SizedBox.square();
       } else {
-        return Column(
-          children: [
-            16.vGap,
-            Divider(
-              height: 1,
-              color: Get.theme.dividerColor,
-            ),
-            16.vGap,
-            // 标题和当前选择的布局
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14).w,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '列表布局密度',
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: AppFontFamily.dinPro,
-                    ),
+        return Column(children: [
+          16.vGap,
+          Divider(
+            height: 1,
+            color: Get.theme.dividerColor,
+          ),
+          16.vGap,
+          // 标题和当前选择的布局
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14).w,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '列表布局密度',
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: AppFontFamily.dinPro,
                   ),
-                  Obx(() => Container(
-                        padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 4)
-                            .w,
-                        decoration: BoxDecoration(
-                          color: Get.theme.primaryColor.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(16).w,
-                        ),
-                        child: Text(
-                          controller.listDensity.value == ListDensity.compact
-                              ? '紧凑'
-                              : controller.listDensity.value ==
-                                      ListDensity.normal
-                                  ? '默认'
-                                  : '松散',
-                          style: TextStyle(
-                            fontSize: 12.w,
-                            fontWeight: FontWeight.w500,
-                            color: Get.theme.primaryColor,
-                          ),
-                        ),
-                      )),
-                ],
-              ),
-            ),
-
-            14.vGap,
-
-            // 布局密度滑块
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14).w,
-              child: Obx(() => SliderTheme(
-                    data: SliderThemeData(
-                      trackHeight: 4.0,
-                      activeTrackColor: Colors.transparent,
-                      inactiveTrackColor: Colors.transparent,
-                      thumbColor: Get.theme.primaryColor,
-                      thumbShape: CustomSliderThumbShape(
-                        thumbRadius: 8.w,
-                        borderWidth: 4.w,
-                        borderColor: Colors.white,
-                      ),
-                      overlayColor:
-                          Get.theme.primaryColor.withValues(alpha: 0.2),
-                      overlayShape:
-                          const RoundSliderOverlayShape(overlayRadius: 16),
-                      activeTickMarkColor: Colors.white,
-                      inactiveTickMarkColor:
-                          Colors.white.withValues(alpha: 0.5),
-                      tickMarkShape:
-                          RoundSliderTickMarkShape(tickMarkRadius: 1.5.w),
-                      showValueIndicator: ShowValueIndicator.always,
-                      valueIndicatorColor: Get.theme.primaryColor,
-                      valueIndicatorShape:
-                          const PaddleSliderValueIndicatorShape(),
-                      valueIndicatorTextStyle: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12.w,
-                      ),
-                    ),
-                    child: Container(
-                      height: 28.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20).w,
-                        gradient: LinearGradient(
-                          colors: [
-                            Get.theme.primaryColor.withValues(alpha: 0.2),
-                            Get.theme.primaryColor,
-                          ],
-                        ),
-                      ),
-                      child: Slider(
-                        value: controller.listDensity.value.index.toDouble(),
-                        min: 0,
-                        max: 2,
-                        divisions: 2,
-                        onChanged: (value) {
-                          controller.setListDensity(
-                              ListDensity.values[value.toInt()]);
-                        },
-                      ),
-                    ),
-                  )),
-            ),
-
-            12.vGap,
-
-            // 标签指示器
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14).w,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildDensityLabel(
-                    CupertinoIcons.arrow_down_right_arrow_up_left,
-                    '紧凑',
-                    controller.listDensity.value == ListDensity.compact,
-                  ),
-                  _buildDensityLabel(
-                    CupertinoIcons.equal_circle,
-                    '默认',
-                    controller.listDensity.value == ListDensity.normal,
-                  ),
-                  _buildDensityLabel(
-                    CupertinoIcons.arrow_up_left_arrow_down_right,
-                    '松散',
-                    controller.listDensity.value == ListDensity.loose,
-                  ),
-                ],
-              ),
-            ),
-
-            24.vGap,
-
-            // 预览标题
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 14).w,
-              child: Text(
-                '预览效果',
-                style: TextStyle(
-                  fontSize: 14.w,
-                  fontWeight: FontWeight.w500,
-                  color: Get.theme.primaryColor,
                 ),
+                Obx(() => Container(
+                      padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 4)
+                          .w,
+                      decoration: BoxDecoration(
+                        color: Get.theme.primaryColor.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(16).w,
+                      ),
+                      child: Text(
+                        controller.listDensity.value == ListDensity.compact
+                            ? '紧凑'
+                            : controller.listDensity.value == ListDensity.normal
+                                ? '默认'
+                                : '松散',
+                        style: TextStyle(
+                          fontSize: 12.w,
+                          fontWeight: FontWeight.w500,
+                          color: Get.theme.primaryColor,
+                        ),
+                      ),
+                    )),
+              ],
+            ),
+          ),
+
+          14.vGap,
+
+          // 布局密度滑块
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14).w,
+            child: Obx(() => SliderTheme(
+                  data: SliderThemeData(
+                    trackHeight: 4.0,
+                    activeTrackColor: Colors.transparent,
+                    inactiveTrackColor: Colors.transparent,
+                    thumbColor: Get.theme.primaryColor,
+                    thumbShape: CustomSliderThumbShape(
+                      thumbRadius: 8.w,
+                      borderWidth: 4.w,
+                      borderColor: Colors.white,
+                    ),
+                    overlayColor: Get.theme.primaryColor.withValues(alpha: 0.2),
+                    overlayShape:
+                        const RoundSliderOverlayShape(overlayRadius: 16),
+                    activeTickMarkColor: Colors.white,
+                    inactiveTickMarkColor: Colors.white.withValues(alpha: 0.5),
+                    tickMarkShape:
+                        RoundSliderTickMarkShape(tickMarkRadius: 1.5.w),
+                    showValueIndicator: ShowValueIndicator.always,
+                    valueIndicatorColor: Get.theme.primaryColor,
+                    valueIndicatorShape:
+                        const PaddleSliderValueIndicatorShape(),
+                    valueIndicatorTextStyle: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12.w,
+                    ),
+                  ),
+                  child: Container(
+                    height: 28.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20).w,
+                      gradient: LinearGradient(
+                        colors: [
+                          Get.theme.primaryColor.withValues(alpha: 0.2),
+                          Get.theme.primaryColor,
+                        ],
+                      ),
+                    ),
+                    child: Slider(
+                      value: controller.listDensity.value.index.toDouble(),
+                      min: 0,
+                      max: 2,
+                      divisions: 2,
+                      onChanged: (value) {
+                        controller
+                            .setListDensity(ListDensity.values[value.toInt()]);
+                      },
+                    ),
+                  ),
+                )),
+          ),
+
+          12.vGap,
+
+          // 标签指示器
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14).w,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildDensityLabel(
+                  CupertinoIcons.arrow_down_right_arrow_up_left,
+                  '紧凑',
+                  controller.listDensity.value == ListDensity.compact,
+                ),
+                _buildDensityLabel(
+                  CupertinoIcons.equal_circle,
+                  '默认',
+                  controller.listDensity.value == ListDensity.normal,
+                ),
+                _buildDensityLabel(
+                  CupertinoIcons.arrow_up_left_arrow_down_right,
+                  '松散',
+                  controller.listDensity.value == ListDensity.loose,
+                ),
+              ],
+            ),
+          ),
+
+          24.vGap,
+
+          // 预览标题
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 14).w,
+            child: Text(
+              '预览效果',
+              style: TextStyle(
+                fontSize: 14.w,
+                fontWeight: FontWeight.w500,
+                color: Get.theme.primaryColor,
               ),
             ),
+          ),
 
-            // 使用TopicItem预览
-            Obx(() {
-              final globalController = Get.find<GlobalController>();
-              final exampleTopics = globalController.topics;
-              return ListView.builder(
-                padding: EdgeInsets.zero,
-                itemCount: exampleTopics.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return TopicItem(
-                    topic: exampleTopics[index],
-                    avatarUrl:
-                        controller.getLatestPosterAvatar(exampleTopics[index]),
-                    nickName: controller.getNickName(exampleTopics[index]),
-                    username: controller.getUserName(exampleTopics[index]),
-                    avatarUrls: controller.getAvatarUrls(exampleTopics[index]),
-                    avatarActions: AvatarActions.noAction,
-                    toPersonalPage: false,
-                    openSideslip: false,
-                  );
-                },
-              );
-            }),
+          // 使用TopicItem预览
+          Obx(() {
+            final globalController = Get.find<GlobalController>();
+            final exampleTopics = globalController.topics;
+            return ListView.builder(
+              padding: EdgeInsets.zero,
+              itemCount: exampleTopics.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return TopicItem(
+                  topic: exampleTopics[index],
+                  avatarUrl:
+                      controller.getLatestPosterAvatar(exampleTopics[index]),
+                  nickName: controller.getNickName(exampleTopics[index]),
+                  username: controller.getUserName(exampleTopics[index]),
+                  avatarUrls: controller.getAvatarUrls(exampleTopics[index]),
+                  avatarActions: AvatarActions.noAction,
+                  toPersonalPage: false,
+                  openSideslip: false,
+                );
+              },
+            );
+          }),
         ]);
       }
     });

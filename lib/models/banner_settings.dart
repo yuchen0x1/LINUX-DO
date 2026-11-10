@@ -4,9 +4,9 @@ part 'banner_settings.g.dart';
 
 @JsonSerializable()
 class BannerSettings {
-  final String? networkUrl;  // 网络图片URL
-  final String? localPath;   // 本地图片路径
-  final bool useDefault;     // 是否使用默认图片
+  final String? networkUrl; // 网络图片URL
+  final String? localPath; // 本地图片路径
+  final bool useDefault; // 是否使用默认图片
 
   BannerSettings({
     this.networkUrl,
@@ -14,7 +14,8 @@ class BannerSettings {
     this.useDefault = true,
   });
 
-  factory BannerSettings.fromJson(Map<String, dynamic> json) => _$BannerSettingsFromJson(json);
+  factory BannerSettings.fromJson(Map<String, dynamic> json) =>
+      _$BannerSettingsFromJson(json);
   Map<String, dynamic> toJson() => _$BannerSettingsToJson(this);
 
   String? get currentImageSource {
@@ -32,4 +33,4 @@ class BannerSettings {
 
   // 是否使用本地图片
   bool get isLocalImage => localPath != null && localPath!.isNotEmpty;
-} 
+}

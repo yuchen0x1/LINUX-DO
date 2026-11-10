@@ -120,4 +120,4 @@ class GroupExtras {
   factory GroupExtras.fromJson(Map<String, dynamic> json) =>
       _$GroupExtrasFromJson(json);
   Map<String, dynamic> toJson() => _$GroupExtrasToJson(this);
-} 
+}

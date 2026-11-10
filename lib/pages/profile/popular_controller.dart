@@ -8,7 +8,6 @@ import 'package:linux_do/models/badge_detail.dart';
 import 'package:linux_do/models/category_data.dart' as cg;
 import 'package:linux_do/models/summary.dart';
 import 'package:linux_do/models/topic_model.dart';
-import 'package:linux_do/net/api_service.dart';
 import 'package:linux_do/routes/app_pages.dart';
 import 'package:linux_do/utils/log.dart';
 import 'package:linux_do/utils/storage_manager.dart';
@@ -16,8 +15,6 @@ import 'package:linux_do/utils/tag.dart';
 import 'package:linux_do/widgets/browser_tips_sheet.dart';
 
 class PopularController extends BaseController {
-  final ApiService _apiService = Get.find();
-
   // 标签索引 (0: 话题, 1: 链接, 2: 回复, 3: 类别, 4: 徽章)
   final RxInt selectedIndex = 0.obs;
 
@@ -70,8 +67,6 @@ class PopularController extends BaseController {
   // 加载初始数据
   void _loadInitialData() {
     if (summaryData.value != null) {
-      final summary = summaryData.value!.userSummary;
-
       // 初始加载第一个标签页的数据
       _loadDataForTab(selectedIndex.value);
     }
@@ -107,7 +102,8 @@ class PopularController extends BaseController {
           // }
           replies.value = [
             for (final reply in summary?.replies ?? [])
-              summaryData.value!.topics!.firstWhere((topic) => topic.id == reply.topicId),
+              summaryData.value!.topics!
+                  .firstWhere((topic) => topic.id == reply.topicId),
           ];
         }
         break;
@@ -118,7 +114,7 @@ class PopularController extends BaseController {
         break;
       case 4: // 徽章
         if (badges.isEmpty) {
-         l.d('summary?.badges: ${jsonEncode(summaryData.value!.userSummary?.badges)}');
+          l.d('summary?.badges: ${jsonEncode(summaryData.value!.userSummary?.badges)}');
           badges.value = [
             for (final badge in summary?.badges ?? [])
               BadgeManager().getBadge(badge.badgeId)!,
@@ -207,7 +203,8 @@ class PopularController extends BaseController {
 
             replies.value = [
               for (final reply in summaryData.value!.userSummary?.replies ?? [])
-                summaryData.value!.topics!.firstWhere((topic) => topic.id == reply.topicId),
+                summaryData.value!.topics!
+                    .firstWhere((topic) => topic.id == reply.topicId),
             ];
           }
           break;

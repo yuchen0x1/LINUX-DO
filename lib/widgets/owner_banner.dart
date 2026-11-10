@@ -33,20 +33,18 @@ class OwnerPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    
-    
     canvas.save();
     canvas.translate(size.width, size.height);
-    
+
     // 旋转-45度（顺时针），使banner沿对角线放置
-    canvas.rotate(-pi/4);
-    
+    canvas.rotate(-pi / 4);
+
     final bannerWidth = 10.w; // banner宽度
     final bannerLength = size.width * 1; // banner长度，确保足够长
-    
+
     final rect = Rect.fromLTWH(
       -bannerLength / 2, // 居中放置
-      -bannerWidth / 2,  // 居中放置
+      -bannerWidth / 2, // 居中放置
       bannerLength,
       bannerWidth,
     );
@@ -56,18 +54,17 @@ class OwnerPainter extends CustomPainter {
       begin: Alignment.centerRight,
       colors: [color, color.withValues(alpha: 0.3)],
     );
-    
+
     bannerPaint.shader = gradient.createShader(rect);
-    
+
     canvas.drawRect(rect, bannerPaint);
-    
+
     final textStyle = TextStyle(
-      color: Colors.white,
-      fontSize: bannerWidth * 0.8,
-      fontWeight: FontWeight.bold,
-      fontFamily: AppFontFamily.dinPro
-    );
-    
+        color: Colors.white,
+        fontSize: bannerWidth * 0.8,
+        fontWeight: FontWeight.bold,
+        fontFamily: AppFontFamily.dinPro);
+
     final textSpan = TextSpan(
       text: text,
       style: textStyle,
@@ -76,22 +73,21 @@ class OwnerPainter extends CustomPainter {
       text: textSpan,
       textDirection: TextDirection.ltr,
     );
-    
+
     textPainter.layout();
     textPainter.paint(
-      canvas, 
-      Offset(
-        -textPainter.width / 2,
-        -textPainter.height / 2,
-      )
-    );
-    
+        canvas,
+        Offset(
+          -textPainter.width / 2,
+          -textPainter.height / 2,
+        ));
+
     // 恢复画布状态
     canvas.restore();
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => 
-      oldDelegate is OwnerPainter && 
+  bool shouldRepaint(covariant CustomPainter oldDelegate) =>
+      oldDelegate is OwnerPainter &&
       (oldDelegate.color != color || oldDelegate.text != text);
 }

@@ -126,6 +126,7 @@ class CreatePostController extends BaseController {
               : 0, // Lv3 只能看到权限等级=3的主题
         };
       }
+
       /// 默认选中第一个分类
       selectedCategory.value = categories.first;
       await searchTags('');
@@ -184,9 +185,9 @@ class CreatePostController extends BaseController {
   }
 
   void addTag(String tag) {
-    final normalizedTag = tag.trim(); 
+    final normalizedTag = tag.trim();
     if (normalizedTag.isNotEmpty && !tags.contains(normalizedTag)) {
-      tags.add(normalizedTag); 
+      tags.add(normalizedTag);
       searchController.clear();
     }
   }
@@ -194,8 +195,8 @@ class CreatePostController extends BaseController {
   void removeTag(String tag) {
     final normalizedTag = tag.trim();
     if (tags.contains(normalizedTag)) {
-      tags.remove(normalizedTag); 
-    } 
+      tags.remove(normalizedTag);
+    }
   }
 
   // 格式化内容为HTML
@@ -492,7 +493,8 @@ class CreatePostController extends BaseController {
       isHideKeyboard.value = false;
 
       // 检查当前焦点是否在 titleFocusNode 或 contentFocusNode 上
-      FocusNode targetFocusNode = focusedInput.value == 'title' ? titleFocusNode : contentFocusNode;
+      FocusNode targetFocusNode =
+          focusedInput.value == 'title' ? titleFocusNode : contentFocusNode;
 
       Future.delayed(const Duration(milliseconds: 100), () {
         FocusScope.of(Get.context!).requestFocus(targetFocusNode);
@@ -507,4 +509,3 @@ class CreatePostController extends BaseController {
     }
   }
 }
-

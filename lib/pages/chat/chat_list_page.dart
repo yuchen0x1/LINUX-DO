@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:linux_do/const/app_spacing.dart';
 import 'package:linux_do/const/app_theme.dart';
-import 'package:linux_do/utils/log.dart';
 import 'package:linux_do/widgets/avatar_widget.dart';
 import 'package:linux_do/widgets/dis_refresh.dart';
 import '../../const/app_const.dart';
@@ -76,66 +75,10 @@ class ChatPage extends GetView<ChatListController> {
     );
   }
 
-  Widget _buildSearchBar(BuildContext context) {
-    return Container(
-      height: 36.w,
-      margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(18.w),
-        border: Border.all(
-          color: Theme.of(context).dividerColor.withValues(alpha: .1),
-        ),
-      ),
-      child: Row(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.w),
-            child: Icon(
-              CupertinoIcons.search,
-              size: 16.w,
-              color: Theme.of(context).hintColor,
-            ),
-          ),
-          Expanded(
-            child: TextField(
-              controller: controller.searchController,
-              style: TextStyle(
-                fontSize: 14.w,
-                color: Theme.of(context).textTheme.bodyMedium?.color,
-              ),
-              decoration: InputDecoration(
-                suffixIcon: SizedBox(
-                  width: 12.w,
-                  height: 12.w,
-                  child: Center(
-                      child: Image.asset(
-                    AppImages.searchIcon,
-                    width: 24.w,
-                  )),
-                ),
-                border: InputBorder.none,
-                fillColor: Colors.transparent,
-                hintText: AppConst.chat.searchHint,
-                hintStyle: TextStyle(
-                  fontSize: 14.w,
-                  color: Theme.of(context).hintColor,
-                ),
-                isDense: true,
-                contentPadding: EdgeInsets.symmetric(vertical: 6.w),
-              ),
-              onChanged: controller.onSearchChanged,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildMessageItem(BuildContext context, ChatMessage message) {
     // 判断是否是机器人聊天
     final isRobot = controller.isRobotChat(message);
-    
+
     return InkWell(
       onTap: () => controller.onMessageTap(message),
       child: Container(
@@ -176,7 +119,8 @@ class ChatPage extends GetView<ChatListController> {
                     ),
                   ),
                 if ((message.chatableType == 'DirectMessage' &&
-                    message.chatable.users?.first.status != null) || isRobot)
+                        message.chatable.users?.first.status != null) ||
+                    isRobot)
                   Positioned(
                     right: 0,
                     bottom: 0,
@@ -208,7 +152,8 @@ class ChatPage extends GetView<ChatListController> {
                           children: [
                             if (isRobot)
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.w),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 4.w, vertical: 1.w),
                                 margin: EdgeInsets.only(right: 6.w),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).primaryColor,
@@ -225,14 +170,19 @@ class ChatPage extends GetView<ChatListController> {
                               ),
                             Expanded(
                               child: Text(
-                                isRobot ? 'LUNIX DO Bot' : (message.title ?? ''),
+                                isRobot
+                                    ? 'LUNIX DO Bot'
+                                    : (message.title ?? ''),
                                 style: TextStyle(
                                   fontSize: 14.w,
                                   fontWeight: FontWeight.w500,
                                   fontFamily: AppFontFamily.dinPro,
-                                  color: isRobot ? 
-                                    Theme.of(context).primaryColor : 
-                                    Theme.of(context).textTheme.bodyLarge?.color,
+                                  color: isRobot
+                                      ? Theme.of(context).primaryColor
+                                      : Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.color,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -257,30 +207,36 @@ class ChatPage extends GetView<ChatListController> {
                     children: [
                       Expanded(
                         child: Text(
-                          isRobot ? 
-                            '我是LUNIX DO Bot, 随时解答你的问题' : 
-                            (message.lastMessage?.message ?? message.description ?? ''),
+                          isRobot
+                              ? '我是LUNIX DO Bot, 随时解答你的问题'
+                              : (message.lastMessage?.message ??
+                                  message.description ??
+                                  ''),
                           style: TextStyle(
                             fontSize: 11.w,
                             fontFamily: AppFontFamily.dinPro,
-                            color: isRobot ?
-                              Theme.of(context).primaryColor.withValues(alpha: .8) :
-                              Theme.of(context).textTheme.bodyMedium?.color,
+                            color: isRobot
+                                ? Theme.of(context)
+                                    .primaryColor
+                                    .withValues(alpha: .8)
+                                : Theme.of(context).textTheme.bodyMedium?.color,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-            
+
                       // 这个未读消息数量没有找到对应的字段,暂时找个占位吧
-                      if (message.meta.messageBusLastIds.newMessages > 0 && !isRobot)
+                      if (message.meta.messageBusLastIds.newMessages > 0 &&
+                          !isRobot)
                         Container(
                           padding: EdgeInsets.symmetric(
                               horizontal: 7.w, vertical: 2.w),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor.withValues(alpha: .8),
+                            color: Theme.of(context)
+                                .primaryColor
+                                .withValues(alpha: .8),
                             borderRadius: BorderRadius.circular(100.w),
-                            
                           ),
                           child: Text(
                             '${message.meta.messageBusLastIds.newMessages}',

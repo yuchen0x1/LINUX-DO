@@ -26,7 +26,6 @@ import '../controller/base_controller.dart';
 import '../models/category_data.dart';
 import '../models/user.dart';
 import '../net/api_service.dart';
-import '../net/http_config.dart';
 import '../net/success_response.dart';
 import '../utils/badge.dart';
 import '../utils/log.dart';
@@ -156,7 +155,7 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                         ? Center(
                             child: Padding(
                               padding: const EdgeInsets.only(bottom: 16.0),
-                            child: Text(
+                              child: Text(
                                 '尊贵的游客,该功能需要登录 🤨',
                                 style: TextStyle(
                                     color: Theme.of(context)
@@ -165,8 +164,8 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                                         ?.color,
                                     fontSize: 10.w),
                               ),
-                          ),
-                        )
+                            ),
+                          )
                         : _buildActions(context),
                   ],
                 ),
@@ -595,7 +594,10 @@ class UserInfoCard extends GetView<UserInfoCardController> {
               fontSize: 11.w,
               customWidgetBuilder: (element) {
                 final srcTmp = element.attributes['src'];
-                final src = srcTmp?.startsWith('http://') == true || srcTmp?.startsWith('https://') == true ? srcTmp : null;
+                final src = srcTmp?.startsWith('http://') == true ||
+                        srcTmp?.startsWith('https://') == true
+                    ? srcTmp
+                    : null;
                 if (element.localName == 'img' && src != null) {
                   return Image.network(
                     src,

@@ -15,6 +15,10 @@ analyzer:
     - web/**
     - windows/**
     - macos/**
+    # 代码生成产物：问题应通过调整生成配置或模板解决，不应逐条压制，
+    # 也不应手改（下次 build_runner 会覆盖）。
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
 include: package:flutter_lints/flutter.yaml
 
 linter:

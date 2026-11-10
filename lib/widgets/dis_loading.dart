@@ -141,5 +141,3 @@ class _DisBouncingChar extends StatelessWidget {
     );
   }
 }
-
-

@@ -120,8 +120,8 @@ class CloudflareClearanceService {
                       Expanded(
                         child: Text(
                           '正在通过 Cloudflare 验证，请稍候…',
-                          style: TextStyle(
-                              fontSize: 13.sp, color: Colors.black87),
+                          style:
+                              TextStyle(fontSize: 13.sp, color: Colors.black87),
                         ),
                       ),
                     ],

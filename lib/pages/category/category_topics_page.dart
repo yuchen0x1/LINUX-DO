@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -13,49 +11,47 @@ import 'category_topics_controller.dart';
 
 class CategoryTopicsPage extends GetView<CategoryTopicsController> {
   const CategoryTopicsPage({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       key: controller.scaffoldKey,
       drawer: const DrawerMenu(),
       body: NestedScrollView(
-          physics: const ClampingScrollPhysics(),
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-        return [
-          SliverAppBar(
-            pinned: true,
-            floating: true,
-            leading: SizedBox(
-              width: 40.w,
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                icon: Icon(Icons.menu_rounded,
-                    color: Theme.of(context).iconTheme.color),
-                onPressed: () {
-                  controller.scaffoldKey.currentState?.openDrawer();
-                },
+        physics: const ClampingScrollPhysics(),
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            SliverAppBar(
+              pinned: true,
+              floating: true,
+              leading: SizedBox(
+                width: 40.w,
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: Icon(Icons.menu_rounded,
+                      color: Theme.of(context).iconTheme.color),
+                  onPressed: () {
+                    controller.scaffoldKey.currentState?.openDrawer();
+                  },
+                ),
               ),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                // tishi
-                _buildBanner(context),
-                // 菜单按钮
-                _buildMenuButtons(context),
-              ],
+            SliverToBoxAdapter(
+              child: Column(
+                children: [
+                  // tishi
+                  _buildBanner(context),
+                  // 菜单按钮
+                  _buildMenuButtons(context),
+                ],
+              ),
             ),
-          ),
-
-          SliverPersistentHeader(
+            SliverPersistentHeader(
               pinned: true,
               delegate: StickyTabBarDelegate(
                 height: 46.w,
                 child: Container(
-                 color: AppColors.transparent,
+                  color: AppColors.transparent,
                   margin: EdgeInsets.symmetric(vertical: 6.w),
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
                   child: SlideSwitcher(
@@ -63,7 +59,8 @@ class CategoryTopicsPage extends GetView<CategoryTopicsController> {
                     containerWight: MediaQuery.of(context).size.width - 32.w,
                     containerBorderRadius: 4.w,
                     initialIndex: controller.currentTabIndex,
-                    containerBorder: Border.all(width: .4,color: Theme.of(context).primaryColor),
+                    containerBorder: Border.all(
+                        width: .4, color: Theme.of(context).primaryColor),
                     containerColor: Theme.of(context).cardColor,
                     containerBoxShadow: [
                       BoxShadow(
@@ -74,8 +71,10 @@ class CategoryTopicsPage extends GetView<CategoryTopicsController> {
                       ),
                     ],
                     slidersGradients: [
-                      LinearGradient(
-                          colors: [Theme.of(context).primaryColor, Theme.of(context).primaryColor.withValues(alpha: .6)])
+                      LinearGradient(colors: [
+                        Theme.of(context).primaryColor,
+                        Theme.of(context).primaryColor.withValues(alpha: .6)
+                      ])
                     ],
                     onSelect: (index) => controller.currentTabIndex = index,
                     children: [
@@ -87,13 +86,13 @@ class CategoryTopicsPage extends GetView<CategoryTopicsController> {
                 ),
               ),
             ),
-        ];},
+          ];
+        },
         // 列表内容
-       body:  Obx(() => controller.createCurrent()),
+        body: Obx(() => controller.createCurrent()),
       ),
     );
   }
-
 
   Widget _buildBanner(BuildContext context) {
     return SizedBox(
@@ -102,7 +101,10 @@ class CategoryTopicsPage extends GetView<CategoryTopicsController> {
       child: Center(
         child: TextScroll(
           AppConst.slogan.replaceAll('\n', ' '),
-          style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold,color: Theme.of(context).primaryColor),
+          style: TextStyle(
+              fontSize: 15.sp,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).primaryColor),
           mode: TextScrollMode.endless,
           intervalSpaces: 10,
           velocity: const Velocity(pixelsPerSecond: Offset(80, 0)),

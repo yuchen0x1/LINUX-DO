@@ -25,7 +25,7 @@ class DisSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activeColor = colorOn ?? Theme.of(context).primaryColor;
-    
+
     return Transform.scale(
       scale: 0.8,
       child: Switch(
@@ -33,8 +33,8 @@ class DisSwitch extends StatelessWidget {
         onChanged: onChanged,
         activeColor: activeColor,
         activeTrackColor: activeColor.withValues(alpha: 0.3),
-        inactiveThumbColor: Theme.of(context).brightness == Brightness.light 
-            ? Colors.white 
+        inactiveThumbColor: Theme.of(context).brightness == Brightness.light
+            ? Colors.white
             : Colors.grey[400],
         inactiveTrackColor: Colors.grey[200],
         trackOutlineColor: WidgetStateProperty.resolveWith((states) {
@@ -47,4 +47,4 @@ class DisSwitch extends StatelessWidget {
       ),
     );
   }
-} 
+}

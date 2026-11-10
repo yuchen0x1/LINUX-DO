@@ -135,12 +135,12 @@ class CloudflareController extends BaseController {
   String resultUrl = '';
   Timer? retryTimer;
   late int topicId;
-  
+
   // 防抖相关
   Timer? _scrollDebounceTimer;
   bool _isScrolling = false;
   static const _scrollDebounceTime = Duration(milliseconds: 500);
-  
+
   // 7秒时间窗口限制
   Timer? _scrollWindowTimer;
   static const _scrollTimeWindow = Duration(seconds: 7);
@@ -604,10 +604,10 @@ class CloudflareController extends BaseController {
     if (_isScrolling) {
       return;
     }
-    
+
     // 取消之前设置的定时器
     _scrollDebounceTimer?.cancel();
-    
+
     // 这保证了5秒内只有最后一个调用会被执行
     if (_scrollWindowTimer == null || !_scrollWindowTimer!.isActive) {
       _scrollDebounceTimer = Timer(_scrollDebounceTime, () {
@@ -620,18 +620,18 @@ class CloudflareController extends BaseController {
       });
     }
   }
-  
+
   void _performScroll(double length) {
     if (webViewController == null) return;
-    
+
     _isScrolling = true;
-    
+
     final screenHeight = MediaQuery.of(Get.context!).size.height * 0.9;
     webViewController?.scrollBy(x: 0, y: screenHeight.toInt()).then((_) {
       Future.delayed(const Duration(milliseconds: 300), () {
         _isScrolling = false;
       });
-      
+
       // 设置窗口定时器，在这段时间内的请求都会被延迟
       _scrollWindowTimer?.cancel();
       _scrollWindowTimer = Timer(_scrollTimeWindow, () {

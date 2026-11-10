@@ -44,14 +44,15 @@ class Category {
     this.slug,
   });
 
-  factory Category.fromJson(Map<String, dynamic> json) => _$CategoryFromJson(json);
+  factory Category.fromJson(Map<String, dynamic> json) =>
+      _$CategoryFromJson(json);
   Map<String, dynamic> toJson() => _$CategoryToJson(this);
-  
+
   @override
   String toString() {
     return 'Category(id: $id, name: $name)';
   }
-} 
+}
 
 @JsonSerializable()
 class CategoryLogo {
@@ -74,7 +75,8 @@ class CategoryLogo {
     return '${HttpConfig.baseUrl}$url';
   }
 
-  factory CategoryLogo.fromJson(Map<String, dynamic> json) => _$CategoryLogoFromJson(json);
+  factory CategoryLogo.fromJson(Map<String, dynamic> json) =>
+      _$CategoryLogoFromJson(json);
   Map<String, dynamic> toJson() => _$CategoryLogoToJson(this);
 }
 
@@ -92,8 +94,10 @@ class CategoryLogoDark {
     required this.height,
   });
 
-  String get imageUrl => url.startsWith('http') ? url : '${HttpConfig.baseUrl}$url';
+  String get imageUrl =>
+      url.startsWith('http') ? url : '${HttpConfig.baseUrl}$url';
 
-  factory CategoryLogoDark.fromJson(Map<String, dynamic> json) => _$CategoryLogoDarkFromJson(json);
+  factory CategoryLogoDark.fromJson(Map<String, dynamic> json) =>
+      _$CategoryLogoDarkFromJson(json);
   Map<String, dynamic> toJson() => _$CategoryLogoDarkToJson(this);
 }

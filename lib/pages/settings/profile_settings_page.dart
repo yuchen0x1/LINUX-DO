@@ -749,12 +749,13 @@ class ProfileSettingsPage extends GetView<ProfileSettingsController> {
                           color: Theme.of(context).hintColor,
                         ),
                       ),
-                      trailing: controller.selectedBadge.value?.name == badge.name
-                          ? Icon(
-                              CupertinoIcons.checkmark_circle_fill,
-                              color: Theme.of(context).primaryColor,
-                            )
-                          : null,
+                      trailing:
+                          controller.selectedBadge.value?.name == badge.name
+                              ? Icon(
+                                  CupertinoIcons.checkmark_circle_fill,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              : null,
                       onTap: () {
                         controller.cardBadge.value = badge.name;
                         controller.selectedBadge.value = badge;
@@ -812,4 +813,4 @@ class ProfileSettingsPage extends GetView<ProfileSettingsController> {
       ),
     );
   }
-} 
+}

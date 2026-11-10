@@ -25,8 +25,9 @@ class PostFooter extends StatelessWidget {
     return Get.find<GlobalController>().isAnonymousMode
         ? Text(
             '尊贵的游客,该功能需要登录 🤨',
-            style:
-                TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color,fontSize: 10.w),
+            style: TextStyle(
+                color: Theme.of(context).textTheme.bodyMedium?.color,
+                fontSize: 10.w),
           )
         : Row(
             children: [
@@ -58,44 +59,6 @@ class PostFooter extends StatelessWidget {
                   : const SizedBox.shrink()
             ],
           );
-  }
-}
-
-class _TranslateButton extends StatelessWidget {
-  final Post post;
-  final TopicDetailController controller;
-  const _TranslateButton({required this.post, required this.controller});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      child: Row(
-        children: [
-          Icon(Icons.translate, size: 16.w, color: Theme.of(context).hintColor),
-        ],
-      ),
-    );
-  }
-}
-
-/// 编辑话题按钮组件
-class _EditButton extends StatelessWidget {
-  final Post post;
-  final TopicDetailController controller;
-
-  const _EditButton({required this.post, required this.controller});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => controller.editPost(post),
-      child: Row(
-        children: [
-          Icon(CupertinoIcons.pencil,
-              size: 14.w, color: Theme.of(context).hintColor),
-        ],
-      ),
-    );
   }
 }
 

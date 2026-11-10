@@ -7,7 +7,7 @@ part 'chat_response.g.dart';
 class ChatResponse {
   @JsonKey(name: 'public_channels')
   final List<ChatMessage>? publicChannels;
-  
+
   @JsonKey(name: 'direct_message_channels')
   final List<ChatMessage>? directMessageChannels;
 
@@ -16,6 +16,7 @@ class ChatResponse {
     this.directMessageChannels,
   });
 
-  factory ChatResponse.fromJson(Map<String, dynamic> json) => _$ChatResponseFromJson(json);
+  factory ChatResponse.fromJson(Map<String, dynamic> json) =>
+      _$ChatResponseFromJson(json);
   Map<String, dynamic> toJson() => _$ChatResponseToJson(this);
-} 
+}

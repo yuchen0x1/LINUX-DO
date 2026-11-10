@@ -55,7 +55,7 @@ class EditProfileController extends BaseController with ToastMixin {
         .where((badge) => badge.allowTitle == true)
         .toList();
 
-    badges.value.insert(
+    badges.insert(
         0,
         BadgeDetail(
           id: 0,
@@ -244,9 +244,8 @@ class EditProfileController extends BaseController with ToastMixin {
 
       // 更新头像URL为上传后的URL
       avatarUrl.value = response.url;
-      
-      _updateUserAvatar(response.id);
 
+      _updateUserAvatar(response.id);
     } catch (e) {
       l.e('上传头像失败: $e');
       rethrow;
@@ -264,7 +263,6 @@ class EditProfileController extends BaseController with ToastMixin {
 
       // 刷新全局用户信息
       await _globalController.fetchUserInfo();
-      
     } catch (e) {
       l.e('更新用户头衔失败: $e');
       showError('更新头衔失败');

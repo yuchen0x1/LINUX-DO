@@ -82,7 +82,8 @@ class _ColorPickerContent extends StatefulWidget {
   State<_ColorPickerContent> createState() => _ColorPickerContentState();
 }
 
-class _ColorPickerContentState extends State<_ColorPickerContent>  with ToastMixin{
+class _ColorPickerContentState extends State<_ColorPickerContent>
+    with ToastMixin {
   /// 主题色列表
   static final List<MaterialColor> _colors = [
     Colors.red,
@@ -171,7 +172,7 @@ class _ColorPickerContentState extends State<_ColorPickerContent>  with ToastMix
       _currentColor = color;
       _showShades = true;
     });
-     // widget.onColorSelected?.call(color);
+    // widget.onColorSelected?.call(color);
   }
 
   /// 选择色调
@@ -235,23 +236,22 @@ class _ColorPickerContentState extends State<_ColorPickerContent>  with ToastMix
                       ))
                   .toList(),
             ),
-            16.vGap,
-
-            Align(
-              alignment: Alignment.centerRight,
-              child: SizedBox(
-                height: 30,
-                child: DisButton(
-                  text: '恢复默认',
-                  fontSize: 12,
-                  borderRadius: 15,
-                  onPressed: () {
-                   StorageManager.remove(AppConst.identifier.themeColor);
-                   showSuccess('恢复成功,下次启动生效');
-                  },
-                ),
+          16.vGap,
+          Align(
+            alignment: Alignment.centerRight,
+            child: SizedBox(
+              height: 30,
+              child: DisButton(
+                text: '恢复默认',
+                fontSize: 12,
+                borderRadius: 15,
+                onPressed: () {
+                  StorageManager.remove(AppConst.identifier.themeColor);
+                  showSuccess('恢复成功,下次启动生效');
+                },
               ),
             ),
+          ),
         ],
       ),
     );

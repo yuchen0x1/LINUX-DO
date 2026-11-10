@@ -361,8 +361,11 @@ class SecuritySettingsPage extends GetView<SecuritySettingsController> {
                     fontWeight: FontWeight.w600,
                     color: Theme.of(context).textTheme.titleLarge?.color),
               ),
-          
-              controller.isEmailSent.value ? Text(AppConst.settings.sendEmailSuccess,) : const SizedBox.shrink(),
+              controller.isEmailSent.value
+                  ? Text(
+                      AppConst.settings.sendEmailSuccess,
+                    )
+                  : const SizedBox.shrink(),
             ],
           ),
           const Spacer(),

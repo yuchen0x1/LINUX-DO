@@ -13,11 +13,11 @@ class NotificationController extends BaseController with Concatenated {
   final ApiService _apiService = Get.find();
   final notifications = <NotificationItem>[].obs;
   late final RefreshController refreshController;
-  
+
   static const int _pageSize = 60;
   bool _hasMore = true;
   bool _isFirstLoad = true;
-  
+
   @override
   void onInit() {
     super.onInit();
@@ -33,7 +33,7 @@ class NotificationController extends BaseController with Concatenated {
 
   Future<void> _loadNotifications() async {
     if (isUserEmpty()) return;
-   
+
     try {
       isLoading.value = _isFirstLoad;
       final response = await _apiService.getNotifications(
@@ -42,7 +42,7 @@ class NotificationController extends BaseController with Concatenated {
         'all',
       );
       l.i('加载通知数据: ${jsonEncode(response)}');
-      
+
       if (response.notifications.isNotEmpty) {
         notifications.addAll(response.notifications);
         _hasMore = response.notifications.length >= _pageSize;
@@ -102,4 +102,4 @@ class NotificationController extends BaseController with Concatenated {
     if (earlierList.isNotEmpty) result.add(('更早', earlierList));
     return result;
   }
-} 
+}

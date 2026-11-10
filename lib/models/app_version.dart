@@ -26,7 +26,8 @@ class AppVersion {
     this.minRequiredVersion,
   });
 
-  factory AppVersion.fromJson(Map<String, dynamic> json) => _$AppVersionFromJson(json);
-  
+  factory AppVersion.fromJson(Map<String, dynamic> json) =>
+      _$AppVersionFromJson(json);
+
   Map<String, dynamic> toJson() => _$AppVersionToJson(this);
-} 
+}

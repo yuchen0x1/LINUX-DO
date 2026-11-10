@@ -55,8 +55,7 @@ mixin ToastMixin {
     );
   }
 
-
-   // 显示Snackbar
+  // 显示Snackbar
   void showSnackbar({
     required String title,
     required String message,
@@ -79,7 +78,7 @@ mixin ToastMixin {
         iconData = CupertinoIcons.exclamationmark_triangle_fill;
       default:
         backgroundColor = Colors.blue;
-        iconData = CupertinoIcons.captions_bubble_fill;   
+        iconData = CupertinoIcons.captions_bubble_fill;
     }
 
     Get.snackbar(
@@ -92,7 +91,7 @@ mixin ToastMixin {
       margin: EdgeInsets.all(14.w),
       icon: Icon(iconData, color: Colors.white),
       boxShadows: [
-       BoxShadow(
+        BoxShadow(
           color: Colors.black26,
           blurRadius: 4.w,
         ),

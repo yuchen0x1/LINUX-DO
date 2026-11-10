@@ -112,13 +112,15 @@ class UserAction {
     if (avatarTemplate == null || avatarTemplate!.isEmpty) {
       return '';
     }
-    if (avatarTemplate!.startsWith('http://') || avatarTemplate!.startsWith('https://')) {
+    if (avatarTemplate!.startsWith('http://') ||
+        avatarTemplate!.startsWith('https://')) {
       return avatarTemplate!;
     }
     if (actingAvatarTemplate == null || actingAvatarTemplate!.isEmpty) {
       return '';
     }
-    if (actingAvatarTemplate!.startsWith('http://') || actingAvatarTemplate!.startsWith('https://')) {
+    if (actingAvatarTemplate!.startsWith('http://') ||
+        actingAvatarTemplate!.startsWith('https://')) {
       return actingAvatarTemplate!;
     }
     return '${HttpConfig.baseUrl}${actingAvatarTemplate!.replaceAll('{size}', '100')}';
@@ -128,13 +130,15 @@ class UserAction {
     if (avatarTemplate == null || avatarTemplate!.isEmpty) {
       return '';
     }
-    if (avatarTemplate!.startsWith('http://') || avatarTemplate!.startsWith('https://')) {
+    if (avatarTemplate!.startsWith('http://') ||
+        avatarTemplate!.startsWith('https://')) {
       return avatarTemplate!;
     }
     if (actingAvatarTemplate == null || actingAvatarTemplate!.isEmpty) {
       return '';
     }
-    if (actingAvatarTemplate!.startsWith('http://') || actingAvatarTemplate!.startsWith('https://')) {
+    if (actingAvatarTemplate!.startsWith('http://') ||
+        actingAvatarTemplate!.startsWith('https://')) {
       return actingAvatarTemplate!;
     }
     return '${HttpConfig.baseUrl}${actingAvatarTemplate!.replaceAll('{size}', '62')}';
@@ -156,11 +160,12 @@ class UserAction {
     // 移除表情图片标签
     text = text.replaceAll(RegExp(r'<img[^>]+>'), '');
     // 解码 HTML 实体
-    text = text.replaceAll('&quot;', '"')
-              .replaceAll('&amp;', '&')
-              .replaceAll('&lt;', '<')
-              .replaceAll('&gt;', '>')
-              .replaceAll('&nbsp;', ' ');
+    text = text
+        .replaceAll('&quot;', '"')
+        .replaceAll('&amp;', '&')
+        .replaceAll('&lt;', '<')
+        .replaceAll('&gt;', '>')
+        .replaceAll('&nbsp;', ' ');
     // 移除多余空格
     text = text.replaceAll(RegExp(r'\s+'), ' ').trim();
     return text;
@@ -169,4 +174,4 @@ class UserAction {
   factory UserAction.fromJson(Map<String, dynamic> json) =>
       _$UserActionFromJson(json);
   Map<String, dynamic> toJson() => _$UserActionToJson(this);
-} 
+}

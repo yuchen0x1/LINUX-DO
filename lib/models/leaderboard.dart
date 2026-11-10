@@ -98,7 +98,7 @@ class LeaderboardUser {
     required this.totalScore,
     required this.position,
     this.animatedAvatar,
-  }); 
+  });
 
   // 获取格式化后的分数
   String get formattedScore {
@@ -109,19 +109,21 @@ class LeaderboardUser {
   // 获取头像URL
   String get avatarUrl {
     if (animatedAvatar != null && animatedAvatar!.isNotEmpty) {
-      if (animatedAvatar!.startsWith('http://') || animatedAvatar!.startsWith('https://')) {
+      if (animatedAvatar!.startsWith('http://') ||
+          animatedAvatar!.startsWith('https://')) {
         return animatedAvatar!;
       }
       return '${HttpConfig.baseUrl}${animatedAvatar!.replaceAll('{size}', '80')}';
     }
 
-    if (avatarTemplate == null || avatarTemplate!.isEmpty) {
+    if (avatarTemplate.isEmpty) {
       return '';
     }
-    if (avatarTemplate!.startsWith('http://') || avatarTemplate!.startsWith('https://')) {
-      return avatarTemplate!;
+    if (avatarTemplate.startsWith('http://') ||
+        avatarTemplate.startsWith('https://')) {
+      return avatarTemplate;
     }
-    return '${HttpConfig.baseUrl}${avatarTemplate!.replaceAll('{size}', '80')}';
+    return '${HttpConfig.baseUrl}${avatarTemplate.replaceAll('{size}', '80')}';
   }
 
   String get displayName {
@@ -134,4 +136,4 @@ class LeaderboardUser {
   factory LeaderboardUser.fromJson(Map<String, dynamic> json) =>
       _$LeaderboardUserFromJson(json);
   Map<String, dynamic> toJson() => _$LeaderboardUserToJson(this);
-} 
+}

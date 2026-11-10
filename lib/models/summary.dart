@@ -165,52 +165,70 @@ class UserSummary {
   });
 
   factory UserSummary.fromJson(Map<String, dynamic> json) => UserSummary(
-    likesGiven: json['likes_given'] as int?,
-    likesReceived: json['likes_received'] as int?,
-    topicsEntered: json['topics_entered'] as int?,
-    postsReadCount: json['posts_read_count'] as int?,
-    daysVisited: json['days_visited'] as int?,
-    topicCount: json['topic_count'] as int?,
-    postCount: json['post_count'] as int?,
-    timeRead: json['time_read'] as int?,
-    recentTimeRead: json['recent_time_read'] as int?,
-    bookmarkCount: json['bookmark_count'] as int?,
-    canSeeSummaryStats: json['can_see_summary_stats'] as bool?,
-    canSeeUserActions: json['can_see_user_actions'] as bool?,
-    solvedCount: json['solved_count'] as int?,
-    topicIds: (json['topic_ids'] as List<dynamic>?)?.map((e) => e as int).toList(),
-    replies: (json['replies'] as List<dynamic>?)?.map((e) => Reply.fromJson(e as Map<String, dynamic>)).toList(),
-    links: (json['links'] as List<dynamic>?)?.map((e) => Link.fromJson(e as Map<String, dynamic>)).toList(),
-    mostLikedByUsers: (json['most_liked_by_users'] as List<dynamic>?)?.map((e) => User.fromJson(e as Map<String, dynamic>)).toList(),
-    mostLikedUsers: (json['most_liked_users'] as List<dynamic>?)?.map((e) => User.fromJson(e as Map<String, dynamic>)).toList(),
-    mostRepliedToUsers: (json['most_replied_to_users'] as List<dynamic>?)?.map((e) => User.fromJson(e as Map<String, dynamic>)).toList(),
-    badges: (json['badges'] as List<dynamic>?)?.map((e) => UserBadge.fromJson(e as Map<String, dynamic>)).toList(),
-    topCategories: (json['top_categories'] as List<dynamic>?)?.map((e) => Category.fromJson(e as Map<String, dynamic>)).toList(),
-  );
+        likesGiven: json['likes_given'] as int?,
+        likesReceived: json['likes_received'] as int?,
+        topicsEntered: json['topics_entered'] as int?,
+        postsReadCount: json['posts_read_count'] as int?,
+        daysVisited: json['days_visited'] as int?,
+        topicCount: json['topic_count'] as int?,
+        postCount: json['post_count'] as int?,
+        timeRead: json['time_read'] as int?,
+        recentTimeRead: json['recent_time_read'] as int?,
+        bookmarkCount: json['bookmark_count'] as int?,
+        canSeeSummaryStats: json['can_see_summary_stats'] as bool?,
+        canSeeUserActions: json['can_see_user_actions'] as bool?,
+        solvedCount: json['solved_count'] as int?,
+        topicIds: (json['topic_ids'] as List<dynamic>?)
+            ?.map((e) => e as int)
+            .toList(),
+        replies: (json['replies'] as List<dynamic>?)
+            ?.map((e) => Reply.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        links: (json['links'] as List<dynamic>?)
+            ?.map((e) => Link.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        mostLikedByUsers: (json['most_liked_by_users'] as List<dynamic>?)
+            ?.map((e) => User.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        mostLikedUsers: (json['most_liked_users'] as List<dynamic>?)
+            ?.map((e) => User.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        mostRepliedToUsers: (json['most_replied_to_users'] as List<dynamic>?)
+            ?.map((e) => User.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        badges: (json['badges'] as List<dynamic>?)
+            ?.map((e) => UserBadge.fromJson(e as Map<String, dynamic>))
+            .toList(),
+        topCategories: (json['top_categories'] as List<dynamic>?)
+            ?.map((e) => Category.fromJson(e as Map<String, dynamic>))
+            .toList(),
+      );
 
   Map<String, dynamic> toJson() => {
-    'likes_given': likesGiven,
-    'likes_received': likesReceived,
-    'topics_entered': topicsEntered,
-    'posts_read_count': postsReadCount,
-    'days_visited': daysVisited,
-    'topic_count': topicCount,
-    'post_count': postCount,
-    'time_read': timeRead,
-    'recent_time_read': recentTimeRead,
-    'bookmark_count': bookmarkCount,
-    'can_see_summary_stats': canSeeSummaryStats,
-    'can_see_user_actions': canSeeUserActions,
-    'solved_count': solvedCount,
-    'topic_ids': topicIds,
-    'replies': replies?.map((e) => e.toJson()).toList(),
-    'links': links?.map((e) => e.toJson()).toList(),
-    'most_liked_by_users': mostLikedByUsers?.map((e) => e.toJson()).toList(),
-    'most_liked_users': mostLikedUsers?.map((e) => e.toJson()).toList(),
-    'most_replied_to_users': mostRepliedToUsers?.map((e) => e.toJson()).toList(),
-    'badges': badges?.map((e) => e.toJson()).toList(),
-    'top_categories': topCategories?.map((e) => e.toJson()).toList(),
-  };
+        'likes_given': likesGiven,
+        'likes_received': likesReceived,
+        'topics_entered': topicsEntered,
+        'posts_read_count': postsReadCount,
+        'days_visited': daysVisited,
+        'topic_count': topicCount,
+        'post_count': postCount,
+        'time_read': timeRead,
+        'recent_time_read': recentTimeRead,
+        'bookmark_count': bookmarkCount,
+        'can_see_summary_stats': canSeeSummaryStats,
+        'can_see_user_actions': canSeeUserActions,
+        'solved_count': solvedCount,
+        'topic_ids': topicIds,
+        'replies': replies?.map((e) => e.toJson()).toList(),
+        'links': links?.map((e) => e.toJson()).toList(),
+        'most_liked_by_users':
+            mostLikedByUsers?.map((e) => e.toJson()).toList(),
+        'most_liked_users': mostLikedUsers?.map((e) => e.toJson()).toList(),
+        'most_replied_to_users':
+            mostRepliedToUsers?.map((e) => e.toJson()).toList(),
+        'badges': badges?.map((e) => e.toJson()).toList(),
+        'top_categories': topCategories?.map((e) => e.toJson()).toList(),
+      };
 }
 
 @JsonSerializable()
@@ -319,4 +337,4 @@ class UserBadge {
 //   factory TopCategory.fromJson(Map<String, dynamic> json) =>
 //       _$TopCategoryFromJson(json);
 //   Map<String, dynamic> toJson() => _$TopCategoryToJson(this);
-// } 
+// }

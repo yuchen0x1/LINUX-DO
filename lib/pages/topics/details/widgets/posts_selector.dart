@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../const/app_theme.dart';
 import '../topic_detail_controller.dart';
 
-
 /// 楼层选择
 class PostsSelector extends StatefulWidget {
   final int postsCount;
@@ -25,7 +24,8 @@ class PostsSelector extends StatefulWidget {
   State<PostsSelector> createState() => _PostsSelectorState();
 }
 
-class _PostsSelectorState extends State<PostsSelector> with SingleTickerProviderStateMixin {
+class _PostsSelectorState extends State<PostsSelector>
+    with SingleTickerProviderStateMixin {
   late double _dragPosition;
   late int _currentIndex;
   final double _defaultHeight = 120.w;
@@ -36,40 +36,6 @@ class _PostsSelectorState extends State<PostsSelector> with SingleTickerProvider
 
   late AnimationController _expandController;
   late Animation<double> _heightAnimation;
-
-  // 获取当前已加载的帖子范围
-  (int, int) _getLoadedPostsRange() {
-    
-    final posts = widget.controller.topic.value?.postStream?.posts ?? [];
-    if (posts.isEmpty) return (0, 0);
-    
-    return (
-      posts.first.postNumber ?? 1,
-      posts.last.postNumber ?? posts.length
-    );
-  }
-
-  // 检查指定楼层是否已加载
-  bool _isPostLoaded(int postNumber) {
-    final (firstLoaded, lastLoaded) = _getLoadedPostsRange();
-    return postNumber >= firstLoaded && postNumber <= lastLoaded;
-  }
-
-  // 加载指定楼层的数据
-  void _loadPostData(int postNumber) {
-    if (!mounted) return;  // 添加mounted检查
-    
-    // 如果正在加载中，取消之前的timer
-    _loadDataTimer?.cancel();
-    
-    // 设置新的timer
-    _loadDataTimer = Timer(const Duration(milliseconds: 30), () {
-      if (!mounted) return;
-      if (!_isPostLoaded(postNumber)) {
-        widget.controller.fetchTopicDetail(postNumber: postNumber);
-      }
-    });
-  }
 
   @override
   void initState() {
@@ -112,22 +78,24 @@ class _PostsSelectorState extends State<PostsSelector> with SingleTickerProvider
 
   double _calculateInitialPosition() {
     if (widget.postsCount <= 1) return 0;
-    return (_currentIndex / (widget.postsCount - 1)) * (_defaultHeight - _handleHeight);
+    return (_currentIndex / (widget.postsCount - 1)) *
+        (_defaultHeight - _handleHeight);
   }
 
   void _handleDragUpdate(DragUpdateDetails details) {
     if (!mounted) return;
     setState(() {
-      final maxHeight = _isLongPressed ? _heightAnimation.value : _defaultHeight;
+      final maxHeight =
+          _isLongPressed ? _heightAnimation.value : _defaultHeight;
       _dragPosition = (_dragPosition + details.delta.dy)
           .clamp(0, maxHeight - _handleHeight);
-      
+
       // 计算新的索引，但只更新内部状态
       if (widget.postsCount > 1) {
         final progress = _dragPosition / (maxHeight - _handleHeight);
         // 计算新的索引 (0-based)
         final newIndex = (progress * (widget.postsCount - 1)).round();
-        
+
         if (newIndex != _currentIndex) {
           _currentIndex = newIndex;
         }
@@ -155,14 +123,15 @@ class _PostsSelectorState extends State<PostsSelector> with SingleTickerProvider
 
   void _handleLongPressEnd(LongPressEndDetails details) {
     // 计算在默认高度下的相对位置
-    final currentProgress = _dragPosition / (_heightAnimation.value - _handleHeight);
+    final currentProgress =
+        _dragPosition / (_heightAnimation.value - _handleHeight);
     final newPosition = currentProgress * (_defaultHeight - _handleHeight);
-    
+
     setState(() {
       _isLongPressed = false;
       _dragPosition = newPosition.clamp(0.0, _defaultHeight - _handleHeight);
     });
-    
+
     // 长按结束时通知 controller 更新索引
     widget.controller.updatePostSelectorIndex(_currentIndex);
     _expandController.reverse();
@@ -173,13 +142,13 @@ class _PostsSelectorState extends State<PostsSelector> with SingleTickerProvider
     final RenderBox box = context.findRenderObject() as RenderBox;
     final localPosition = box.globalToLocal(details.globalPosition);
     setState(() {
-      _dragPosition = (localPosition.dy - _handleHeight/2)
+      _dragPosition = (localPosition.dy - _handleHeight / 2)
           .clamp(0, _heightAnimation.value - _handleHeight);
-      
+
       // 计算新的索引，但只更新内部状态
       final progress = _dragPosition / (_heightAnimation.value - _handleHeight);
       final newIndex = (progress * (widget.postsCount - 1)).round();
-      
+
       if (newIndex != _currentIndex) {
         _currentIndex = newIndex;
       }
@@ -189,11 +158,13 @@ class _PostsSelectorState extends State<PostsSelector> with SingleTickerProvider
   void _updateExpandedHeight(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final appBarHeight = MediaQuery.of(context).padding.top + kToolbarHeight;
-    final maxExpandedHeight = screenHeight - appBarHeight - MediaQuery.of(context).padding.bottom - 100.w;
-    
-    final newExpandedHeight = widget.postsCount > 200 
-        ? maxExpandedHeight 
-        : screenHeight * 0.5;
+    final maxExpandedHeight = screenHeight -
+        appBarHeight -
+        MediaQuery.of(context).padding.bottom -
+        100.w;
+
+    final newExpandedHeight =
+        widget.postsCount > 200 ? maxExpandedHeight : screenHeight * 0.5;
 
     if (_expandedHeight != newExpandedHeight) {
       _expandedHeight = newExpandedHeight;
@@ -212,7 +183,7 @@ class _PostsSelectorState extends State<PostsSelector> with SingleTickerProvider
     _updateExpandedHeight(context);
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    
+
     return AnimatedBuilder(
       animation: _heightAnimation,
       builder: (context, child) {
@@ -228,7 +199,10 @@ class _PostsSelectorState extends State<PostsSelector> with SingleTickerProvider
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor.withValues(alpha: 0.7),
               borderRadius: const BorderRadius.all(Radius.circular(16)).w,
-              border: Border.all(color: isDark ? Colors.white.withValues(alpha: 0.15) : Colors.black.withValues(alpha: 0.15)),
+              border: Border.all(
+                  color: isDark
+                      ? Colors.white.withValues(alpha: 0.15)
+                      : Colors.black.withValues(alpha: 0.15)),
             ),
             child: Stack(
               children: [
@@ -241,7 +215,8 @@ class _PostsSelectorState extends State<PostsSelector> with SingleTickerProvider
                     height: _handleHeight,
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
-                      borderRadius: const BorderRadius.all(Radius.circular(16)).w,
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(16)).w,
                     ),
                     child: Center(
                       child: Text(
@@ -263,4 +238,4 @@ class _PostsSelectorState extends State<PostsSelector> with SingleTickerProvider
       },
     );
   }
-} 
+}

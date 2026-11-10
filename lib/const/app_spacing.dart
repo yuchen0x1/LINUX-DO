@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 extension SpacingX on num {
   Widget get hGap => SizedBox(width: w.toDouble());
   Widget get vGap => SizedBox(height: h.toDouble());
-  
+
   EdgeInsets get all => EdgeInsets.all(w.toDouble());
   EdgeInsets get horizontal => EdgeInsets.symmetric(horizontal: w.toDouble());
   EdgeInsets get vertical => EdgeInsets.symmetric(vertical: h.toDouble());
@@ -18,7 +18,7 @@ extension SpacingX on num {
 /// 统一间距管理
 class Spacing {
   const Spacing._();
-  
+
   // 基础间距
   static double get sc1 => 1.w;
   static double get sc2 => 2.w;
@@ -54,10 +54,10 @@ class Spacing {
   static double get sc32 => 32.w;
   static double get sc40 => 48.w;
   // 常用别名
-  static double get xs => sc4;    // 超小间距
-  static double get sm => sc8;    // 小间距
-  static double get md => sc16;   // 中间距
-  static double get lg => sc24;   // 大间距
-  static double get xl => sc32;   // 超大间距
-  static double get xxl => sc40;   // 超大间距
+  static double get xs => sc4; // 超小间距
+  static double get sm => sc8; // 小间距
+  static double get md => sc16; // 中间距
+  static double get lg => sc24; // 大间距
+  static double get xl => sc32; // 超大间距
+  static double get xxl => sc40; // 超大间距
 }

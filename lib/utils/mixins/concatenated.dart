@@ -9,10 +9,9 @@ mixin Concatenated {
     return userName.isEmpty;
   }
 
-  String get name =>
-      StorageManager.getString(AppConst.identifier.name) ?? '';
+  String get name => StorageManager.getString(AppConst.identifier.name) ?? '';
 
   bool isNameEmpty() {
     return name.isEmpty;
-  } 
+  }
 }

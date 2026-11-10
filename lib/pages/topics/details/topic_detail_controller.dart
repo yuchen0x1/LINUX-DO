@@ -15,7 +15,6 @@ import 'package:linux_do/controller/base_controller.dart';
 import 'package:linux_do/controller/share_controller.dart';
 import 'package:linux_do/net/http_config.dart';
 import 'package:linux_do/utils/browser_util.dart';
-import 'package:linux_do/widgets/cloudflare_timings_service.dart';
 import 'package:linux_do/utils/mixins/concatenated.dart';
 import 'package:linux_do/widgets/browser_tips_sheet.dart';
 import 'package:linux_do/widgets/html/html_widget.dart';
@@ -72,7 +71,6 @@ class TopicDetailController extends BaseController
   final _visiblePostNumbers = <int>{}.obs;
   final timings = <String, dynamic>{}.obs;
   Timer? _debounceTimer;
-  static const _debounceDelay = Duration(milliseconds: 2000);
 
   // 存储帖子树结构
   final replyTree = <PostNode>[].obs;
@@ -140,7 +138,6 @@ class TopicDetailController extends BaseController
 
   final Map<int, DateTime> _postVisibleStartTimes = {};
   final Map<int, int> _readPosts = {};
-
 
   // 添加状态变量
   final updateSuccess = false.obs;
@@ -297,10 +294,12 @@ class TopicDetailController extends BaseController
     }
 
     // 更新可见帖子列表
-    _visiblePostNumbers.value = visiblePosts;
+    _visiblePostNumbers
+      ..clear()
+      ..addAll(visiblePosts);
 
     // 处理帖子可见时间
-   // _updatePostVisibility(visiblePosts, now);
+    // _updatePostVisibility(visiblePosts, now);
 
     // 检查是否需要加载更多
     if (positions.isNotEmpty) {
@@ -327,32 +326,32 @@ class TopicDetailController extends BaseController
     }
 
     // 如果有已读帖子，触发更新
-  //   if (_readPosts.isNotEmpty) {
-  //     _debouncedUpdateTiming();
-  //   }
-  // }
+    //   if (_readPosts.isNotEmpty) {
+    //     _debouncedUpdateTiming();
+    //   }
+    // }
 
-  // // 更新帖子可见时间
-  // void _updatePostVisibility(Set<int> visiblePosts, DateTime now) {
-  //   if (!cloudflareController.isLoggedIn.value)  return;
-  //   for (var postNumber in visiblePosts) {
-  //     if (!_postVisibleStartTimes.containsKey(postNumber)) {
-  //       // 帖子首次可见，记录开始时间
-  //       _postVisibleStartTimes[postNumber] = now;
-  //       l.d('帖子 $postNumber 开始可见');
-  //     } else {
-  //       // 帖子已可见，检查是否超过 2 秒
-  //       final startTime = _postVisibleStartTimes[postNumber]!;
-  //       final duration = now.difference(startTime).inMilliseconds;
-  //       if (duration >= 2000 && !_readPosts.containsKey(postNumber)) {
-  //         // 可见超过 2 秒，标记为已读
-  //         _readPosts[postNumber] = duration;
-  //         l.d('帖子 $postNumber 已读，阅读时间: $duration ms');
-  //         // 从可见时间记录中移除，防止重复标记
-  //         _postVisibleStartTimes.remove(postNumber);
-  //       }
-  //     }
-  //   }
+    // // 更新帖子可见时间
+    // void _updatePostVisibility(Set<int> visiblePosts, DateTime now) {
+    //   if (!cloudflareController.isLoggedIn.value)  return;
+    //   for (var postNumber in visiblePosts) {
+    //     if (!_postVisibleStartTimes.containsKey(postNumber)) {
+    //       // 帖子首次可见，记录开始时间
+    //       _postVisibleStartTimes[postNumber] = now;
+    //       l.d('帖子 $postNumber 开始可见');
+    //     } else {
+    //       // 帖子已可见，检查是否超过 2 秒
+    //       final startTime = _postVisibleStartTimes[postNumber]!;
+    //       final duration = now.difference(startTime).inMilliseconds;
+    //       if (duration >= 2000 && !_readPosts.containsKey(postNumber)) {
+    //         // 可见超过 2 秒，标记为已读
+    //         _readPosts[postNumber] = duration;
+    //         l.d('帖子 $postNumber 已读，阅读时间: $duration ms');
+    //         // 从可见时间记录中移除，防止重复标记
+    //         _postVisibleStartTimes.remove(postNumber);
+    //       }
+    //     }
+    //   }
 
     // 处理不再可见的帖子
     _postVisibleStartTimes.keys.toList().forEach((postNumber) {
@@ -368,7 +367,6 @@ class TopicDetailController extends BaseController
       }
     });
   }
-  
 
   // 更新阅读时间
   // 暂时不更新阅读时间
@@ -761,12 +759,6 @@ class TopicDetailController extends BaseController
       // 根据API响应更新最终状态
       final actionsSummary = response.actionsSummary;
       if (actionsSummary != null && actionsSummary.isNotEmpty) {
-        // 在 actionsSummary 中找到 id=2 的点赞动作
-        final likeAction = actionsSummary.firstWhere(
-          (action) => action['id'] == 2,
-          orElse: () => {'can_act': true, 'count': 0},
-        );
-
         // 这里非常奇怪 服务器的数据好像没更新~
         // final canAct = likeAction['can_act'] ?? true;
         // likedPosts[postNumber] = !canAct; // 如果 can_act 为 false，说明已经点赞
@@ -803,7 +795,7 @@ class TopicDetailController extends BaseController
     if (topic.value?.postStream?.posts != null) {
       for (var post in topic.value!.postStream!.posts!) {
         if (post.postNumber != null) {
-          postScores[post.postNumber!] = post.reactionUsersCount ?? 0;
+          postScores[post.postNumber!] = post.reactionUsersCount;
           // 使用 currentUserReaction 判断是否已点赞
           likedPosts[post.postNumber!] = post.currentUserReaction != null;
           // 初始化书签状态
@@ -859,9 +851,6 @@ class TopicDetailController extends BaseController
       isSending.value = true;
 
       // 先不计算打字时间了
-      final now = DateTime.now().millisecondsSinceEpoch;
-      final typingDuration = now - _lastTypingTime.value;
-      final composerDuration = now - _replyStartTime.value;
 
       // 发送回复
       final response = await apiService.replyPost(
@@ -905,19 +894,6 @@ class TopicDetailController extends BaseController
     } finally {
       isSending.value = false;
     }
-  }
-
-  // 启动在线状态更新定时器
-  void _startPresenceTimer() {
-    _presenceTimer?.cancel();
-    _presenceTimer = Timer.periodic(const Duration(seconds: 30), (_) {
-      if (isReplying.value) {
-        apiService.updateChannelPresence(
-          clientId,
-          '/discourse-presence/reply/${topicId.value}',
-        );
-      }
-    });
   }
 
   // 启动草稿保存定时器
@@ -996,22 +972,6 @@ class TopicDetailController extends BaseController
     } catch (e, s) {
       l.e('举报失败: $e -  \n$s');
       showError(AppConst.posts.reportFailed);
-    }
-  }
-
-  // 获取举报类型ID
-  int _getFlagTypeId(String flagType) {
-    switch (flagType) {
-      case 'off_topic':
-        return 3;
-      case 'inappropriate':
-        return 4;
-      case 'spam':
-        return 8;
-      case 'notify_moderators':
-        return 7;
-      default:
-        return 7; // 默认为通知版主
     }
   }
 
@@ -1186,7 +1146,7 @@ class TopicDetailController extends BaseController
         topicId: topic.value?.id.toString() ?? '',
         originalText: text,
       );
-      final response = await apiService.updateTopic(
+      await apiService.updateTopic(
         post.id.toString(),
         request,
       );
@@ -1327,11 +1287,7 @@ class TopicDetailController extends BaseController
 
       final response = await apiService.getPostReplies(postId.toString());
 
-      if (response.replies != null) {
-        postReplies[postId] = response.replies ?? [];
-      } else {
-        postReplies[postId] = [];
-      }
+      postReplies[postId] = response.replies;
 
       postReplies.refresh();
     } catch (e, s) {
@@ -1391,11 +1347,11 @@ class TopicDetailController extends BaseController
     updateSuccess.value = success;
     isBlinking.value = true;
     _blinkTimer?.cancel();
-    
+
     // 开始闪烁动画
     _blinkTimer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
       isBlinking.toggle();
-      
+
       if (timer.tick >= 6) {
         timer.cancel();
         isBlinking.value = false;

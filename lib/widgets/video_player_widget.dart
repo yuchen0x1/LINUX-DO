@@ -52,7 +52,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.w),
@@ -68,7 +68,8 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
               topRight: Radius.circular(8.w),
             ),
             child: AspectRatio(
-              aspectRatio: _isInitialized ? _controller.value.aspectRatio : 16 / 9,
+              aspectRatio:
+                  _isInitialized ? _controller.value.aspectRatio : 16 / 9,
               child: Stack(
                 alignment: Alignment.center,
                 children: [
@@ -143,18 +144,23 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                 Expanded(
                   child: _isInitialized
                       ? ClipRRect(
-                        borderRadius: BorderRadius.circular(8.w),
-                        child: VideoProgressIndicator(
+                          borderRadius: BorderRadius.circular(8.w),
+                          child: VideoProgressIndicator(
                             _controller,
                             allowScrubbing: true,
                             colors: VideoProgressColors(
                               playedColor: Theme.of(context).primaryColor,
-                              bufferedColor: Theme.of(context).primaryColor.withValues(alpha: 0.3),
-                              backgroundColor: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                              bufferedColor: Theme.of(context)
+                                  .primaryColor
+                                  .withValues(alpha: 0.3),
+                              backgroundColor: Theme.of(context)
+                                  .primaryColor
+                                  .withValues(alpha: 0.1),
                             ),
-                            padding: EdgeInsets.symmetric(vertical: 8.w, horizontal: 4.w),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 8.w, horizontal: 4.w),
                           ),
-                      )
+                        )
                       : SizedBox(height: 32.w),
                 ),
                 // 全屏逻辑后续添加

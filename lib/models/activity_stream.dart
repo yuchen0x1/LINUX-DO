@@ -74,4 +74,4 @@ class ActivityTopic {
   factory ActivityTopic.fromJson(Map<String, dynamic> json) =>
       _$ActivityTopicFromJson(json);
   Map<String, dynamic> toJson() => _$ActivityTopicToJson(this);
-} 
+}

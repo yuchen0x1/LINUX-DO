@@ -54,7 +54,8 @@ class ChatDetailMessage {
     this.uploads,
   });
 
-  factory ChatDetailMessage.fromJson(Map<String, dynamic> json) => _$ChatDetailMessageFromJson(json);
+  factory ChatDetailMessage.fromJson(Map<String, dynamic> json) =>
+      _$ChatDetailMessageFromJson(json);
   Map<String, dynamic> toJson() => _$ChatDetailMessageToJson(this);
 }
 
@@ -94,6 +95,7 @@ class ChatMessageUser {
     this.animatedAvatar,
   });
 
-  factory ChatMessageUser.fromJson(Map<String, dynamic> json) => _$ChatMessageUserFromJson(json);
+  factory ChatMessageUser.fromJson(Map<String, dynamic> json) =>
+      _$ChatMessageUserFromJson(json);
   Map<String, dynamic> toJson() => _$ChatMessageUserToJson(this);
-} 
+}

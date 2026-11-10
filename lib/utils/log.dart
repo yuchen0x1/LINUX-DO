@@ -44,4 +44,4 @@ class L {
 }
 
 /// 全局日志对象
-final l = L(); 
+final l = L();

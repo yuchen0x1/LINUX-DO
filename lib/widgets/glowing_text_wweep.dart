@@ -6,7 +6,8 @@ class GlowingTextSweep extends StatefulWidget {
   final Color glowColor;
   final Duration sweepDuration;
 
-  const GlowingTextSweep({super.key, 
+  const GlowingTextSweep({
+    super.key,
     required this.text,
     this.style = const TextStyle(),
     this.glowColor = Colors.white,

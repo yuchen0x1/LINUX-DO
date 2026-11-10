@@ -10,7 +10,8 @@ import 'package:video_player/video_player.dart';
 class FullScreenVideoPlayer extends StatefulWidget {
   final String videoUrl;
 
-  const FullScreenVideoPlayer({Key? key, required this.videoUrl}) : super(key: key);
+  const FullScreenVideoPlayer({Key? key, required this.videoUrl})
+      : super(key: key);
 
   @override
   State<FullScreenVideoPlayer> createState() => _FullScreenVideoPlayerState();
@@ -30,7 +31,7 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
-    
+
     _initializeVideoPlayer();
     _startHideControlsTimer();
   }
@@ -94,8 +95,8 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
                       child: VideoPlayer(_controller),
                     )
                   : const Center(
-                        child: DisSquareLoading(),
-                      ),
+                      child: DisSquareLoading(),
+                    ),
             ),
             if (_showControls)
               Container(
@@ -124,7 +125,9 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
                         children: [
                           IconButton(
                             icon: Icon(
-                              _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                              _controller.value.isPlaying
+                                  ? Icons.pause
+                                  : Icons.play_arrow,
                               color: Colors.white,
                               size: 32.w,
                             ),
@@ -142,25 +145,36 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
                           SizedBox(width: 8.w),
                           Text(
                             _formatDuration(_controller.value.position),
-                            style: TextStyle(color: Colors.white, fontSize: 14.sp,fontFamily: AppFontFamily.dinPro),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14.sp,
+                                fontFamily: AppFontFamily.dinPro),
                           ),
                           Expanded(
                             child: Slider(
-                              value: _controller.value.position.inMilliseconds.toDouble(),
+                              value: _controller.value.position.inMilliseconds
+                                  .toDouble(),
                               min: 0.0,
-                              max: _controller.value.duration.inMilliseconds.toDouble(),
+                              max: _controller.value.duration.inMilliseconds
+                                  .toDouble(),
                               onChanged: (value) {
                                 setState(() {
-                                  _controller.seekTo(Duration(milliseconds: value.toInt()));
+                                  _controller.seekTo(
+                                      Duration(milliseconds: value.toInt()));
                                 });
                               },
                               activeColor: Theme.of(context).primaryColor,
-                              inactiveColor: Theme.of(context).primaryColor.withValues(alpha: 0.3),
+                              inactiveColor: Theme.of(context)
+                                  .primaryColor
+                                  .withValues(alpha: 0.3),
                             ),
                           ),
                           Text(
                             _formatDuration(_controller.value.duration),
-                            style: TextStyle(color: Colors.white, fontSize: 14.sp,fontFamily: AppFontFamily.dinPro),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14.sp,
+                                fontFamily: AppFontFamily.dinPro),
                           ),
                         ],
                       ),

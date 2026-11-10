@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -100,16 +99,16 @@ class DisAppUpdate {
                     right: -36,
                     top: 40,
                     child: Transform.rotate(
-                      angle: pi / 4,
-                      child: GlowingTextSweep(
-                        text: 'LINUX.DO',
-                        style: TextStyle(
-                            fontSize: 52.w,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: AppFontFamily.dinPro,
-                            color: Colors.white.withValues(alpha: 0.2)),
-                        glowColor: Colors.white,
-                        sweepDuration: const Duration(seconds: 2))),
+                        angle: pi / 4,
+                        child: GlowingTextSweep(
+                            text: 'LINUX.DO',
+                            style: TextStyle(
+                                fontSize: 52.w,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: AppFontFamily.dinPro,
+                                color: Colors.white.withValues(alpha: 0.2)),
+                            glowColor: Colors.white,
+                            sweepDuration: const Duration(seconds: 2))),
                   ),
                 ],
               ),
@@ -122,7 +121,8 @@ class DisAppUpdate {
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 20).w,
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 20)
+                          .w,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: updateItems.asMap().entries.map((entry) {
@@ -130,7 +130,9 @@ class DisAppUpdate {
                       final item = entry.value;
                       return Padding(
                         padding: EdgeInsets.only(
-                            bottom: index == updateItems.length - 1 ? 0 : 12).w,
+                                bottom:
+                                    index == updateItems.length - 1 ? 0 : 12)
+                            .w,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -140,9 +142,9 @@ class DisAppUpdate {
                               height: 6.w,
                               decoration: BoxDecoration(
                                 color: Theme.of(Get.context!)
-                                      .textTheme
-                                      .titleSmall
-                                      ?.color,
+                                    .textTheme
+                                    .titleSmall
+                                    ?.color,
                                 shape: BoxShape.circle,
                               ),
                             ),
@@ -194,12 +196,12 @@ class DisAppUpdate {
                       onPressed: () {
                         Get.back();
                         if (appVersion.downloadUrl != null) {
-                            final url =
-                                '${HttpConfig.otherUrl}${appVersion.downloadUrl}';
-                            l.d('下载地址: $url');
-                            launchUrl(Uri.parse(url),
-                                mode: LaunchMode.externalApplication);
-                          }
+                          final url =
+                              '${HttpConfig.otherUrl}${appVersion.downloadUrl}';
+                          l.d('下载地址: $url');
+                          launchUrl(Uri.parse(url),
+                              mode: LaunchMode.externalApplication);
+                        }
                       },
                     )),
                   ],

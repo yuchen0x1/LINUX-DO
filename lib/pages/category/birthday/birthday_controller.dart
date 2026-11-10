@@ -19,24 +19,25 @@ enum Filter {
   }
 }
 
-class BirthdayController extends BaseController with GetTickerProviderStateMixin {
+class BirthdayController extends BaseController
+    with GetTickerProviderStateMixin {
   late TabController tabController;
   final currentIndex = 0.obs;
-  
+
   @override
   void onInit() {
     super.onInit();
-    
+
     // 初始化所有的 TabController
     for (var filter in Filter.values) {
       Get.put(BrithdayTabController(filter), tag: filter.value);
     }
-    
+
     tabController = TabController(
       length: Filter.values.length,
       vsync: this,
     );
-    
+
     // 监听tab切换
     tabController.addListener(() {
       if (!tabController.indexIsChanging) {
@@ -51,4 +52,3 @@ class BirthdayController extends BaseController with GetTickerProviderStateMixin
     super.onClose();
   }
 }
-

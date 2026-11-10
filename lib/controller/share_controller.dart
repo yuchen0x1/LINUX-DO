@@ -9,7 +9,8 @@ class ShareController extends BaseController {
     showSuccess('链接已复制到剪贴板');
   }
 
-  Future<void> share(String title, String description, String url, RenderBox? box) async {
-     await Share.share(url, subject: title);
+  Future<void> share(
+      String title, String description, String url, RenderBox? box) async {
+    await Share.share(url, subject: title);
   }
 }

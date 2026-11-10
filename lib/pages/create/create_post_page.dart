@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:linux_do/const/app_spacing.dart';
 import 'package:linux_do/controller/global_controller.dart';
 import 'package:linux_do/widgets/avatar_widget.dart';
@@ -12,10 +11,8 @@ import 'package:linux_do/widgets/dis_text_field.dart';
 import '../../const/app_const.dart';
 import '../../const/app_colors.dart';
 import '../../const/app_theme.dart';
-import '../../models/tag_data.dart';
 import '../../utils/tag.dart';
 import '../../widgets/category_item.dart';
-import '../../widgets/dis_loading.dart';
 import 'create_post_controller.dart';
 
 class CreatePostPage extends GetView<CreatePostController> {
@@ -345,7 +342,7 @@ class CreatePostPage extends GetView<CreatePostController> {
                       constraints:
                           BoxConstraints(minWidth: 40.w, minHeight: 40.w),
                     ),
-                     // 预览
+              // 预览
               IconButton(
                 onPressed: () {
                   controller.togglePreview();

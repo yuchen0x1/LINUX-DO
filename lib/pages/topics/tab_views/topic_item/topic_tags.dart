@@ -25,13 +25,13 @@ class TopicTags extends StatelessWidget {
         : density == ListDensity.normal
             ? 9.0
             : 10.0;
-            
+
     final margin = density == ListDensity.compact
         ? 4.0
         : density == ListDensity.normal
             ? 6.0
             : 8.0;
-    
+
     final padding = density == ListDensity.compact
         ? const EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0)
         : density == ListDensity.normal
@@ -42,7 +42,7 @@ class TopicTags extends StatelessWidget {
       padding: const EdgeInsets.only(top: 4).w,
       child: Wrap(
         spacing: margin.w,
-        runSpacing: (margin/2).w,
+        runSpacing: (margin / 2).w,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           // 分类徽章（对齐网页：分类色块 + 分类名）
@@ -51,23 +51,23 @@ class TopicTags extends StatelessWidget {
             fontSize: fontSize,
           ),
           ...tags.map((tag) {
-          final color = Tag.getTagColors(tag);
-          return Container(
-            padding: padding.w,
-            decoration: BoxDecoration(
-              color: color.backgroundColor,
-              borderRadius: BorderRadius.circular(4).w,
-            ),
-            child: Text(
-              tag,
-              style: TextStyle(
-                fontSize: fontSize.w,
-                color: color.textColor,
+            final color = Tag.getTagColors(tag);
+            return Container(
+              padding: padding.w,
+              decoration: BoxDecoration(
+                color: color.backgroundColor,
+                borderRadius: BorderRadius.circular(4).w,
               ),
-            ),
-          );
-        }).toList(),
-      ],
+              child: Text(
+                tag,
+                style: TextStyle(
+                  fontSize: fontSize.w,
+                  color: color.textColor,
+                ),
+              ),
+            );
+          }).toList(),
+        ],
       ),
     );
   }
@@ -110,4 +110,4 @@ class _CategoryBadge extends StatelessWidget {
       ],
     );
   }
-} 
+}

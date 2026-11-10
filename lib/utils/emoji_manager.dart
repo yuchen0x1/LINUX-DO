@@ -46,7 +46,8 @@ class EmojiManager {
       }).toList();
 
       _isInitialized = true;
-      debugPrint('EmojiManager 初始化完成，${_categoryEmojis.length} 个分组，${_emojiMap.length} 个表情');
+      debugPrint(
+          'EmojiManager 初始化完成，${_categoryEmojis.length} 个分组，${_emojiMap.length} 个表情');
     } catch (e, stackTrace) {
       debugPrint('EmojiManager 初始化失败: $e --- $stackTrace');
     }
@@ -152,8 +153,10 @@ class CustomEmojiGroup {
   }
 }
 
-List<InlineSpan> parseTextWithEmojis(String text, double? fontSize, BuildContext context) {
-  final bool isAnimated = StorageManager.getBool('animated_emoji_enabled') ?? true;
+List<InlineSpan> parseTextWithEmojis(
+    String text, double? fontSize, BuildContext context) {
+  final bool isAnimated =
+      StorageManager.getBool('animated_emoji_enabled') ?? true;
   final RegExp emojiRegex = RegExp(r':([a-zA-Z0-9_]+):');
   final List<InlineSpan> spans = [];
   int lastIndex = 0;
@@ -178,7 +181,8 @@ List<InlineSpan> parseTextWithEmojis(String text, double? fontSize, BuildContext
                 emoji.url,
                 width: fontSize,
                 height: fontSize,
-                errorBuilder: (context, error, stackTrace) => Text(':$shortcode:'),
+                errorBuilder: (context, error, stackTrace) =>
+                    Text(':$shortcode:'),
               ),
             ),
           ),

@@ -97,15 +97,15 @@ class _DisSwitchState extends State<DisSwitch>
     return GestureDetector(
       onDoubleTap: () {
         _action();
-        widget.onDoubleTap??();
+        widget.onDoubleTap ?? ();
       },
       onTap: () {
         _action();
-        widget.onTap??();
+        widget.onTap ?? ();
       },
       onPanEnd: (details) {
         _action();
-        widget.onSwipe??();
+        widget.onSwipe ?? ();
       },
       child: Container(
         padding: EdgeInsets.all(5.w),

@@ -1,4 +1,3 @@
-
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:linux_do/utils/log.dart';
@@ -42,10 +41,10 @@ class ConnectController extends BaseController {
   void toggleEmailVisibility() {
     isEmailVisible.value = !isEmailVisible.value;
   }
-  
+
   String getDisplayEmail(String? email) {
     if (email == null || email.isEmpty) return '';
-    
+
     if (isEmailVisible.value) {
       return email;
     } else {
@@ -66,13 +65,15 @@ class ConnectController extends BaseController {
     try {
       await CookieManager.instance().deleteAllCookies();
 
-      final mainCookies = await NetClient.getInstance().cookieJar
+      final mainCookies = await NetClient.getInstance()
+          .cookieJar
           .loadForRequest(Uri.parse('https://linux.do/'));
-      final connectCookies = await NetClient.getInstance().cookieJar
+      final connectCookies = await NetClient.getInstance()
+          .cookieJar
           .loadForRequest(Uri.parse('https://connect.linux.do/'));
-      
+
       final allCookies = [...mainCookies, ...connectCookies];
-      
+
       for (final cookie in allCookies) {
         await CookieManager.instance().setCookie(
           url: WebUri('https://connect.linux.do/'),
@@ -84,7 +85,6 @@ class ConnectController extends BaseController {
           isSecure: cookie.secure,
         );
       }
-      
     } catch (e, s) {
       l.e('设置WebView Cookie失败: $e\n$s');
     }
@@ -98,12 +98,12 @@ class ConnectController extends BaseController {
 
     try {
       final document = html_parser.parse(html);
-      
+
       // 解析用户名和级别
       final titleText = document.querySelector('h1')?.text ?? '';
-      final userMatch = RegExp(r'你好，(.*?) \((.*?)\) (\d+)级用户').firstMatch(titleText);
+      final userMatch =
+          RegExp(r'你好，(.*?) \((.*?)\) (\d+)级用户').firstMatch(titleText);
       final username = userMatch?.group(1) ?? '';
-      final userRole = userMatch?.group(2) ?? '';
       final userLevel = userMatch?.group(3) ?? '';
 
       final apiKey = document.querySelector('strong')?.text ?? '';
@@ -128,7 +128,9 @@ class ConnectController extends BaseController {
         }
       }
 
-      final meetsTrustRequirements = document.querySelector('p.text-green-500')?.text.contains('符合信任级别') ?? false;
+      final meetsTrustRequirements =
+          document.querySelector('p.text-green-500')?.text.contains('符合信任级别') ??
+              false;
 
       // 更新数据
       connectData.value = ConnectData(
@@ -138,7 +140,6 @@ class ConnectController extends BaseController {
         trustLevelStats: trustStats,
         meetsTrustRequirements: meetsTrustRequirements,
       );
-
     } catch (e, s) {
       l.e('解析连接页面内容失败: $e\n$s');
     } finally {

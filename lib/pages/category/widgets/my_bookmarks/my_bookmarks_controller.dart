@@ -22,7 +22,6 @@ class MyBookmarksController extends BaseController
   final isRefreshing = false.obs;
   final isLoadingMore = false.obs;
 
-
   @override
   void onInit() {
     super.onInit();
@@ -132,7 +131,7 @@ class MyBookmarksController extends BaseController
     return _userCache.getNickName(latestPosterId);
   }
 
-    // 获取用户名
+  // 获取用户名
   String? getUserName(Topic topic) {
     final id = topic.getOriginalPosterId();
     if (id == null) return null;
@@ -171,9 +170,12 @@ class MyBookmarksController extends BaseController
     }
   }
 
-      List<String> getAvatarUrls(Topic topic) {
-     // 通过_userCache获取头像
+  List<String> getAvatarUrls(Topic topic) {
+    // 通过_userCache获取头像
     final avatarUrls = topic.getAvatarUrls();
-    return avatarUrls.map((id) => _userCache.getAvatarUrl(id)).whereType<String>().toList();
+    return avatarUrls
+        .map((id) => _userCache.getAvatarUrl(id))
+        .whereType<String>()
+        .toList();
   }
 }

@@ -176,20 +176,26 @@ class PersonalPage extends GetView<PersonalController> {
                     opacity: showAvatar ? 1.0 : 0.0,
                     child: showAvatar
                         ? Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 1).w,
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 1).w,
                             child: Row(
                               children: [
                                 IconButton(
                                   onPressed: () {
                                     Get.back();
                                   },
-                                  icon: Icon(CupertinoIcons.chevron_left,size: 20,color: Theme.of(context).cardColor,),
+                                  icon: Icon(
+                                    CupertinoIcons.chevron_left,
+                                    size: 20,
+                                    color: Theme.of(context).cardColor,
+                                  ),
                                 ),
                                 Container(
                                   decoration: BoxDecoration(
                                       border: Border.all(
                                           color: AppColors.white, width: 1.w),
-                                      borderRadius: BorderRadius.circular(80.w)),
+                                      borderRadius:
+                                          BorderRadius.circular(80.w)),
                                   child: CachedImage(
                                     imageUrl: user.avatarUrl,
                                     circle: !user.isWebMaster(),
@@ -229,6 +235,7 @@ class PersonalPage extends GetView<PersonalController> {
             SliverPersistentHeader(
               pinned: true,
               delegate: _StickyTabBarDelegate(
+                height: 40.0.w,
                 child: Container(
                   decoration: BoxDecoration(
                     color: AppColors.transparent,
@@ -270,29 +277,6 @@ class PersonalPage extends GetView<PersonalController> {
           body: _buildTabContent(context, controller.selectedTabIndex.value),
         );
       }),
-    );
-  }
-
-  Widget _buildStatItem(BuildContext context, String label, String value) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).primaryColor,
-          ),
-        ),
-        SizedBox(height: 4.w),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12.sp,
-            color: Theme.of(context).textTheme.bodySmall?.color,
-          ),
-        ),
-      ],
     );
   }
 
@@ -423,16 +407,6 @@ class PersonalPage extends GetView<PersonalController> {
         ),
       ],
     );
-  }
-
-  String _formatDate(String? dateString) {
-    if (dateString == null) return '未知';
-    try {
-      final date = DateTime.parse(dateString);
-      return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
-    } catch (e) {
-      return '未知';
-    }
   }
 }
 

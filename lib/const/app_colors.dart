@@ -126,12 +126,11 @@ class AppColors {
     inputFillColor: textHint,
   );
 
-
   static Color? getStoredColor() {
     try {
       final colorValue = StorageManager.getInt(AppConst.identifier.themeColor);
       if (colorValue == null) return null;
-      
+
       return Color(colorValue | 0xFF000000);
     } catch (e, s) {
       l.e('解析存储颜色失败: $e, $s');
@@ -166,5 +165,4 @@ class _Colors {
     required this.shadow,
     required this.inputFillColor,
   });
-
 }

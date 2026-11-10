@@ -160,7 +160,7 @@ class CategoryItem extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     fontFamily: AppFontFamily.dinPro,
                   ),
-                     maxLines: 1,
+                  maxLines: 1,
                 ),
               ),
           ],

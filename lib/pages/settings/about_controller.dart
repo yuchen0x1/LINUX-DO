@@ -6,7 +6,7 @@ import 'package:linux_do/net/api_service.dart';
 class AboutController extends BaseController {
   final ApiService _apiService = Get.find();
   final aboutData = Rxn<AboutResponse>();
-  
+
   @override
   void onInit() {
     super.onInit();
@@ -35,4 +35,4 @@ class AboutController extends BaseController {
     return n.replaceAllMapped(
         RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
   }
-} 
+}

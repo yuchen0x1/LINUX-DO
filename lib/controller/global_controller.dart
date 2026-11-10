@@ -36,19 +36,16 @@ class GlobalController extends BaseController with Concatenated {
     _isLogin.value = value;
   }
 
-  set userInfo(UserResponse? value) {  
+  set userInfo(UserResponse? value) {
     _userInfo.value = value;
   }
 
   UserResponse? get userInfo => _userInfo.value;
 
-
   final topics = <Topic>[].obs;
-
 
   // 游客模式
   bool get isAnonymousMode => _isAnonymousMode.value;
-
 
   // 展示隐藏内容
   final _showHiddenContent = false.obs;
@@ -65,14 +62,14 @@ class GlobalController extends BaseController with Concatenated {
 
   @override
   void onInit() {
-    
     super.onInit();
 
     _checkClientId();
   }
 
   void _checkClientId() {
-    String? clientSaveId = StorageManager.getString(AppConst.identifier.clientId);
+    String? clientSaveId =
+        StorageManager.getString(AppConst.identifier.clientId);
     if (clientSaveId != null && clientSaveId.isNotEmpty) {
       clientId = clientSaveId;
     } else {
@@ -82,10 +79,10 @@ class GlobalController extends BaseController with Concatenated {
   }
 
   String generateRandomMD5LikeString() {
-  final random = Random.secure();
-  final bytes = List<int>.generate(16, (_) => random.nextInt(256));
-  return md5.convert(bytes).toString();
-}
+    final random = Random.secure();
+    final bytes = List<int>.generate(16, (_) => random.nextInt(256));
+    return md5.convert(bytes).toString();
+  }
 
   Future<bool> checkLoginStatus() async {
     try {
@@ -115,8 +112,7 @@ class GlobalController extends BaseController with Concatenated {
     }
   }
 
-
-    // 获取用户信息
+  // 获取用户信息
   Future<void> fetchUserInfo() async {
     if (isUserEmpty()) return;
 

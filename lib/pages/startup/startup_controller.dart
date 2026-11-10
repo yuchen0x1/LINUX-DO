@@ -69,7 +69,6 @@ class StartupController extends BaseController {
   }
 }
 
-
 class GuidePageEntity {
   final String title;
   final String description;
@@ -84,4 +83,4 @@ class GuidePageEntity {
     required this.backgroundColor,
     required this.textColor,
   });
-} 
+}

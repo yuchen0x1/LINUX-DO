@@ -26,7 +26,7 @@
 //   Widget build(BuildContext context) {
 //     // 将HTML转换为Markdown
 //     final markdown = html2md.convert(html);
-    
+
 //     final markdownWidget = MarkdownBody(
 //       data: markdown,
 //       selectable: selectable,
@@ -130,7 +130,7 @@
 //       ),
 //       onTapLink: (text, href, title) {
 //         if (href == null) return;
-        
+
 //         if (href.startsWith('http') || href.startsWith('https')) {
 //           Get.toNamed(Routes.WEBVIEW, arguments: href);
 //         } else {
@@ -149,4 +149,4 @@
 
 //     return markdownWidget;
 //   }
-// } 
+// }

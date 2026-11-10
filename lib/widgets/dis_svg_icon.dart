@@ -7,16 +7,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class DisSvgIcon extends StatelessWidget {
   /// 图标名称
   final String iconName;
-  
+
   /// 图标尺寸
   final double? size;
-  
+
   /// 图标颜色
   final Color? color;
-  
+
   /// SVG内容，当需要直接使用SVG字符串时提供
   final String? svgContent;
-  
+
   const DisSvgIcon({
     Key? key,
     this.iconName = '',
@@ -30,7 +30,7 @@ class DisSvgIcon extends StatelessWidget {
     final calculatedSize = size ?? 16.w;
     final themeColor = Theme.of(context).primaryColor;
     final iconColor = color ?? themeColor;
-    
+
     if (svgContent != null && svgContent!.isNotEmpty) {
       return SvgPicture.string(
         svgContent!,
@@ -39,7 +39,7 @@ class DisSvgIcon extends StatelessWidget {
         colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
       );
     }
-    
+
     if (iconName.isNotEmpty) {
       try {
         return SvgPicture.asset(
@@ -56,15 +56,16 @@ class DisSvgIcon extends StatelessWidget {
         );
       }
     }
-    
+
     return SizedBox(width: calculatedSize, height: calculatedSize);
   }
-  
-  factory DisSvgIcon.fromString(String svgContent, {double? size, Color? color}) {
+
+  factory DisSvgIcon.fromString(String svgContent,
+      {double? size, Color? color}) {
     return DisSvgIcon(
       svgContent: svgContent,
       size: size,
       color: color,
     );
   }
-} 
+}

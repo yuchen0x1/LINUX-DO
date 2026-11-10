@@ -22,7 +22,7 @@ class TopicExcerpt extends StatelessWidget {
         : density == ListDensity.normal
             ? 13.0
             : 14.0;
-            
+
     final topPadding = density == ListDensity.compact
         ? 4.0
         : density == ListDensity.normal
@@ -44,4 +44,4 @@ class TopicExcerpt extends StatelessWidget {
       ),
     );
   }
-} 
+}

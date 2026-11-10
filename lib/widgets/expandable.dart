@@ -1,4 +1,3 @@
-
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -363,7 +362,8 @@ class _ExpandableControllerNotifier
 class _ExpandableThemeNotifier extends InheritedWidget {
   final ExpandableThemeData? themeData;
 
-  const _ExpandableThemeNotifier({required this.themeData, required Widget child})
+  const _ExpandableThemeNotifier(
+      {required this.themeData, required Widget child})
       : super(child: child);
 
   @override
@@ -507,7 +507,7 @@ class ExpandablePanel extends StatelessWidget {
   final ExpandableController? controller;
 
   final ExpandableThemeData? theme;
-  
+
   /// Callback that is called when the expanded state changes
   final Function(bool expanded)? onExpanded;
 
@@ -687,7 +687,8 @@ class ExpandablePanel extends StatelessWidget {
 class ExpandableIcon extends StatefulWidget {
   final ExpandableThemeData? theme;
 
-  const ExpandableIcon({super.key, 
+  const ExpandableIcon({
+    super.key,
     this.theme,
     // ignore: deprecated_member_use_from_same_package
   });
@@ -901,8 +902,8 @@ class _ScrollOnExpandState extends State<ScrollOnExpand> {
   _expandedStateChanged() {
     if (_theme != null) {
       _isAnimating++;
-      Future.delayed(
-          _animationDuration + const Duration(milliseconds: 10), _animationComplete);
+      Future.delayed(_animationDuration + const Duration(milliseconds: 10),
+          _animationComplete);
     }
   }
 
@@ -938,21 +939,21 @@ class _ExpandedChangeNotifierState extends State<_ExpandedChangeNotifier> {
   void initState() {
     super.initState();
     _lastExpandedState = widget.controller.expanded;
-    
+
     // 避免初始化时触发回调
     Future.microtask(() {
       _isInitialized = true;
     });
-    
+
     widget.controller.addListener(_handleExpandedChange);
   }
-  
+
   @override
   void dispose() {
     widget.controller.removeListener(_handleExpandedChange);
     super.dispose();
   }
-  
+
   void _handleExpandedChange() {
     // 只有在完成初始化后且状态确实发生变化时才触发回调
     if (_isInitialized && _lastExpandedState != widget.controller.expanded) {

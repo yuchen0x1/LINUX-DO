@@ -137,7 +137,6 @@ class PopularPage extends GetView<PopularController> {
     final formattedTime = createdDate.friendlyDateTime;
     final category = CategoryManager().getCategory(topic.categoryId ?? 0);
     final logoUrl = category?.logo?.imageUrl;
-    final slug = category?.slug;
     final c = category?.color;
     final tc = category?.textColor;
     final color = c != null
@@ -233,7 +232,7 @@ class PopularPage extends GetView<PopularController> {
                             ),
                           ),
 
-                          6.hGap,
+                        6.hGap,
 
                         Expanded(
                           child: Text(
@@ -650,12 +649,7 @@ class PopularPage extends GetView<PopularController> {
     final categoryItem = CategoryManager().getCategory(category.id);
 
     final logoUrl = categoryItem?.logo?.imageUrl;
-    final slug = categoryItem?.slug;
-    final c = categoryItem?.color;
     final tc = categoryItem?.textColor;
-    final color = c != null
-        ? Color(int.parse(c)).withValues(alpha: 0.6)
-        : Theme.of(context).primaryColor.withValues(alpha: 0.6);
     final textColor =
         tc != null ? Color(int.parse(tc)) : Theme.of(context).primaryColor;
 
@@ -832,7 +826,7 @@ class PopularPage extends GetView<PopularController> {
     });
   }
 
-  void _showBadgeDetail(BuildContext context,BadgeDetail badge) {
+  void _showBadgeDetail(BuildContext context, BadgeDetail badge) {
     final badgeColor = BadgeIconHelper.getColor(badge.name);
     Get.dialog(
       Dialog(
@@ -937,13 +931,12 @@ class PopularPage extends GetView<PopularController> {
                       ),
                     ),
                     12.vGap,
-                    HtmlWidget(
-                              html: badge.description, onLinkTap: (url) {}),
+                    HtmlWidget(html: badge.description, onLinkTap: (url) {}),
                     if (badge.longDescription != null &&
                         badge.longDescription!.isNotEmpty) ...[
                       8.vGap,
                       HtmlWidget(
-                              html: badge.longDescription!, onLinkTap: (url) {})
+                          html: badge.longDescription!, onLinkTap: (url) {})
                     ],
                     16.vGap,
                     Row(
@@ -1004,14 +997,13 @@ class PopularPage extends GetView<PopularController> {
       barrierDismissible: true,
     );
   }
-
 }
 
-  /// 转换K单位
-  String formatNumber(int number) {
-    if (number >= 1000) {
-      double value = number / 1000;
-      return '${value.toStringAsFixed(1)}k';
-    }
-    return number.toString();
+/// 转换K单位
+String formatNumber(int number) {
+  if (number >= 1000) {
+    double value = number / 1000;
+    return '${value.toStringAsFixed(1)}k';
   }
+  return number.toString();
+}

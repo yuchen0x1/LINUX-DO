@@ -5,7 +5,7 @@ class AppImages {
   static const String _lightPath = 'assets/images/light';
   static const String _darkPath = 'assets/images/dark';
   static const String imagesPath = 'assets/images/';
-  
+
   // 图片名称
   static const String _logoName = 'logo.webp';
   static const String _bannerName = 'search-banner.png';
@@ -24,7 +24,6 @@ class AppImages {
   static const String batteryQuarter = 'battery-quarter';
   static const String robot = 'assets/images/robot.png';
 
-
   // 状态Icon
   static const String _netErrorName = 'state-net-error.png';
   static const String _empty = 'state-empty.png';
@@ -35,7 +34,9 @@ class AppImages {
 
   // 根据主题获取对应的图片路径
   static String getImagePath(BuildContext context, String imageName) {
-    final basePath = Theme.of(context).brightness == Brightness.dark ? _darkPath : _lightPath;
+    final basePath = Theme.of(context).brightness == Brightness.dark
+        ? _darkPath
+        : _lightPath;
     return '$basePath/$imageName';
   }
 
@@ -49,12 +50,12 @@ class AppImages {
     return getImagePath(context, _bannerName);
   }
 
-    // 获取空状态
+  // 获取空状态
   static String getEmpty(BuildContext context) {
     return getImagePath(context, _empty);
   }
 
-    // 网络错误
+  // 网络错误
   static String getNetError(BuildContext context) {
     return getImagePath(context, _netErrorName);
   }

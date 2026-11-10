@@ -157,5 +157,3 @@ class TopicFooter extends StatelessWidget {
     return '$n';
   }
 }
-
-

@@ -1,7 +1,10 @@
 name: Flutter iOS Build
 
+# 只做「构建 + 上传产物」，不创建 Release、不发布任何东西。
+# 需要发版时走单独的发布流程并显式批准。
+
 on:
-  workflow_dispatch:  # 允许手动触发工作流
+  workflow_dispatch: # 允许手动触发工作流
 
 jobs:
   build:
@@ -9,17 +12,14 @@ jobs:
 
     steps:
       - name: Checkout the repository
-        uses: actions/checkout@v2
-
-      - name: List files in the directory
-        run: |
-          echo "Current directory contents:"
-          ls -al
+        uses: actions/checkout@v4
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.27.2'
+          flutter-version: '3.35.7'
+          channel: stable
+          cache: true
 
       - name: Install dependencies
         run: flutter pub get
@@ -30,45 +30,9 @@ jobs:
           ./build_unsigned_ipa.sh
 
       - name: Upload unsigned IPA as artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: unsigned-ipa
           path: ./build/ios/unsigned_ipa/unsigned_app.ipa
-
-      - name: Upload unsigned IPA to GitHub Release
-        run: |
-          # 设置 Release 的版本名和标签
-          RELEASE_NAME="v0.0.1"  
-          TAG_NAME="v0.0.1"      
-
-          GITHUB_API_URL="https://api.github.com/repos/${{ github.repository }}/releases"
-          GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
-          RELEASE_ID=$(curl -s -H "Authorization: token ${GITHUB_TOKEN}" \
-            "${GITHUB_API_URL}/tags/${TAG_NAME}" | jq -r '.id // empty')
-
-          if [ -z "$RELEASE_ID" ]; then
-            echo "Release not found, creating a new one..."
-
-            # 创建新的 Release
-            RESPONSE=$(curl -s -X POST -H "Authorization: token ${GITHUB_TOKEN}" \
-              -d "{\"tag_name\": \"${TAG_NAME}\", \"name\": \"${RELEASE_NAME}\", \"body\": \"Release description\", \"draft\": false, \"prerelease\": false}" \
-              "${GITHUB_API_URL}")
-              
-            # 获取新创建的 Release 的 ID
-            RELEASE_ID=$(echo $RESPONSE | jq -r '.id')
-          else
-            echo "Release already exists, using the existing release..."
-          fi
-
-          # 上传 .ipa 文件作为 Release 资产
-          IPA_FILE_PATH="./build/ios/unsigned_ipa/unsigned_app.ipa"
-          FILE_NAME="unsigned_app.ipa"
-
-          # 使用 curl 上传 .ipa 文件到 Release 资产
-          curl -s -X POST -H "Authorization: token ${GITHUB_TOKEN}" \
-            -H "Content-Type: application/octet-stream" \
-            --data-binary @"${IPA_FILE_PATH}" \
-            "https://uploads.github.com/repos/${{ github.repository }}/releases/${RELEASE_ID}/assets?name=${FILE_NAME}"
-
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          retention-days: 7
+          if-no-files-found: error

@@ -5,7 +5,6 @@ import 'package:linux_do/const/app_images.dart';
 import 'package:linux_do/const/app_spacing.dart';
 import 'package:linux_do/const/app_theme.dart';
 import 'package:linux_do/models/topic_model.dart';
-import 'package:linux_do/utils/expand/string_expand.dart';
 import 'package:linux_do/widgets/avatar_widget.dart';
 import 'package:linux_do/widgets/cached_image.dart';
 import 'package:linux_do/widgets/dis_svg_icon.dart';
@@ -21,31 +20,30 @@ class LikePage extends GetView<LikeController> {
       appBar: AppBar(
         title: Container(
           width: MediaQuery.of(context).size.width - 180.w,
-            margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 3.w),
-            child: Obx(() => SlideSwitcher(
-                  containerHeight: 36.w,
-                  containerWight: MediaQuery.of(context).size.width - 180.w,
-                  initialIndex: controller.selectedIndex.value,
-                  containerColor: Theme.of(context).cardColor,
-                  slidersGradients: [
-                    LinearGradient(colors: [
-                      Theme.of(context).primaryColor,
-                      Theme.of(context).primaryColor.withValues(alpha: 0.6)
-                    ])
-                  ],
-                  onSelect: (index) => controller.switchTab(index),
-                  children: [
-                    _buildTabText(context, '最多赞', 0),
-                    _buildTabText(context, '赞最多', 1),
-                  ],
-                )),
-          ),
+          margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 3.w),
+          child: Obx(() => SlideSwitcher(
+                containerHeight: 36.w,
+                containerWight: MediaQuery.of(context).size.width - 180.w,
+                initialIndex: controller.selectedIndex.value,
+                containerColor: Theme.of(context).cardColor,
+                slidersGradients: [
+                  LinearGradient(colors: [
+                    Theme.of(context).primaryColor,
+                    Theme.of(context).primaryColor.withValues(alpha: 0.6)
+                  ])
+                ],
+                onSelect: (index) => controller.switchTab(index),
+                children: [
+                  _buildTabText(context, '最多赞', 0),
+                  _buildTabText(context, '赞最多', 1),
+                ],
+              )),
+        ),
         elevation: 0,
         centerTitle: true,
       ),
       body: Column(
         children: [
-        
           // 内容区域
           Expanded(
             child: PageView(
@@ -200,8 +198,10 @@ class LikePage extends GetView<LikeController> {
                 overflow: TextOverflow.ellipsis,
               ),
 
-               Text(
-                displayName == null || displayName.isEmpty ? 'Anonymous Big Shot' : displayName,
+              Text(
+                displayName == null || displayName.isEmpty
+                    ? 'Anonymous Big Shot'
+                    : displayName,
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.bold,
@@ -269,28 +269,7 @@ class LikePage extends GetView<LikeController> {
           Positioned(
             right: 0.w,
             top: 0.w,
-            child: 
-            item.admin ?? false
-            ? Container(
-              decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.1),
-                          blurRadius: 4,
-                          spreadRadius: 1,
-                        ),
-                      ],
-                    ),
-                    padding: EdgeInsets.all(4.w),
-              child: DisSvgIcon(
-                  iconName: AppImages.batteryQuarter,
-                  size: 18.w,
-                  color: Theme.of(context).primaryColor,
-                ),
-            )
-            : imageUrl != null && imageUrl.isNotEmpty
+            child: item.admin ?? false
                 ? Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
@@ -304,13 +283,33 @@ class LikePage extends GetView<LikeController> {
                       ],
                     ),
                     padding: EdgeInsets.all(4.w),
-                    child: CachedImage(
-                      imageUrl: imageUrl,
-                      width: 16,
-                      height: 16,
+                    child: DisSvgIcon(
+                      iconName: AppImages.batteryQuarter,
+                      size: 18.w,
+                      color: Theme.of(context).primaryColor,
                     ),
                   )
-                : const SizedBox.shrink(),
+                : imageUrl != null && imageUrl.isNotEmpty
+                    ? Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).cardColor,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.1),
+                              blurRadius: 4,
+                              spreadRadius: 1,
+                            ),
+                          ],
+                        ),
+                        padding: EdgeInsets.all(4.w),
+                        child: CachedImage(
+                          imageUrl: imageUrl,
+                          width: 16,
+                          height: 16,
+                        ),
+                      )
+                    : const SizedBox.shrink(),
           ),
         ],
       ),

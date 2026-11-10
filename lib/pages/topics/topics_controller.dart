@@ -45,7 +45,14 @@ class TopicsController extends BaseController
   final RxBool isSearchFocused = false.obs;
 
   // 路径
-  List<String> paths = const ['latest', 'new', 'unread', 'unseen', 'top', 'hot'];
+  List<String> paths = const [
+    'latest',
+    'new',
+    'unread',
+    'unseen',
+    'top',
+    'hot'
+  ];
 
   // 简单一些，本地定义tab
   List<Tab> tabs = const [
@@ -75,13 +82,19 @@ class TopicsController extends BaseController
   final Rx<BannerSettings> bannerSettings = BannerSettings().obs;
   static const String bannerSettingsKey = 'banner_settings';
 
-  // 检查是否是游客模式  
+  // 检查是否是游客模式
   void changeTabs() {
     if (globalController.isAnonymousMode) {
       tabs = const [
-        Tab(text: '最新', ),
-        Tab(text: '排行', ),
-        Tab(text: '热门', ),
+        Tab(
+          text: '最新',
+        ),
+        Tab(
+          text: '排行',
+        ),
+        Tab(
+          text: '热门',
+        ),
       ];
       paths = const ['latest', 'top', 'hot'];
     }
@@ -158,7 +171,8 @@ class TopicsController extends BaseController
   }
 
   // 获取当前的TopicTabController
-  TopicTabController get currentTabController => _tabControllers[paths[tabController.index]]!;
+  TopicTabController get currentTabController =>
+      _tabControllers[paths[tabController.index]]!;
 
   @override
   void onClose() {
@@ -193,7 +207,7 @@ class TopicsController extends BaseController
 
   void showSearchResults() {
     if (!Get.context!.mounted) return;
-    
+
     removeSearchResults();
 
     final context = Get.context!;
@@ -202,7 +216,7 @@ class TopicsController extends BaseController
     // 获取搜索框的全局位置和大小
     final box = context.findRenderObject() as RenderBox?;
     if (box == null) return;
-    
+
     final position = box.localToGlobal(Offset.zero);
     final size = box.size;
 
@@ -221,8 +235,8 @@ class TopicsController extends BaseController
                 padding: EdgeInsets.symmetric(vertical: 16.w),
                 child: Center(
                   child: Text(
-                    searchError.value.isNotEmpty 
-                        ? searchError.value 
+                    searchError.value.isNotEmpty
+                        ? searchError.value
                         : '没有找到相关内容',
                     style: TextStyle(
                       color: Theme.of(context).hintColor,
@@ -232,7 +246,7 @@ class TopicsController extends BaseController
                 ),
               );
             }
-            
+
             return ConstrainedBox(
               constraints: BoxConstraints(
                 maxHeight: 380.w,
@@ -296,7 +310,7 @@ class TopicsController extends BaseController
 
       // 保存搜索结果
       searchResult.value = result;
-      
+
       // 更新话题列表
       if (result.topics.isNotEmpty) {
         topics.assignAll(result.topics);
@@ -305,7 +319,7 @@ class TopicsController extends BaseController
       }
 
       return result.topics;
-    } catch (e, s ) {
+    } catch (e, s) {
       l.e('搜索失败: $e  $s');
       searchError.value = '搜索失败，请重试';
       topics.clear();
@@ -326,21 +340,22 @@ class TopicsController extends BaseController
 
   // 加载更多搜索结果
   Future<void> loadMoreSearchResults() async {
-    if (searchResult.value == null || 
-        (searchResult.value!.groupedSearchResult.moreFullPageResults ?? false) ||
+    if (searchResult.value == null ||
+        (searchResult.value!.groupedSearchResult.moreFullPageResults ??
+            false) ||
         isSearching.value) {
       return;
     }
 
     try {
       isSearching.value = true;
-      
+
       // 计算下一页
       final currentPage = (topics.length / 20).ceil() + 1;
-      
+
       // 获取当前搜索词
       final currentTerm = searchResult.value!.groupedSearchResult.term;
-      
+
       // 加载下一页
       final result = await _apiService.search(
         query: currentTerm,
@@ -371,7 +386,8 @@ class TopicsController extends BaseController
   void _loadBannerSettings() {
     final savedSettings = StorageManager.getString(bannerSettingsKey);
     if (savedSettings != null) {
-      bannerSettings.value = BannerSettings.fromJson(json.decode(savedSettings));
+      bannerSettings.value =
+          BannerSettings.fromJson(json.decode(savedSettings));
     }
   }
 
@@ -398,7 +414,7 @@ class TopicsController extends BaseController
         ),
       );
     }
-    
+
     if (bannerSettings.value.isLocalImage) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(6.w),
@@ -414,11 +430,10 @@ class TopicsController extends BaseController
         ),
       );
     }
-    
+
     return Image.asset(
       AppImages.getBanner(context),
       fit: BoxFit.contain,
     );
   }
-
 }

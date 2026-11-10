@@ -1,4 +1,3 @@
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:linux_do/const/app_const.dart';
 import 'package:linux_do/controller/base_controller.dart';
@@ -56,12 +55,11 @@ class CategoryListController extends BaseController {
       } else {
         result = await _apiService.getCategoriesTopics(categoryId!);
       }
-      
+
       _userCache.updateUsers(result.users);
       if (result.topicList?.topics != null) {
         topics.assignAll(result.topicList!.topics);
       }
-
     } catch (e) {
       l.e('Error fetching topics: $e');
       hasError.value = true;
@@ -100,7 +98,8 @@ class CategoryListController extends BaseController {
         result = await _apiService.getCategoriesTopics(categoryId!, page: page);
       }
       _userCache.updateUsers(result.users);
-      if (result.topicList?.topics == null || result.topicList!.topics.isEmpty) {
+      if (result.topicList?.topics == null ||
+          result.topicList!.topics.isEmpty) {
         refreshController.loadNoData();
       } else {
         topics.addAll(result.topicList!.topics);
@@ -156,10 +155,13 @@ class CategoryListController extends BaseController {
     }
   }
 
-    List<String> getAvatarUrls(Topic topic) {
-     // 通过_userCache获取头像
+  List<String> getAvatarUrls(Topic topic) {
+    // 通过_userCache获取头像
     final avatarUrls = topic.getAvatarUrls();
-    return avatarUrls.map((id) => _userCache.getAvatarUrl(id)).whereType<String>().toList();
+    return avatarUrls
+        .map((id) => _userCache.getAvatarUrl(id))
+        .whereType<String>()
+        .toList();
   }
 
   Future<void> deleteTopic(int id) async {
@@ -176,4 +178,4 @@ class CategoryListController extends BaseController {
       showError(AppConst.posts.error);
     }
   }
-} 
+}

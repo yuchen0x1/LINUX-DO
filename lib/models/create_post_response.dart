@@ -65,7 +65,8 @@ class CreatePost {
     required this.canEdit,
   });
 
-  factory CreatePost.fromJson(Map<String, dynamic> json) => _$CreatePostFromJson(json);
+  factory CreatePost.fromJson(Map<String, dynamic> json) =>
+      _$CreatePostFromJson(json);
 
   Map<String, dynamic> toJson() => _$CreatePostToJson(this);
-} 
+}

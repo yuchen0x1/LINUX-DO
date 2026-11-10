@@ -6,7 +6,8 @@ import '../utils/log.dart';
 import '../utils/storage_manager.dart';
 
 class UserApiKeyAuthService {
-  static final UserApiKeyAuthService _instance = UserApiKeyAuthService._internal();
+  static final UserApiKeyAuthService _instance =
+      UserApiKeyAuthService._internal();
   factory UserApiKeyAuthService() => _instance;
   UserApiKeyAuthService._internal();
 
@@ -55,7 +56,11 @@ class UserApiKeyAuthService {
 
     // 保存私钥参数 (n, d)
     StorageManager.setData(
-        keyUserPrivateKey, json.encode({'modulus': myPrivate.modulus.toString(), 'privateExponent': myPrivate.privateExponent.toString()}));
+        keyUserPrivateKey,
+        json.encode({
+          'modulus': myPrivate.modulus.toString(),
+          'privateExponent': myPrivate.privateExponent.toString()
+        }));
 
     return AsymmetricKeyPair(myPublic, myPrivate);
   }
@@ -69,7 +74,8 @@ class UserApiKeyAuthService {
   }) {
     final scopes = 'read,write,notifications,message_bus';
     final nonce = Random().nextInt(1000000).toString();
-    final uri = Uri.parse('$baseUrl/user-api-key/new').replace(queryParameters: {
+    final uri =
+        Uri.parse('$baseUrl/user-api-key/new').replace(queryParameters: {
       'application_name': applicationName,
       'client_id': clientId,
       'scopes': scopes,
@@ -94,7 +100,8 @@ class UserApiKeyAuthService {
         null,
       );
 
-      final cipher = PKCS1Encoding(RSAEngine())..init(false, PrivateKeyParameter<RSAPrivateKey>(privateKey));
+      final cipher = PKCS1Encoding(RSAEngine())
+        ..init(false, PrivateKeyParameter<RSAPrivateKey>(privateKey));
       final encryptedBytes = base64.decode(encryptedBase64);
       final decryptedBytes = cipher.process(encryptedBytes);
       return utf8.decode(decryptedBytes);
@@ -117,10 +124,25 @@ class UserApiKeyAuthService {
     ]);
 
     final rsaOid = Uint8List.fromList([
-      0x30, 0x0D, 0x06, 0x09, 0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x01, 0x01, 0x01, 0x05, 0x00
+      0x30,
+      0x0D,
+      0x06,
+      0x09,
+      0x2A,
+      0x86,
+      0x48,
+      0x86,
+      0xF7,
+      0x0D,
+      0x01,
+      0x01,
+      0x01,
+      0x05,
+      0x00
     ]);
 
-    final bitString = Uint8List.fromList([0x03, rsaSeq.length + 1, 0x00, ...rsaSeq]);
+    final bitString =
+        Uint8List.fromList([0x03, rsaSeq.length + 1, 0x00, ...rsaSeq]);
     final outerSeq = _encodeSequence([rsaOid, bitString]);
 
     final base64Key = base64.encode(outerSeq);

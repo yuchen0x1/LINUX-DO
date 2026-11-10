@@ -59,7 +59,8 @@ class DohService {
   bool get isEnabled => StorageManager.getBool(keyDohEnabled) ?? true;
   set isEnabled(bool value) => StorageManager.setData(keyDohEnabled, value);
 
-  String get currentServerId => StorageManager.getString(keyDohServerId) ?? 'aliyun';
+  String get currentServerId =>
+      StorageManager.getString(keyDohServerId) ?? 'aliyun';
   set currentServerId(String id) => StorageManager.setData(keyDohServerId, id);
 
   DohServer get currentServer {

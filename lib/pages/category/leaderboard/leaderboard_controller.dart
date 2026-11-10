@@ -9,13 +9,13 @@ import '../../../utils/log.dart';
 class LeaderboardController extends BaseController {
   final ApiService apiService = Get.find();
   late final RefreshController refreshController;
-  
+
   // 数据相关
   final leaderboardData = <LeaderboardUser>[].obs;
   final meData = Rxn<LeaderboardInfo>();
   final personalRank = Rxn<PersonalRank>();
   final topListData = <LeaderboardUser>[].obs;
-  
+
   // 分页相关
   final hasMore = true.obs;
   final currentPage = 1.obs;
@@ -38,17 +38,19 @@ class LeaderboardController extends BaseController {
     try {
       isLoading.value = true;
       clearError();
-      
+
       final response = await apiService.getLeaderboard();
-      
+
       // 更新数据 从第三个开始
       leaderboardData.value = response.users.sublist(3);
       personalRank.value = response.personal;
-      topListData.value = response.users.take(response.users.length >= 3 ? 3 : response.users.length).toList();
+      topListData.value = response.users
+          .take(response.users.length >= 3 ? 3 : response.users.length)
+          .toList();
       // 判断是否还有更多数据
       hasMore.value = response.users.length >= pageSize;
       currentPage.value = 1;
-      
+
       l.d('获取排行榜数据成功: ${leaderboardData.length} 条数据');
     } catch (e, s) {
       l.e('获取排行榜数据失败: $e - $s');
@@ -80,11 +82,11 @@ class LeaderboardController extends BaseController {
 
       // 添加新数据
       leaderboardData.addAll(response.users);
-      
+
       // 更新分页状态
       hasMore.value = response.users.length >= pageSize;
       currentPage.value = nextPage;
-      
+
       refreshController.loadComplete();
       l.d('加载更多成功: 当前 ${leaderboardData.length} 条数据');
     } catch (e) {

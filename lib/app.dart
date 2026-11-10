@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:linux_do/utils/emoji_manager.dart';
 import 'package:linux_do/utils/log.dart';
 
 import 'controller/global_controller.dart';
@@ -29,7 +28,7 @@ class App {
     await StorageManager.init();
 
     // 初始化GetStorage
-    await GetStorage.init(); 
+    await GetStorage.init();
 
     // 初始化设备信息
     await DeviceUtil.init();
@@ -41,10 +40,11 @@ class App {
     await NetClient.getInstance().init();
 
     // 初始化API服务
-    Inject.put<ApiService>(ApiService(NetClient.getInstance().dio,baseUrl: HttpConfig.baseUrl));
+    Inject.put<ApiService>(
+        ApiService(NetClient.getInstance().dio, baseUrl: HttpConfig.baseUrl));
 
     Inject.put<GlobalController>(GlobalController());
-    
+
     // Tag的颜色
     Tag.init();
 

@@ -4,19 +4,22 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file("keystore/key.properties")
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.withInputStream { stream ->
-        localProperties.load(stream)
+// 签名信息从 android/keystore/key.properties 读取（该文件与 *.jks 均被 .gitignore 排除）。
+// 缺失时 release 构建会产出未签名包，且 Gradle 会打印警告，避免把口令写回仓库。
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file("keystore/key.properties")
+def hasReleaseKeystore = false
+if (keystorePropertiesFile.exists()) {
+    keystorePropertiesFile.withInputStream { stream ->
+        keystoreProperties.load(stream)
+    }
+    hasReleaseKeystore = ['storeFile', 'storePassword', 'keyAlias', 'keyPassword'].every {
+        keystoreProperties.getProperty(it)
     }
 }
-
-def sp = localProperties.getProperty('storePassword')
-def kp = localProperties.getProperty('keyPassword')
-def ka = localProperties.getProperty('keyAlias')
-def sf = localProperties.getProperty('storeFile')
-def kf = sf ? rootProject.file(sf) : null
+if (!hasReleaseKeystore) {
+    logger.warn("未找到 android/keystore/key.properties 或字段不全，release 构建将不签名。")
+}
 
 android {
     namespace "com.linux.linuxdo"
@@ -36,24 +39,32 @@ android {
     defaultConfig {
         applicationId "com.linux.linuxdo"
         minSdkVersion flutter.minSdkVersion
-        targetSdkVersion 33
+        targetSdkVersion 35
         versionCode flutter.versionCode
         versionName flutter.versionName
         multiDexEnabled true
     }
 
     signingConfigs {
-        release {
-            storeFile file('release-key.jks')
-            storePassword 'linuxdo123'
-            keyAlias 'linuxdo'
-            keyPassword 'linuxdo123'
+        if (hasReleaseKeystore) {
+            release {
+                storeFile rootProject.file(keystoreProperties.getProperty('storeFile'))
+                storePassword keystoreProperties.getProperty('storePassword')
+                keyAlias keystoreProperties.getProperty('keyAlias')
+                keyPassword keystoreProperties.getProperty('keyPassword')
+                enableV1Signing false
+                enableV2Signing true
+                enableV3Signing true
+                enableV4Signing true
+            }
         }
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            if (hasReleaseKeystore) {
+                signingConfig signingConfigs.release
+            }
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

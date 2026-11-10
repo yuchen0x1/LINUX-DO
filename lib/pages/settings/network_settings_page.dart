@@ -2,12 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:linux_do/const/app_colors.dart';
 import 'package:linux_do/const/app_spacing.dart';
 import '../../net/doh_service.dart';
 import '../../net/proxy_service.dart';
-import '../../widgets/dis_button.dart';
-import '../../widgets/dis_loading.dart';
 import '../../widgets/dis_switch.dart';
 import '../../widgets/proxy_settings_dialog.dart';
 
@@ -120,12 +117,15 @@ class NetworkSettingsPage extends GetView<NetworkSettingsController> {
                     ),
                   ),
                   TextButton.icon(
-                    onPressed: controller.isTesting.value ? null : controller.testSpeed,
+                    onPressed: controller.isTesting.value
+                        ? null
+                        : controller.testSpeed,
                     icon: controller.isTesting.value
                         ? SizedBox(
                             width: 14.w,
                             height: 14.w,
-                            child: const CircularProgressIndicator(strokeWidth: 2),
+                            child:
+                                const CircularProgressIndicator(strokeWidth: 2),
                           )
                         : const Icon(CupertinoIcons.speedometer, size: 16),
                     label: Text(controller.isTesting.value ? '测速中...' : '测试延迟'),
@@ -137,7 +137,8 @@ class NetworkSettingsPage extends GetView<NetworkSettingsController> {
                 builder: (_) {
                   return Column(
                     children: controller.dohService.servers.map((server) {
-                      final isSelected = controller.currentServerId.value == server.id;
+                      final isSelected =
+                          controller.currentServerId.value == server.id;
                       return Container(
                         margin: EdgeInsets.only(bottom: 8.w),
                         decoration: BoxDecoration(
@@ -164,7 +165,9 @@ class NetworkSettingsPage extends GetView<NetworkSettingsController> {
                             server.name,
                             style: TextStyle(
                               fontSize: 14.sp,
-                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                              fontWeight: isSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
                             ),
                           ),
                           subtitle: Text(

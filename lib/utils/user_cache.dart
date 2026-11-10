@@ -1,5 +1,4 @@
 import 'package:linux_do/net/http_config.dart';
-import 'package:linux_do/utils/log.dart';
 import '../models/topic_model.dart';
 
 class UserCache {
@@ -9,7 +8,7 @@ class UserCache {
 
   // 用户头像URL缓存
   final Map<int, String> _avatarUrls = {};
-  
+
   // 用户信息缓存
   final Map<int, User> _users = {};
 
@@ -24,13 +23,15 @@ class UserCache {
     if (users == null) return;
     for (final user in users) {
       _users[user.id] = user;
-      if (user.avatarTemplate!.startsWith('http://') || user.avatarTemplate!.startsWith('https://')) {
+      if (user.avatarTemplate!.startsWith('http://') ||
+          user.avatarTemplate!.startsWith('https://')) {
         final url = user.avatarTemplate!;
         final protocol = url.startsWith('https://') ? 'https://' : 'http://';
         final path = url.substring(protocol.length);
         _avatarUrls[user.id] = protocol + path.replaceAll(RegExp(r'/+'), '/');
       } else {
-        _avatarUrls[user.id] = '${HttpConfig.baseUrl}${user.avatarTemplate!.replaceAll("{size}", "62")}';
+        _avatarUrls[user.id] =
+            '${HttpConfig.baseUrl}${user.avatarTemplate!.replaceAll("{size}", "62")}';
       }
     }
   }
@@ -52,4 +53,4 @@ class UserCache {
 
   // 检查是否有缓存
   bool hasCache(int userId) => _avatarUrls.containsKey(userId);
-} 
+}

@@ -50,13 +50,16 @@ class TopicPosterAvatar extends StatelessWidget {
           SizedBox(
             width: 42.w,
             child: Text(
-              (nickName).length > 8 
-                  ? '${(nickName).substring(0, 8)}...' 
+              (nickName).length > 8
+                  ? '${(nickName).substring(0, 8)}...'
                   : (nickName),
               style: TextStyle(
                 fontSize: 9.w,
-                fontWeight: isOriginalPoster ? FontWeight.w400 : FontWeight.w500,
-                color: isOriginalPoster ? Theme.of(context).textTheme.bodySmall?.color : AppColors.secondary2,
+                fontWeight:
+                    isOriginalPoster ? FontWeight.w400 : FontWeight.w500,
+                color: isOriginalPoster
+                    ? Theme.of(context).textTheme.bodySmall?.color
+                    : AppColors.secondary2,
               ),
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
@@ -66,4 +69,4 @@ class TopicPosterAvatar extends StatelessWidget {
       ),
     );
   }
-} 
+}

@@ -103,7 +103,7 @@ class MyApp extends StatelessWidget {
             final isDark = Theme.of(context).brightness == Brightness.dark;
             final isAmoled = _getSavedTheme() == 'amoled';
             final themeColor = AppColors.getStoredColor();
-            
+
             // 使用主题数据包装子组件
             Widget? result = child;
             if (isAmoled || themeColor != null) {
@@ -112,7 +112,11 @@ class MyApp extends StatelessWidget {
                 themeData = AppTheme.amoledTheme;
               }
               if (themeColor != null) {
-                themeData = themeData.copyWith(primaryColor: themeColor);
+                // 与设置页换色一致：保留整套主题样式，只替换主色
+                themeData = AppTheme.withPrimaryColor(
+                  base: themeData,
+                  primary: themeColor,
+                );
               }
               result = Theme(
                 data: themeData,
@@ -126,8 +130,9 @@ class MyApp extends StatelessWidget {
                 statusBarColor: Colors.transparent,
                 statusBarIconBrightness:
                     isDark ? Brightness.light : Brightness.dark,
-                systemNavigationBarColor:
-                    isDark ? (isAmoled ? Colors.black : const Color(0xFF121212)) : Colors.white,
+                systemNavigationBarColor: isDark
+                    ? (isAmoled ? Colors.black : const Color(0xFF121212))
+                    : Colors.white,
                 systemNavigationBarIconBrightness:
                     isDark ? Brightness.light : Brightness.dark,
                 systemNavigationBarDividerColor: Colors.transparent,

@@ -43,7 +43,6 @@ class PreviewPostPage extends GetView<PreviewPostController> {
                 margin: EdgeInsets.all(12.w),
                 padding: EdgeInsets.only(
                     left: 12.w, right: 12.w, top: 14.w, bottom: 12.w),
-                
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -128,23 +127,20 @@ class PreviewPostPage extends GetView<PreviewPostController> {
                   ],
                 ),
               ),
-          
+
               // 内容
               Container(
                   width: double.infinity,
                   margin: EdgeInsets.symmetric(horizontal: 12.w),
                   padding: EdgeInsets.all(12.w),
-                  
                   child: controller.content.isEmpty
                       ? Center(
                           child: Text(
                             AppConst.createPost.previewEmpty,
                             style: TextStyle(
                               fontSize: 14.w,
-                              color: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.color,
+                              color:
+                                  Theme.of(context).textTheme.bodyMedium?.color,
                             ),
                           ),
                         )

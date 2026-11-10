@@ -85,7 +85,6 @@ class LeaderboardPage extends GetView<LeaderboardController> {
                   fontSize: 15.sp,
                   color: AppColors.white,
                   fontWeight: FontWeight.bold)),
-
           actions: [
             IconButton(
                 onPressed: _showTips,

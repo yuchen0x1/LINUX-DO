@@ -19,7 +19,7 @@ class ProfileMenu extends StatelessWidget with ToastMixin {
     final userInfo = Get.find<GlobalController>().userInfo;
     final user = userInfo?.user;
     return Container(
-      margin: const EdgeInsets.only(top: 18,left: 12, right: 12).w,
+      margin: const EdgeInsets.only(top: 18, left: 12, right: 12).w,
       child: Column(
         children: [
           // 使用ExpandablePageView替代固定高度的方案
@@ -34,9 +34,12 @@ class ProfileMenu extends StatelessWidget with ToastMixin {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildStatItem('信任等级', user?.trustLevel.toString() ?? '', ()=> Get.toNamed(Routes.CONNECT)),
-                    _buildStatItem('徽章数', user?.badgeCount.toString() ?? '', () {}),
-                    _buildStatItem('积分', '${user?.gamificationScore ?? 0}', () {}),
+                    _buildStatItem('信任等级', user?.trustLevel.toString() ?? '',
+                        () => Get.toNamed(Routes.CONNECT)),
+                    _buildStatItem(
+                        '徽章数', user?.badgeCount.toString() ?? '', () {}),
+                    _buildStatItem(
+                        '积分', '${user?.gamificationScore ?? 0}', () {}),
                   ],
                 ),
               ),
@@ -81,7 +84,7 @@ class ProfileMenu extends StatelessWidget with ToastMixin {
                           const Color(0xFF8f94fb).withValues(alpha: 0.7)
                         ],
                         () => controller.toFollowPage()),
-                        _buildFeatureButton(
+                    _buildFeatureButton(
                         CupertinoIcons.flame_fill,
                         '热门',
                         'Popular',

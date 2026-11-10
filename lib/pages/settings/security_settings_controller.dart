@@ -7,7 +7,8 @@ import 'package:linux_do/utils/log.dart';
 import 'package:linux_do/utils/mixins/concatenated.dart';
 import 'package:linux_do/utils/mixins/toast_mixin.dart';
 
-class SecuritySettingsController extends BaseController with ToastMixin, Concatenated {
+class SecuritySettingsController extends BaseController
+    with ToastMixin, Concatenated {
   final ApiService _apiService = Get.find();
   final GlobalController _globalController = Get.find();
 
@@ -30,8 +31,10 @@ class SecuritySettingsController extends BaseController with ToastMixin, Concate
         final deviceList = userInfo.user?.userAuthTokens ?? [];
         // Sort devices by seenAt time in descending order
         deviceList.sort((a, b) {
-          final aTime = a.seenAt != null ? DateTime.parse(a.seenAt!) : DateTime(1970);
-          final bTime = b.seenAt != null ? DateTime.parse(b.seenAt!) : DateTime(1970);
+          final aTime =
+              a.seenAt != null ? DateTime.parse(a.seenAt!) : DateTime(1970);
+          final bTime =
+              b.seenAt != null ? DateTime.parse(b.seenAt!) : DateTime(1970);
           return bTime.compareTo(aTime); // Descending order (most recent first)
         });
         devices.value = deviceList;
@@ -67,11 +70,11 @@ class SecuritySettingsController extends BaseController with ToastMixin, Concate
     }
   }
 
- // 发送忘记密码的电子邮件
+  // 发送忘记密码的电子邮件
   Future<void> sendEmail() async {
     try {
       final email = _globalController.userInfo?.user?.email ?? '';
-      
+
       if (email.isEmpty) {
         showError('请先设置邮箱');
         return;
@@ -87,4 +90,4 @@ class SecuritySettingsController extends BaseController with ToastMixin, Concate
       isSendingEmail.value = false;
     }
   }
-} 
+}

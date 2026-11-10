@@ -161,9 +161,6 @@ class _StateConst {
 
 /// 标识常量
 class _Identifier {
-
-
-
   const _Identifier();
 
   String get token => 'token';
@@ -428,7 +425,6 @@ class _Settings {
 }
 
 class _Posts {
-
   const _Posts();
 
   String get disturbSuccess => '设置免打扰成功';

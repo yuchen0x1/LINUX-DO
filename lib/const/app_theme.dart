@@ -166,6 +166,38 @@ class AppTheme {
     );
   }
 
+  /// 在内置主题基础上只替换主色，保留卡片 / 背景 / 文字 / 输入框等全部样式。
+  ///
+  /// 主题色选择功能原先直接 new 一个只带 primaryColor 的 ThemeData，
+  /// 会导致上面这些定制全部丢失、界面回退成 Material 默认外观。
+  static ThemeData withPrimaryColor({
+    required ThemeData base,
+    required Color primary,
+  }) {
+    return base.copyWith(
+      primaryColor: primary,
+      colorScheme: base.colorScheme.copyWith(
+        primary: primary,
+        onPrimary: AppColors.white,
+      ),
+      appBarTheme: base.appBarTheme.copyWith(
+        backgroundColor: base.appBarTheme.backgroundColor ?? base.cardColor,
+      ),
+      tabBarTheme: base.tabBarTheme.copyWith(
+        labelColor: primary,
+        indicatorColor: primary,
+      ),
+      progressIndicatorTheme: base.progressIndicatorTheme.copyWith(
+        color: primary,
+      ),
+      textSelectionTheme: base.textSelectionTheme.copyWith(
+        cursorColor: primary,
+        selectionColor: primary.withValues(alpha: .2),
+        selectionHandleColor: primary,
+      ),
+    );
+  }
+
   /// 暗色主题
   static ThemeData get darkTheme {
     return ThemeData(

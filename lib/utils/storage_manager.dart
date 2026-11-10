@@ -3,15 +3,26 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageManager {
   static late final SharedPreferences prefs;
+  static Future<void>? _initialization;
 
   /// 初始化SharedPreferences
   static Future<void> init() async {
+    final initialization = _initialization ??= _loadPreferences();
+    try {
+      await initialization;
+    } catch (_) {
+      _initialization = null;
+      rethrow;
+    }
+  }
+
+  static Future<void> _loadPreferences() async {
     prefs = await SharedPreferences.getInstance();
   }
 
   /// 保存数据
   static Future<bool> setData<T>(String key, T value) async {
-    if (prefs == null) await init();
+    await init();
 
     if (value is String) {
       return await prefs.setString(key, value);
@@ -69,13 +80,13 @@ class StorageManager {
 
   /// 删除指定key的数据
   static Future<bool> remove(String key) async {
-    if (prefs == null) await init();
+    await init();
     return await prefs.remove(key);
   }
 
   /// 清空所有数据
   static Future<bool> clear() async {
-    if (prefs == null) await init();
+    await init();
     return await prefs.clear();
   }
 

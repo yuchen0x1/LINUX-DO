@@ -20,4 +20,4 @@ class Badge {
 
   factory Badge.fromJson(Map<String, dynamic> json) => _$BadgeFromJson(json);
   Map<String, dynamic> toJson() => _$BadgeToJson(this);
-} 
+}

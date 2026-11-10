@@ -20,7 +20,8 @@ class BrithdayTabView extends StatefulWidget {
   State<BrithdayTabView> createState() => _BrithdayTabViewState();
 }
 
-class _BrithdayTabViewState extends State<BrithdayTabView> with AutomaticKeepAliveClientMixin {
+class _BrithdayTabViewState extends State<BrithdayTabView>
+    with AutomaticKeepAliveClientMixin {
   late BrithdayTabController controller;
 
   @override
@@ -60,7 +61,7 @@ class _BrithdayTabViewState extends State<BrithdayTabView> with AutomaticKeepAli
       onRefresh: controller.onRefresh,
       onLoading: controller.onLoading,
       child: ListView.separated(
-        padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 16).w,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16).w,
         itemCount: controller.birthdays.length,
         separatorBuilder: (context, index) => 10.vGap,
         itemBuilder: (context, index) {
@@ -113,9 +114,11 @@ class _BrithdayTabViewState extends State<BrithdayTabView> with AutomaticKeepAli
                       children: [
                         Expanded(
                           child: Text(
-                            birthday.name.isEmpty ? birthday.username : birthday.name,
+                            birthday.name.isEmpty
+                                ? birthday.username
+                                : birthday.name,
                             maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               fontSize: 13.w,
                               fontFamily: AppFontFamily.dinPro,
@@ -123,7 +126,8 @@ class _BrithdayTabViewState extends State<BrithdayTabView> with AutomaticKeepAli
                             ),
                           ),
                         ),
-                        if (birthday.title != null && birthday.title!.isNotEmpty) ...[
+                        if (birthday.title != null &&
+                            birthday.title!.isNotEmpty) ...[
                           8.hGap,
                           Container(
                             padding: EdgeInsets.symmetric(
@@ -131,7 +135,9 @@ class _BrithdayTabViewState extends State<BrithdayTabView> with AutomaticKeepAli
                               vertical: 2.w,
                             ),
                             decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                              color: Theme.of(context)
+                                  .primaryColor
+                                  .withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(4.w),
                             ),
                             child: Text(
@@ -144,10 +150,8 @@ class _BrithdayTabViewState extends State<BrithdayTabView> with AutomaticKeepAli
                             ),
                           ),
                         ],
-
                         120.hGap
                       ],
-                      
                     ),
                     2.vGap,
                     Text(

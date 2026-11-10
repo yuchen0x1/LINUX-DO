@@ -52,7 +52,7 @@ jobs:
       - name: 设置Flutter环境
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.27.2'
+          flutter-version: '3.35.7'
           channel: 'stable'
           cache: true
       
@@ -91,6 +91,13 @@ jobs:
             fi
           fi
       
+      - name: 校验 native 库 16KB 页对齐
+        run: |
+          for apk in build/app/outputs/flutter-apk/*-release.apk; do
+            echo "=== $apk"
+            bash scripts/check_16k_alignment.sh "$apk"
+          done
+
       - name: 上传Release APK
         if: ${{ inputs.build_type == 'release' }}
         uses: actions/upload-artifact@v4

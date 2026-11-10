@@ -250,7 +250,8 @@ class AboutUser {
 
   String get avatarUrl {
     if (animatedAvatar != null && animatedAvatar!.isNotEmpty) {
-      if (animatedAvatar!.startsWith('http://') || animatedAvatar!.startsWith('https://')) {
+      if (animatedAvatar!.startsWith('http://') ||
+          animatedAvatar!.startsWith('https://')) {
         return animatedAvatar!.replaceAll(RegExp(r'/+'), '/');
       }
       return '${HttpConfig.baseUrl}${animatedAvatar!.replaceAll('{size}', '80')}';
@@ -259,7 +260,8 @@ class AboutUser {
     if (avatarTemplate == null || avatarTemplate!.isEmpty) {
       return '';
     }
-    if (avatarTemplate!.startsWith('http://') || avatarTemplate!.startsWith('https://')) {
+    if (avatarTemplate!.startsWith('http://') ||
+        avatarTemplate!.startsWith('https://')) {
       return avatarTemplate!.replaceAll(RegExp(r'/+'), '/');
     }
     return '${HttpConfig.baseUrl}${avatarTemplate!.replaceAll('{size}', '80')}';

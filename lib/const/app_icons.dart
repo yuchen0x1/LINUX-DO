@@ -10,10 +10,10 @@ class AppIcons {
   static const register = Icons.person_add_rounded;
 
   // 引导页相关
-  static const sincerity = Icons.favorite_rounded;  // 真诚
-  static const friendly = Icons.handshake_rounded;  // 友善
-  static const unity = Icons.group_rounded;         // 团结
-  static const professional = Icons.workspace_premium_rounded;  // 专业
+  static const sincerity = Icons.favorite_rounded; // 真诚
+  static const friendly = Icons.handshake_rounded; // 友善
+  static const unity = Icons.group_rounded; // 团结
+  static const professional = Icons.workspace_premium_rounded; // 专业
 
   // 通用
   static const back = Icons.arrow_back_ios_rounded;
@@ -22,4 +22,4 @@ class AppIcons {
   static const profile = Icons.account_circle_rounded;
   static const menu = Icons.menu_rounded;
   static const search = Icons.search_rounded;
-} 
+}

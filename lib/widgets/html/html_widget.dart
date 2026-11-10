@@ -17,7 +17,6 @@ import 'package:linux_do/net/http_config.dart';
 import 'package:linux_do/pages/topics/details/topic_detail_controller.dart';
 import 'package:linux_do/routes/app_pages.dart';
 import 'package:html/dom.dart' as dom;
-import 'package:linux_do/utils/emoji_manager.dart';
 import 'package:linux_do/utils/mixins/toast_mixin.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:linux_do/utils/log.dart';
@@ -2166,7 +2165,6 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
   // 辅助方法：构建单图布局
   Widget _buildSingleImage(BuildContext context, dom.Element imgElement) {
     final src = imgElement.attributes['src'];
-    final alt = imgElement.attributes['alt'] ?? '';
     final width = double.tryParse(imgElement.attributes['width'] ?? '0') ?? 0;
     final height = double.tryParse(imgElement.attributes['height'] ?? '0') ?? 0;
 
@@ -2510,13 +2508,13 @@ class PollController extends BaseController {
   void updateSelectedOptions() {
     selectedOptionIds.clear();
     hasVoted.value = false;
-    
+
     // 如果有vote数据，将其添加到selectedOptionIds
     if (poll.value.vote != null && poll.value.vote!.isNotEmpty) {
       // 处理投票数据
       selectedOptionIds.addAll(poll.value.vote!);
       hasVoted.value = true;
-    } 
+    }
   }
 
   String getVoterType(String optionId) {
@@ -2563,29 +2561,28 @@ class PollController extends BaseController {
       isLoadingMoreVoters.value = true;
 
       for (final optionId in selectedOptionIds) {
-      final response = await _apiService.getPollVoters(
-        pollName: poll.value.name ?? '',
-        page: votersPage[optionId] ?? 1,
-        limit: votersPerPage,
-        optionId: optionId,
-        postId: poll.value.postId,
-      );
-      
-      if (response.voters != null && 
-          response.voters!.containsKey(optionId) &&
-          response.voters![optionId] != null) {
-        
-        final newVoters = response.voters![optionId]!;
-        if (newVoters.isNotEmpty) {
-          // 更新页码
-          votersPage[optionId] = (votersPage[optionId] ?? 1) + 1;
-          if (!voters.containsKey(optionId)) {
-            voters[optionId] = RxList<PollVoter>([]);
+        final response = await _apiService.getPollVoters(
+          pollName: poll.value.name ?? '',
+          page: votersPage[optionId] ?? 1,
+          limit: votersPerPage,
+          optionId: optionId,
+          postId: poll.value.postId,
+        );
+
+        if (response.voters != null &&
+            response.voters!.containsKey(optionId) &&
+            response.voters![optionId] != null) {
+          final newVoters = response.voters![optionId]!;
+          if (newVoters.isNotEmpty) {
+            // 更新页码
+            votersPage[optionId] = (votersPage[optionId] ?? 1) + 1;
+            if (!voters.containsKey(optionId)) {
+              voters[optionId] = RxList<PollVoter>([]);
+            }
+
+            voters[optionId]!.addAll(newVoters);
           }
-          
-          voters[optionId]!.addAll(newVoters);
         }
-      }
 
         voters.refresh();
       }

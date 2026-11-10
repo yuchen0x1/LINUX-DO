@@ -119,8 +119,7 @@ class _WebPageState extends State<WebPage> with ToastMixin {
               ..httpOnly = true
               ..secure = true
           ]);
-          await StorageManager.setData(
-              AppConst.identifier.token, value);
+          await StorageManager.setData(AppConst.identifier.token, value);
         } else if (name == NetClient.forumSession) {
           hasSessionCookie = true;
           await _cookieJar.saveFromResponse(uri, [
@@ -141,8 +140,7 @@ class _WebPageState extends State<WebPage> with ToastMixin {
               ..httpOnly = true
               ..secure = true
           ]);
-          await StorageManager.setData(
-              AppConst.identifier.cfClearance, value);
+          await StorageManager.setData(AppConst.identifier.cfClearance, value);
         }
       }
 
@@ -200,9 +198,9 @@ class _WebPageState extends State<WebPage> with ToastMixin {
           if (result != null &&
               result.toString() != '{}' &&
               result.toString().isNotEmpty) {
-
             // 更新请求头
-            NetClient.getDio.options.headers['x-csrf-token'] = result.toString();
+            NetClient.getDio.options.headers['x-csrf-token'] =
+                result.toString();
 
             await StorageManager.setData(
                 AppConst.identifier.csrfToken, result.toString());
@@ -342,8 +340,9 @@ class _WebPageState extends State<WebPage> with ToastMixin {
                   try {
                     final decrypted =
                         UserApiKeyAuthService().decryptPayload(payload);
-                    final data =
-                        decrypted.startsWith('{') ? decrypted : '{"key":"$decrypted"}';
+                    final data = decrypted.startsWith('{')
+                        ? decrypted
+                        : '{"key":"$decrypted"}';
                     final Map<String, dynamic> decoded = jsonDecode(data);
                     final key = decoded['key'] as String?;
                     if (key != null && key.isNotEmpty) {

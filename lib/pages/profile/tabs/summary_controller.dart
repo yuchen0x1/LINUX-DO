@@ -10,9 +10,7 @@ class SummaryController extends BaseController with Concatenated {
   final Rxn<List<StatItem>> bottomStats = Rxn();
   final summaryData = Rxn<SummaryResponse>();
 
-
   void updateData(SummaryResponse? data) async {
-    
     if (data == null) {
       _setDefaultValues();
       return;

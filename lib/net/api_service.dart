@@ -70,7 +70,6 @@ abstract class ApiService {
     @Query("forceLoad") bool forceLoad = true,
   });
 
-
   /// 获取机器人私信回复详情
   @GET("t/{topic_id}.json")
   Future<TopicDetail> getRobotTopicDetail(
@@ -78,7 +77,6 @@ abstract class ApiService {
     @Query("track_visit") bool trackVisit = true,
     @Query("forceLoad") bool forceLoad = true,
   });
-
 
   /// 获取单个帖子内容
   @GET("posts/{post_id}")
@@ -108,7 +106,8 @@ abstract class ApiService {
       @Header("Accept-Language")
       String acceptLanguage = "zh-CN,zh;q=0.9,en;q=0.8",
       @Header("X-Requested-With") String requestedWith = "XMLHttpRequest",
-      @Header("sec-ch-ua") String secChUa =
+      @Header("sec-ch-ua")
+      String secChUa =
           "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\"",
       @Header("sec-ch-ua-mobile") String secChUaMobile = "?0",
       @Header("sec-ch-ua-platform") String secChUaPlatform = "\"macOS\""});

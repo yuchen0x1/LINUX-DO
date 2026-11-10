@@ -1,4 +1,3 @@
-
 import 'package:get/get.dart';
 import 'package:linux_do/controller/base_controller.dart';
 
@@ -8,7 +7,6 @@ class WebPostReadController extends BaseController {
   @override
   void onInit() {
     super.onInit();
-        topicId.value = Get.arguments as int;
-    final postNumber = Get.parameters['postNumber'];
+    topicId.value = Get.arguments as int;
   }
 }

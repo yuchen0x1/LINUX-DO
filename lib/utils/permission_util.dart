@@ -55,4 +55,4 @@ class PermissionUtil {
   static Future<bool> checkContactsPermission() async {
     return await checkAndRequestPermission(Permission.contacts);
   }
-} 
+}

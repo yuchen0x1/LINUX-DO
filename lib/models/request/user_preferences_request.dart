@@ -21,15 +21,15 @@ class UserPreferencesRequest {
   final String? defaultCalendar;
 
   UserPreferencesRequest({
-     this.bioRaw,
-     this.website,
-     this.location,
-     this.customFields,
-     this.cardBackgroundUploadUrl,
-     this.dateOfBirth,
-     this.hideProfile,
-     this.timezone,
-     this.defaultCalendar,
+    this.bioRaw,
+    this.website,
+    this.location,
+    this.customFields,
+    this.cardBackgroundUploadUrl,
+    this.dateOfBirth,
+    this.hideProfile,
+    this.timezone,
+    this.defaultCalendar,
   });
 
   factory UserPreferencesRequest.fromJson(Map<String, dynamic> json) =>

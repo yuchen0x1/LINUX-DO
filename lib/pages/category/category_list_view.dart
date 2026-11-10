@@ -29,16 +29,16 @@ class CategoryListView extends GetView<CategoryListController> {
                   (context, index) {
                     final topic = controller.topics[index];
                     return TopicItem(
-                      topic: topic,
-                      avatarUrl: controller.getLatestPosterAvatar(topic),
-                      nickName: controller.getNickName(topic),
-                      username: controller.getUserName(topic),
-                      avatarUrls: controller.getAvatarUrls(topic),
-                      onTap: () => controller.toTopicDetail(topic.id),
-                      onDoNotDisturb: (topic) => controller.doNotDisturb(topic.id),
-                      onDelete: (topic) => controller.deleteTopic(topic.id),
-                      avatarActions: AvatarActions.openCard
-                    );
+                        topic: topic,
+                        avatarUrl: controller.getLatestPosterAvatar(topic),
+                        nickName: controller.getNickName(topic),
+                        username: controller.getUserName(topic),
+                        avatarUrls: controller.getAvatarUrls(topic),
+                        onTap: () => controller.toTopicDetail(topic.id),
+                        onDoNotDisturb: (topic) =>
+                            controller.doNotDisturb(topic.id),
+                        onDelete: (topic) => controller.deleteTopic(topic.id),
+                        avatarActions: AvatarActions.openCard);
                   },
                   childCount: controller.topics.length,
                 ),
@@ -69,4 +69,4 @@ class CategoryListView extends GetView<CategoryListController> {
     }
     return ViewState.content;
   }
-} 
+}

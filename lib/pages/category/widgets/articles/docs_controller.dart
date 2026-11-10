@@ -8,6 +8,7 @@ import '../../../../routes/app_pages.dart';
 import '../../../../utils/log.dart';
 import '../../../../utils/mixins/toast_mixin.dart';
 import '../../../../utils/user_cache.dart';
+
 class DocsController extends BaseController {
   final ApiService apiService = Get.find();
   final RefreshController refreshController = RefreshController();
@@ -15,10 +16,9 @@ class DocsController extends BaseController {
   final _userCache = UserCache();
   final hasMore = true.obs;
   final currentPage = 1.obs;
-    // 加载状态
+  // 加载状态
   final isRefreshing = false.obs;
   final isLoadingMore = false.obs;
-
 
   @override
   void onInit() {
@@ -27,11 +27,11 @@ class DocsController extends BaseController {
   }
 
   void fetchDocs() async {
-    try { 
+    try {
       isLoading.value = true;
       clearError();
       final response = await apiService.getDocs();
-      topics.value = response.topics?.topicList?.topics ?? [];    
+      topics.value = response.topics?.topicList?.topics ?? [];
       l.d('获取文档列表成功: ${topics.length} 条数据');
     } catch (e, s) {
       l.e('获取文档列表失败: $e $s');
@@ -41,7 +41,7 @@ class DocsController extends BaseController {
     }
   }
 
-   // 刷新数据
+  // 刷新数据
   Future<void> onRefresh() async {
     try {
       isRefreshing.value = true;
@@ -148,10 +148,13 @@ class DocsController extends BaseController {
           type: SnackbarType.error);
     }
   }
-  
-      List<String> getAvatarUrls(Topic topic) {
-     // 通过_userCache获取头像
+
+  List<String> getAvatarUrls(Topic topic) {
+    // 通过_userCache获取头像
     final avatarUrls = topic.getAvatarUrls();
-    return avatarUrls.map((id) => _userCache.getAvatarUrl(id)).whereType<String>().toList();
+    return avatarUrls
+        .map((id) => _userCache.getAvatarUrl(id))
+        .whereType<String>()
+        .toList();
   }
-} 
+}

@@ -1,12 +1,7 @@
 import 'package:get/get.dart';
 import 'package:linux_do/controller/base_controller.dart';
-import 'package:linux_do/controller/global_controller.dart';
-import 'package:linux_do/net/api_service.dart';
 
 class NotificationSettingsController extends BaseController {
-  final ApiService _apiService = Get.find();
-  final GlobalController _globalController = Get.find();
-
   // 通知开关状态
   final whenLiked = false.obs;
   final allowFollow = false.obs;
@@ -45,4 +40,4 @@ class NotificationSettingsController extends BaseController {
       isLoading.value = false;
     }
   }
-} 
+}

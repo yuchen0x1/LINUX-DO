@@ -2,7 +2,6 @@ import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:linux_do/const/app_colors.dart';
 import 'package:linux_do/const/app_const.dart';
 import 'package:linux_do/const/app_spacing.dart';
 import 'package:linux_do/const/app_theme.dart';
@@ -101,7 +100,7 @@ class ActivityPage extends GetView<EventController> {
               fontFamily: AppFontFamily.dinPro,
             ),
           ),
-          value: controller.selectedRange.value,
+          value: controller.selectedRange,
           onValueChanged: (dates) {
             if (dates.isNotEmpty) {
               controller.onDateSelected(dates.first);

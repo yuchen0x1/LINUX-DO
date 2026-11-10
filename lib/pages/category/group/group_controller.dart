@@ -4,13 +4,12 @@ import 'package:linux_do/controller/base_controller.dart';
 import 'package:linux_do/models/group.dart';
 import 'package:linux_do/net/api_service.dart';
 import 'package:linux_do/utils/log.dart';
-import 'package:linux_do/utils/mixins/toast_mixin.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class GroupController extends BaseController {
   final ApiService _apiService = Get.find();
   late final RefreshController refreshController;
-  
+
   // 数据相关
   final groups = <Group>[].obs;
   final hasMore = true.obs;
@@ -35,13 +34,13 @@ class GroupController extends BaseController {
     try {
       isLoading.value = true;
       clearError();
-      
+
       final response = await _apiService.getGroups();
-      
+
       groups.value = response.groups;
       hasMore.value = response.loadMoreGroups != null;
       currentPage.value = 1;
-      
+
       l.d('获取群组列表成功: ${groups.length} 个群组');
     } catch (e, s) {
       l.e('获取群组列表失败: $e  $s');
@@ -55,13 +54,13 @@ class GroupController extends BaseController {
   Future<void> onRefresh() async {
     try {
       final response = await _apiService.getGroups();
-      
+
       groups.value = response.groups;
       hasMore.value = response.loadMoreGroups != null;
       currentPage.value = 1;
       l.d('当前加入状态 : ${groups[0].id} ${groups[0].isGroupUser}');
       l.d('当前加入状态 : ${groups[1].id} ${groups[1].isGroupUser}');
-      
+
       refreshController.refreshCompleted();
       l.d('刷新群组列表成功');
     } catch (e) {
@@ -80,7 +79,7 @@ class GroupController extends BaseController {
     try {
       final nextPage = currentPage.value + 1;
       final response = await _apiService.getGroups();
-      
+
       if (response.groups.isEmpty) {
         hasMore.value = false;
         refreshController.loadNoData();
@@ -90,7 +89,7 @@ class GroupController extends BaseController {
       groups.addAll(response.groups);
       hasMore.value = response.loadMoreGroups != null;
       currentPage.value = nextPage;
-      
+
       refreshController.loadComplete();
       l.d('加载更多群组成功: 当前 ${groups.length} 个群组');
     } catch (e) {

@@ -18,7 +18,8 @@ class TopicListResponse {
     this.topicList,
   });
 
-  factory TopicListResponse.fromJson(Map<String, dynamic> json) => _$TopicListResponseFromJson(json);
+  factory TopicListResponse.fromJson(Map<String, dynamic> json) =>
+      _$TopicListResponseFromJson(json);
   Map<String, dynamic> toJson() => _$TopicListResponseToJson(this);
 
   // 根据用户ID获取用户
@@ -69,13 +70,14 @@ class User {
     this.admin,
     this.moderator,
     this.trustLevel,
-    this.count, 
+    this.count,
     this.animatedAvatar,
   });
 
   String get avatarUrl {
     if (animatedAvatar != null) {
-      if (animatedAvatar!.startsWith('http://') || animatedAvatar!.startsWith('https://')) {
+      if (animatedAvatar!.startsWith('http://') ||
+          animatedAvatar!.startsWith('https://')) {
         return animatedAvatar!;
       }
       return '${HttpConfig.baseUrl}${animatedAvatar?.replaceFirst('{size}', '100')}';
@@ -83,14 +85,15 @@ class User {
     if (avatarTemplate == null || avatarTemplate!.isEmpty) {
       return '';
     }
-    if (avatarTemplate!.startsWith('http://') || avatarTemplate!.startsWith('https://')) {
+    if (avatarTemplate!.startsWith('http://') ||
+        avatarTemplate!.startsWith('https://')) {
       return avatarTemplate!;
     }
     return '${HttpConfig.baseUrl}${avatarTemplate?.replaceFirst('{size}', '100')}';
   }
 
   String? getFlairUrl() {
-    if(flairUrl == null) {
+    if (flairUrl == null) {
       return null;
     }
     if (flairUrl!.startsWith('http://') || flairUrl!.startsWith('https://')) {
@@ -133,7 +136,8 @@ class FlairGroup {
     this.flairColor,
   });
 
-  factory FlairGroup.fromJson(Map<String, dynamic> json) => _$FlairGroupFromJson(json);
+  factory FlairGroup.fromJson(Map<String, dynamic> json) =>
+      _$FlairGroupFromJson(json);
   Map<String, dynamic> toJson() => _$FlairGroupToJson(this);
 }
 
@@ -160,7 +164,8 @@ class TopicList {
     required this.topics,
   });
 
-  factory TopicList.fromJson(Map<String, dynamic> json) => _$TopicListFromJson(json);
+  factory TopicList.fromJson(Map<String, dynamic> json) =>
+      _$TopicListFromJson(json);
   Map<String, dynamic> toJson() => _$TopicListToJson(this);
 }
 
@@ -274,9 +279,10 @@ class Topic {
     return latestPoster?.userId;
   }
 
-   // 返回posters中的id 并且不包含原始发帖人
+  // 返回posters中的id 并且不包含原始发帖人
   List<int> getAvatarUrls() {
-    return posters?.map((poster) => poster.userId).whereType<int>().toList() ?? [];
+    return posters?.map((poster) => poster.userId).whereType<int>().toList() ??
+        [];
   }
 }
 
@@ -340,4 +346,4 @@ class TopicModel {
       'created_at': createdAt.toIso8601String(),
     };
   }
-} 
+}

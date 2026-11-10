@@ -34,11 +34,11 @@ class SettingsController extends BaseController {
   final isPushEnabled = false.obs;
 
   List<String> get themeModeOptions => [
-    AppConst.settings.themeSystem,
-    AppConst.settings.themeLight,
-    AppConst.settings.themeDark,
-    AppConst.settings.themeAmoled,
-  ];
+        AppConst.settings.themeSystem,
+        AppConst.settings.themeLight,
+        AppConst.settings.themeDark,
+        AppConst.settings.themeAmoled,
+      ];
 
   String get selectedThemeMode {
     if (isAmoled.value) return AppConst.settings.themeAmoled;
@@ -66,13 +66,15 @@ class SettingsController extends BaseController {
     isAmoled.value = savedThemeMode == 'amoled';
     themeMode.value = _parseThemeMode(savedThemeMode);
 
-    final savedBrowserTips = StorageManager.getBool(AppConst.identifier.browserTips) ?? false;
+    final savedBrowserTips =
+        StorageManager.getBool(AppConst.identifier.browserTips) ?? false;
     browserTips.value = savedBrowserTips;
 
     final savedEmoji = StorageManager.getBool('animated_emoji_enabled') ?? true;
     isAnimatedEmojiEnabled.value = savedEmoji;
 
-    final savedPush = StorageManager.getBool('push_notification_enabled') ?? false;
+    final savedPush =
+        StorageManager.getBool('push_notification_enabled') ?? false;
     isPushEnabled.value = savedPush;
   }
 
@@ -161,7 +163,8 @@ class SettingsController extends BaseController {
             children: [
               Row(
                 children: [
-                  TrustLevelBadge(level: level, showTitle: false, fontSize: 12.sp),
+                  TrustLevelBadge(
+                      level: level, showTitle: false, fontSize: 12.sp),
                   8.hGap,
                   Text(
                     title,
@@ -221,7 +224,6 @@ class SettingsController extends BaseController {
     );
   }
 
-
   Future<void> logout() async {
     await WebPage.clearCache();
     await NetClient.getInstance().clearCookies();
@@ -232,51 +234,42 @@ class SettingsController extends BaseController {
     await StorageManager.remove(AppConst.identifier.cfClearance);
     await StorageManager.remove(AppConst.identifier.username);
     await StorageManager.remove(AppConst.identifier.name);
+    // 身份 ID 必须一起清掉，否则下次登录会用上一个账号的 ID 订阅 MessageBus
+    await StorageManager.remove(AppConst.identifier.userId);
     Get.find<GlobalController>().setIsLogin(false);
     Get.find<GlobalController>().setIsAnonymousMode(false);
     StorageManager.setData(AppConst.identifier.isAnonymousMode, false);
     Get.offAllNamed(Routes.LOGIN);
   }
 
-
   void showColorPicker() {
     DisColorPicker.show(
       selectedColor: primaryMaterial,
       onColorSelected: (color) {
-        changeTheme(color);   
-      },  
+        changeTheme(color);
+      },
     );
   }
 
   void changeTheme(Color color) {
     try {
-      ThemeData lightTheme = ThemeData(
-        primaryColor: color,
-        brightness: Brightness.light,
-      );
+      // 只替换主色，保留 AppTheme 里的卡片 / 背景 / 文字 / 输入框等定制，
+      // 否则换色后整个 App 的外观会回退成 Material 默认值。
+      final baseTheme =
+          Get.isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme;
+      final theme = AppTheme.withPrimaryColor(base: baseTheme, primary: color);
 
-      ThemeData darkTheme = ThemeData(
-        primaryColor: color,
-        brightness: Brightness.dark,
-      );
-
-      // 根据当前主题模式切换
-      if (Get.isDarkMode) {
-        Get.changeTheme(darkTheme);
-      } else {
-        Get.changeTheme(lightTheme);
-      }
+      Get.changeTheme(theme);
 
       // 返回上一页
       Get.back();
 
-      final colorHex = color.value & 0xFFFFFF;
+      final colorHex = color.toARGB32() & 0xFFFFFF;
       StorageManager.setData(AppConst.identifier.themeColor, colorHex);
     } catch (e, s) {
       l.e('changeTheme error: $e, $s');
     }
   }
-
 
   /// 关于页面
   void toAbout() {
@@ -285,10 +278,11 @@ class SettingsController extends BaseController {
 
   /// 常见问题页面
   void toFaq() {
-    Get.toNamed(Routes.WEBVIEW, arguments: '${HttpConfig.baseUrl}${AppConst.faq}');
+    Get.toNamed(Routes.WEBVIEW,
+        arguments: '${HttpConfig.baseUrl}${AppConst.faq}');
   }
 
-  /// 更新浏览器提示  
+  /// 更新浏览器提示
   void updateBrowserTips(bool value) {
     StorageManager.setData(AppConst.identifier.browserTips, value);
     browserTips.value = value;
@@ -326,8 +320,8 @@ class SettingsController extends BaseController {
   }
 
   /// 导出数据
-  void exportData() async{
-    try{
+  void exportData() async {
+    try {
       SuccessResponse data = await _apiService.requestDataExport();
       if (data.isSuccess) {
         showSuccess(AppConst.settings.dataExportSuccess);
@@ -339,13 +333,13 @@ class SettingsController extends BaseController {
   }
 
   /// 用户协议
-  void toTerms() async{
+  void toTerms() async {
     final htmlContent = await rootBundle.loadString(AppConst.terms);
     Get.toNamed(Routes.WEBVIEW, arguments: htmlContent);
   }
 
   /// 隐私政策
-  void toPrivacy() async{
+  void toPrivacy() async {
     final htmlContent = await rootBundle.loadString(AppConst.privacy);
     Get.toNamed(Routes.WEBVIEW, arguments: htmlContent);
   }
@@ -359,4 +353,4 @@ class SettingsController extends BaseController {
   void toNetworkSettings() {
     Get.toNamed(Routes.NETWORK_SETTINGS);
   }
-} 
+}

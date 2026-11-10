@@ -1,4 +1,3 @@
-
 import 'package:get/get.dart';
 import 'package:linux_do/const/app_const.dart';
 import 'package:linux_do/controller/base_controller.dart';
@@ -12,7 +11,6 @@ import 'package:linux_do/utils/mixins/toast_mixin.dart';
 import 'package:linux_do/utils/user_cache.dart';
 
 class PersonalController extends BaseController {
-
   final ApiService _apiService = Get.find();
   final summaryData = Rxn<SummaryResponse>();
   final _userCache = UserCache();
@@ -21,7 +19,7 @@ class PersonalController extends BaseController {
 
   final selectedTabIndex = 0.obs;
 
-    // 别人的用户信息
+  // 别人的用户信息
   final _userInfo = Rxn<UserResponse>();
 
   UserResponse? get userInfo => _userInfo.value;
@@ -52,7 +50,6 @@ class PersonalController extends BaseController {
       final data = await _apiService.getUserSummary(personalUserName);
       summaryData.value = data;
       _userCache.updateUsers(data.users ?? []);
-      
     } catch (e) {
       l.e('获取用户信息失败: $e');
     } finally {
@@ -68,7 +65,6 @@ class PersonalController extends BaseController {
     }
     return number.toString();
   }
-
 
 // 跳转到帖子详情
   void toTopicDetail(int id) {
@@ -128,9 +124,12 @@ class PersonalController extends BaseController {
     }
   }
 
-    List<String> getAvatarUrls(Topic topic) {
-     // 通过_userCache获取头像
+  List<String> getAvatarUrls(Topic topic) {
+    // 通过_userCache获取头像
     final avatarUrls = topic.getAvatarUrls();
-    return avatarUrls.map((id) => _userCache.getAvatarUrl(id)).whereType<String>().toList();
+    return avatarUrls
+        .map((id) => _userCache.getAvatarUrl(id))
+        .whereType<String>()
+        .toList();
   }
 }

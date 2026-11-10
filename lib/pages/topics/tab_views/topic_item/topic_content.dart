@@ -35,7 +35,7 @@ class TopicContent extends StatelessWidget {
     // 获取布局密度设置
     final fontSizeController = Get.find<FontSizeController>();
     final density = fontSizeController.listDensity.value;
-    
+
     // 根据密度设置不同的间距
     final spacing = density == ListDensity.compact
         ? 2.0
@@ -57,10 +57,10 @@ class TopicContent extends StatelessWidget {
               avatarActions: avatarActions,
               toPersonalPage: toPersonalPage,
             ),
-            
+
             // 间距
             SizedBox(width: spacing.w),
-            
+
             // 主要内容区域
             Expanded(
               child: Column(
@@ -72,10 +72,10 @@ class TopicContent extends StatelessWidget {
                     isPinned: topic.pinned ?? false,
                     density: density,
                   ),
-                  
+
                   // 标题和摘要之间的间距
                   SizedBox(height: (spacing / 2).w),
-                  
+
                   // 摘要与标签
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,12 +100,12 @@ class TopicContent extends StatelessWidget {
                         ),
                     ],
                   ),
-                  
+
                   // 标签和底部信息之间的间距
                   if ((topic.tags != null && topic.tags!.isNotEmpty) ||
                       topic.categoryId != null)
                     SizedBox(height: (spacing / 2).w),
-                  
+
                   // 底部信息
                   TopicFooter(
                     topic: topic,
@@ -120,4 +120,4 @@ class TopicContent extends StatelessWidget {
       ],
     );
   }
-} 
+}

@@ -57,11 +57,10 @@ class DisTextField extends StatelessWidget {
     );
 
     return TextField(
-      controller: controller ??
-          TextEditingController(text: value)
-            ..selection = TextSelection.fromPosition(
-              TextPosition(offset: value?.length ?? 0),
-            ),
+      controller: controller ?? TextEditingController(text: value)
+        ..selection = TextSelection.fromPosition(
+          TextPosition(offset: value?.length ?? 0),
+        ),
       onChanged: onChanged,
       maxLines: maxLines,
       enabled: enabled,
@@ -107,4 +106,4 @@ class DisTextField extends StatelessWidget {
       onSubmitted: onSubmitted,
     );
   }
-} 
+}

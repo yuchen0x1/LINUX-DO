@@ -118,7 +118,8 @@ class Category {
 
   String getLogoUrl() {
     if (uploadedLogo == null) return '';
-    if (uploadedLogo!.url!.startsWith('http://') || uploadedLogo!.url!.startsWith('https://')) {
+    if (uploadedLogo!.url!.startsWith('http://') ||
+        uploadedLogo!.url!.startsWith('https://')) {
       return uploadedLogo!.url!;
     }
     return '${HttpConfig.baseUrl}${uploadedLogo!.url!}';
@@ -207,7 +208,8 @@ class CategoryTopic {
     required this.lastPoster,
   });
 
-  factory CategoryTopic.fromJson(Map<String, dynamic> json) => _$CategoryTopicFromJson(json);
+  factory CategoryTopic.fromJson(Map<String, dynamic> json) =>
+      _$CategoryTopicFromJson(json);
   Map<String, dynamic> toJson() => _$CategoryTopicToJson(this);
 }
 

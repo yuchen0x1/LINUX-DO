@@ -34,7 +34,7 @@ class StateView extends GetView {
     this.shimmerView,
     required this.child,
   });
-  
+
   /// 创建加载状态视图的工厂方法
   static Widget loading({int shimmerCount = 7, Widget? shimmerView}) {
     return StateView(
@@ -44,7 +44,7 @@ class StateView extends GetView {
       child: const SizedBox(),
     );
   }
-  
+
   /// 创建空状态视图的工厂方法
   static Widget empty({String? message, VoidCallback? onRetry}) {
     return StateView(
@@ -54,7 +54,7 @@ class StateView extends GetView {
       child: const SizedBox(),
     );
   }
-  
+
   /// 创建错误状态视图的工厂方法
   static Widget error({String? message, VoidCallback? onRetry}) {
     return StateView(
@@ -97,7 +97,10 @@ class StateView extends GetView {
   }
 
   Widget _buildError(BuildContext context) {
-    return StateViewError(errorMessage: errorMessage, onRetry: onRetry,);
+    return StateViewError(
+      errorMessage: errorMessage,
+      onRetry: onRetry,
+    );
   }
 
   Widget _buildEmpty(BuildContext context) {
@@ -120,8 +123,7 @@ class StateView extends GetView {
           ),
           if (onRetry != null) ...[
             16.vGap,
-            DisButton(
-                text: '重试', size: ButtonSize.small, onPressed: onRetry),
+            DisButton(text: '重试', size: ButtonSize.small, onPressed: onRetry),
           ],
         ],
       ),
@@ -254,11 +256,10 @@ class ShimmerDetails extends GetView {
   }
 }
 
-
 class StateViewError extends StatelessWidget {
   final String? errorMessage;
   final VoidCallback? onRetry;
-  const StateViewError({super.key,this.errorMessage, this.onRetry});
+  const StateViewError({super.key, this.errorMessage, this.onRetry});
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -280,8 +281,7 @@ class StateViewError extends StatelessWidget {
           ),
           if (onRetry != null) ...[
             16.vGap,
-            DisButton(
-                text: '重试', size: ButtonSize.small, onPressed: onRetry),
+            DisButton(text: '重试', size: ButtonSize.small, onPressed: onRetry),
           ],
         ],
       ),

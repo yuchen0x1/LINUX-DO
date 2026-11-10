@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:cronet_http/cronet_http.dart' as cronet;
@@ -69,6 +68,3 @@ Future<Uint8List> readByteStream(Stream<Uint8List> stream) async {
   }
   return builder.takeBytes();
 }
-
-// 防止 dart:convert 未使用告警
-final _ = utf8;

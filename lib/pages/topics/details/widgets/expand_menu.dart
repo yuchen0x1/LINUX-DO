@@ -106,27 +106,27 @@ class ExpandMenu extends StatelessWidget {
                   ],
                 )),
           ],
-
-          if (post.canDelete != true)...[
-          8.vGap,
-          GestureDetector(
-              onTap: () => controller.deletePost(post),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _DeleteButton(post: post, controller: controller),
-                 4.hGap,
-                  Text(
-                    '删除',
-                    style: TextStyle(
-                      fontSize: 13.w,
-                      color: Theme.of(context).textTheme.bodyMedium?.color,
+          if (post.canDelete != true) ...[
+            8.vGap,
+            GestureDetector(
+                onTap: () => controller.deletePost(post),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _DeleteButton(post: post, controller: controller),
+                    4.hGap,
+                    Text(
+                      '删除',
+                      style: TextStyle(
+                        fontSize: 13.w,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
+                      ),
                     ),
-                  ),
-                ],
-              ))],
+                  ],
+                ))
+          ],
         ],
       ),
       child: Icon(CupertinoIcons.ellipsis_circle,

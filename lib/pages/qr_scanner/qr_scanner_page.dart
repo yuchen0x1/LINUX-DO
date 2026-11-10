@@ -17,19 +17,20 @@ class QRScannerPage extends StatefulWidget {
   State<QRScannerPage> createState() => _QRScannerPageState();
 }
 
-class _QRScannerPageState extends State<QRScannerPage> with WidgetsBindingObserver {
+class _QRScannerPageState extends State<QRScannerPage>
+    with WidgetsBindingObserver {
   bool hasPermission = false;
   bool isLoading = false;
   String? error;
   bool isTorchEnabled = false;
-  
+
   late final MobileScannerController controller;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    
+
     // 初始化扫描控制器
     controller = MobileScannerController(
       // 使用正常速度进行扫描
@@ -76,7 +77,7 @@ class _QRScannerPageState extends State<QRScannerPage> with WidgetsBindingObserv
   Future<void> _checkPermission() async {
     try {
       setState(() => isLoading = true);
-      
+
       final status = await Permission.camera.status;
       if (status.isGranted) {
         setState(() => hasPermission = true);
@@ -138,7 +139,9 @@ class _QRScannerPageState extends State<QRScannerPage> with WidgetsBindingObserv
         actions: [
           IconButton(
             icon: Icon(
-              isTorchEnabled ? CupertinoIcons.lightbulb_fill : CupertinoIcons.lightbulb,
+              isTorchEnabled
+                  ? CupertinoIcons.lightbulb_fill
+                  : CupertinoIcons.lightbulb,
               size: 24.w,
             ),
             onPressed: _toggleTorch,
@@ -152,7 +155,7 @@ class _QRScannerPageState extends State<QRScannerPage> with WidgetsBindingObserv
           ),
         ],
       ),
-      body: isLoading 
+      body: isLoading
           ? const Center(child: DisSquareLoading())
           : error != null
               ? Center(
@@ -164,7 +167,9 @@ class _QRScannerPageState extends State<QRScannerPage> with WidgetsBindingObserv
                       borderRadius: BorderRadius.circular(12.w),
                       boxShadow: [
                         BoxShadow(
-                          color: Theme.of(context).shadowColor.withOpacity(0.1),
+                          color: Theme.of(context)
+                              .shadowColor
+                              .withValues(alpha: 0.1),
                           blurRadius: 12.w,
                           offset: Offset(0, 4.w),
                         ),
@@ -213,7 +218,9 @@ class _QRScannerPageState extends State<QRScannerPage> with WidgetsBindingObserv
                           borderRadius: BorderRadius.circular(12.w),
                           boxShadow: [
                             BoxShadow(
-                              color: Theme.of(context).shadowColor.withOpacity(0.1),
+                              color: Theme.of(context)
+                                  .shadowColor
+                                  .withValues(alpha: 0.1),
                               blurRadius: 12.w,
                               offset: Offset(0, 4.w),
                             ),
@@ -254,7 +261,8 @@ class _QRScannerPageState extends State<QRScannerPage> with WidgetsBindingObserv
                                 type: ButtonType.primary,
                                 onPressed: () async {
                                   if (await openAppSettings()) {
-                                    await Future.delayed(const Duration(seconds: 1));
+                                    await Future.delayed(
+                                        const Duration(seconds: 1));
                                     _checkPermission();
                                   }
                                 },
@@ -279,7 +287,7 @@ class _QRScannerPageState extends State<QRScannerPage> with WidgetsBindingObserv
                               }
                             }
                           },
-                          errorBuilder: (context, error, child) {
+                          errorBuilder: (context, error) {
                             l.e('相机错误: ${error.errorCode}');
                             return Center(
                               child: Container(
@@ -290,7 +298,9 @@ class _QRScannerPageState extends State<QRScannerPage> with WidgetsBindingObserv
                                   borderRadius: BorderRadius.circular(12.w),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Theme.of(context).shadowColor.withOpacity(0.1),
+                                      color: Theme.of(context)
+                                          .shadowColor
+                                          .withValues(alpha: 0.1),
                                       blurRadius: 12.w,
                                       offset: Offset(0, 4.w),
                                     ),
@@ -302,14 +312,16 @@ class _QRScannerPageState extends State<QRScannerPage> with WidgetsBindingObserv
                                     Icon(
                                       CupertinoIcons.camera_fill,
                                       size: 48.w,
-                                      color: Theme.of(context).colorScheme.error,
+                                      color:
+                                          Theme.of(context).colorScheme.error,
                                     ),
                                     16.vGap,
                                     Text(
                                       '相机初始化失败: ${error.errorCode}',
                                       style: TextStyle(
                                         fontSize: 14.w,
-                                        color: Theme.of(context).colorScheme.error,
+                                        color:
+                                            Theme.of(context).colorScheme.error,
                                       ),
                                       textAlign: TextAlign.center,
                                     ),
@@ -388,4 +400,4 @@ class ScannerOverlay extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-} 
+}

@@ -9,6 +9,7 @@ class ChatDirect {
 
   ChatDirect({this.channel});
 
-  factory ChatDirect.fromJson(Map<String, dynamic> json) => _$ChatDirectFromJson(json);
+  factory ChatDirect.fromJson(Map<String, dynamic> json) =>
+      _$ChatDirectFromJson(json);
   Map<String, dynamic> toJson() => _$ChatDirectToJson(this);
 }

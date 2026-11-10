@@ -3,7 +3,6 @@ import 'package:linux_do/models/user_action.dart';
 import 'package:linux_do/models/user_auth_token.dart';
 import 'package:linux_do/models/user_status.dart';
 import 'package:linux_do/net/http_config.dart';
-import 'package:linux_do/utils/log.dart';
 
 import 'badge_detail.dart';
 part 'user.g.dart';
@@ -392,7 +391,8 @@ class CurrentUser {
     if (avatarTemplate == null || avatarTemplate!.isEmpty) {
       return '';
     }
-    if (avatarTemplate!.startsWith('http://') || avatarTemplate!.startsWith('https://')) {
+    if (avatarTemplate!.startsWith('http://') ||
+        avatarTemplate!.startsWith('https://')) {
       return avatarTemplate!;
     }
     return '${HttpConfig.baseUrl}${avatarTemplate!.replaceAll('{size}', '100')}';
@@ -400,14 +400,15 @@ class CurrentUser {
 
   String? get backgroundUrl {
     // 如果不包含https:// 则添加
-    if (cardBackgroundUploadUrl != null && !cardBackgroundUploadUrl!.startsWith('https://')) {
+    if (cardBackgroundUploadUrl != null &&
+        !cardBackgroundUploadUrl!.startsWith('https://')) {
       final tmpUrl = cardBackgroundUploadUrl!.replaceAll(RegExp(r'/+'), '/');
       return '${HttpConfig.baseUrl}$tmpUrl';
     }
     return cardBackgroundUploadUrl;
   }
 
-    bool isWebMaster() {
+  bool isWebMaster() {
     return id == 1;
   }
 }
@@ -496,7 +497,6 @@ class CategoryExpert {
       _$CategoryExpertFromJson(json);
   Map<String, dynamic> toJson() => _$CategoryExpertToJson(this);
 }
-
 
 @JsonSerializable()
 class Tags {

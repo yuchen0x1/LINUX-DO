@@ -63,7 +63,6 @@ class CategoryPage extends StatelessWidget {
                   ),
                   10.hGap
                 ],
-
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -96,14 +95,14 @@ class CategoryPage extends StatelessWidget {
                     color: color,
                     borderRadius: BorderRadius.circular(6).w,
                   ),
-                  child: Text(slug!,
+                  child: Text(slug,
                       style: TextStyle(
                         fontSize: 8.w,
                         fontFamily: AppFontFamily.dinPro,
                         color: textColor,
                       )),
                 ),
-               16.hGap,
+              16.hGap,
             ],
           ),
           body: const CategoryListView(),

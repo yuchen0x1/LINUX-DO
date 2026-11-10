@@ -33,4 +33,4 @@ class EventBus {
   List<Worker> listenList(List<EventType> events, Function(dynamic) callback) {
     return events.map((event) => listen(event, callback)).toList();
   }
-} 
+}

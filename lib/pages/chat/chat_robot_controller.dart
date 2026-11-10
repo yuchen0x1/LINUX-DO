@@ -71,7 +71,7 @@ class ChatRobotController extends BaseController {
     _initUsers();
     _loadInitialMessages();
     KeyboardVisibilityController().onChange.listen((bool visible) {
-     if (visible) {
+      if (visible) {
         isShowEmojiPicker.value = false;
         isHideKeyboard.value = false;
       }

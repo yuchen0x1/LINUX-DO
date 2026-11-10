@@ -71,7 +71,7 @@ class NotificationItem {
     required this.actingUserName,
   });
 
-    String getUesrName(){
+  String getUesrName() {
     if (data.originalUsername.isNotEmpty) {
       return data.originalUsername;
     }
@@ -79,17 +79,17 @@ class NotificationItem {
   }
 
   String getAvatarUrl() {
-
-    if (actingUserAvatarTemplate == null || actingUserAvatarTemplate!.isEmpty) {
+    if (actingUserAvatarTemplate.isEmpty) {
       return '';
     }
-    if (actingUserAvatarTemplate!.startsWith('http://') || actingUserAvatarTemplate!.startsWith('https://')) {
-      return actingUserAvatarTemplate!;
+    if (actingUserAvatarTemplate.startsWith('http://') ||
+        actingUserAvatarTemplate.startsWith('https://')) {
+      return actingUserAvatarTemplate;
     }
-    return '${HttpConfig.baseUrl}${actingUserAvatarTemplate!.replaceAll('{size}', '80')}';
+    return '${HttpConfig.baseUrl}${actingUserAvatarTemplate.replaceAll('{size}', '80')}';
   }
 
-    bool isWebMaster() {
+  bool isWebMaster() {
     return userId == 1;
   }
 
@@ -171,4 +171,4 @@ class NotificationData {
   factory NotificationData.fromJson(Map<String, dynamic> json) =>
       _$NotificationDataFromJson(json);
   Map<String, dynamic> toJson() => _$NotificationDataToJson(this);
-} 
+}

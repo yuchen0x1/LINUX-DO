@@ -140,13 +140,19 @@ class BadgeDetail {
     return '${HttpConfig.baseUrl}${imageUrl!.replaceAll('{size}', '80')}';
   }
 
-
   // 添加一些随机的颜色字符串
   final List<String> randomColors = [
-    '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#FFFFFF', '#000000'
+    '#FF0000',
+    '#00FF00',
+    '#0000FF',
+    '#FFFF00',
+    '#FF00FF',
+    '#00FFFF',
+    '#FFFFFF',
+    '#000000'
   ];
 
   factory BadgeDetail.fromJson(Map<String, dynamic> json) =>
       _$BadgeDetailFromJson(json);
   Map<String, dynamic> toJson() => _$BadgeDetailToJson(this);
-} 
+}

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:linux_do/const/app_const.dart';
 import 'package:linux_do/const/app_spacing.dart';
@@ -11,7 +10,6 @@ import 'package:linux_do/utils/mixins/concatenated.dart';
 import 'package:linux_do/utils/mixins/toast_mixin.dart';
 import 'package:linux_do/widgets/dis_button.dart';
 import 'package:linux_do/widgets/dis_popup.dart';
-import 'package:share_plus/share_plus.dart';
 
 class MoreMenu extends StatelessWidget with ToastMixin, Concatenated {
   final TopicDetailController controller;
@@ -365,8 +363,8 @@ class MoreMenu extends StatelessWidget with ToastMixin, Concatenated {
                 child: DisButton(
                   text: '分享',
                   type: ButtonType.primary,
-                  onPressed: () =>
-                      controller.shareController.share(title,  description,  url, box),
+                  onPressed: () => controller.shareController
+                      .share(title, description, url, box),
                 ),
               ),
             ),
@@ -395,7 +393,8 @@ class MoreMenu extends StatelessWidget with ToastMixin, Concatenated {
   }
 
   // 分享卡片
-  Widget _buildShareCard(BuildContext context, String title, String description, String url) {
+  Widget _buildShareCard(
+      BuildContext context, String title, String description, String url) {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,

@@ -124,7 +124,6 @@ class CategoryManager {
   }
 }
 
-
 class BadgeManager {
   static final BadgeManager _instance = BadgeManager._internal();
   factory BadgeManager() => _instance;
@@ -159,7 +158,7 @@ class BadgeManager {
         );
         _badges[badge.id] = badge;
       }
-    } catch (e, stack) {  
+    } catch (e, stack) {
       l.e('Error loading badges: $e\n$stack');
     }
   }

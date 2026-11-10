@@ -55,7 +55,7 @@ class BaseController extends GetxController with ToastMixin {
     if (hasError.value) {
       return ViewState.error;
     }
-    if (isEmpty.value){
+    if (isEmpty.value) {
       return ViewState.empty;
     }
     return ViewState.content;

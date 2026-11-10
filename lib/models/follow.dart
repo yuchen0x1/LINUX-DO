@@ -16,7 +16,7 @@ class FollowResponse {
   }
 
   List<Follow> get follows => items;
-  
+
   operator [](int index) => items[index];
   int get length => items.length;
 }
@@ -25,16 +25,16 @@ class FollowResponse {
 class Follow {
   @JsonKey(name: 'id')
   final int? id;
-  
+
   @JsonKey(name: 'username')
   final String? username;
-  
+
   @JsonKey(name: 'name')
   final String? name;
-  
+
   @JsonKey(name: 'avatar_template')
   final String? avatarTemplate;
-  
+
   @JsonKey(name: 'animated_avatar')
   final String? animatedAvatar;
 
@@ -48,7 +48,8 @@ class Follow {
 
   String get avatarUrl {
     if (animatedAvatar != null && animatedAvatar!.isNotEmpty) {
-      if (animatedAvatar!.startsWith('http://') || animatedAvatar!.startsWith('https://')) {
+      if (animatedAvatar!.startsWith('http://') ||
+          animatedAvatar!.startsWith('https://')) {
         return animatedAvatar!;
       }
       return '${HttpConfig.baseUrl}${animatedAvatar!.replaceAll('{size}', '80')}';
@@ -57,7 +58,8 @@ class Follow {
     if (avatarTemplate == null || avatarTemplate!.isEmpty) {
       return '';
     }
-    if (avatarTemplate!.startsWith('http://') || avatarTemplate!.startsWith('https://')) {
+    if (avatarTemplate!.startsWith('http://') ||
+        avatarTemplate!.startsWith('https://')) {
       return avatarTemplate!;
     }
     return '${HttpConfig.baseUrl}${avatarTemplate!.replaceAll('{size}', '80')}';

@@ -25,7 +25,6 @@ class TrackingSettingsPage extends GetView<TrackingSettingsController> {
         ),
       ),
       body: Obx(() {
-
         return Stack(
           children: [
             SingleChildScrollView(
@@ -41,7 +40,8 @@ class TrackingSettingsPage extends GetView<TrackingSettingsController> {
                         title: AppConst.settings.enableTracking,
                         subtitle: AppConst.settings.enableTrackingDesc,
                         value: controller.enableTracking.value,
-                        onChanged: (value) => controller.enableTracking.value = value,
+                        onChanged: (value) =>
+                            controller.enableTracking.value = value,
                       ),
                       _buildDivider(),
                       _buildSwitchItem(
@@ -49,7 +49,8 @@ class TrackingSettingsPage extends GetView<TrackingSettingsController> {
                         title: AppConst.settings.trackLocation,
                         subtitle: AppConst.settings.trackLocationDesc,
                         value: controller.trackLocation.value,
-                        onChanged: (value) => controller.trackLocation.value = value,
+                        onChanged: (value) =>
+                            controller.trackLocation.value = value,
                       ),
                       _buildDivider(),
                       _buildSwitchItem(
@@ -57,7 +58,8 @@ class TrackingSettingsPage extends GetView<TrackingSettingsController> {
                         title: AppConst.settings.trackActivity,
                         subtitle: AppConst.settings.trackActivityDesc,
                         value: controller.trackActivity.value,
-                        onChanged: (value) => controller.trackActivity.value = value,
+                        onChanged: (value) =>
+                            controller.trackActivity.value = value,
                       ),
                       _buildDivider(),
                       _buildSwitchItem(
@@ -65,7 +67,8 @@ class TrackingSettingsPage extends GetView<TrackingSettingsController> {
                         title: AppConst.settings.trackBrowsingHistory,
                         subtitle: AppConst.settings.trackBrowsingHistoryDesc,
                         value: controller.trackBrowsingHistory.value,
-                        onChanged: (value) => controller.trackBrowsingHistory.value = value,
+                        onChanged: (value) =>
+                            controller.trackBrowsingHistory.value = value,
                       ),
                       _buildDivider(),
                       _buildSwitchItem(
@@ -73,7 +76,8 @@ class TrackingSettingsPage extends GetView<TrackingSettingsController> {
                         title: AppConst.settings.shareAnalytics,
                         subtitle: AppConst.settings.shareAnalyticsDesc,
                         value: controller.shareAnalytics.value,
-                        onChanged: (value) => controller.shareAnalytics.value = value,
+                        onChanged: (value) =>
+                            controller.shareAnalytics.value = value,
                       ),
                     ],
                   ),
@@ -98,7 +102,6 @@ class TrackingSettingsPage extends GetView<TrackingSettingsController> {
                 ],
               ),
             ),
-
             if (controller.isLoading.value)
               Positioned(
                   top: 0,
@@ -185,4 +188,4 @@ class TrackingSettingsPage extends GetView<TrackingSettingsController> {
       color: Theme.of(Get.context!).dividerColor.withValues(alpha: 0.4),
     );
   }
-} 
+}

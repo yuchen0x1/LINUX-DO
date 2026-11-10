@@ -190,7 +190,7 @@ class PostDetail extends Post {
 
   factory PostDetail.fromJson(Map<String, dynamic> json) =>
       _$PostDetailFromJson(json);
-  
+
   @override
   Map<String, dynamic> toJson() => _$PostDetailToJson(this);
-} 
+}

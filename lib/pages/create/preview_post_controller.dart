@@ -6,7 +6,7 @@ import '../../routes/app_pages.dart';
 
 class PreviewPostController extends BaseController {
   final String title;
-  final String content;  // 已经是HTML格式
+  final String content; // 已经是HTML格式
   final Category category;
   final List<String> tags;
 
@@ -30,4 +30,4 @@ class PreviewPostController extends BaseController {
     if (url == null || url.isEmpty) return;
     Get.toNamed(Routes.WEBVIEW, arguments: url);
   }
-} 
+}

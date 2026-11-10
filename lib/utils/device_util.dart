@@ -30,7 +30,8 @@ class DeviceUtil {
   static bool get isIOS => Platform.isIOS;
 
   /// 是否是Web
-  static bool get isWeb => Platform.isWindows || Platform.isMacOS || Platform.isLinux;
+  static bool get isWeb =>
+      Platform.isWindows || Platform.isMacOS || Platform.isLinux;
 
   /// 获取Android设备信息
   static Future<AndroidDeviceInfo> getAndroidDeviceInfo() async {
@@ -100,9 +101,7 @@ class DeviceUtil {
     return userAgent;
   }
 
-
   static String getStaticUserAgent() {
-
     if (Platform.isAndroid) {
       return 'Mozilla/5.0 (Linux; Android 13; Pixel 7) '
           'AppleWebKit/537.36 (KHTML, like Gecko) '
@@ -129,4 +128,4 @@ class DeviceUtil {
         'AppleWebKit/537.36 (KHTML, like Gecko) '
         'Chrome/134.0.0.0 Safari/537.36';
   }
-} 
+}

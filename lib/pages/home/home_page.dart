@@ -1,4 +1,3 @@
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,23 +9,6 @@ import '../topics/topics_page.dart';
 import '../category/category_topics_page.dart';
 import '../profile/profile_page.dart';
 import 'home_controller.dart';
-
-// 自定义TabStyle
-class CustomTabStyle extends StyleHook {
-  @override
-  double get activeIconSize => 24.w;
-
-  @override
-  double get activeIconMargin => 10.w;
-
-  @override
-  double get iconSize => 24.w;
-
-  @override
-  TextStyle textStyle(Color color, String? fontFamily) {
-    return TextStyle(fontSize: 11.w, color: color);
-  }
-}
 
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
@@ -47,7 +29,6 @@ class HomePage extends GetView<HomeController> {
             SizedBox(), // 占位
             ChatPage(),
             ProfilePage(),
-
           ],
         ),
       ),
@@ -57,22 +38,25 @@ class HomePage extends GetView<HomeController> {
           height: controller.topicsController.isBottomBarVisible.value
               ? navBarHeight
               : 0,
-              decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: .1),
-                  blurRadius: 8,
-                  offset: const Offset(0, -2),
-                ),
-              ],
-            ),
+          decoration: BoxDecoration(
+            color: Theme.of(context).cardColor,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: .1),
+                blurRadius: 8,
+                offset: const Offset(0, -2),
+              ),
+            ],
+          ),
           child: SingleChildScrollView(
             physics: const NeverScrollableScrollPhysics(),
             child: SalomonBottomBar(
               duration: const Duration(milliseconds: 200),
-              selectedItemColor: Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
-              unselectedItemColor: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
+              selectedItemColor:
+                  Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
+              unselectedItemColor: Theme.of(context)
+                  .bottomNavigationBarTheme
+                  .unselectedItemColor,
               backgroundColor: Colors.transparent,
               currentIndex: controller.currentTab.value,
               onTap: (index) {
@@ -82,15 +66,22 @@ class HomePage extends GetView<HomeController> {
                   controller.switchTab(index);
                 }
               },
-              itemPadding: EdgeInsets.symmetric(vertical: 6.w, horizontal: 11.w),
+              itemPadding:
+                  EdgeInsets.symmetric(vertical: 6.w, horizontal: 11.w),
               items: [
                 SalomonBottomBarItem(
                   icon: const Icon(CupertinoIcons.square_list_fill),
-                  title: const Text('帖子',style: TextStyle(fontSize: 12),),
+                  title: const Text(
+                    '帖子',
+                    style: TextStyle(fontSize: 12),
+                  ),
                 ),
                 SalomonBottomBarItem(
                   icon: const Icon(CupertinoIcons.square_split_2x2_fill),
-                  title: const Text('分类',style: TextStyle(fontSize: 12),),
+                  title: const Text(
+                    '分类',
+                    style: TextStyle(fontSize: 12),
+                  ),
                 ),
                 // 中间发布按钮 - 凸起 FAB 样式
                 SalomonBottomBarItem(
@@ -102,7 +93,9 @@ class HomePage extends GetView<HomeController> {
                       gradient: LinearGradient(
                         colors: [
                           Theme.of(context).primaryColor,
-                          Theme.of(context).primaryColor.withValues(alpha: 0.75),
+                          Theme.of(context)
+                              .primaryColor
+                              .withValues(alpha: 0.75),
                         ],
                       ),
                       shape: BoxShape.circle,
@@ -154,11 +147,17 @@ class HomePage extends GetView<HomeController> {
                         ),
                     ],
                   ),
-                  title: const Text('私信',style: TextStyle(fontSize: 12),),
+                  title: const Text(
+                    '私信',
+                    style: TextStyle(fontSize: 12),
+                  ),
                 ),
                 SalomonBottomBarItem(
                   icon: const Icon(CupertinoIcons.person_crop_square_fill),
-                  title: const Text('我的',style: TextStyle(fontSize: 12),),
+                  title: const Text(
+                    '我的',
+                    style: TextStyle(fontSize: 12),
+                  ),
                 ),
               ],
             ),

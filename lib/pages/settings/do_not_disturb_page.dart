@@ -76,8 +76,9 @@ class DoNotDisturbPage extends GetView<DoNotDisturbController> {
                       ),
                     )
                   else
-                    ...controller.ignoredUsers.map((username) => _buildUserItem(context, username)).toList(),
-                  
+                    ...controller.ignoredUsers
+                        .map((username) => _buildUserItem(context, username))
+                        .toList(),
                   32.vGap,
                   _buildSection(
                     context,
@@ -148,7 +149,8 @@ class DoNotDisturbPage extends GetView<DoNotDisturbController> {
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
         leading: CircleAvatar(
-          backgroundColor: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+          backgroundColor:
+              Theme.of(context).primaryColor.withValues(alpha: 0.1),
           child: Text(
             username[0].toUpperCase(),
             style: TextStyle(
@@ -243,27 +245,28 @@ class DoNotDisturbPage extends GetView<DoNotDisturbController> {
                   ),
                 ),
                 child: Obx(() => DropdownButton<String>(
-                  value: controller.selectedDuration.value,
-                  items: controller.durations.map((duration) {
-                    return DropdownMenuItem(
-                      value: duration,
-                      child: Text(
-                        duration,
-                        style: TextStyle(
-                          fontSize: 14.w,
-                          color: Theme.of(context).textTheme.bodyMedium?.color,
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    if (value != null) {
-                      controller.selectedDuration.value = value;
-                    }
-                  },
-                  isExpanded: true,
-                  underline: const SizedBox(),
-                )),
+                      value: controller.selectedDuration.value,
+                      items: controller.durations.map((duration) {
+                        return DropdownMenuItem(
+                          value: duration,
+                          child: Text(
+                            duration,
+                            style: TextStyle(
+                              fontSize: 14.w,
+                              color:
+                                  Theme.of(context).textTheme.bodyMedium?.color,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        if (value != null) {
+                          controller.selectedDuration.value = value;
+                        }
+                      },
+                      isExpanded: true,
+                      underline: const SizedBox(),
+                    )),
               ),
               24.vGap,
               SizedBox(
@@ -281,7 +284,8 @@ class DoNotDisturbPage extends GetView<DoNotDisturbController> {
     );
   }
 
-  Widget _buildSection(BuildContext context, String title, String description, List<Widget> children) {
+  Widget _buildSection(BuildContext context, String title, String description,
+      List<Widget> children) {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
@@ -354,12 +358,9 @@ class DoNotDisturbPage extends GetView<DoNotDisturbController> {
               ),
             ),
           ),
-          Obx(() => DisSwitch(
-            value: value.value,
-            onChanged: onChanged
-          )),
+          Obx(() => DisSwitch(value: value.value, onChanged: onChanged)),
         ],
       ),
     );
   }
-} 
+}

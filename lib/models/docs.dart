@@ -13,12 +13,11 @@ class Docs {
 
   @JsonKey(name: 'tags')
   List<DocTag>? tags;
-  
+
   Docs({this.topicCount, this.topics, this.tags});
 
   factory Docs.fromJson(Map<String, dynamic> json) => _$DocsFromJson(json);
   Map<String, dynamic> toJson() => _$DocsToJson(this);
-  
 }
 
 @JsonSerializable()

@@ -128,7 +128,7 @@ class ReplayList extends StatelessWidget {
           color: Theme.of(context).primaryColor.withValues(alpha: 0.8),
           width: 1,
         ),
-        borderRadius:  BorderRadius.only(
+        borderRadius: BorderRadius.only(
           bottomLeft: const Radius.circular(4).w,
           bottomRight: const Radius.circular(4).w,
         ),

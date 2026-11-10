@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:linux_do/const/app_colors.dart';
 import 'package:linux_do/const/app_const.dart';
-import 'package:linux_do/const/app_images.dart';
 import 'package:linux_do/const/app_spacing.dart';
 import 'package:linux_do/const/app_theme.dart';
 import 'package:linux_do/controller/global_controller.dart';
@@ -458,14 +457,6 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
     );
   }
 
-  Widget _buildLogo(BuildContext context) {
-    return SizedBox(
-      width: 180.w,
-      height: 180.w,
-      child: Image.asset(AppImages.getLogo(context)),
-    );
-  }
-
   Widget _buildAdminSection(BuildContext context, AboutResponse data) {
     final user = data.findUserById(1);
     return Container(
@@ -911,77 +902,77 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
 
   void showInputDialog(BuildContext context) {
     final TextEditingController passwordController = TextEditingController();
-    
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              backgroundColor: Theme.of(context).cardColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6).w,
+        return StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).cardColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6).w,
+            ),
+            title: Text(
+              '请输入密码',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14.w,
               ),
-              title: Text(
-                '请输入密码',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14.w,
-                ),
-              ),
-              
-              content: SizedBox(
-                height: 100.w,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      '该功能为测试功能，输入密码后,下次进入话题详情,会自动滚动刷帖子阅读数量,帖子阅读数目前测试只有在模拟器上生效,重启app后失效(如果打开后未登录,则先登录即可)',
-                      style: TextStyle(
-                        fontSize: 10.w,
-                        color: Theme.of(context).textTheme.bodySmall?.color,
-                      ),
+            ),
+            content: SizedBox(
+              height: 100.w,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '该功能为测试功能，输入密码后,下次进入话题详情,会自动滚动刷帖子阅读数量,帖子阅读数目前测试只有在模拟器上生效,重启app后失效(如果打开后未登录,则先登录即可)',
+                    style: TextStyle(
+                      fontSize: 10.w,
+                      color: Theme.of(context).textTheme.bodySmall?.color,
                     ),
-                    16.vGap,
-                    Expanded(
-                      child: TextField(
-                        controller: passwordController,
-                        decoration: InputDecoration(
-                          hintText: '请输入密码',
-                          filled: false,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          contentPadding: const EdgeInsets.only(top: 12).w,
-                          prefixIcon: Icon(CupertinoIcons.lock_fill,color: Theme.of(context).primaryColor,size: 20.w,),
-                          
+                  ),
+                  16.vGap,
+                  Expanded(
+                    child: TextField(
+                      controller: passwordController,
+                      decoration: InputDecoration(
+                        hintText: '请输入密码',
+                        filled: false,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.only(top: 12).w,
+                        prefixIcon: Icon(
+                          CupertinoIcons.lock_fill,
+                          color: Theme.of(context).primaryColor,
+                          size: 20.w,
                         ),
                       ),
                     ),
-                  ],
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              SizedBox(
+                height: 32.w,
+                child: DisButton(
+                  onPressed: () {
+                    if (passwordController.text == 'linux.do') {
+                      Get.find<GlobalController>().setShowHiddenContent(true);
+                      showSuccess('已开启');
+                    } else {
+                      showError('密码错误');
+                    }
+                    Get.back();
+                  },
+                  text: '确定',
                 ),
               ),
-              actions: [
-                SizedBox(
-                  height: 32.w,
-                  child: DisButton(
-                    onPressed: () {
-                      if (passwordController.text == 'linux.do') {
-                        Get.find<GlobalController>().setShowHiddenContent(true);
-                        showSuccess('已开启');
-                      } else {
-                        showError('密码错误');
-                      }
-                      Get.back();
-                    },
-                    text: '确定',
-                  ),
-                ),
-              ],
-            );
-          }
-        );
+            ],
+          );
+        });
       },
     );
   }

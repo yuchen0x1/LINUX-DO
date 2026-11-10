@@ -40,7 +40,8 @@ class TagItem {
     this.targetTag,
   });
 
-  factory TagItem.fromJson(Map<String, dynamic> json) => _$TagItemFromJson(json);
+  factory TagItem.fromJson(Map<String, dynamic> json) =>
+      _$TagItemFromJson(json);
   Map<String, dynamic> toJson() => _$TagItemToJson(this);
 }
 
@@ -58,4 +59,4 @@ class RequiredTagGroup {
   factory RequiredTagGroup.fromJson(Map<String, dynamic> json) =>
       _$RequiredTagGroupFromJson(json);
   Map<String, dynamic> toJson() => _$RequiredTagGroupToJson(this);
-} 
+}

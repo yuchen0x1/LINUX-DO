@@ -25,7 +25,6 @@ class NotificationSettingsPage extends GetView<NotificationSettingsController> {
         ),
       ),
       body: Obx(() {
-      
         return Stack(
           children: [
             SingleChildScrollView(
@@ -40,49 +39,56 @@ class NotificationSettingsPage extends GetView<NotificationSettingsController> {
                         context,
                         title: AppConst.settings.notificationWhenLiked,
                         value: controller.whenLiked.value,
-                        onChanged: (value) => controller.whenLiked.value = value,
+                        onChanged: (value) =>
+                            controller.whenLiked.value = value,
                       ),
                       _buildDivider(),
                       _buildSwitchItem(
                         context,
                         title: AppConst.settings.notificationWhenFollowed,
                         value: controller.allowFollow.value,
-                        onChanged: (value) => controller.allowFollow.value = value,
+                        onChanged: (value) =>
+                            controller.allowFollow.value = value,
                       ),
                       _buildDivider(),
                       _buildSwitchItem(
                         context,
                         title: AppConst.settings.notificationWhenUserFollowed,
                         value: controller.whenFollowed.value,
-                        onChanged: (value) => controller.whenFollowed.value = value,
+                        onChanged: (value) =>
+                            controller.whenFollowed.value = value,
                       ),
                       _buildDivider(),
                       _buildSwitchItem(
                         context,
                         title: AppConst.settings.notificationWhenIFollow,
                         value: controller.whenIFollow.value,
-                        onChanged: (value) => controller.whenIFollow.value = value,
+                        onChanged: (value) =>
+                            controller.whenIFollow.value = value,
                       ),
                       _buildDivider(),
                       _buildSwitchItem(
                         context,
                         title: AppConst.settings.notificationWhenReplied,
                         value: controller.whenReplied.value,
-                        onChanged: (value) => controller.whenReplied.value = value,
+                        onChanged: (value) =>
+                            controller.whenReplied.value = value,
                       ),
                       _buildDivider(),
                       _buildSwitchItem(
                         context,
                         title: AppConst.settings.notificationWhenTopicCreated,
                         value: controller.whenTopicCreated.value,
-                        onChanged: (value) => controller.whenTopicCreated.value = value,
+                        onChanged: (value) =>
+                            controller.whenTopicCreated.value = value,
                       ),
                       _buildDivider(),
                       _buildOptionItem(
                         context,
                         title: AppConst.settings.notificationSchedule,
                         value: controller.notificationSchedule.value,
-                        onChanged: (value) => controller.notificationSchedule.value = value,
+                        onChanged: (value) =>
+                            controller.notificationSchedule.value = value,
                       ),
                     ],
                   ),
@@ -107,7 +113,6 @@ class NotificationSettingsPage extends GetView<NotificationSettingsController> {
                 ],
               ),
             ),
-
             if (controller.isLoading.value)
               Positioned(
                   top: 0,
@@ -245,4 +250,4 @@ class NotificationSettingsPage extends GetView<NotificationSettingsController> {
       color: Theme.of(Get.context!).dividerColor.withValues(alpha: 0.4),
     );
   }
-} 
+}

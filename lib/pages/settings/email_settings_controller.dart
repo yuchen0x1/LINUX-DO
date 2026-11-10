@@ -1,12 +1,7 @@
 import 'package:get/get.dart';
 import 'package:linux_do/controller/base_controller.dart';
-import 'package:linux_do/controller/global_controller.dart';
-import 'package:linux_do/net/api_service.dart';
 
 class EmailSettingsController extends BaseController {
-  final ApiService _apiService = Get.find();
-  final GlobalController _globalController = Get.find();
-
   // 个人消息
   final personalMessageOption = 1.obs;
   // 提及和回复
@@ -50,6 +45,5 @@ class EmailSettingsController extends BaseController {
     } finally {
       isLoading.value = false;
     }
-
   }
-} 
+}

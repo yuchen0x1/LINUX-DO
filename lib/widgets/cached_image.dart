@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-
 class CachedImage extends StatelessWidget {
   final String? imageUrl;
   final double? width;
@@ -51,15 +50,14 @@ class CachedImage extends StatelessWidget {
       placeholder: (context, url) => _buildPlaceholder(),
       errorWidget: (context, url, error) => _buildErrorWidget(),
       fadeInDuration: const Duration(milliseconds: 300),
-      
     );
 
     // 圆形或圆角
     if (circle || borderRadius != null) {
       image = ClipRRect(
-        borderRadius: circle 
-          ? BorderRadius.circular(width != null ? width! : height!)
-          : borderRadius ?? BorderRadius.zero,
+        borderRadius: circle
+            ? BorderRadius.circular(width != null ? width! : height!)
+            : borderRadius ?? BorderRadius.zero,
         child: image,
       );
     }
@@ -67,7 +65,7 @@ class CachedImage extends StatelessWidget {
     // 添加内边框
     if (showInnerBorder) {
       final innerBorderW = innerBorderWidth ?? 2.w;
-      
+
       // 内边框和图片组合
       image = Container(
         padding: EdgeInsets.all(innerBorderW),
@@ -85,48 +83,56 @@ class CachedImage extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         color: backgroundColor ?? Theme.of(context).cardColor,
-        borderRadius: circle 
-          ? BorderRadius.circular(width != null ? width!.w / 2 : height!.w)
-          : borderRadius,
-        border: showBorder ? Border.all(color: borderColor ?? Theme.of(context).primaryColor, width: 1.w) : null,
+        borderRadius: circle
+            ? BorderRadius.circular(width != null ? width!.w / 2 : height!.w)
+            : borderRadius,
+        border: showBorder
+            ? Border.all(
+                color: borderColor ?? Theme.of(context).primaryColor,
+                width: 1.w)
+            : null,
       ),
       child: image,
     );
   }
 
   Widget _buildPlaceholder() {
-    return placeholder ?? Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: Colors.grey.withValues(alpha: 0.2),
-        borderRadius: circle 
-          ? BorderRadius.circular(width != null ? width!.w / 2 : height!.w / 2)
-          : borderRadius,
-      ),
-      child: Icon(
-        Icons.account_circle_sharp,
-        size: (width ?? height ?? 24) * 0.5,
-        color: Colors.grey.withValues(alpha: .3),
-      ),
-    );
+    return placeholder ??
+        Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            color: Colors.grey.withValues(alpha: 0.2),
+            borderRadius: circle
+                ? BorderRadius.circular(
+                    width != null ? width!.w / 2 : height!.w / 2)
+                : borderRadius,
+          ),
+          child: Icon(
+            Icons.account_circle_sharp,
+            size: (width ?? height ?? 24) * 0.5,
+            color: Colors.grey.withValues(alpha: .3),
+          ),
+        );
   }
 
   Widget _buildErrorWidget() {
-    return errorWidget ?? Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: Colors.grey.withValues(alpha: .1),
-        borderRadius: circle 
-          ? BorderRadius.circular(width != null ? width!.w / 2 : height!.w / 2)
-          : borderRadius,
-      ),
-      child: Icon(
-        Icons.broken_image_outlined,
-        size: (width ?? height ?? 24.w) * 0.5,
-        color: Colors.grey.withValues(alpha: .3),
-      ),
-    );
+    return errorWidget ??
+        Container(
+          width: width,
+          height: height,
+          decoration: BoxDecoration(
+            color: Colors.grey.withValues(alpha: .1),
+            borderRadius: circle
+                ? BorderRadius.circular(
+                    width != null ? width!.w / 2 : height!.w / 2)
+                : borderRadius,
+          ),
+          child: Icon(
+            Icons.broken_image_outlined,
+            size: (width ?? height ?? 24.w) * 0.5,
+            color: Colors.grey.withValues(alpha: .3),
+          ),
+        );
   }
-} 
+}

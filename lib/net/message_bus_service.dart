@@ -25,9 +25,13 @@ class MessageBusService {
   Future<void> init() async {
     if (_isInitialized) return;
     // 初始化本地通知
-    const androidSettings = AndroidInitializationSettings('@mipmap/launcher_icon');
+    const androidSettings =
+        AndroidInitializationSettings('@mipmap/launcher_icon');
     const initSettings = InitializationSettings(android: androidSettings);
     await _notificationsPlugin.initialize(initSettings);
+
+    // Android 13+ 需要运行时授权，否则通知会被系统静默丢弃
+    await _ensureNotificationPermission();
 
     // 复用全局 client_id
     _clientId = GlobalController.clientId;
@@ -41,10 +45,31 @@ class MessageBusService {
     _isInitialized = true;
   }
 
+  /// 申请通知权限。仅在 Android 13+ 需要；失败不阻断推送监听启动，
+  /// 只是通知不可见（用户后续可在系统设置中开启）。
+  Future<void> _ensureNotificationPermission() async {
+    try {
+      final android =
+          _notificationsPlugin.resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>();
+      if (android == null) return;
+      final granted = await android.areNotificationsEnabled() ?? false;
+      if (granted) return;
+      final result = await android.requestNotificationsPermission();
+      if (result == false) {
+        l.w('用户拒绝了通知权限，社区提醒将无法显示');
+      }
+    } catch (e) {
+      l.e('申请通知权限失败: $e');
+    }
+  }
+
   /// 启动长轮询监听
   Future<void> start() async {
     if (_isRunning) return;
     await init();
+    // 缺少 userId 时先补身份，否则 notification/unread 频道订阅不到
+    await syncUserIdentity();
     _isRunning = true;
     _setupChannels();
     _poll();
@@ -67,6 +92,44 @@ class MessageBusService {
       _channels['/queue'] = -1;
     }
     _channels['/latest'] = -1;
+  }
+
+  /// 拉取当前登录用户，把 username / userId 落到本地存储。
+  ///
+  /// MessageBus 的 `/notification/{userId}` 与 `/unread/{userId}` 频道必须带
+  /// userId 才能订阅，而 User API Key 授权流程本身不返回用户身份，所以只要
+  /// 缺 userId 就要主动补一次。返回是否成功拿到身份。
+  Future<bool> syncUserIdentity() async {
+    final existing = StorageManager.getString(AppConst.identifier.userId);
+    if (existing != null && existing.isNotEmpty) return true;
+
+    try {
+      final dio = NetClient.getInstance().dio;
+      final response =
+          await dio.get('${HttpConfig.baseUrl}session/current.json');
+      final data = response.data;
+      if (data is! Map) return false;
+
+      final currentUser = data['current_user'];
+      if (currentUser is! Map) return false;
+
+      final id = currentUser['id'];
+      final username = currentUser['username'];
+      if (id == null || username == null) return false;
+
+      await StorageManager.setData(AppConst.identifier.userId, id.toString());
+      await StorageManager.setData(
+          AppConst.identifier.username, username.toString());
+      final displayName = currentUser['name'];
+      if (displayName is String && displayName.isNotEmpty) {
+        await StorageManager.setData(AppConst.identifier.name, displayName);
+      }
+      l.i('已同步登录身份: $username (#$id)');
+      return true;
+    } catch (e) {
+      l.e('同步登录身份失败: $e');
+      return false;
+    }
   }
 
   Future<void> _poll() async {

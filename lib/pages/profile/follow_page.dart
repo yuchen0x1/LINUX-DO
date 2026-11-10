@@ -145,9 +145,8 @@ class FollowPage extends GetView<FollowController> {
     final color = c != null
         ? Color(int.parse(c)).withValues(alpha: 0.6)
         : Theme.of(context).primaryColor.withValues(alpha: 0.6);
-    final textColor = tc != null
-        ? Color(int.parse(tc))
-        : Theme.of(context).primaryColor;
+    final textColor =
+        tc != null ? Color(int.parse(tc)) : Theme.of(context).primaryColor;
 
     return GestureDetector(
       onTap: () {
@@ -215,7 +214,8 @@ class FollowPage extends GetView<FollowController> {
                             style: TextStyle(
                               fontSize: 12.sp,
                               fontFamily: AppFontFamily.dinPro,
-                              color: Theme.of(context).textTheme.bodySmall?.color,
+                              color:
+                                  Theme.of(context).textTheme.bodySmall?.color,
                             ),
                           ),
                         ],
@@ -259,7 +259,7 @@ class FollowPage extends GetView<FollowController> {
                   ),
                 ),
               ),
-      
+
               // 底部操作区域
               Padding(
                 padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.w),
@@ -267,69 +267,70 @@ class FollowPage extends GetView<FollowController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // 类别标签
-      
+
                     if (category != null)
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.w),
-                      decoration: BoxDecoration(
-                        color:
-                            Theme.of(context).primaryColor.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(4.w),
-                      ),
-                      child: Row(
-                        children: [
-                          if (logoUrl != null) ...[
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(6).w,
-                              child: CachedImage(
-                                imageUrl: logoUrl,
-                                width: 13.w,
-                                height: 13.w,
-                                fit: BoxFit.contain,
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 8.w, vertical: 4.w),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context)
+                              .primaryColor
+                              .withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(4.w),
+                        ),
+                        child: Row(
+                          children: [
+                            if (logoUrl != null) ...[
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(6).w,
+                                child: CachedImage(
+                                  imageUrl: logoUrl,
+                                  width: 13.w,
+                                  height: 13.w,
+                                  fit: BoxFit.contain,
+                                ),
                               ),
-                            ),
-                            10.hGap
-                          ],
-      
+                              10.hGap
+                            ],
                             Text(
                               category.name,
                               style: TextStyle(
-                              fontSize: 10.sp,
-                              color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.w500,
+                                fontSize: 10.sp,
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-      
+
                     const Spacer(),
-      
+
                     if (slug != null)
                       Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 6.w, vertical: 3.h),
                         decoration: BoxDecoration(
                           color: color,
                           borderRadius: BorderRadius.circular(3).w,
                         ),
-                        child: Text(slug!,
+                        child: Text(slug,
                             style: TextStyle(
                               fontSize: 8.w,
                               fontFamily: AppFontFamily.dinPro,
                               color: textColor,
                             )),
                       ),
-      
-                      4.hGap,
-      
+
+                    4.hGap,
+
                     Container(
                       padding:
                           EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.w),
                       decoration: BoxDecoration(
-                        color:
-                            Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                        color: Theme.of(context)
+                            .primaryColor
+                            .withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(3.w),
                       ),
                       child: Row(
@@ -443,11 +444,14 @@ class FollowPage extends GetView<FollowController> {
   }
 
   // 构建关注/关注者用户卡片
-  Widget _buildFollowUserCard(BuildContext context, Follow user, {required bool isFollowing}) {
+  Widget _buildFollowUserCard(BuildContext context, Follow user,
+      {required bool isFollowing}) {
     final avatarUrl = user.avatarUrl;
     final username = user.username ?? '用户';
-    final displayName = user.name == null || user.name!.isEmpty ? 'Anonymous Big Shot' : user.name;
-    
+    final displayName = user.name == null || user.name!.isEmpty
+        ? 'Anonymous Big Shot'
+        : user.name;
+
     return Card(
       margin: const EdgeInsets.only(bottom: 8).w,
       elevation: 0,
@@ -485,11 +489,11 @@ class FollowPage extends GetView<FollowController> {
                     avatarUrl: avatarUrl,
                     username: username,
                     size: 50,
-                    circle: !user.isWebMaster, 
+                    circle: !user.isWebMaster,
                     borderColor: Theme.of(context).primaryColor,
                   ),
                   12.hGap,
-                  
+
                   // 用户信息
                   Expanded(
                     child: Column(
@@ -516,7 +520,10 @@ class FollowPage extends GetView<FollowController> {
                                     style: TextStyle(
                                       fontSize: 12.sp,
                                       fontFamily: AppFontFamily.dinPro,
-                                      color: Theme.of(context).textTheme.bodySmall?.color,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.color,
                                     ),
                                   ),
                                 ],
@@ -524,14 +531,18 @@ class FollowPage extends GetView<FollowController> {
                             ),
 
                             16.hGap,
-                            
+
                             // 关注按钮
                             SizedBox(
                               height: 30.w,
                               child: DisButton(
-                                icon: isFollowing ? CupertinoIcons.checkmark : CupertinoIcons.add,
+                                icon: isFollowing
+                                    ? CupertinoIcons.checkmark
+                                    : CupertinoIcons.add,
                                 text: isFollowing ? '已关注' : '关注',
-                                type: !isFollowing ? ButtonType.primary : ButtonType.outline,
+                                type: !isFollowing
+                                    ? ButtonType.primary
+                                    : ButtonType.outline,
                                 onPressed: () {
                                   if (isFollowing) {
                                     controller.unfollowUser(user.username!);
@@ -539,7 +550,7 @@ class FollowPage extends GetView<FollowController> {
                                     controller.followUser(user.username!);
                                   }
                                 },
-                                ),
+                              ),
                             ),
                           ],
                         ),

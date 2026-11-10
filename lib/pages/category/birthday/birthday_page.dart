@@ -35,7 +35,9 @@ class BirthdayPage extends GetView<BirthdayController> {
       ),
       body: TabBarView(
         controller: controller.tabController,
-        children: Filter.values.map((filter) => BrithdayTabView(filter: filter)).toList(),
+        children: Filter.values
+            .map((filter) => BrithdayTabView(filter: filter))
+            .toList(),
       ),
     );
   }

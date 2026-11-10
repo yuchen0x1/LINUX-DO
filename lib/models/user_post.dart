@@ -68,7 +68,8 @@ class UserPost {
 
   String get avatarUrl {
     if (user.animatedAvatar != null) {
-      if (user.animatedAvatar!.startsWith('http://') || user.animatedAvatar!.startsWith('https://')) {
+      if (user.animatedAvatar!.startsWith('http://') ||
+          user.animatedAvatar!.startsWith('https://')) {
         return user.animatedAvatar!;
       }
       return '${HttpConfig.baseUrl}${user.animatedAvatar?.replaceFirst('{size}', '100') ?? ''}';
@@ -76,16 +77,18 @@ class UserPost {
     if (user.avatarTemplate == null || user.avatarTemplate!.isEmpty) {
       return '';
     }
-    if (user.avatarTemplate!.startsWith('http://') || user.avatarTemplate!.startsWith('https://')) {
+    if (user.avatarTemplate!.startsWith('http://') ||
+        user.avatarTemplate!.startsWith('https://')) {
       return user.avatarTemplate!;
     }
-    return '${HttpConfig.baseUrl}${user.avatarTemplate!.replaceFirst('{size}', '100') ?? ''}';
+    return '${HttpConfig.baseUrl}${user.avatarTemplate!.replaceFirst('{size}', '100')}';
   }
 
   bool isWebMaster() {
     return user.id == 1;
   }
 
-  factory UserPost.fromJson(Map<String, dynamic> json) => _$UserPostFromJson(json);
+  factory UserPost.fromJson(Map<String, dynamic> json) =>
+      _$UserPostFromJson(json);
   Map<String, dynamic> toJson() => _$UserPostToJson(this);
-} 
+}

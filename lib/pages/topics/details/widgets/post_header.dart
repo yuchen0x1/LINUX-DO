@@ -71,7 +71,7 @@ class _UserInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasUserTitle = post.userTitle != null && post.userTitle!.isNotEmpty;
-    
+
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

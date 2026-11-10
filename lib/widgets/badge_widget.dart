@@ -192,7 +192,7 @@ class BadgeWidget extends StatelessWidget {
     );
   }
 
-   /// 转换K单位
+  /// 转换K单位
   String formatNumber(int number) {
     if (number >= 1000) {
       double value = number / 1000;

@@ -4,7 +4,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-
 const double _kMinIndicatorSize = 36.0;
 
 const double _kDefaultStrokeWidth = 2;
@@ -64,7 +63,6 @@ class LoadingIndicator extends StatelessWidget {
     );
   }
 }
-
 
 enum Shape {
   circle,
@@ -245,7 +243,6 @@ class _ShapePainter extends CustomPainter {
       pathColor != oldDelegate.pathColor;
 }
 
-
 class BallBeat extends StatefulWidget {
   const BallBeat({Key? key}) : super(key: key);
 
@@ -253,8 +250,7 @@ class BallBeat extends StatefulWidget {
   State<BallBeat> createState() => _BallBeatState();
 }
 
-class _BallBeatState extends State<BallBeat>
-    with TickerProviderStateMixin {
+class _BallBeatState extends State<BallBeat> with TickerProviderStateMixin {
   static const int _durationInMills = 700;
   static const List<int> _delayInMills = [350, 0, 350, 0, 350, 0];
 
@@ -322,7 +318,6 @@ class _BallBeatState extends State<BallBeat>
   }
 }
 
-
 /// Information about a piece of animation (e.g., color).
 class DecorateData {
   final Color? backgroundColor;
@@ -349,7 +344,6 @@ class DecorateData {
         assert(colors.length > 0);
 
   double get strokeWidth => _strokeWidth ?? _kDefaultStrokeWidth;
-
 
   @override
   bool operator ==(Object other) =>

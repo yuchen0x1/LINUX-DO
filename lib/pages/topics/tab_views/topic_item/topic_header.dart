@@ -47,7 +47,7 @@ class TopicHeader extends StatelessWidget {
               ),
             ),
           ),
-        
+
         // 标题
         Expanded(
           child: EmojiText(
@@ -66,4 +66,4 @@ class TopicHeader extends StatelessWidget {
       ],
     );
   }
-} 
+}

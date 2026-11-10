@@ -15,7 +15,7 @@ import '../const/app_sizes.dart';
 import '../const/app_spacing.dart';
 import '../routes/app_pages.dart';
 
-class DrawerMenu extends GetView<DrawerMenuController> with ToastMixin{
+class DrawerMenu extends GetView<DrawerMenuController> with ToastMixin {
   const DrawerMenu({super.key});
 
   @override
@@ -169,10 +169,10 @@ class DrawerMenu extends GetView<DrawerMenuController> with ToastMixin{
     return InkWell(
       onTap: () {
         if (item.url != null) {
-          Get.back(); 
+          Get.back();
           Get.toNamed(Routes.WEBVIEW, arguments: item.url);
         } else if (item.isTag) {
-          Get.back(); 
+          Get.back();
           Get.toNamed(Routes.CATEGORY, arguments: {'tag': item.title});
         } else {
           Get.back();
@@ -186,11 +186,13 @@ class DrawerMenu extends GetView<DrawerMenuController> with ToastMixin{
         ),
         child: Row(
           children: [
-            item.icon != null ? Icon(
-              item.icon,
-              size: AppSizes.iconSmall,
-              color: Theme.of(context).iconTheme.color,
-            ) : const SizedBox.shrink(),
+            item.icon != null
+                ? Icon(
+                    item.icon,
+                    size: AppSizes.iconSmall,
+                    color: Theme.of(context).iconTheme.color,
+                  )
+                : const SizedBox.shrink(),
             Spacing.md.hGap,
             Text(
               item.title,
@@ -238,7 +240,6 @@ class DrawerMenuController extends GetxController {
   final GlobalController _globalController = Get.find<GlobalController>();
   final RxList<MenuItem> categoryItems = <MenuItem>[].obs;
   final RxList<MenuItem> tagItems = <MenuItem>[].obs;
-  
 
   @override
   void onInit() {
@@ -279,9 +280,9 @@ class DrawerMenuController extends GetxController {
   void _loadTags() {
     final userInfo = _globalController.userInfo;
     final List<Tags> sidebarTags = userInfo?.user?.sidebarTags ?? [];
-    
+
     tagItems.clear();
-    
+
     for (var tag in sidebarTags) {
       if (tag.name != null) {
         tagItems.add(MenuItem(
@@ -296,102 +297,6 @@ class DrawerMenuController extends GetxController {
     }
 
     l.d('Final tag items: $tagItems');
-  }
-
-  IconData _getTagIcon(String tagName) {
-    // tag太多,分成大类来进行配置,转换为小写以进行不区分大小写的匹配
-    final tag = tagName.toLowerCase();
-    
-    // AI & ML
-    if (tag.contains('gpt') || tag.contains('ai') || tag.contains('openai') || tag.contains('llm')) {
-      return CupertinoIcons.waveform_path;
-    }
-    
-    // 开发工具
-    if (tag.contains('github') || tag.contains('git')) {
-      return CupertinoIcons.chevron_left_slash_chevron_right;
-    }
-    if (tag.contains('docker') || tag.contains('container')) {
-      return CupertinoIcons.cube_box;
-    }
-    if (tag.contains('jetbrains') || tag.contains('ide')) {
-      return CupertinoIcons.hammer;
-    }
-    
-    // 操作系统
-    if (tag.contains('linux') || tag.contains('ubuntu') || tag.contains('debian')) {
-      return CupertinoIcons.command;
-    }
-    if (tag.contains('ios') || tag.contains('macos')) {
-      return CupertinoIcons.device_phone_portrait;
-    }
-    if (tag.contains('android')) {
-      return CupertinoIcons.device_phone_landscape;
-    }
-    
-    // 网络 & 安全
-    if (tag.contains('ssl') || tag.contains('https') || tag.contains('security')) {
-      return CupertinoIcons.lock;
-    }
-    if (tag.contains('proxy') || tag.contains('vpn')) {
-      return CupertinoIcons.shield;
-    }
-    if (tag.contains('cdn') || tag.contains('network')) {
-      return CupertinoIcons.globe;
-    }
-    if (tag.contains('ipv6') || tag.contains('ip')) {
-      return CupertinoIcons.wifi;
-    }
-    
-    // 通讯 & 社交
-    if (tag.contains('telegram') || tag.contains('chat')) {
-      return CupertinoIcons.chat_bubble_2;
-    }
-    if (tag.contains('rss') || tag.contains('feed')) {
-      return CupertinoIcons.antenna_radiowaves_left_right;
-    }
-    
-    // 站务
-    if (tag == '站务' || tag.contains('维护')) {
-      return CupertinoIcons.wrench;
-    }
-    if (tag == '活动' || tag.contains('event')) {
-      return CupertinoIcons.calendar;
-    }
-    if (tag == '徽章' || tag.contains('badge')) {
-      return CupertinoIcons.star;
-    }
-    if (tag.contains('薅羊毛') || tag.contains('福利')) {
-      return CupertinoIcons.gift;
-    }
-    
-    // 开发概念
-    if (tag.contains('api') || tag.contains('rest')) {
-      return CupertinoIcons.arrow_2_circlepath;
-    }
-    if (tag.contains('oauth') || tag.contains('auth')) {
-      return CupertinoIcons.person_crop_circle_badge_checkmark;
-    }
-    if (tag.contains('debug') || tag.contains('抓包')) {
-      return CupertinoIcons.ant;
-    }
-    
-    // 内容类型
-    if (tag.contains('教程') || tag.contains('guide')) {
-      return CupertinoIcons.book;
-    }
-    if (tag.contains('问答') || tag.contains('qa')) {
-      return CupertinoIcons.question_circle;
-    }
-    if (tag.contains('公告') || tag.contains('announcement')) {
-      return CupertinoIcons.speaker_2;
-    }
-    if (tag.contains('分享') || tag.contains('share')) {
-      return CupertinoIcons.share;
-    }
-    
-    // 默认图标
-    return CupertinoIcons.tag;
   }
 
   IconData _getCategoryIcon(String categoryName) {

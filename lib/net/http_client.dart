@@ -24,7 +24,35 @@ class NetClient {
   static const String cfClearance = 'cf_clearance';
   static const String forumSession = '_forum_session';
   static const String tokenKey = '_t';
-  static String userAgent  = '';
+  static String userAgent = '';
+
+  /// 日志中必须脱敏的请求/响应头
+  static const Set<String> _sensitiveHeaders = {
+    'authorization',
+    'cookie',
+    'set-cookie',
+    'user-api-key',
+    'x-csrf-token',
+  };
+
+  /// 把敏感头的值替换为长度提示，保留可调试性但不泄露凭证
+  static String redactHeader(String name, Object? value) {
+    if (!_sensitiveHeaders.contains(name.toLowerCase())) {
+      return value?.toString() ?? '';
+    }
+    final text = value?.toString() ?? '';
+    return '***(len=${text.length})';
+  }
+
+  /// 打印 header map（已脱敏）
+  static void _writeRedactedHeaders(
+    StringBuffer sb,
+    Map<String, dynamic> headers,
+  ) {
+    headers.forEach((key, value) {
+      sb.writeln('│   $key: ${redactHeader(key, value)}');
+    });
+  }
 
   /// 获取dio实例
   Dio get dio => _dio;
@@ -136,7 +164,8 @@ class NetClient {
     // 清除所有现有的拦截器
     _dio.interceptors.clear();
 
-    _dio.interceptors.add(RetryInterceptor(dio: dio));
+    // 注意：重试拦截器只在链尾注册一次。dio.request() 重试会重新走整条链，
+    // 注册两次会导致嵌套重试（次数与等待时间不可预测）。
 
     // 添加 Cookie 管理拦截器
     _dio.interceptors.add(InterceptorsWrapper(
@@ -198,11 +227,10 @@ class NetClient {
             //l.d('保存 csrfToken : $csrfToken');
           }
 
-            final username = response.headers.value('x-discourse-username');
-            if (username != null && username.isNotEmpty) {
-              StorageManager.setData(AppConst.identifier.username, username);
-            }
-
+          final username = response.headers.value('x-discourse-username');
+          if (username != null && username.isNotEmpty) {
+            StorageManager.setData(AppConst.identifier.username, username);
+          }
         } catch (e) {
           l.e('处理响应头错误: $e');
         }
@@ -223,9 +251,7 @@ class NetClient {
               '┌─────────────────────────── Request ───────────────────────────');
           sb.writeln('│ ${options.method} ${options.uri}');
           sb.writeln('│ Headers:');
-          options.headers.forEach((key, value) {
-            sb.writeln('│   $key: $value');
-          });
+          _writeRedactedHeaders(sb, options.headers);
           if (options.data != null) {
             sb.writeln('│ Body: ${options.data}');
           }
@@ -244,7 +270,7 @@ class NetClient {
           sb.writeln('│ Status: ${response.statusCode}');
           sb.writeln('│ Headers:');
           response.headers.forEach((name, values) {
-            sb.writeln('│   $name: ${values.join(", ")}');
+            sb.writeln('│   $name: ${redactHeader(name, values.join(', '))}');
           });
           sb.writeln('│ Body: ${response.data}');
           sb.writeln(
@@ -261,7 +287,7 @@ class NetClient {
               '│ 请求类型: ${error.requestOptions.method} URL: ${error.requestOptions.uri}');
           sb.writeln('│ Headers:');
           error.requestOptions.headers.forEach((key, value) {
-            sb.writeln('│   $key: $value');
+            sb.writeln('│   $key: ${redactHeader(key, value)}');
           });
           if (error.requestOptions.data != null) {
             sb.writeln('│ Body: ${error.requestOptions.data}');
@@ -279,7 +305,7 @@ class NetClient {
       ),
     );
 
-    // 最后添加重试拦截器，确保它能捕获到其他拦截器的错误
+    // 最后添加重试拦截器，确保它能捕获到其他拦截器的错误（全链仅此一次）
     _dio.interceptors.add(RetryInterceptor(dio: _dio));
   }
 
@@ -292,15 +318,17 @@ class NetClient {
           // 解析 CF cookie
           final cfCookie = parseCfCookie(cookieString);
           if (cfCookie != null) {
-            l.d('保存 CF cookie: ${cfCookie.value}');
+            l.d('保存 CF cookie（长度 ${cfCookie.value.length}）');
             await cookieJar.saveFromResponse(uri, [cfCookie]);
           }
         } else if (cookieString.contains(tokenKey)) {
           // 解析登录 token
           final tokenCookie = parseTokenCookie(cookieString);
           if (tokenCookie != null) {
-            l.d('保存 token cookie: ${tokenCookie.value}');
+            l.d('保存 token cookie（长度 ${tokenCookie.value.length}）');
             await cookieJar.saveFromResponse(uri, [tokenCookie]);
+            // 新 token 到达说明会话已恢复，允许下次 401 再次触发失效处理
+            _resetSessionExpiryFlag();
             // 更新登录状态
             Get.find<GlobalController>().setIsLogin(true);
           }
@@ -308,7 +336,7 @@ class NetClient {
           // 解析 forum session
           final sessionCookie = parseSessionCookie(cookieString);
           if (sessionCookie != null) {
-            //l.d('保存 session cookie: ${sessionCookie.value}');
+            l.d('保存 session cookie（长度 ${sessionCookie.value.length}）');
             await cookieJar.saveFromResponse(uri, [sessionCookie]);
           }
         }
@@ -371,7 +399,7 @@ class NetClient {
     return null;
   }
 
-  Future<void> updateCookies( String cookieName, String cookieValue) async {
+  Future<void> updateCookies(String cookieName, String cookieValue) async {
     final uri = Uri.parse(HttpConfig.baseUrl);
     final cookie = Cookie(cookieName, cookieValue);
     await cookieJar.saveFromResponse(uri, [cookie]);
@@ -389,13 +417,9 @@ class NetClient {
       case DioExceptionType.badResponse:
         switch (error.response?.statusCode) {
           case HttpConfig.unauthorizedCode:
-            message = HttpConfig.unauthorizedMessage;
-            // 清除登录状态
-            // StorageManager.remove(AppConst.identifier.csrfToken);
-            // clearCookies(); // 清除Cookie
-            // Get.find<GlobalController>().setIsLogin(false);
-            // Get.offAllNamed('/login');
-            break;
+            // 会话已失效：清凭据并回登录页（由 _handleSessionExpired 统一处理）
+            _handleSessionExpired();
+            return;
           case HttpConfig.forbiddenCode:
             message = HttpConfig.forbiddenMessage;
             break;
@@ -410,6 +434,51 @@ class NetClient {
         message = HttpConfig.networkErrorMessage;
     }
     Fluttertoast.showToast(msg: message);
+  }
+
+  /// 401 只处理一次，避免并发请求同时失效时反复弹提示 / 反复跳转
+  static bool _sessionExpiryHandled = false;
+
+  /// 登录路由。此处用字面量而非 Routes.LOGIN，避免网络层反向依赖路由表
+  /// （routes -> pages -> net 已构成单向依赖）。
+  static const String _loginRoute = '/login';
+
+  /// 登录成功后（收到 token cookie）重置，使下次过期仍能被处理
+  void _resetSessionExpiryFlag() {
+    _sessionExpiryHandled = false;
+  }
+
+  Future<void> _handleSessionExpired() async {
+    if (_sessionExpiryHandled) return;
+
+    // 游客模式下 401 属于预期（未登录访问受保护接口），不打断浏览
+    GlobalController? global;
+    try {
+      if (Get.isRegistered<GlobalController>()) {
+        global = Get.find<GlobalController>();
+      }
+    } catch (_) {
+      global = null;
+    }
+    if (global != null && (global.isAnonymousMode || !global.isLogin)) return;
+
+    _sessionExpiryHandled = true;
+
+    try {
+      await clearCookies();
+      await UserApiKeyAuthService().clearApiKey();
+      await StorageManager.remove(AppConst.identifier.csrfToken);
+      await StorageManager.remove(AppConst.identifier.token);
+      await StorageManager.remove(AppConst.identifier.cfClearance);
+      global?.setIsLogin(false);
+
+      Fluttertoast.showToast(msg: HttpConfig.unauthorizedMessage);
+      if (Get.currentRoute != _loginRoute) {
+        Get.offAllNamed(_loginRoute);
+      }
+    } catch (e) {
+      l.e('处理会话失效失败: $e');
+    }
   }
 
   /// GET请求
@@ -517,8 +586,21 @@ class NetClient {
     }
   }
 
+  /// 上一次探测到「站点启用 Cloudflare」的结果，null 表示尚无结论。
+  /// 探测失败时沿用它，避免断网时把正常登录用户判为未登录。
+  bool? _cfEnabledCache;
+  DateTime? _cfEnabledCheckedAt;
+  static const Duration _cfCacheTtl = Duration(minutes: 5);
+
   /// 检查网站是否使用了 Cloudflare 保护
   Future<bool> _checkCloudflareEnabled() async {
+    final checkedAt = _cfEnabledCheckedAt;
+    if (checkedAt != null &&
+        DateTime.now().difference(checkedAt) < _cfCacheTtl &&
+        _cfEnabledCache != null) {
+      return _cfEnabledCache!;
+    }
+
     try {
       final response = await _dio.head(
         HttpConfig.baseUrl,
@@ -534,12 +616,16 @@ class NetClient {
       final cfRay = headers.value('cf-ray');
 
       // 如果响应头中包含 Cloudflare 相关信息，说明网站使用了 Cloudflare
-      return (server?.toLowerCase().contains('cloudflare') ?? false) ||
+      final enabled = (server?.toLowerCase().contains('cloudflare') ?? false) ||
           (cfRay != null);
+      _cfEnabledCache = enabled;
+      _cfEnabledCheckedAt = DateTime.now();
+      return enabled;
     } catch (e) {
       l.e('检查 Cloudflare 状态失败: $e');
-      // 如果检查失败，保守起见返回 true
-      return true;
+      // 探测失败不代表站点启用了 CF。有历史结论就沿用，否则判为未启用，
+      // 以免把「网络抖动」误判成「缺少 cf_clearance」而把用户踢回登录页。
+      return _cfEnabledCache ?? false;
     }
   }
 

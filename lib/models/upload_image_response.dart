@@ -50,4 +50,4 @@ class UploadImageResponse {
       _$UploadImageResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$UploadImageResponseToJson(this);
-} 
+}

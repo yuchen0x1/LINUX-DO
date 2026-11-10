@@ -20,8 +20,8 @@ import 'package:flutter/material.dart';
 ///     selectable: true,
 /// )
 /// ```
-/// 
-/// Component usage text_scroll 
+///
+/// Component usage text_scroll
 /// Project Github Address:https://github.com/yurii-khi/text_scroll
 /// ------------------------------------------------
 class TextScroll extends StatefulWidget {

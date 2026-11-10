@@ -53,7 +53,7 @@ class ChatDetailController extends BaseController {
 
   // MessageBus 相关
   Timer? _messageBusTimer;
-  
+
   // 机器人思考状态
   final robotThinking = false.obs;
 
@@ -62,10 +62,10 @@ class ChatDetailController extends BaseController {
     super.onInit();
     // 检查是否是机器人聊天
     isRobotChat.value = channel.id == ChatListController.robotId;
-    
+
     // 初始化当前用户
     _initCurrentUser();
-    
+
     // 初始化机器人用户
     _initRobotUser();
 
@@ -85,7 +85,8 @@ class ChatDetailController extends BaseController {
         if (template.startsWith('http://') || template.startsWith('https://')) {
           avatarUrl = template;
         } else {
-          avatarUrl = '${HttpConfig.baseUrl}${template.replaceAll('{size}', '100')}';
+          avatarUrl =
+              '${HttpConfig.baseUrl}${template.replaceAll('{size}', '100')}';
         }
       }
     }
@@ -97,7 +98,7 @@ class ChatDetailController extends BaseController {
       imageUrl: avatarUrl,
     );
   }
-  
+
   void _initRobotUser() {
     robotUser = const types.User(
       id: 'robot',
@@ -110,7 +111,7 @@ class ChatDetailController extends BaseController {
   // 加载机器人消息
   void _loadRobotMessages() {
     isLoading.value = false;
-    
+
     // 添加欢迎消息
     final welcomeMessage = types.TextMessage(
       id: const Uuid().v4(),
@@ -118,7 +119,7 @@ class ChatDetailController extends BaseController {
       text: '您好，现在我还无法回答您的问题,因为我还没有开发完成🙂‍↔️',
       createdAt: DateTime.now().millisecondsSinceEpoch,
     );
-    
+
     chatMessages.add(welcomeMessage);
   }
 
@@ -167,32 +168,32 @@ class ChatDetailController extends BaseController {
       showError('发送失败，请重试');
     }
   }
-  
+
   // 处理机器人聊天
   Future<void> _handleRobotChat(String content) async {
     try {
       robotThinking.value = true;
-      
+
       await Future.delayed(const Duration(seconds: 2));
-      
+
       final robotReply = types.TextMessage(
         id: const Uuid().v4(),
         author: robotUser,
         text: _generateRobotResponse(content),
         createdAt: DateTime.now().millisecondsSinceEpoch,
       );
-      
+
       // 添加到消息列表
       chatMessages.add(robotReply);
     } finally {
       robotThinking.value = false;
     }
   }
-  
+
   String _generateRobotResponse(String userMessage) {
     return '作为 LINUX DO 的 AI 助手，我可以帮助您解答任何问题。只要和Linux 无关即可 😁';
   }
-  
+
   // 发送普通消息
   Future<void> _sendRegularMessage(String content, String messageId) async {
     try {

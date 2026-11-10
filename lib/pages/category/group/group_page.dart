@@ -103,7 +103,7 @@ class GroupPage extends GetView<GroupController> with ToastMixin {
                         group.displayName ?? group.fullName ?? '',
                         style: TextStyle(
                           fontSize: 16.w,
-                          color:Theme.of(context).primaryColor,
+                          color: Theme.of(context).primaryColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -141,21 +141,20 @@ class GroupPage extends GetView<GroupController> with ToastMixin {
                       ),
                     ),
                     8.hGap,
-                    group.automatic == true?Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.circular(4.w),
-                        ),
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 4.w, vertical: 2.w),
-                        child: Text(
-                          group.automatic == true ? '自动' : '',
-                          style: TextStyle(
-                              fontSize: 8.w,
-                              color: AppColors.white),
-                        )
-                    )
-                      : const SizedBox.shrink(),
+                    group.automatic == true
+                        ? Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColor,
+                              borderRadius: BorderRadius.circular(4.w),
+                            ),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 4.w, vertical: 2.w),
+                            child: Text(
+                              group.automatic == true ? '自动' : '',
+                              style: TextStyle(
+                                  fontSize: 8.w, color: AppColors.white),
+                            ))
+                        : const SizedBox.shrink(),
                     const Spacer(),
                     Icon(
                       group.visibilityLevel == 0
@@ -195,8 +194,10 @@ class GroupPage extends GetView<GroupController> with ToastMixin {
           ? controller.leaveGroup(group.id)
           : controller.joinGroup(group.id),
       style: TextButton.styleFrom(
-        backgroundColor: isJoined ? Colors.transparent : Theme.of(context).primaryColor,
-        foregroundColor: isJoined ? Theme.of(context).primaryColor : Colors.white,
+        backgroundColor:
+            isJoined ? Colors.transparent : Theme.of(context).primaryColor,
+        foregroundColor:
+            isJoined ? Theme.of(context).primaryColor : Colors.white,
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.w),
@@ -206,9 +207,7 @@ class GroupPage extends GetView<GroupController> with ToastMixin {
         ),
       ),
       child: Text(
-        isJoined
-            ? AppConst.group.leave
-            : AppConst.group.join,
+        isJoined ? AppConst.group.leave : AppConst.group.join,
         style: TextStyle(
           fontSize: 14.w,
           fontWeight: FontWeight.bold,

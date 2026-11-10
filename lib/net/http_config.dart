@@ -7,7 +7,8 @@ class HttpConfig {
   static const int receiveTimeout = 25000;
   static const int sendTimeout = 25000;
 
-  static const String userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+  static const String userAgent =
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
   /// 成功码
   static const int successCode = 200;

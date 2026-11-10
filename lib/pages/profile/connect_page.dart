@@ -16,7 +16,6 @@ import 'package:linux_do/pages/profile/connect_controller.dart';
 import 'package:linux_do/utils/expand/datetime_expand.dart';
 import 'package:linux_do/utils/expand/string_expand.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:linux_do/utils/log.dart';
 import 'package:linux_do/utils/mixins/toast_mixin.dart';
 import 'package:linux_do/widgets/dis_button.dart';
 import 'package:linux_do/widgets/glowing_text_wweep.dart';
@@ -29,7 +28,11 @@ class ConnectPage extends GetView<ConnectController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Connect', style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold, fontFamily: AppFontFamily.dinPro)),
+        title: const Text('Connect',
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                fontFamily: AppFontFamily.dinPro)),
       ),
       body: Column(
         children: [
@@ -42,23 +45,22 @@ class ConnectPage extends GetView<ConnectController> {
               if (data == null) {
                 return Center(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('Data acquisition in progress ... ',
-                            style: TextStyle(
-                                fontSize: 14, fontFamily: AppFontFamily.dinPro)),
-                        6.hGap,
-                        SizedBox(
-                          width: 15,
-                          height: 15,
-                          child: CircularProgressIndicator(
-                            color: Theme.of(context).primaryColor,
-                            strokeWidth: 2,
-                            
-                          ),
-                        ),
-                      ],
-                    ));
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Data acquisition in progress ... ',
+                        style: TextStyle(
+                            fontSize: 14, fontFamily: AppFontFamily.dinPro)),
+                    6.hGap,
+                    SizedBox(
+                      width: 15,
+                      height: 15,
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).primaryColor,
+                        strokeWidth: 2,
+                      ),
+                    ),
+                  ],
+                ));
               }
 
               return ListView(
@@ -541,7 +543,7 @@ class FlipCardState extends State<FlipCard>
                       Text(
                         'BIRTHDAY: ${userinfo?.birthdate ?? '2024-01-17'}',
                         style: TextStyle(
-                         color: Colors.white,
+                          color: Colors.white,
                           fontSize: 8.w,
                           fontFamily: AppFontFamily.dinPro,
                         ),
@@ -586,50 +588,59 @@ class ConnectDataWidget extends StatelessWidget with ToastMixin {
           children: [
             Padding(
               padding: const EdgeInsets.all(10.0).w,
-              child: 
-              RichText(text: TextSpan(
+              child: RichText(
+                  text: TextSpan(
                 children: [
-                  TextSpan(text: data.userLevel, style: TextStyle(
-                    fontSize: 16.w,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor,
-                    fontFamily: AppFontFamily.dinPro,
-                  )),
-                  TextSpan(text: ' 级用户${data.username}', style: TextStyle(
-                    fontSize: 14.w,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).textTheme.bodyLarge?.color,
-                    fontFamily: AppFontFamily.dinPro,
-                  )),
-                  TextSpan(text: '   (过去 100 天内):', style: TextStyle(
-                    fontSize: 11.w,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).textTheme.bodyLarge?.color,
-                    fontFamily: AppFontFamily.dinPro,
-                  )),
+                  TextSpan(
+                      text: data.userLevel,
+                      style: TextStyle(
+                        fontSize: 16.w,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).primaryColor,
+                        fontFamily: AppFontFamily.dinPro,
+                      )),
+                  TextSpan(
+                      text: ' 级用户${data.username}',
+                      style: TextStyle(
+                        fontSize: 14.w,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
+                        fontFamily: AppFontFamily.dinPro,
+                      )),
+                  TextSpan(
+                      text: '   (过去 100 天内):',
+                      style: TextStyle(
+                        fontSize: 11.w,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
+                        fontFamily: AppFontFamily.dinPro,
+                      )),
                 ],
               )),
-              
             ),
             _buildHeader(context),
-            ...data.trustLevelStats.entries.toList().asMap().entries.map((entry) => _buildStatRow(
-                  context,
-                  entry.value.key,
-                  entry.value.value.current,
-                  entry.value.value.required,
-                  entry.value.value.isMet,
-                  entry.key % 2 == 1,
-                )),
+            ...data.trustLevelStats.entries
+                .toList()
+                .asMap()
+                .entries
+                .map((entry) => _buildStatRow(
+                      context,
+                      entry.value.key,
+                      entry.value.value.current,
+                      entry.value.value.required,
+                      entry.value.value.isMet,
+                      entry.key % 2 == 1,
+                    )),
             Padding(
               padding: const EdgeInsets.all(16.0).w,
               child: Row(
                 children: [
                   Text(
-                   "DeepLX Api Key: ${data.apiKey}",
+                    "DeepLX Api Key: ${data.apiKey}",
                     style: TextStyle(
                       fontSize: 8.w,
-                      color: data.meetsTrustRequirements 
-                          ? Colors.green.shade500 
+                      color: data.meetsTrustRequirements
+                          ? Colors.green.shade500
                           : Theme.of(context).textTheme.bodyMedium?.color,
                       fontFamily: AppFontFamily.dinPro,
                     ),
@@ -716,9 +727,10 @@ class ConnectDataWidget extends StatelessWidget with ToastMixin {
     );
   }
 
-  Widget _buildStatRow(BuildContext context, String title, String current, String required, bool isMet, bool isOdd) {
+  Widget _buildStatRow(BuildContext context, String title, String current,
+      String required, bool isMet, bool isOdd) {
     //l.e('title: $title, current: $current, required: $required, isMet: $isMet, isOdd: $isOdd');
-    
+
     return Container(
       height: 34.w,
       margin: const EdgeInsets.only(bottom: 4).w,
@@ -827,19 +839,22 @@ class PopularColorsWidget extends StatelessWidget {
                 ),
               ),
               16.vGap,
-              ...data.trustLevelStats.entries.map((entry) {
-                final title = entry.key;
-                final current = entry.value.current;
-                final required = entry.value.required;
-                final color = colorMap[title] ?? Colors.grey;
+              ...data.trustLevelStats.entries
+                  .map((entry) {
+                    final title = entry.key;
+                    final current = entry.value.current;
+                    final required = entry.value.required;
+                    final color = colorMap[title] ?? Colors.grey;
 
-                //l.w('current: $current, required: $required, title: $title, color: $color');
-                
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 10.0).w,
-                  child: _buildColorBar(current, required, title, color),
-                );
-              }).toList().sublist(0, 3),
+                    //l.w('current: $current, required: $required, title: $title, color: $color');
+
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0).w,
+                      child: _buildColorBar(current, required, title, color),
+                    );
+                  })
+                  .toList()
+                  .sublist(0, 3),
             ],
           ),
         ),
@@ -847,10 +862,11 @@ class PopularColorsWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildColorBar(String current, String required, String statName, Color color) {
+  Widget _buildColorBar(
+      String current, String required, String statName, Color color) {
     double currentValue = 0;
     double requiredValue = 0;
-    
+
     try {
       currentValue = double.parse(current.replaceAll(RegExp(r'[^0-9.]'), ''));
       requiredValue = double.parse(required.replaceAll(RegExp(r'[^0-9.]'), ''));
@@ -858,9 +874,9 @@ class PopularColorsWidget extends StatelessWidget {
       currentValue = 0;
       requiredValue = 1;
     }
-    
+
     final double percentage = (currentValue / requiredValue).clamp(0.0, 1.0);
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

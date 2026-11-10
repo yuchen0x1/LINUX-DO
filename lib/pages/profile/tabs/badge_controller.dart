@@ -10,7 +10,8 @@ class BadgeController extends BaseController with Concatenated {
   final RxList<BadgeType> badgeTypes = <BadgeType>[].obs;
   final RxList<BadgeGrouping> badgeGroupings = <BadgeGrouping>[].obs;
   final RxInt selectedIndex = 0.obs;
-  final RxMap<int, List<BadgeDetail>> filteredBadgesMap = <int, List<BadgeDetail>>{}.obs;
+  final RxMap<int, List<BadgeDetail>> filteredBadgesMap =
+      <int, List<BadgeDetail>>{}.obs;
 
   @override
   void onInit() {
@@ -20,7 +21,7 @@ class BadgeController extends BaseController with Concatenated {
   }
 
   Future<void> fetchBadges() async {
-    if(isUserEmpty())return;
+    if (isUserEmpty()) return;
     isLoading.value = true;
     try {
       final response = await _apiService.getBadges();
@@ -39,7 +40,8 @@ class BadgeController extends BaseController with Concatenated {
   void _updateFilteredBadges() {
     final newMap = <int, List<BadgeDetail>>{};
     for (var grouping in badgeGroupings) {
-      var groupBadges = badges.where((b) => b.badgeGroupingId == grouping.id).toList();
+      var groupBadges =
+          badges.where((b) => b.badgeGroupingId == grouping.id).toList();
       if (selectedIndex.value == 1) {
         groupBadges = groupBadges.where((b) => b.hasBadge).toList();
       }
@@ -72,4 +74,4 @@ class BadgeController extends BaseController with Concatenated {
   List<BadgeDetail> getFilteredBadges(int groupingId) {
     return filteredBadgesMap[groupingId] ?? [];
   }
-} 
+}

@@ -7,7 +7,8 @@ class WebViewController extends BaseController {
   final title = ''.obs;
   final content = ''.obs;
   final isHtml = false.obs;
-  Rx<InAppWebViewController?> webViewController = Rx<InAppWebViewController?>(null);
+  Rx<InAppWebViewController?> webViewController =
+      Rx<InAppWebViewController?>(null);
 
   @override
   void onInit() {
@@ -65,4 +66,4 @@ class WebViewController extends BaseController {
 
     return NavigationActionPolicy.ALLOW;
   }
-} 
+}

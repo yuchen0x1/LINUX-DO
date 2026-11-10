@@ -69,7 +69,6 @@ class _DisButtonState extends State<DisButton> with TickerProviderStateMixin {
   final Duration _duration = const Duration(milliseconds: 250);
   late double _width;
   late double _height;
-  late double _borderRadius;
 
   @override
   void initState() {
@@ -86,7 +85,6 @@ class _DisButtonState extends State<DisButton> with TickerProviderStateMixin {
   void _reset() {
     _width = widget.width ?? double.infinity;
     _height = _getHeight();
-    _borderRadius = widget.borderRadius ?? 4.w;
   }
 
   @override
@@ -257,17 +255,13 @@ class _DisButtonState extends State<DisButton> with TickerProviderStateMixin {
 
   void _forward() {
     double initialWidth = _globalKey.currentContext!.size!.width;
-    double initialBorderRadius = 4.w;
     double targetWidth = _height;
-    double targetBorderRadius = _height / 2;
 
     _animController = AnimationController(duration: _duration, vsync: this);
     _anim = Tween(begin: 0.0, end: 1.0).animate(_animController!)
       ..addListener(() {
         setState(() {
           _width = initialWidth - ((initialWidth - targetWidth) * _anim!.value);
-          _borderRadius = initialBorderRadius -
-              ((initialBorderRadius - targetBorderRadius) * _anim!.value);
         });
       });
 

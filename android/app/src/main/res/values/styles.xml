@@ -14,5 +14,11 @@
          This Theme is only used starting with V2 of Flutter's Android embedding. -->
     <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>
+        <!--
+          targetSdk 35 起 Android 15 强制 edge-to-edge。页面大量使用 Stack +
+          kToolbarHeight 定位，尚未做全面安全区改造；先显式退出强制 edge-to-edge
+          以保持现有视觉行为，后续统一适配时移除本项。
+        -->
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
     </style>
 </resources>

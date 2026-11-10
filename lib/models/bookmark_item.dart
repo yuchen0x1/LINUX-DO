@@ -1,10 +1,9 @@
-
 class BookmarkItem {
-  final int id;           // 主题ID
-  final String title;     // 主题标题
+  final int id; // 主题ID
+  final String title; // 主题标题
   final String avatarUrl; // 创建者头像URL
   final List<String> tags; // 主题标签
-  final String category;  // 所属分类
+  final String category; // 所属分类
   final DateTime savedAt; // 保存时间
   final String username; // 创建者用户名
   final int userId; // 创建者ID
@@ -60,4 +59,4 @@ class BookmarkItem {
 
   @override
   int get hashCode => id.hashCode;
-} 
+}

@@ -56,9 +56,12 @@ $code
                   12.hGap,
                   if (language != null) ...[
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.w),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.w),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                        color: Theme.of(context)
+                            .primaryColor
+                            .withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(4.w),
                       ),
                       child: Text(
@@ -93,7 +96,8 @@ $code
                 data: markdownCode,
                 selectable: true,
                 padding: EdgeInsets.all(16.w),
-                styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+                styleSheet:
+                    MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
                   p: TextStyle(
                     fontSize: 13.sp,
                     fontFamily: 'monospace',
@@ -108,7 +112,8 @@ $code
                     backgroundColor: Colors.transparent,
                   ),
                   codeblockDecoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                    color:
+                        Theme.of(context).primaryColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8.w),
                   ),
                   codeblockPadding: EdgeInsets.all(12.w),
@@ -119,7 +124,8 @@ $code
                     color: Theme.of(context).textTheme.bodyMedium?.color,
                   ),
                   blockquoteDecoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                    color:
+                        Theme.of(context).primaryColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8.w),
                   ),
                   blockquotePadding: EdgeInsets.all(12.w),

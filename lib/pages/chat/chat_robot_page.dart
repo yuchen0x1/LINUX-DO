@@ -413,62 +413,6 @@ class ChatRobotPage extends GetView<ChatRobotController> with Concatenated {
     );
   }
 
-  // 构建建议的问题区域
-  Widget _buildSuggestedQuestions(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 18).w,
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '您可以尝试问：',
-            style: TextStyle(
-              fontSize: 12.w,
-              color: Theme.of(context).hintColor,
-            ),
-          ),
-          8.vGap,
-          Wrap(
-            spacing: 8.w,
-            runSpacing: 8.w,
-            children: controller.suggestedQuestions.map((question) {
-              return InkWell(
-                onTap: () {
-                  controller.useSuggestedQuestion(question);
-                },
-                borderRadius: BorderRadius.circular(16.w),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ).w,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withValues(alpha: .1),
-                    borderRadius: BorderRadius.circular(16.w),
-                    border: Border.all(
-                      color:
-                          Theme.of(context).primaryColor.withValues(alpha: .3),
-                    ),
-                  ),
-                  child: Text(
-                    question,
-                    style: TextStyle(
-                      fontSize: 12.w,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
-        ],
-      ),
-    );
-  }
-
   Future<bool?> _showHintDialog(BuildContext context) async {
     if (StorageManager.getBool(AppConst.identifier.chatHintDontShow) ?? false) {
       return true;
@@ -533,21 +477,17 @@ class ChatRobotPage extends GetView<ChatRobotController> with Concatenated {
                 ),
                 // Content Section
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                   child: Text(
                     '本页面的内容不会保存\n您可以在"我的->消息"中查看历史对话',
                     style: TextStyle(
                       fontSize: 14,
                       height: 1.6,
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .color,
+                      color: Theme.of(context).textTheme.bodyMedium!.color,
                     ),
                   ),
                 ),
-                
+
                 Padding(
                   padding: const EdgeInsets.all(24),
                   child: Row(

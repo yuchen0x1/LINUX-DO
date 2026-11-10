@@ -26,232 +26,240 @@ class EditProfilePage extends GetView<EditProfileController> {
           ),
         ),
         actions: [
-          Obx(() => SizedBox(
-            width: 60.w,
-            height: 30.w,
-            child: DisButton(
+          Obx(
+            () => SizedBox(
+              width: 60.w,
+              height: 30.w,
+              child: DisButton(
                 text: AppConst.settings.save,
                 type: ButtonType.transform,
                 loading: controller.isSaving.value,
                 onPressed: controller.saveProfile,
               ),
-          ),),
+            ),
+          ),
           16.hGap
         ],
       ),
       body: Obx(() => SingleChildScrollView(
-        padding: EdgeInsets.all(12.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 头像部分
-            Center(
-              child: Stack(
-                children: [
-                  GestureDetector(
-                    onTap: controller.pickAvatar,
-                    child: Container(
-                      width: 100.w,
-                      height: 100.w,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Theme.of(context).primaryColor.withValues(alpha: .6),
-                          width: 4.w,
-                        ),
-                      ),
-                      child: ClipOval(
-                        child: Obx(() => controller.isUploading.value
-                          ? Container(
-                              color: Theme.of(context).cardColor,
-                              child: Center(
-                                child: DisRefreshLoading()
-                              ),
-                            )
-                          : CachedImage(
-                              imageUrl: controller.avatarUrl.value,
-                              placeholder: Icon(
-                                CupertinoIcons.person_fill,
-                                size: 40.w,
-                                color: Theme.of(context).hintColor.withValues(alpha: .2),
-                              ),
+            padding: EdgeInsets.all(12.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 头像部分
+                Center(
+                  child: Stack(
+                    children: [
+                      GestureDetector(
+                        onTap: controller.pickAvatar,
+                        child: Container(
+                          width: 100.w,
+                          height: 100.w,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Theme.of(context)
+                                  .primaryColor
+                                  .withValues(alpha: .6),
+                              width: 4.w,
                             ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    right: 6.w,
-                    bottom: 6.w,
-                    child: Container(
-                      padding: EdgeInsets.all(6.w),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            Theme.of(context).primaryColor,
-                            Theme.of(context).primaryColor.withValues(alpha: .5),
-                          ],
-                        ),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Theme.of(context).shadowColor.withValues(alpha: .1),
-                            blurRadius: 10,
-                            offset: const Offset(0, 2),
                           ),
-                        ],
+                          child: ClipOval(
+                            child: Obx(
+                              () => controller.isUploading.value
+                                  ? Container(
+                                      color: Theme.of(context).cardColor,
+                                      child: Center(child: DisRefreshLoading()),
+                                    )
+                                  : CachedImage(
+                                      imageUrl: controller.avatarUrl.value,
+                                      placeholder: Icon(
+                                        CupertinoIcons.person_fill,
+                                        size: 40.w,
+                                        color: Theme.of(context)
+                                            .hintColor
+                                            .withValues(alpha: .2),
+                                      ),
+                                    ),
+                            ),
+                          ),
+                        ),
                       ),
-                      child: Icon(
-                        CupertinoIcons.camera_fill,
-                        size: 12.w,
-                        color: Colors.white,
+                      Positioned(
+                        right: 6.w,
+                        bottom: 6.w,
+                        child: Container(
+                          padding: EdgeInsets.all(6.w),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Theme.of(context).primaryColor,
+                                Theme.of(context)
+                                    .primaryColor
+                                    .withValues(alpha: .5),
+                              ],
+                            ),
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Theme.of(context)
+                                    .shadowColor
+                                    .withValues(alpha: .1),
+                                blurRadius: 10,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Icon(
+                            CupertinoIcons.camera_fill,
+                            size: 12.w,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-            24.vGap,
-            // 基本信息部分
-            _buildSection(
-              context,
-              title: AppConst.settings.basicInfo,
-              children: [
-                _buildTextField(
-                  context,
-                  label: AppConst.settings.name,
-                  controller: controller.nameController,
-                  hintText: AppConst.settings.inputName,
                 ),
-                _buildDivider(context),
-                _buildTextField(
+                24.vGap,
+                // 基本信息部分
+                _buildSection(
                   context,
-                  label: AppConst.settings.username,
-                  controller: controller.usernameController,
-                  enabled: false,
-                  hintText: AppConst.settings.usernameNotEditable,
+                  title: AppConst.settings.basicInfo,
+                  children: [
+                    _buildTextField(
+                      context,
+                      label: AppConst.settings.name,
+                      controller: controller.nameController,
+                      hintText: AppConst.settings.inputName,
+                    ),
+                    _buildDivider(context),
+                    _buildTextField(
+                      context,
+                      label: AppConst.settings.username,
+                      controller: controller.usernameController,
+                      enabled: false,
+                      hintText: AppConst.settings.usernameNotEditable,
+                    ),
+                    _buildDivider(context),
+                    _buildUserTitle(context),
+                  ],
                 ),
-                _buildDivider(context),
-
-                _buildUserTitle(context),
+                24.vGap,
+                // 联系方式部分
+                _buildSection(
+                  context,
+                  title: AppConst.settings.contact,
+                  children: [
+                    _buildTextField(
+                      context,
+                      label: AppConst.settings.email,
+                      controller: controller.emailController,
+                      enabled: false,
+                      hintText: AppConst.settings.emailNotEditable,
+                    ),
+                    _buildDivider(context),
+                    _buildTextField(
+                      context,
+                      label: AppConst.settings.backupEmail,
+                      controller: controller.backupEmailController,
+                      hintText: AppConst.settings.inputBackupEmail,
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                  ],
+                ),
+                24.vGap,
+                // 关联账户部分
+                _buildSection(
+                  context,
+                  title: AppConst.settings.linkedAccounts,
+                  children: [
+                    for (var account in controller.linkedAccounts)
+                      _buildAccountItem(context, account),
+                  ],
+                ),
               ],
             ),
-            24.vGap,
-            // 联系方式部分
-            _buildSection(
-              context,
-              title: AppConst.settings.contact,
-              children: [
-                _buildTextField(
-                  context,
-                  label: AppConst.settings.email,
-                  controller: controller.emailController,
-                  enabled: false,
-                  hintText: AppConst.settings.emailNotEditable,
-                ),
-                _buildDivider(context),
-                _buildTextField(
-                  context,
-                  label: AppConst.settings.backupEmail,
-                  controller: controller.backupEmailController,
-                  hintText: AppConst.settings.inputBackupEmail,
-                  keyboardType: TextInputType.emailAddress,
-                ),
-              ],
-            ),
-            24.vGap,
-            // 关联账户部分
-            _buildSection(
-              context,
-              title: AppConst.settings.linkedAccounts,
-              children: [
-                for (var account in controller.linkedAccounts)
-                  _buildAccountItem(context, account),
-              ],
-            ),
-          ],
-        ),
-      )),
+          )),
     );
   }
 
   Container _buildUserTitle(BuildContext context) {
     return Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.w,vertical: 4.w),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: Theme.of(context).dividerColor.withValues(alpha: .1),
-                    ),
-                  ),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.w),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Theme.of(context).dividerColor.withValues(alpha: .1),
+          ),
+        ),
+      ),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 80.w,
+            child: Text(
+              AppConst.settings.userTitle,
+              style: TextStyle(
+                fontSize: 14.w,
+                fontFamily: AppFontFamily.dinPro,
+                color: Theme.of(context).textTheme.bodyMedium?.color,
+              ),
+            ),
+          ),
+          12.hGap,
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 12.w),
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: BorderRadius.circular(8.w),
+                border: Border.all(
+                  color: Theme.of(context).dividerColor.withValues(alpha: .1),
                 ),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 80.w,
-                      child: Text(
-                        AppConst.settings.userTitle,
-                        style: TextStyle(
-                          fontSize: 14.w,
-                          fontFamily: AppFontFamily.dinPro,
-                          color: Theme.of(context).textTheme.bodyMedium?.color,
-                        ),
+              ),
+              child: Obx(() => DropdownButton<String>(
+                    value: controller.userTitle.value,
+                    isExpanded: true,
+                    focusColor: Theme.of(context).cardColor,
+                    dropdownColor: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.circular(12.w),
+                    underline: const SizedBox(),
+                    hint: Text(
+                      AppConst.settings.noBadge,
+                      style: TextStyle(
+                        fontSize: 14.w,
+                        color: Theme.of(context).hintColor,
                       ),
                     ),
-                    12.hGap,
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12.w),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).cardColor,
-                          borderRadius: BorderRadius.circular(8.w),
-                          border: Border.all(
-                            color: Theme.of(context).dividerColor.withValues(alpha: .1),
-                          ),
-                        ),
-                        child: Obx(() => DropdownButton<String>(
-                          value: controller.userTitle.value,
-                          isExpanded: true,
-                          focusColor: Theme.of(context).cardColor,
-                          dropdownColor: Theme.of(context).cardColor,
-                          borderRadius: BorderRadius.circular(12.w),
-                          underline: const SizedBox(),
-                          hint: Text(
-                            AppConst.settings.noBadge,
-                            style: TextStyle(
-                              fontSize: 14.w,
-                              color: Theme.of(context).hintColor,
-                            ),
-                          ),
+                    style: TextStyle(
+                      fontSize: 14.w,
+                      fontFamily: AppFontFamily.dinPro,
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
+                    ),
+                    items: controller.badges.map((badge) {
+                      return DropdownMenuItem<String>(
+                        value: badge.name,
+                        child: Text(
+                          badge.name,
                           style: TextStyle(
                             fontSize: 14.w,
                             fontFamily: AppFontFamily.dinPro,
                             color: Theme.of(context).textTheme.bodyLarge?.color,
                           ),
-                          items: controller.badges.map((badge) {
-                            return DropdownMenuItem<String>(
-                              value: badge.name,
-                              child: Text(
-                                badge.name,
-                                style: TextStyle(
-                                  fontSize: 14.w,
-                                  fontFamily: AppFontFamily.dinPro,
-                                  color: Theme.of(context).textTheme.bodyLarge?.color,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            if (newValue != null) {
-                              controller.userTitle.value = newValue;
-                            }
-                          },
-                        )),
-                      ),
-                    ),
-                  ],
-                ),
-              );
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      if (newValue != null) {
+                        controller.userTitle.value = newValue;
+                      }
+                    },
+                  )),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildDivider(BuildContext context) {
@@ -307,7 +315,7 @@ class EditProfilePage extends GetView<EditProfileController> {
     String? hintText,
     TextInputType? keyboardType,
   }) {
-    final Color backgroundColor = enabled 
+    final Color backgroundColor = enabled
         ? Theme.of(context).cardColor
         : Theme.of(context).disabledColor.withValues(alpha: .03);
 
@@ -342,7 +350,7 @@ class EditProfilePage extends GetView<EditProfileController> {
               style: TextStyle(
                 fontSize: 14.w,
                 fontFamily: AppFontFamily.dinPro,
-                color: enabled 
+                color: enabled
                     ? Theme.of(context).textTheme.bodyLarge?.color
                     : Theme.of(context).disabledColor,
               ),
@@ -369,11 +377,13 @@ class EditProfilePage extends GetView<EditProfileController> {
                 disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.w),
                   borderSide: BorderSide(
-                    color: Theme.of(context).dividerColor.withValues(alpha: .05),
+                    color:
+                        Theme.of(context).dividerColor.withValues(alpha: .05),
                   ),
                 ),
                 isDense: true,
-                contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.w),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.w),
               ),
             ),
           ),
@@ -386,7 +396,8 @@ class EditProfilePage extends GetView<EditProfileController> {
     final accountType = account['name'] as String?;
     final accountDesc = account['description'] as String?;
     final bool isLinked = accountDesc != null;
-    final bool isLastItem = controller.linkedAccounts.last['name'] == accountType;
+    final bool isLastItem =
+        controller.linkedAccounts.last['name'] == accountType;
 
     return Column(
       children: [
@@ -453,8 +464,7 @@ class EditProfilePage extends GetView<EditProfileController> {
             ],
           ),
         ),
-        if (!isLastItem)
-          _buildDivider(context),
+        if (!isLastItem) _buildDivider(context),
       ],
     );
   }
@@ -488,4 +498,4 @@ class EditProfilePage extends GetView<EditProfileController> {
         return AppConst.settings.unknownAccount;
     }
   }
-} 
+}

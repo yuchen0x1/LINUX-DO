@@ -18,7 +18,7 @@ class PostReply extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4).w,
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
-          borderRadius:  BorderRadius.only(
+          borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(12).w,
             bottomRight: const Radius.circular(12).w,
           ),

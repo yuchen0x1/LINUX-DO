@@ -2,8 +2,6 @@ import 'package:get/get.dart';
 import 'package:linux_do/const/app_const.dart';
 import 'package:linux_do/controller/base_controller.dart';
 import 'package:linux_do/models/topic_model.dart';
-import 'package:linux_do/pages/topics/tab_views/topic_tab_controller.dart';
-import 'package:linux_do/utils/bookmark_service.dart';
 import 'package:linux_do/utils/storage_manager.dart';
 import 'package:linux_do/utils/user_cache.dart';
 

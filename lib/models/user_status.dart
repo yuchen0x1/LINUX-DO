@@ -5,7 +5,7 @@ part 'user_status.g.dart';
 class UserStatus {
   final String? description;
   final String? emoji;
-  @JsonKey(name: 'ends_at')   
+  @JsonKey(name: 'ends_at')
   final String? endsAt;
   @JsonKey(name: 'message_bus_last_id')
   final int? messageBusLastId;
@@ -17,6 +17,7 @@ class UserStatus {
     required this.messageBusLastId,
   });
 
-  factory UserStatus.fromJson(Map<String, dynamic> json) => _$UserStatusFromJson(json);
+  factory UserStatus.fromJson(Map<String, dynamic> json) =>
+      _$UserStatusFromJson(json);
   Map<String, dynamic> toJson() => _$UserStatusToJson(this);
 }

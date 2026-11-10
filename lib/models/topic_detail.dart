@@ -46,15 +46,13 @@ class TopicDetail {
   final PostStream? postStream;
   final List<String>? tags;
   final String? categoryName;
-  @JsonKey(name: 'details') 
+  @JsonKey(name: 'details')
   final Detail? details;
   @JsonKey(name: 'participants_count')
   final int? participantsCount;
   @JsonKey(name: 'bookmarks')
   final List<Bookmarks>? bookmarks;
   final bool? bookmarked;
-
-
 
   TopicDetail({
     this.id,
@@ -87,9 +85,6 @@ class TopicDetail {
     this.bookmarks,
     this.bookmarked,
   });
-  
-
-
 
   factory TopicDetail.fromJson(Map<String, dynamic> json) =>
       _$TopicDetailFromJson(json);
@@ -111,7 +106,6 @@ class PostStream {
   Map<String, dynamic> toJson() => _$PostStreamToJson(this);
 }
 
-
 class PostRepliesResponse {
   final List<Post> replies;
 
@@ -123,7 +117,6 @@ class PostRepliesResponse {
     );
   }
 }
-
 
 @JsonSerializable()
 class Post {
@@ -209,7 +202,6 @@ class Post {
 
   List<Post>? replayList;
 
-
   Post({
     this.id,
     this.name,
@@ -285,17 +277,17 @@ class Post {
     this.bookmarkId,
     this.bookmarkableType,
     this.bookmarkReminderAt,
-    this.bookmarkName,  
+    this.bookmarkName,
     this.policyAccepted,
     this.polls,
     this.polls_votes,
     this.actionCode,
   });
 
-
   String get avatarUrl {
     if (animatedAvatar != null && animatedAvatar!.isNotEmpty) {
-      if (animatedAvatar!.startsWith('http://') || animatedAvatar!.startsWith('https://')) {
+      if (animatedAvatar!.startsWith('http://') ||
+          animatedAvatar!.startsWith('https://')) {
         return animatedAvatar!;
       }
       return '${HttpConfig.baseUrl}${animatedAvatar!.replaceAll('{size}', '62')}';
@@ -303,7 +295,8 @@ class Post {
     if (avatarTemplate == null || avatarTemplate!.isEmpty) {
       return '';
     }
-    if (avatarTemplate!.startsWith('http://') || avatarTemplate!.startsWith('https://')) {
+    if (avatarTemplate!.startsWith('http://') ||
+        avatarTemplate!.startsWith('https://')) {
       return avatarTemplate!;
     }
     return '${HttpConfig.baseUrl}${avatarTemplate!.replaceAll('{size}', '62')}';
@@ -317,95 +310,99 @@ class Post {
     return id == userId;
   }
 
-
   factory Post.fromJson(Map<String, dynamic> json) => Post(
-    id: json['id'] as int?,
-    name: json['name'] as String?,
-    username: json['username'] as String?,
-    avatarTemplate: json['avatar_template'] as String?,
-    createdAt: json['created_at'] as String?,
-    cooked: json['cooked'] as String?,
-    postNumber: json['post_number'] as int?,
-    postType: json['post_type'] as int?,
-    postsCount: json['posts_count'] as int?,
-    updatedAt: json['updated_at'] as String?,
-    replyCount: json['reply_count'] as int?,
-    replyToPostNumber: json['reply_to_post_number'] as int?,
-    quoteCount: json['quote_count'] as int?,
-    incomingLinkCount: json['incoming_link_count'] as int?,
-    reads: json['reads'] as int?,
-    readersCount: json['readers_count'] as int?,
-    score: (json['score'] as num?)?.toDouble(),
-    yours: json['yours'] as bool?,
-    topicId: json['topic_id'] as int?,
-    topicSlug: json['topic_slug'] as String?,
-    displayUsername: json['display_username'] as String?,
-    primaryGroupName: json['primary_group_name'] as String?,
-    flairName: json['flair_name'] as String?,
-    flairUrl: json['flair_url'] as String?,
-    flairBgColor: json['flair_bg_color'] as String?,
-    flairColor: json['flair_color'] as String?,
-    flairGroupId: json['flair_group_id'] as int?,
-    badgesGranted: json['badges_granted'] as List<dynamic>?,
-    version: json['version'] as int?,
-    canEdit: json['can_edit'] as bool?,
-    canDelete: json['can_delete'] as bool?,
-    canRecover: json['can_recover'] as bool?,
-    canSeeHiddenPost: json['can_see_hidden_post'] as bool?,
-    canWiki: json['can_wiki'] as bool?,
-    userTitle: json['user_title'] as String?,
-    titleIsGroup: json['title_is_group'] as bool?,
-    bookmarked: json['bookmarked'] as bool?,
-    actionsSummary: json['actions_summary'] as List<dynamic>?,
-    moderator: json['moderator'] as bool?,
-    admin: json['admin'] as bool?,
-    staff: json['staff'] as bool?,
-    userId: json['user_id'] as int?,
-    hidden: json['hidden'] as bool?,
-    trustLevel: json['trust_level'] as int?,
-    deletedAt: json['deleted_at'] as String?,
-    userDeleted: json['user_deleted'] as bool?,
-    editReason: json['edit_reason'] as String?,
-    canViewEditHistory: json['can_view_edit_history'] as bool?,
-    wiki: json['wiki'] as bool?,
-    userStatus: json['user_status'] as Map<String, dynamic>?,
-    mentionedUsers: json['mentioned_users'] as List<dynamic>?,
-    postUrl: json['post_url'] as String?,
-    animatedAvatar: json['animated_avatar'] as String?,
-    userCakedate: json['user_cakedate'] as String?,
-    userBirthdate: json['user_birthdate'] as String?,
-    event: json['event'] as Map<String, dynamic>?,
-    calendarDetails: json['calendar_details'] as List<dynamic>?,
-    categoryExpertApprovedGroup: json['category_expert_approved_group'] as String?,
-    needsCategoryExpertApproval: json['needs_category_expert_approval'] as bool?,
-    canManageCategoryExpertPosts: json['can_manage_category_expert_posts'] as bool?,
-    postFoldingStatus: json['post_folding_status'] as String?,
-    reactions: json['reactions'] as List<dynamic>?,
-    currentUserReaction: json['current_user_reaction'] as Map<String, dynamic>?,
-    reactionUsersCount: (json['reaction_users_count'] as num?)?.toInt() ?? 0,
-    userSignature: json['user_signature'] as String?,
-    canAcceptAnswer: json['can_accept_answer'] as bool?,
-    canUnacceptAnswer: json['can_unaccept_answer'] as bool?,
-    acceptedAnswer: json['accepted_answer'] as bool?,
-    topicAcceptedAnswer: json['topic_accepted_answer'] as bool?,
-    canVote: json['can_vote'] as bool?,
-    bookmarkAutoDeletePreference: json['bookmark_auto_delete_preference'] as int?,
-    bookmarkId: json['bookmark_id'] as int?,
-    bookmarkableType: json['bookmarkable_type'] as String?,
-    bookmarkReminderAt: json['bookmark_reminder_at'] as String?,
-    bookmarkName: json['bookmark_name'] as String?,
-    policyAccepted: json['policy_accepted'] as bool?,
-    polls: json['polls'] != null
-        ? (json['polls'] as List<dynamic>)
-            .map((e) => Polls.fromJson(e as Map<String, dynamic>))
-            .toList()
-        : null,
-    polls_votes: json['polls_votes'] != null
-        ? PollsVotes.fromJson(json['polls_votes'] as Map<String, dynamic>)
-        : null,
-    actionCode: json['action_code'] as String?,
-  );
-
+        id: json['id'] as int?,
+        name: json['name'] as String?,
+        username: json['username'] as String?,
+        avatarTemplate: json['avatar_template'] as String?,
+        createdAt: json['created_at'] as String?,
+        cooked: json['cooked'] as String?,
+        postNumber: json['post_number'] as int?,
+        postType: json['post_type'] as int?,
+        postsCount: json['posts_count'] as int?,
+        updatedAt: json['updated_at'] as String?,
+        replyCount: json['reply_count'] as int?,
+        replyToPostNumber: json['reply_to_post_number'] as int?,
+        quoteCount: json['quote_count'] as int?,
+        incomingLinkCount: json['incoming_link_count'] as int?,
+        reads: json['reads'] as int?,
+        readersCount: json['readers_count'] as int?,
+        score: (json['score'] as num?)?.toDouble(),
+        yours: json['yours'] as bool?,
+        topicId: json['topic_id'] as int?,
+        topicSlug: json['topic_slug'] as String?,
+        displayUsername: json['display_username'] as String?,
+        primaryGroupName: json['primary_group_name'] as String?,
+        flairName: json['flair_name'] as String?,
+        flairUrl: json['flair_url'] as String?,
+        flairBgColor: json['flair_bg_color'] as String?,
+        flairColor: json['flair_color'] as String?,
+        flairGroupId: json['flair_group_id'] as int?,
+        badgesGranted: json['badges_granted'] as List<dynamic>?,
+        version: json['version'] as int?,
+        canEdit: json['can_edit'] as bool?,
+        canDelete: json['can_delete'] as bool?,
+        canRecover: json['can_recover'] as bool?,
+        canSeeHiddenPost: json['can_see_hidden_post'] as bool?,
+        canWiki: json['can_wiki'] as bool?,
+        userTitle: json['user_title'] as String?,
+        titleIsGroup: json['title_is_group'] as bool?,
+        bookmarked: json['bookmarked'] as bool?,
+        actionsSummary: json['actions_summary'] as List<dynamic>?,
+        moderator: json['moderator'] as bool?,
+        admin: json['admin'] as bool?,
+        staff: json['staff'] as bool?,
+        userId: json['user_id'] as int?,
+        hidden: json['hidden'] as bool?,
+        trustLevel: json['trust_level'] as int?,
+        deletedAt: json['deleted_at'] as String?,
+        userDeleted: json['user_deleted'] as bool?,
+        editReason: json['edit_reason'] as String?,
+        canViewEditHistory: json['can_view_edit_history'] as bool?,
+        wiki: json['wiki'] as bool?,
+        userStatus: json['user_status'] as Map<String, dynamic>?,
+        mentionedUsers: json['mentioned_users'] as List<dynamic>?,
+        postUrl: json['post_url'] as String?,
+        animatedAvatar: json['animated_avatar'] as String?,
+        userCakedate: json['user_cakedate'] as String?,
+        userBirthdate: json['user_birthdate'] as String?,
+        event: json['event'] as Map<String, dynamic>?,
+        calendarDetails: json['calendar_details'] as List<dynamic>?,
+        categoryExpertApprovedGroup:
+            json['category_expert_approved_group'] as String?,
+        needsCategoryExpertApproval:
+            json['needs_category_expert_approval'] as bool?,
+        canManageCategoryExpertPosts:
+            json['can_manage_category_expert_posts'] as bool?,
+        postFoldingStatus: json['post_folding_status'] as String?,
+        reactions: json['reactions'] as List<dynamic>?,
+        currentUserReaction:
+            json['current_user_reaction'] as Map<String, dynamic>?,
+        reactionUsersCount:
+            (json['reaction_users_count'] as num?)?.toInt() ?? 0,
+        userSignature: json['user_signature'] as String?,
+        canAcceptAnswer: json['can_accept_answer'] as bool?,
+        canUnacceptAnswer: json['can_unaccept_answer'] as bool?,
+        acceptedAnswer: json['accepted_answer'] as bool?,
+        topicAcceptedAnswer: json['topic_accepted_answer'] as bool?,
+        canVote: json['can_vote'] as bool?,
+        bookmarkAutoDeletePreference:
+            json['bookmark_auto_delete_preference'] as int?,
+        bookmarkId: json['bookmark_id'] as int?,
+        bookmarkableType: json['bookmarkable_type'] as String?,
+        bookmarkReminderAt: json['bookmark_reminder_at'] as String?,
+        bookmarkName: json['bookmark_name'] as String?,
+        policyAccepted: json['policy_accepted'] as bool?,
+        polls: json['polls'] != null
+            ? (json['polls'] as List<dynamic>)
+                .map((e) => Polls.fromJson(e as Map<String, dynamic>))
+                .toList()
+            : null,
+        polls_votes: json['polls_votes'] != null
+            ? PollsVotes.fromJson(json['polls_votes'] as Map<String, dynamic>)
+            : null,
+        actionCode: json['action_code'] as String?,
+      );
 
   Map<String, dynamic> toJson() {
     return {
@@ -451,7 +448,6 @@ class Post {
   }
 }
 
-
 @JsonSerializable()
 class ActionSummary {
   final int id;
@@ -478,7 +474,6 @@ class Detail {
   final CreateBy? createdBy;
   final List<Links>? links;
 
-
   Detail({
     this.createdBy,
     this.links,
@@ -488,10 +483,8 @@ class Detail {
   Map<String, dynamic> toJson() => _$DetailToJson(this);
 }
 
-
 @JsonSerializable()
 class Links {
-  
   final bool? attachment;
   final int? clicks;
   final String? domain;
@@ -538,7 +531,7 @@ class CreateBy {
     this.animatedAvatar,
   });
 
-    String getAvatarUrl() {
+  String getAvatarUrl() {
     return '${HttpConfig.baseUrl}${avatarTemplate!.replaceAll("{size}", "62")}';
   }
 
@@ -550,7 +543,6 @@ class CreateBy {
       _$CreateByFromJson(json);
   Map<String, dynamic> toJson() => _$CreateByToJson(this);
 }
-
 
 @JsonSerializable()
 class Bookmarks {
@@ -565,18 +557,19 @@ class Bookmarks {
   @JsonKey(name: 'reminder_at')
   final String? reminderAt;
 
-
-
-  Bookmarks(this.id, this.name, this.reminderAt, 
-     this.autoDeletePreference,
-     this.bookmarkableId,
-     this.bookmarkableType,
+  Bookmarks(
+    this.id,
+    this.name,
+    this.reminderAt,
+    this.autoDeletePreference,
+    this.bookmarkableId,
+    this.bookmarkableType,
   );
 
-  factory Bookmarks.fromJson(Map<String, dynamic> json) => _$BookmarksFromJson(json);
+  factory Bookmarks.fromJson(Map<String, dynamic> json) =>
+      _$BookmarksFromJson(json);
   Map<String, dynamic> toJson() => _$BookmarksToJson(this);
 }
-
 
 @JsonSerializable()
 class PollsVotes {
@@ -586,20 +579,20 @@ class PollsVotes {
 
   factory PollsVotes.fromJson(Map<String, dynamic> json) {
     final Map<String, List<String>> votesMap = {};
-    
+
     json.forEach((key, value) {
       if (value is List) {
-        votesMap[key] = (value as List).cast<String>();
+        votesMap[key] = value.cast<String>();
       }
     });
-    
+
     return PollsVotes(votes: votesMap);
   }
-  
+
   Map<String, dynamic> toJson() {
     return votes;
   }
-  
+
   // 兼容旧代码的getter
   List<String>? get poll => votes['poll'];
 }
@@ -648,7 +641,8 @@ class Polls {
           ?.map((e) => PollOption.fromJson(e as Map<String, dynamic>))
           .toList(),
       voters: json['voters'] as int?,
-      preloaded_voters: (json['preloaded_voters'] as Map<String, dynamic>?)?.map(
+      preloaded_voters:
+          (json['preloaded_voters'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(
           k,
           (e as List<dynamic>)
@@ -742,7 +736,8 @@ class PollVoter {
 
   String getAvatarUrl() {
     if (animated_avatar != null && animated_avatar!.isNotEmpty) {
-      if (animated_avatar!.startsWith('http://') || animated_avatar!.startsWith('https://')) {
+      if (animated_avatar!.startsWith('http://') ||
+          animated_avatar!.startsWith('https://')) {
         return animated_avatar!;
       }
       return '${HttpConfig.baseUrl}${animated_avatar!.replaceAll('{size}', '40')}';
@@ -750,7 +745,8 @@ class PollVoter {
     if (avatar_template == null || avatar_template!.isEmpty) {
       return '';
     }
-    if (avatar_template!.startsWith('http://') || avatar_template!.startsWith('https://')) {
+    if (avatar_template!.startsWith('http://') ||
+        avatar_template!.startsWith('https://')) {
       return avatar_template!;
     }
     return '${HttpConfig.baseUrl}${avatar_template!.replaceAll('{size}', '40')}';

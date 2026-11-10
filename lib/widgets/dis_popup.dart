@@ -382,7 +382,6 @@ class _PopupRoute extends PopupRoute<void> {
   Duration get transitionDuration => const Duration(milliseconds: 150);
 }
 
-
 abstract class Screen {
   static MediaQueryData get mediaQuery => MediaQueryData.fromView(
         PlatformDispatcher.instance.views.first,

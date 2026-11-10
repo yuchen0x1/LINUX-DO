@@ -38,7 +38,7 @@ class _MessageCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Container(
       margin: EdgeInsets.only(bottom: 12.w),
       decoration: BoxDecoration(
@@ -86,8 +86,12 @@ class _MessageCard extends StatelessWidget {
                         children: [
                           _buildStatusChip(
                             context,
-                            (message.unreadPosts ?? 0) > 0 ? '${message.unreadPosts}条新消息' : '无新消息',
-                            (message.unreadPosts ?? 0) > 0 ? theme.primaryColor : theme.disabledColor,
+                            (message.unreadPosts ?? 0) > 0
+                                ? '${message.unreadPosts}条新消息'
+                                : '无新消息',
+                            (message.unreadPosts ?? 0) > 0
+                                ? theme.primaryColor
+                                : theme.disabledColor,
                           ),
                           4.hGap,
                           _buildStatusChip(
@@ -117,9 +121,11 @@ class _MessageCard extends StatelessWidget {
                           const Spacer(),
                           if (message.closed == true)
                             Container(
-                              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.w),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 8.w, vertical: 2.w),
                               decoration: BoxDecoration(
-                                color: theme.colorScheme.error.withValues(alpha: 0.1),
+                                color: theme.colorScheme.error
+                                    .withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(4.w),
                               ),
                               child: Text(
@@ -136,7 +142,7 @@ class _MessageCard extends StatelessWidget {
                   ),
                 ),
                 16.hGap,
-                _buildAvatar(context,theme),
+                _buildAvatar(context, theme),
               ],
             ),
           ),
@@ -149,7 +155,7 @@ class _MessageCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.w),
       decoration: BoxDecoration(
-        color: color.withValues( alpha: .1),
+        color: color.withValues(alpha: .1),
         borderRadius: BorderRadius.circular(12.w),
       ),
       child: Text(
@@ -163,21 +169,21 @@ class _MessageCard extends StatelessWidget {
     );
   }
 
-  Widget _buildAvatar(BuildContext context,ThemeData theme) {
+  Widget _buildAvatar(BuildContext context, ThemeData theme) {
     return Stack(
       children: [
         Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: theme.primaryColor),
-                    borderRadius: BorderRadius.circular(20.w),
-                  ),
-                  child: CachedImage(
-                    imageUrl: message.avatarUrl,
-                    width: 40.w,
-                    circle: !message.isWebMaster(),
-                    borderRadius: BorderRadius.circular(4.w),
-                  ),
-                ),
+          decoration: BoxDecoration(
+            border: Border.all(color: theme.primaryColor),
+            borderRadius: BorderRadius.circular(20.w),
+          ),
+          child: CachedImage(
+            imageUrl: message.avatarUrl,
+            width: 40.w,
+            circle: !message.isWebMaster(),
+            borderRadius: BorderRadius.circular(4.w),
+          ),
+        ),
         if ((message.unreadPosts ?? 0) > 0)
           Positioned(
             right: 0,

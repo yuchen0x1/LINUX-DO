@@ -51,7 +51,7 @@ class ProfileController extends BaseController with Concatenated {
 
   late final PageController featurePageController;
 
-    // 表情选择器相关
+  // 表情选择器相关
   final RxBool isShowEmojiPicker = false.obs;
   final RxBool isHideKeyboard = false.obs;
   final FocusNode focusNode = FocusNode();
@@ -79,7 +79,7 @@ class ProfileController extends BaseController with Concatenated {
         isHideKeyboard.value = false;
       }
     });
-    
+
     // 初始化子控制器
     Get.lazyPut(() => SummaryController());
     Get.lazyPut(() => ActivityController());
@@ -228,14 +228,14 @@ class ProfileController extends BaseController with Concatenated {
 
   // 访问热门页面
   void toPopularPage() {
-     if (summaryData.value != null) {
+    if (summaryData.value != null) {
       Get.toNamed(Routes.POPULAR_PAGE, arguments: summaryData.value);
     } else {
       showError('获取数据失败');
     }
   }
 
-    // 切换表情选择器
+  // 切换表情选择器
   void toggleEmojiPicker() {
     if (isShowEmojiPicker.value) {
       isShowEmojiPicker.value = false;

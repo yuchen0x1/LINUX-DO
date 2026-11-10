@@ -156,7 +156,6 @@ class SimplifiedItem extends StatelessWidget with Concatenated {
                             ),
                           ],
                         ),
-                        
                       ],
                     ),
                   ),

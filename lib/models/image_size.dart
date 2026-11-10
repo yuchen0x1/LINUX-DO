@@ -6,4 +6,4 @@ class ImageSize {
     required this.width,
     required this.height,
   });
-} 
+}

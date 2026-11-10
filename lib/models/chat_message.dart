@@ -59,7 +59,8 @@ class ChatMessage {
       final user = chatable.users!.first;
       final avatarTemplate = user.avatarTemplate;
       if (avatarTemplate != null) {
-        if (avatarTemplate.startsWith('http://') || avatarTemplate.startsWith('https://')) {
+        if (avatarTemplate.startsWith('http://') ||
+            avatarTemplate.startsWith('https://')) {
           return avatarTemplate;
         }
         return '${HttpConfig.baseUrl}${avatarTemplate.replaceAll('{size}', '100')}';
@@ -76,12 +77,12 @@ class ChatMessage {
     return '';
   }
 
-
-   bool isWebMaster() {
+  bool isWebMaster() {
     return chatable.users?.first.id == 1;
-  } 
+  }
 
-  factory ChatMessage.fromJson(Map<String, dynamic> json) => _$ChatMessageFromJson(json);
+  factory ChatMessage.fromJson(Map<String, dynamic> json) =>
+      _$ChatMessageFromJson(json);
   Map<String, dynamic> toJson() => _$ChatMessageToJson(this);
 }
 
@@ -98,7 +99,8 @@ class ChatableData {
     this.uploadedLogo,
   });
 
-  factory ChatableData.fromJson(Map<String, dynamic> json) => _$ChatableDataFromJson(json);
+  factory ChatableData.fromJson(Map<String, dynamic> json) =>
+      _$ChatableDataFromJson(json);
   Map<String, dynamic> toJson() => _$ChatableDataToJson(this);
 }
 
@@ -119,7 +121,8 @@ class ChatUser {
     this.status,
   });
 
-  factory ChatUser.fromJson(Map<String, dynamic> json) => _$ChatUserFromJson(json);
+  factory ChatUser.fromJson(Map<String, dynamic> json) =>
+      _$ChatUserFromJson(json);
   Map<String, dynamic> toJson() => _$ChatUserToJson(this);
 }
 
@@ -136,7 +139,8 @@ class UserStatus {
     this.endsAt,
   });
 
-  factory UserStatus.fromJson(Map<String, dynamic> json) => _$UserStatusFromJson(json);
+  factory UserStatus.fromJson(Map<String, dynamic> json) =>
+      _$UserStatusFromJson(json);
   Map<String, dynamic> toJson() => _$UserStatusToJson(this);
 }
 
@@ -162,7 +166,8 @@ class Membership {
     required this.lastViewedAt,
   });
 
-  factory Membership.fromJson(Map<String, dynamic> json) => _$MembershipFromJson(json);
+  factory Membership.fromJson(Map<String, dynamic> json) =>
+      _$MembershipFromJson(json);
   Map<String, dynamic> toJson() => _$MembershipToJson(this);
 }
 
@@ -180,7 +185,8 @@ class UploadedLogo {
     required this.height,
   });
 
-  factory UploadedLogo.fromJson(Map<String, dynamic> json) => _$UploadedLogoFromJson(json);
+  factory UploadedLogo.fromJson(Map<String, dynamic> json) =>
+      _$UploadedLogoFromJson(json);
   Map<String, dynamic> toJson() => _$UploadedLogoToJson(this);
 }
 
@@ -230,6 +236,7 @@ class MessageBusLastIds {
     required this.newMentions,
   });
 
-  factory MessageBusLastIds.fromJson(Map<String, dynamic> json) => _$MessageBusLastIdsFromJson(json);
+  factory MessageBusLastIds.fromJson(Map<String, dynamic> json) =>
+      _$MessageBusLastIdsFromJson(json);
   Map<String, dynamic> toJson() => _$MessageBusLastIdsToJson(this);
-} 
+}

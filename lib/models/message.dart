@@ -203,7 +203,7 @@ class Topic {
   Map<String, dynamic> toJson() => _$TopicToJson(this);
 
   bool isWebMaster() {
-     return posters?[0].userId == 1;
+    return posters?[0].userId == 1;
   }
 }
 
@@ -252,4 +252,4 @@ class Participant {
   factory Participant.fromJson(Map<String, dynamic> json) =>
       _$ParticipantFromJson(json);
   Map<String, dynamic> toJson() => _$ParticipantToJson(this);
-} 
+}

@@ -1,19 +1,14 @@
 import 'package:get/get.dart';
 import 'package:linux_do/controller/base_controller.dart';
-import 'package:linux_do/controller/global_controller.dart';
-import 'package:linux_do/net/api_service.dart';
 import 'package:linux_do/const/app_const.dart';
 
 class DoNotDisturbController extends BaseController {
-  final ApiService _apiService = Get.find();
-  final GlobalController _globalController = Get.find();
-
   // 免打扰用户列表
   final ignoredUsers = <String>[].obs;
-  
+
   // 选择的用户
   final selectedUser = ''.obs;
-  
+
   // 持续时间选项
   final durations = [
     '30分钟',
@@ -23,7 +18,7 @@ class DoNotDisturbController extends BaseController {
     '24小时',
     '永久',
   ];
-  
+
   // 选择的持续时间
   final selectedDuration = ''.obs;
 
@@ -56,7 +51,7 @@ class DoNotDisturbController extends BaseController {
       showError(AppConst.settings.selectUserToBlock);
       return;
     }
-    
+
     try {
       ignoredUsers.add(selectedUser.value);
       Get.back(); // 关闭弹窗
@@ -90,4 +85,4 @@ class DoNotDisturbController extends BaseController {
       isLoading.value = false;
     }
   }
-} 
+}

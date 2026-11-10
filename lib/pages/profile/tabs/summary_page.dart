@@ -11,34 +11,30 @@ class SummaryPage extends GetView<SummaryController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(()=> StateView(
-      state: controller.getViewState(),
-      child: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 14.w),
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        children: [
-          _buildStatSection(
-            context,
-            title: '基础统计',
-            items: controller.topStats.value ?? [],
+    return Obx(() => StateView(
+          state: controller.getViewState(),
+          child: ListView(
+            padding: EdgeInsets.symmetric(horizontal: 14.w),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              _buildStatSection(
+                context,
+                title: '基础统计',
+                items: controller.topStats.value ?? [],
+              ),
+              _buildStatSection(
+                context,
+                title: '互动数据',
+                items: controller.bottomStats.value ?? [],
+              ),
+            ],
           ),
-          _buildStatSection(
-            context,
-            title: '互动数据',
-            items: controller.bottomStats.value ?? [],
-          ),
-        ],
-      ),
-    ));
+        ));
   }
 
-
-  Widget _buildStatSection(
-    BuildContext context, {
-    required String title,
-    required List<StatItem> items
-  }) {
+  Widget _buildStatSection(BuildContext context,
+      {required String title, required List<StatItem> items}) {
     return Card(
       elevation: 0,
       margin: EdgeInsets.only(top: 8.w, bottom: 16.w),
@@ -69,10 +65,12 @@ class SummaryPage extends GetView<SummaryController> {
 
   Widget _buildStatList(BuildContext context, List<StatItem> items) {
     return Column(
-      children: items.map((item) => Padding(
-        padding: EdgeInsets.only(bottom: 12.w),
-        child: _StatItem(item: item),
-      )).toList(),
+      children: items
+          .map((item) => Padding(
+                padding: EdgeInsets.only(bottom: 12.w),
+                child: _StatItem(item: item),
+              ))
+          .toList(),
     );
   }
 }
@@ -93,7 +91,8 @@ class _StatItem extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(8.r),
-        border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.5)),
+        border: Border.all(
+            color: Theme.of(context).dividerColor.withValues(alpha: 0.5)),
       ),
       child: Row(
         children: [
@@ -102,7 +101,8 @@ class _StatItem extends StatelessWidget {
               width: 30.w,
               height: 30.w,
               decoration: BoxDecoration(
-                color: (item.iconColor ?? Theme.of(context).primaryColor).withValues(alpha: 0.1),
+                color: (item.iconColor ?? Theme.of(context).primaryColor)
+                    .withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(4.w),
               ),
               child: Icon(
@@ -125,18 +125,17 @@ class _StatItem extends StatelessWidget {
                     color: Theme.of(context).textTheme.titleLarge?.color,
                   ),
                 ),
-                
               ],
             ),
           ),
-                Text(
-                  item.value,
-                  style: TextStyle(
-                    fontSize: 12.w,
-                    fontFamily: AppFontFamily.dinPro,
-                    color: Theme.of(context).textTheme.bodyMedium?.color,
-                  ),
-                ),
+          Text(
+            item.value,
+            style: TextStyle(
+              fontSize: 12.w,
+              fontFamily: AppFontFamily.dinPro,
+              color: Theme.of(context).textTheme.bodyMedium?.color,
+            ),
+          ),
         ],
       ),
     );

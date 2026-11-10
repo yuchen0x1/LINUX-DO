@@ -63,9 +63,11 @@ class _ActivityItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.r),
         onTap: () {
           if (action.topicId != null) {
-            Get.toNamed(Routes.TOPIC_DETAIL, arguments: action.topicId,parameters: {
-            'postNumber': action.postNumber.toString(),
-          });
+            Get.toNamed(Routes.TOPIC_DETAIL,
+                arguments: action.topicId,
+                parameters: {
+                  'postNumber': action.postNumber.toString(),
+                });
           }
         },
         child: Padding(
@@ -110,7 +112,8 @@ class _ActivityItem extends StatelessWidget {
                                 ? Container(
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                          color: theme.primaryColor, width: .5.w),
+                                          color: theme.primaryColor,
+                                          width: .5.w),
                                       borderRadius: BorderRadius.circular(4.w),
                                     ),
                                     padding: EdgeInsets.symmetric(
