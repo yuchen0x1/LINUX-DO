@@ -3,7 +3,7 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'package:pointycastle/export.dart';
 import '../utils/log.dart';
-import '../utils/storage_manager.dart';
+import '../utils/secure_store.dart';
 
 class UserApiKeyAuthService {
   static final UserApiKeyAuthService _instance =
@@ -15,22 +15,29 @@ class UserApiKeyAuthService {
   static const String keyUserPublicKey = 'discourse_user_public_key';
   static const String keyUserPrivateKey = 'discourse_user_private_key';
 
+  /// 需要放进系统密钥库的敏感键。启动时传给 [SecureStore.init]。
+  static const List<String> secureKeys = [
+    keyUserApiKey,
+    keyUserPublicKey,
+    keyUserPrivateKey,
+  ];
+
   /// 获取已持久化的 User API Key
-  String? get apiKey => StorageManager.getString(keyUserApiKey);
+  String? get apiKey => SecureStore.get(keyUserApiKey);
 
   /// 是否已经通过官方 User API Key 授权
   bool get hasApiKey => apiKey != null && apiKey!.isNotEmpty;
 
   /// 保存 Key
   Future<void> saveApiKey(String key) async {
-    await StorageManager.setData(keyUserApiKey, key);
+    await SecureStore.set(keyUserApiKey, key);
   }
 
   /// 清除 Key
   Future<void> clearApiKey() async {
-    await StorageManager.remove(keyUserApiKey);
-    await StorageManager.remove(keyUserPublicKey);
-    await StorageManager.remove(keyUserPrivateKey);
+    await SecureStore.remove(keyUserApiKey);
+    await SecureStore.remove(keyUserPublicKey);
+    await SecureStore.remove(keyUserPrivateKey);
   }
 
   /// 生成 RSA 密钥对
@@ -41,10 +48,12 @@ class UserApiKeyAuthService {
     secureRandom.seed(KeyParameter(Uint8List.fromList(seeds)));
 
     final keyGen = RSAKeyGenerator()
-      ..init(ParametersWithRandom(
-        RSAKeyGeneratorParameters(BigInt.parse('65537'), 2048, 64),
-        secureRandom,
-      ));
+      ..init(
+        ParametersWithRandom(
+          RSAKeyGeneratorParameters(BigInt.parse('65537'), 2048, 64),
+          secureRandom,
+        ),
+      );
 
     final pair = keyGen.generateKeyPair();
     final myPublic = pair.publicKey as RSAPublicKey;
@@ -52,15 +61,16 @@ class UserApiKeyAuthService {
 
     // 格式化为标准 PEM 公钥
     final pem = _encodePublicKeyToPem(myPublic);
-    StorageManager.setData(keyUserPublicKey, pem);
+    SecureStore.set(keyUserPublicKey, pem);
 
     // 保存私钥参数 (n, d)
-    StorageManager.setData(
-        keyUserPrivateKey,
-        json.encode({
-          'modulus': myPrivate.modulus.toString(),
-          'privateExponent': myPrivate.privateExponent.toString()
-        }));
+    SecureStore.set(
+      keyUserPrivateKey,
+      json.encode({
+        'modulus': myPrivate.modulus.toString(),
+        'privateExponent': myPrivate.privateExponent.toString(),
+      }),
+    );
 
     return AsymmetricKeyPair(myPublic, myPrivate);
   }
@@ -72,24 +82,25 @@ class UserApiKeyAuthService {
     required String clientId,
     required String publicKeyPem,
   }) {
-    final scopes = 'read,write,notifications,message_bus';
+    const scopes = 'read,write,notifications,message_bus';
     final nonce = Random().nextInt(1000000).toString();
-    final uri =
-        Uri.parse('$baseUrl/user-api-key/new').replace(queryParameters: {
-      'application_name': applicationName,
-      'client_id': clientId,
-      'scopes': scopes,
-      'public_key': publicKeyPem,
-      'nonce': nonce,
-      'auth_redirect': 'linuxdo://auth/callback',
-    });
+    final uri = Uri.parse('$baseUrl/user-api-key/new').replace(
+      queryParameters: {
+        'application_name': applicationName,
+        'client_id': clientId,
+        'scopes': scopes,
+        'public_key': publicKeyPem,
+        'nonce': nonce,
+        'auth_redirect': 'linuxdo://auth/callback',
+      },
+    );
     return uri.toString();
   }
 
   /// 使用私钥解密服务端传回的加密 payload
   String decryptPayload(String encryptedBase64) {
     try {
-      final privJson = StorageManager.getString(keyUserPrivateKey);
+      final privJson = SecureStore.get(keyUserPrivateKey);
       if (privJson == null) throw Exception('私钥未找到');
 
       final data = json.decode(privJson);
@@ -138,11 +149,15 @@ class UserApiKeyAuthService {
       0x01,
       0x01,
       0x05,
-      0x00
+      0x00,
     ]);
 
-    final bitString =
-        Uint8List.fromList([0x03, rsaSeq.length + 1, 0x00, ...rsaSeq]);
+    final bitString = Uint8List.fromList([
+      0x03,
+      rsaSeq.length + 1,
+      0x00,
+      ...rsaSeq,
+    ]);
     final outerSeq = _encodeSequence([rsaOid, bitString]);
 
     final base64Key = base64.encode(outerSeq);

@@ -11,6 +11,8 @@ import 'net/http_config.dart';
 import 'utils/inject.dart';
 import 'utils/storage_manager.dart';
 import 'utils/device_util.dart';
+import 'utils/secure_store.dart';
+import 'net/user_api_key_auth_service.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'utils/tag.dart';
@@ -29,6 +31,9 @@ class App {
     // 初始化SharedPreferences
     await StorageManager.init();
 
+    // 敏感数据进系统密钥库，并迁移旧版明文（必须早于 NetClient，拦截器要用 API Key）
+    await SecureStore.init(UserApiKeyAuthService.secureKeys);
+
     // 初始化GetStorage
     await GetStorage.init();
 
@@ -43,7 +48,8 @@ class App {
 
     // 初始化API服务
     Inject.put<ApiService>(
-        ApiService(NetClient.getInstance().dio, baseUrl: HttpConfig.baseUrl));
+      ApiService(NetClient.getInstance().dio, baseUrl: HttpConfig.baseUrl),
+    );
 
     Inject.put<GlobalController>(GlobalController());
 
