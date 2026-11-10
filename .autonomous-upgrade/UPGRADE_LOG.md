@@ -65,10 +65,62 @@
 
 ---
 
+## Round 4 — 密钥库迁移 / 开源调研 / 16KB 校验修正
+
+提交：`54cdf0b`
+
+| 项目 | 改动 | 验证 |
+|---|---|---|
+| 密钥进系统密钥库 | 新增 `lib/utils/secure_store.dart`：User API Key + RSA 公私钥从明文 `SharedPreferences` 迁到 Android Keystore / iOS Keychain（`flutter_secure_storage 9.2.4`）。启动时自动迁移旧明文并删除副本；密钥库不可用时降级为普通存储并告警。同步读接口用内存缓存保持不变，避免异步传染到拦截器 | analyze 干净；构建通过；42 单测 |
+| 调研 | `.autonomous-upgrade/OPEN_SOURCE_RESEARCH.md`：GitHub API 实时核对 6 个同类项目，含许可证判断 | 数据可复现（`curl api.github.com/...`） |
+| 16KB 脚本修正 | 原脚本把 32 位 `armeabi-v7a` 的 `0x1000` 也判为 FAIL，属假警报。16KB 页要求仅适用于 64 位 ABI，已改为 FAIL 只针对 `lib/arm64-v8a/*`，32 位输出 WARN | 重跑脚本 exit=0 |
+
+**踩坑**：Kotlin 支持**嵌套块注释**。KDoc 里写 `text/*` 会让 `/*` 再开一层注释，
+编译器报 `Unclosed comment`。改为行注释后编译通过。
+
+---
+
+## Round 5 — 依赖清理 / 崩溃记录 / 草稿自动保存
+
+提交：`8a1664b`
+
+| 项目 | 改动 | 验证 |
+|---|---|---|
+| 依赖清理 | 移除零引用的 `keframe`、`flutter_layout_grid`、`flutter_highlighter`、`markdown`。保留 `cupertino_icons`（321 处 `CupertinoIcons` 引用）与 `flutter_markdown`（2 处）。`flutter_layout_grid` 仍由 `flutter_html_table` 间接引入 | `pub get` + analyze + 49 单测 + 构建 |
+| 崩溃记录 | 新增 `CrashReporter`：`FlutterError.onError` + `PlatformDispatcher.onError` + `runZonedGuarded`。**只写应用私有目录，不上传**。超 256KB 截断为尾部 128KB；IO 失败只降级为普通日志 | analyze 干净 |
+| 草稿自动保存 | 输入停顿 3 秒自动落盘、`onClose` 立刻保存。原实现只有手动点保存，直接返回会丢内容 | analyze 干净 |
+
+**已修但需注意**：`restoreDraft()` 原本会无条件覆盖编辑区——分类是异步加载的，
+用户在加载完成前输入的内容会被草稿冲掉。现改为「编辑区已有内容则跳过恢复」。
+
+---
+
+## Round 6 — 空列表越界 / API 契约测试 / 贡献指南 / 全量格式化
+
+提交：`1921647`（纯格式化）、`7ff1d5e`（功能）
+
+| 项目 | 改动 | 验证 |
+|---|---|---|
+| 帖子详情越界 | `fetchTopicDetail` 里 `posts[0]`、`stream[0]` 未防空。主题帖子全被删除或权限受限时 `posts` 为空，`postFrameCallback` 抛 `RangeError` 导致白屏 | analyze 干净 |
+| API 契约测试 | 新增 `test/api_contract_test.dart`（7 项）：用真实 `/latest.json` 形状的固定样本锁定 snake_case → 模型字段映射，覆盖 `avatar_template` 的 `{size}` 替换、`tags` 列表、缺省字段容错、`findUserById` 未命中占位 | 7/7 通过 |
+| 贡献指南 | `CONTRIBUTING.md`：环境、签名配置、提交前必过检查、代码约定、明确禁止「为通过检查而关闭 lint」 | — |
+| 全量格式化 | SDK 下限提到 `>=3.9.0` 后 `dart format` 切到 tall 风格，212 个文件与格式门禁不一致 → CI 会失败。已全量格式化并单独提交 | format 检查 0 changed；analyze 128/0/0；49 单测；构建通过 |
+
+**核实结论**：阅读进度**并非缺失**。`onClose` 已保存楼层号、`fetchTopicDetail`
+会读回并定位到对应楼层。本轮只修了该链路上的越界缺陷，没有重写。
+
+**踩坑**：`dart format .` 会走进 `build/` 下的 Gradle 缓存目录，遇到残留 transform
+路径时抛 `PathNotFoundException`。CI 与本地检查都必须限定为 `lib test`。
+
+---
+
 ## 遗留（明确未完成）
 
-- 无模拟器/真机端到端验证：深链唤起、通知点击、分享入站、DoH 实际解析均只有单元测试与编译级证据。
-- P3 其余项：草稿箱、离线缓存、阅读进度。
-- P4：Repository 分层、存储抽象、拆分 `html_widget.dart`（2676 行）、清理无用依赖。
-- P5：API 契约测试、CONTRIBUTING、崩溃上报。
-- 开源同类项目调研文档 `OPEN_SOURCE_RESEARCH.md`。
+- **所有功能均无真机/模拟器端到端验证**：深链唤起、通知点击、分享入站、DoH 实际解析、
+  长轮询、密钥库迁移后的登录态，只有单元测试与编译级证据。发布前必须逐项验证，
+  清单见 `NEXT_UPGRADE_PLAN.md` 的 P0。
+- 未做：拆分 `html_widget.dart`（2676 行）、Repository 分层、多草稿箱、离线缓存、
+  Gradle 9 / AGP 9 / Kotlin 2.3 升级、权限字段显式读取。
+- 遗留小问题：128 个 analyzer `info`；`armeabi-v7a/libbarhopper_v3.so` 仍为 `0x1000`
+  （32 位不受约束）；阅读位置 key 无上限。
+
