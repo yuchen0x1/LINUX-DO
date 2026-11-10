@@ -315,38 +315,39 @@ class _TextScrollState extends State<TextScroll> {
   @override
   Widget build(BuildContext context) {
     assert(
-        widget.intervalSpaces == null || widget.mode == TextScrollMode.endless,
-        'intervalSpaces is only available in TextScrollMode.endless mode');
+      widget.intervalSpaces == null || widget.mode == TextScrollMode.endless,
+      'intervalSpaces is only available in TextScrollMode.endless mode',
+    );
     assert(
-        !widget.fadedBorder ||
-            (widget.fadedBorder &&
-                widget.fadedBorderWidth != null &&
-                widget.fadedBorderWidth! > 0 &&
-                widget.fadedBorderWidth! <= 1),
-        'fadedBorderInterval must be between 0 and 1 when fadedBorder is true');
+      !widget.fadedBorder ||
+          (widget.fadedBorder &&
+              widget.fadedBorderWidth != null &&
+              widget.fadedBorderWidth! > 0 &&
+              widget.fadedBorderWidth! <= 1),
+      'fadedBorderInterval must be between 0 and 1 when fadedBorder is true',
+    );
 
     Widget baseWidget = Directionality(
       textDirection: widget.textDirection,
       child: SingleChildScrollView(
-          controller: _scrollController,
-          physics: NeverScrollableScrollPhysics(),
-          scrollDirection: Axis.horizontal,
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minWidth: _textMinWidth,
-            ),
-            child: widget.selectable
-                ? SelectableText(
-                    _endlessText ?? widget.text,
-                    style: widget.style,
-                    textAlign: widget.textAlign,
-                  )
-                : Text(
-                    _endlessText ?? widget.text,
-                    style: widget.style,
-                    textAlign: widget.textAlign,
-                  ),
-          )),
+        controller: _scrollController,
+        physics: NeverScrollableScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minWidth: _textMinWidth),
+          child: widget.selectable
+              ? SelectableText(
+                  _endlessText ?? widget.text,
+                  style: widget.style,
+                  textAlign: widget.textAlign,
+                )
+              : Text(
+                  _endlessText ?? widget.text,
+                  style: widget.style,
+                  textAlign: widget.textAlign,
+                ),
+        ),
+      ),
     );
 
     /// Used to add the fade border effect, if enabled
@@ -355,10 +356,13 @@ class _TextScrollState extends State<TextScroll> {
     /// If fade border is enabled
     if (widget.fadedBorder) {
       ///Fill list with amount of transparent colors to make the text visible
-      final List<Color> colors =
-          List.generate(1 ~/ widget.fadedBorderWidth! - 1, (index) {
-        return Colors.transparent;
-      }, growable: true);
+      final List<Color> colors = List.generate(
+        1 ~/ widget.fadedBorderWidth! - 1,
+        (index) {
+          return Colors.transparent;
+        },
+        growable: true,
+      );
 
       ///Add black color to add gradient fade out
       if (widget.fadeBorderSide == FadeBorderSide.both ||
@@ -375,8 +379,9 @@ class _TextScrollState extends State<TextScroll> {
       }
 
       ///Calculate the stops for the gradient
-      final List<double> stops =
-          List.generate(1 ~/ widget.fadedBorderWidth!, (index) {
+      final List<double> stops = List.generate(1 ~/ widget.fadedBorderWidth!, (
+        index,
+      ) {
         return (index + 1) * widget.fadedBorderWidth!;
       }, growable: true);
 
@@ -385,10 +390,7 @@ class _TextScrollState extends State<TextScroll> {
 
       /// Pre-render text to get it's width
       final TextPainter textPrototype = TextPainter(
-        text: TextSpan(
-          text: _endlessText ?? widget.text,
-          style: widget.style,
-        ),
+        text: TextSpan(text: _endlessText ?? widget.text, style: widget.style),
         textDirection: widget.textDirection,
         textScaler: MediaQuery.of(context).textScaler,
         textWidthBasis: TextWidthBasis.longestLine,
@@ -595,10 +597,7 @@ class _TextScrollState extends State<TextScroll> {
 ///
 /// [bouncing] - when text is scrolled to its end,
 /// starts animation to opposite direction.
-enum TextScrollMode {
-  bouncing,
-  endless,
-}
+enum TextScrollMode { bouncing, endless }
 
 /// Side of the text border to fade out.
 ///

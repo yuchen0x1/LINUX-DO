@@ -11,16 +11,13 @@ class CodePreviewDialog extends StatelessWidget with ToastMixin {
   final String code;
   final String? language;
 
-  const CodePreviewDialog({
-    super.key,
-    required this.code,
-    this.language,
-  });
+  const CodePreviewDialog({super.key, required this.code, this.language});
 
   @override
   Widget build(BuildContext context) {
     // 构建 markdown 格式的代码块
-    final markdownCode = '''```${language ?? ''}
+    final markdownCode =
+        '''```${language ?? ''}
 $code
 ```''';
 
@@ -56,12 +53,14 @@ $code
                   12.hGap,
                   if (language != null) ...[
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.w),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.w,
+                        vertical: 4.w,
+                      ),
                       decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .primaryColor
-                            .withValues(alpha: 0.1),
+                        color: Theme.of(
+                          context,
+                        ).primaryColor.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(4.w),
                       ),
                       child: Text(
@@ -96,40 +95,42 @@ $code
                 data: markdownCode,
                 selectable: true,
                 padding: EdgeInsets.all(16.w),
-                styleSheet:
-                    MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
-                  p: TextStyle(
-                    fontSize: 13.sp,
-                    fontFamily: 'monospace',
-                    height: 1.5,
-                    color: Theme.of(context).textTheme.bodyMedium?.color,
-                  ),
-                  code: TextStyle(
-                    fontSize: 13.sp,
-                    fontFamily: 'monospace',
-                    height: 1.5,
-                    color: Theme.of(context).textTheme.bodyMedium?.color,
-                    backgroundColor: Colors.transparent,
-                  ),
-                  codeblockDecoration: BoxDecoration(
-                    color:
-                        Theme.of(context).primaryColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8.w),
-                  ),
-                  codeblockPadding: EdgeInsets.all(12.w),
-                  blockquote: TextStyle(
-                    fontSize: 13.sp,
-                    fontFamily: 'monospace',
-                    height: 1.5,
-                    color: Theme.of(context).textTheme.bodyMedium?.color,
-                  ),
-                  blockquoteDecoration: BoxDecoration(
-                    color:
-                        Theme.of(context).primaryColor.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(8.w),
-                  ),
-                  blockquotePadding: EdgeInsets.all(12.w),
-                ),
+                styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context))
+                    .copyWith(
+                      p: TextStyle(
+                        fontSize: 13.sp,
+                        fontFamily: 'monospace',
+                        height: 1.5,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
+                      ),
+                      code: TextStyle(
+                        fontSize: 13.sp,
+                        fontFamily: 'monospace',
+                        height: 1.5,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
+                        backgroundColor: Colors.transparent,
+                      ),
+                      codeblockDecoration: BoxDecoration(
+                        color: Theme.of(
+                          context,
+                        ).primaryColor.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(8.w),
+                      ),
+                      codeblockPadding: EdgeInsets.all(12.w),
+                      blockquote: TextStyle(
+                        fontSize: 13.sp,
+                        fontFamily: 'monospace',
+                        height: 1.5,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
+                      ),
+                      blockquoteDecoration: BoxDecoration(
+                        color: Theme.of(
+                          context,
+                        ).primaryColor.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(8.w),
+                      ),
+                      blockquotePadding: EdgeInsets.all(12.w),
+                    ),
                 syntaxHighlighter: null, // 使用默认的语法高亮
               ),
             ),
@@ -143,10 +144,7 @@ $code
 /// 显示代码预览弹窗的便捷方法
 void showCodePreview(BuildContext context, String code, {String? language}) {
   Get.dialog(
-    CodePreviewDialog(
-      code: code,
-      language: language,
-    ),
+    CodePreviewDialog(code: code, language: language),
     useSafeArea: false,
   );
 }

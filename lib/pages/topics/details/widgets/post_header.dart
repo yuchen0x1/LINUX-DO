@@ -10,11 +10,8 @@ import '../../../../widgets/avatar_widget.dart';
 
 /// 帖子头部组件
 class PostHeader extends StatelessWidget {
-  const PostHeader({
-    required this.post,
-    this.title,
-    Key? key,
-  }) : super(key: key);
+  const PostHeader({required this.post, this.title, Key? key})
+    : super(key: key);
 
   final Post post;
   final String? title;
@@ -34,11 +31,8 @@ class PostHeader extends StatelessWidget {
 
 /// 用户头像组件
 class _UserAvatar extends StatelessWidget {
-  const _UserAvatar({
-    required this.post,
-    this.title,
-    Key? key,
-  }) : super(key: key);
+  const _UserAvatar({required this.post, this.title, Key? key})
+    : super(key: key);
 
   final Post post;
   final String? title;
@@ -61,10 +55,7 @@ class _UserAvatar extends StatelessWidget {
 
 /// 用户信息组件
 class _UserInfo extends StatelessWidget {
-  const _UserInfo({
-    required this.post,
-    Key? key,
-  }) : super(key: key);
+  const _UserInfo({required this.post, Key? key}) : super(key: key);
 
   final Post post;
 
@@ -88,8 +79,9 @@ class _UserInfo extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14.w,
                     fontFamily: AppFontFamily.dinPro,
-                    fontWeight:
-                        !post.isWebMaster() ? FontWeight.w500 : FontWeight.bold,
+                    fontWeight: !post.isWebMaster()
+                        ? FontWeight.w500
+                        : FontWeight.bold,
                     color: !post.isWebMaster()
                         ? Theme.of(context).textTheme.titleLarge?.color
                         : Theme.of(context).primaryColor,
@@ -129,8 +121,8 @@ class _UserInfo extends StatelessWidget {
                   CupertinoIcons.shield_lefthalf_fill,
                   size: 12.w,
                   color: Theme.of(context).primaryColor,
-                )
-              ]
+                ),
+              ],
             ],
           ),
         ],
@@ -141,10 +133,7 @@ class _UserInfo extends StatelessWidget {
 
 /// 发帖时间组件
 class _PostTime extends StatelessWidget {
-  const _PostTime({
-    required this.post,
-    Key? key,
-  }) : super(key: key);
+  const _PostTime({required this.post, Key? key}) : super(key: key);
 
   final Post post;
 

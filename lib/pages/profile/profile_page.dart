@@ -29,15 +29,17 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
 
   Widget _buildTabText(String text, int index) {
     final context = Get.context!;
-    return Obx(() => Text(
-          text,
-          style: TextStyle(
-            fontSize: 14.w,
-            color: controller.selectedIndex == index
-                ? AppColors.white
-                : Theme.of(context).textTheme.bodyMedium?.color,
-          ),
-        ));
+    return Obx(
+      () => Text(
+        text,
+        style: TextStyle(
+          fontSize: 14.w,
+          color: controller.selectedIndex == index
+              ? AppColors.white
+              : Theme.of(context).textTheme.bodyMedium?.color,
+        ),
+      ),
+    );
   }
 
   @override
@@ -49,8 +51,9 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
       body: Obx(() {
         final globalController = Get.find<GlobalController>();
         final userInfo = globalController.userInfo;
-        final expandedHeight =
-            userInfo?.user?.backgroundUrl != null ? 380.w : 280.w;
+        final expandedHeight = userInfo?.user?.backgroundUrl != null
+            ? 380.w
+            : 280.w;
         final user = userInfo?.user;
 
         return NestedScrollView(
@@ -67,8 +70,10 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                   final top = constraints.biggest.height;
                   final shrinkOffset = expandedHeight - top;
                   final progress =
-                      (shrinkOffset / (expandedHeight - kToolbarHeight))
-                          .clamp(0.0, 1.0);
+                      (shrinkOffset / (expandedHeight - kToolbarHeight)).clamp(
+                        0.0,
+                        1.0,
+                      );
 
                   // 更新滚动进度
                   WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -76,9 +81,9 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                   });
 
                   return Container(
-                    color: Theme.of(context)
-                        .primaryColor
-                        .withValues(alpha: progress),
+                    color: Theme.of(
+                      context,
+                    ).primaryColor.withValues(alpha: progress),
                     child: FlexibleSpaceBar(
                       background: Stack(
                         fit: StackFit.expand,
@@ -90,7 +95,8 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                               child: user?.cardBackgroundUploadUrl != null
                                   ? CachedImage(
                                       imageUrl: user?.backgroundUrl ?? '',
-                                      fit: BoxFit.cover)
+                                      fit: BoxFit.cover,
+                                    )
                                   : Image.asset(
                                       AppImages.profileHeaderBg,
                                       fit: BoxFit.cover,
@@ -104,8 +110,9 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                                 sigmaY: progress * 10,
                               ),
                               child: Container(
-                                color: Colors.black
-                                    .withValues(alpha: progress * 0.3),
+                                color: Colors.black.withValues(
+                                  alpha: progress * 0.3,
+                                ),
                               ),
                             ),
                           // 渐变遮罩
@@ -123,11 +130,12 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                           ),
                           // 用户信息
                           Positioned(
-                              // 使用线性插值函数
-                              bottom: lerpDouble(10.w, 16.w, progress),
-                              left: lerpDouble(8.w, 56.w, progress),
-                              right: 0,
-                              child: _buildProfile(user, progress, context)),
+                            // 使用线性插值函数
+                            bottom: lerpDouble(10.w, 16.w, progress),
+                            left: lerpDouble(8.w, 56.w, progress),
+                            right: 0,
+                            child: _buildProfile(user, progress, context),
+                          ),
                         ],
                       ),
                     ),
@@ -168,10 +176,12 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                               children: [
                                 Container(
                                   decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: AppColors.white, width: 1.w),
-                                      borderRadius:
-                                          BorderRadius.circular(80.w)),
+                                    border: Border.all(
+                                      color: AppColors.white,
+                                      width: 1.w,
+                                    ),
+                                    borderRadius: BorderRadius.circular(80.w),
+                                  ),
                                   child: Stack(
                                     children: [
                                       CachedImage(
@@ -179,8 +189,9 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                                         circle: true,
                                         width: 30.w,
                                         height: 30.w,
-                                        borderRadius:
-                                            BorderRadius.circular(80.w),
+                                        borderRadius: BorderRadius.circular(
+                                          80.w,
+                                        ),
                                         showBorder: true,
                                         borderColor: AppColors.white,
                                       ),
@@ -208,14 +219,15 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
               ),
               actions: [
                 IconButton(
-                    onPressed: () {
-                      controller.toSettings();
-                    },
-                    icon: const Icon(
-                      CupertinoIcons.gear_solid,
-                      color: AppColors.white,
-                    )),
-                8.hGap
+                  onPressed: () {
+                    controller.toSettings();
+                  },
+                  icon: const Icon(
+                    CupertinoIcons.gear_solid,
+                    color: AppColors.white,
+                  ),
+                ),
+                8.hGap,
               ],
             ),
 
@@ -238,9 +250,9 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                     borderRadius: BorderRadius.circular(12.w),
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(context)
-                            .shadowColor
-                            .withValues(alpha: 0.05),
+                        color: Theme.of(
+                          context,
+                        ).shadowColor.withValues(alpha: 0.05),
                         blurRadius: 10,
                         offset: const Offset(0, 2),
                       ),
@@ -254,10 +266,12 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                     initialIndex: controller.selectedIndex,
                     containerColor: Theme.of(context).cardColor,
                     slidersGradients: [
-                      LinearGradient(colors: [
-                        Theme.of(context).primaryColor,
-                        Theme.of(context).primaryColor.withValues(alpha: 0.6)
-                      ])
+                      LinearGradient(
+                        colors: [
+                          Theme.of(context).primaryColor,
+                          Theme.of(context).primaryColor.withValues(alpha: 0.6),
+                        ],
+                      ),
                     ],
                     onSelect: (index) => controller.selectedIndex = index,
                     children: [
@@ -272,29 +286,35 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
               ),
             ),
           ],
-          body: Obx(() => globalController.isAnonymousMode
-              ? GestureDetector(
-                  onLongPress: () {
-                    showSuccess('没有惊喜 😜');
-                  },
-                  child: Center(
-                    child: Text(
-                      '尊贵的游客,长按此处3秒没有惊喜哦',
-                      style: TextStyle(
-                          color: Theme.of(context).textTheme.bodySmall?.color),
+          body: Obx(
+            () => globalController.isAnonymousMode
+                ? GestureDetector(
+                    onLongPress: () {
+                      showSuccess('没有惊喜 😜');
+                    },
+                    child: Center(
+                      child: Text(
+                        '尊贵的游客,长按此处3秒没有惊喜哦',
+                        style: TextStyle(
+                          color: Theme.of(context).textTheme.bodySmall?.color,
+                        ),
+                      ),
                     ),
-                  ),
-                )
-              : Get.find<GlobalController>().userInfo == null
-                  ? const Center(child: DisSquareLoading())
-                  : controller.createCurrent()),
+                  )
+                : Get.find<GlobalController>().userInfo == null
+                ? const Center(child: DisSquareLoading())
+                : controller.createCurrent(),
+          ),
         );
       }),
     );
   }
 
   Widget _buildProfile(
-      CurrentUser? user, double progress, BuildContext context) {
+    CurrentUser? user,
+    double progress,
+    BuildContext context,
+  ) {
     final globalController = Get.find<GlobalController>();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -305,9 +325,12 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                      border: Border.all(
-                          color: Theme.of(context).primaryColor, width: 2.w),
-                      borderRadius: BorderRadius.circular(45.w)),
+                    border: Border.all(
+                      color: Theme.of(context).primaryColor,
+                      width: 2.w,
+                    ),
+                    borderRadius: BorderRadius.circular(45.w),
+                  ),
                   child: CachedImage(
                     imageUrl: user?.avatarUrl ?? '',
                     circle: true,
@@ -316,19 +339,20 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                   ),
                 ),
                 Positioned(
-                    bottom: 10.w,
-                    left: 60.w,
-                    child: Container(
-                      width: 14.w,
-                      height: 14.w,
-                      decoration: BoxDecoration(
-                          color: user?.userAction?.hidePresence == false
-                              ? AppColors.disabled
-                              : AppColors.success,
-                          border:
-                              Border.all(color: AppColors.white, width: 1.5.w),
-                          borderRadius: BorderRadius.circular(10.w)),
-                    ))
+                  bottom: 10.w,
+                  left: 60.w,
+                  child: Container(
+                    width: 14.w,
+                    height: 14.w,
+                    decoration: BoxDecoration(
+                      color: user?.userAction?.hidePresence == false
+                          ? AppColors.disabled
+                          : AppColors.success,
+                      border: Border.all(color: AppColors.white, width: 1.5.w),
+                      borderRadius: BorderRadius.circular(10.w),
+                    ),
+                  ),
+                ),
               ],
             ),
             16.hGap,
@@ -342,7 +366,8 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                     Row(
                       children: [
                         GlowingTextSweep(
-                          text: user?.name ??
+                          text:
+                              user?.name ??
                               (globalController.isAnonymousMode ? '旅途雅士' : ''),
                           style: TextStyle(
                             color: AppColors.white,
@@ -369,10 +394,11 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                                   CupertinoIcons.pencil,
                                   color: AppColors.white.withValues(alpha: .9),
                                   size: 20.w,
-                                )),
+                                ),
+                              ),
                         if (!globalController.isAnonymousMode &&
                             (user?.trustLevel != null))
-                          TrustLevelBadge(level: user!.trustLevel)
+                          TrustLevelBadge(level: user!.trustLevel),
                       ],
                     ),
                     globalController.isAnonymousMode
@@ -387,7 +413,7 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                           ),
                   ],
                 ),
-              )
+              ),
             ],
           ],
         ),
@@ -401,8 +427,9 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                     constraints: BoxConstraints(maxWidth: 150.w),
                     padding: EdgeInsets.symmetric(horizontal: 12.w),
                     decoration: BoxDecoration(
-                        color: Theme.of(context).cardColor,
-                        borderRadius: BorderRadius.circular(14.w)),
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(14.w),
+                    ),
                     child: InkWell(
                       onTap: () => showCustomStatusDialog(context),
                       child: Row(
@@ -416,9 +443,7 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                                   color: Theme.of(context).primaryColor,
                                 ),
                           user?.status?.emoji != null
-                              ? EmojiText(
-                                  ':${user?.status?.emoji}:',
-                                )
+                              ? EmojiText(':${user?.status?.emoji}:')
                               : const SizedBox.shrink(),
                           4.hGap,
                           Text(
@@ -449,8 +474,9 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                                 iconOn:
                                     CupertinoIcons.checkmark_alt_circle_fill,
                                 iconOff: Icons.power_settings_new,
-                                animationDuration:
-                                    const Duration(milliseconds: 300),
+                                animationDuration: const Duration(
+                                  milliseconds: 300,
+                                ),
                                 onChanged: (bool state) {
                                   controller.updatePresence(state);
                                 },
@@ -459,7 +485,7 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                           ),
                         ),
                 ],
-              )
+              ),
       ],
     );
   }
@@ -484,9 +510,9 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                         ? Container(
                             padding: EdgeInsets.all(4.w),
                             decoration: BoxDecoration(
-                              color: Theme.of(Get.context!)
-                                  .primaryColor
-                                  .withValues(alpha: .2),
+                              color: Theme.of(
+                                Get.context!,
+                              ).primaryColor.withValues(alpha: .2),
                               borderRadius: BorderRadius.circular(4.w),
                             ),
                             child: EmojiText(controller.emojiStatus.value),
@@ -502,8 +528,9 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                         filled: false,
                         border: InputBorder.none,
                         hintStyle: TextStyle(
-                            color: Theme.of(Get.context!).hintColor,
-                            fontSize: 12.sp),
+                          color: Theme.of(Get.context!).hintColor,
+                          fontSize: 12.sp,
+                        ),
                       ),
                     ),
                   ),
@@ -517,7 +544,7 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                     onPressed: () {
                       controller.toggleEmojiPicker();
                     },
-                  )
+                  ),
                 ],
               ),
               16.hGap,
@@ -531,22 +558,24 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                     child: Text(
                       AppConst.cancel,
                       style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 12.sp),
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 12.sp,
+                      ),
                     ),
                   ),
                   8.hGap,
                   SizedBox(
-                      width: 80.w,
-                      height: 30.w,
-                      child: DisButton(
-                        text: AppConst.confirm,
-                        size: ButtonSize.small,
-                        onPressed: () {
-                          controller.updateStatus();
-                          Get.back();
-                        },
-                      ))
+                    width: 80.w,
+                    height: 30.w,
+                    child: DisButton(
+                      text: AppConst.confirm,
+                      size: ButtonSize.small,
+                      onPressed: () {
+                        controller.updateStatus();
+                        Get.back();
+                      },
+                    ),
+                  ),
                 ],
               ),
               Obx(
@@ -562,7 +591,7 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -590,15 +619,17 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
     // 使用 clamp 确保不会出现精度问题
-    final double currentExtent =
-        (maxExtent - shrinkOffset).clamp(minExtent, maxExtent);
-
-    return SizedBox(
-      height: currentExtent,
-      child: child,
+    final double currentExtent = (maxExtent - shrinkOffset).clamp(
+      minExtent,
+      maxExtent,
     );
+
+    return SizedBox(height: currentExtent, child: child);
   }
 
   @override

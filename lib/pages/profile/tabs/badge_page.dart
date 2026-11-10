@@ -57,8 +57,9 @@ class BadgePage extends GetView<BadgeController> {
                                 initialIndex: controller.selectedIndex.value,
                                 containerColor: AppColors.transparent,
                                 containerBorder: Border.all(
-                                    color: Theme.of(context).primaryColor,
-                                    width: .4.w),
+                                  color: Theme.of(context).primaryColor,
+                                  width: .4.w,
+                                ),
                                 slidersColors: [Theme.of(context).cardColor],
                                 isAllContainerTap: true,
                                 onSelect: (index) =>
@@ -67,27 +68,25 @@ class BadgePage extends GetView<BadgeController> {
                                   Text(
                                     '全部',
                                     style: TextStyle(
-                                        fontSize: 10.sp,
-                                        color:
-                                            controller.selectedIndex.value == 0
-                                                ? Theme.of(context).primaryColor
-                                                : Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium
-                                                    ?.color),
+                                      fontSize: 10.sp,
+                                      color: controller.selectedIndex.value == 0
+                                          ? Theme.of(context).primaryColor
+                                          : Theme.of(
+                                              context,
+                                            ).textTheme.bodyMedium?.color,
+                                    ),
                                   ),
                                   Text(
                                     '已获得',
                                     style: TextStyle(
-                                        fontSize: 10.sp,
-                                        color:
-                                            controller.selectedIndex.value == 1
-                                                ? Theme.of(context).primaryColor
-                                                : Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium
-                                                    ?.color),
-                                  )
+                                      fontSize: 10.sp,
+                                      color: controller.selectedIndex.value == 1
+                                          ? Theme.of(context).primaryColor
+                                          : Theme.of(
+                                              context,
+                                            ).textTheme.bodyMedium?.color,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -105,16 +104,18 @@ class BadgePage extends GetView<BadgeController> {
                           ),
                         ),
                   Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.w),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 8.w,
+                      vertical: 8.w,
+                    ),
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(12.w),
                       boxShadow: [
                         BoxShadow(
-                          color: Theme.of(context)
-                              .shadowColor
-                              .withValues(alpha: 0.05),
+                          color: Theme.of(
+                            context,
+                          ).shadowColor.withValues(alpha: 0.05),
                           blurRadius: 10,
                           offset: const Offset(0, 2),
                         ),
@@ -183,12 +184,10 @@ class BadgeCard extends GetView<BadgeController> {
                 height: 120.w,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        badgeColor,
-                        badgeColor.withValues(alpha: 0.6),
-                      ]),
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [badgeColor, badgeColor.withValues(alpha: 0.6)],
+                  ),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(16.w),
                     topRight: Radius.circular(16.w),
@@ -274,7 +273,9 @@ class BadgeCard extends GetView<BadgeController> {
                         badge.longDescription!.isNotEmpty) ...[
                       8.vGap,
                       HtmlWidget(
-                          html: badge.longDescription!, onLinkTap: (url) {})
+                        html: badge.longDescription!,
+                        onLinkTap: (url) {},
+                      ),
                     ],
                     16.vGap,
                     Row(

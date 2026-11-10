@@ -102,8 +102,9 @@ class PopularController extends BaseController {
           // }
           replies.value = [
             for (final reply in summary?.replies ?? [])
-              summaryData.value!.topics!
-                  .firstWhere((topic) => topic.id == reply.topicId),
+              summaryData.value!.topics!.firstWhere(
+                (topic) => topic.id == reply.topicId,
+              ),
           ];
         }
         break;
@@ -114,7 +115,9 @@ class PopularController extends BaseController {
         break;
       case 4: // 徽章
         if (badges.isEmpty) {
-          l.d('summary?.badges: ${jsonEncode(summaryData.value!.userSummary?.badges)}');
+          l.d(
+            'summary?.badges: ${jsonEncode(summaryData.value!.userSummary?.badges)}',
+          );
           badges.value = [
             for (final badge in summary?.badges ?? [])
               BadgeManager().getBadge(badge.badgeId)!,
@@ -142,7 +145,8 @@ class PopularController extends BaseController {
       // 获取话题详情
       for (final id in topicIds) {
         loadedTopics.add(
-            summaryData.value!.topics!.firstWhere((topic) => topic.id == id));
+          summaryData.value!.topics!.firstWhere((topic) => topic.id == id),
+        );
       }
 
       topics.value = loadedTopics;
@@ -203,8 +207,9 @@ class PopularController extends BaseController {
 
             replies.value = [
               for (final reply in summaryData.value!.userSummary?.replies ?? [])
-                summaryData.value!.topics!
-                    .firstWhere((topic) => topic.id == reply.topicId),
+                summaryData.value!.topics!.firstWhere(
+                  (topic) => topic.id == reply.topicId,
+                ),
             ];
           }
           break;
@@ -216,7 +221,9 @@ class PopularController extends BaseController {
           break;
         case 4: // 徽章
           if (summaryData.value != null) {
-            l.d('summary?.badges: ${jsonEncode(summaryData.value!.userSummary?.badges)}');
+            l.d(
+              'summary?.badges: ${jsonEncode(summaryData.value!.userSummary?.badges)}',
+            );
             badges.value = [
               for (final badge in summaryData.value!.userSummary?.badges ?? [])
                 BadgeManager().getBadge(badge.badgeId)!,
@@ -232,9 +239,11 @@ class PopularController extends BaseController {
   // 跳转到话题详情
   void toTopicDetail(int id, int? postNumber) {
     if (postNumber != null) {
-      Get.toNamed(Routes.TOPIC_DETAIL, arguments: id, parameters: {
-        'postNumber': postNumber.toString(),
-      });
+      Get.toNamed(
+        Routes.TOPIC_DETAIL,
+        arguments: id,
+        parameters: {'postNumber': postNumber.toString()},
+      );
       return;
     }
 

@@ -20,10 +20,7 @@ class DoNotDisturbPage extends GetView<DoNotDisturbController> {
       appBar: AppBar(
         title: Text(
           AppConst.settings.doNotDisturb,
-          style: TextStyle(
-            fontSize: 16.w,
-            fontWeight: FontWeight.w500,
-          ),
+          style: TextStyle(fontSize: 16.w, fontWeight: FontWeight.w500),
         ),
       ),
       body: Obx(() {
@@ -149,8 +146,9 @@ class DoNotDisturbPage extends GetView<DoNotDisturbController> {
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
         leading: CircleAvatar(
-          backgroundColor:
-              Theme.of(context).primaryColor.withValues(alpha: 0.1),
+          backgroundColor: Theme.of(
+            context,
+          ).primaryColor.withValues(alpha: 0.1),
           child: Text(
             username[0].toUpperCase(),
             style: TextStyle(
@@ -205,10 +203,7 @@ class DoNotDisturbPage extends GetView<DoNotDisturbController> {
                   ),
                   IconButton(
                     onPressed: () => Get.back(),
-                    icon: Icon(
-                      CupertinoIcons.clear,
-                      size: 20.w,
-                    ),
+                    icon: Icon(CupertinoIcons.clear, size: 20.w),
                   ),
                 ],
               ),
@@ -240,33 +235,34 @@ class DoNotDisturbPage extends GetView<DoNotDisturbController> {
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(8.w),
-                  border: Border.all(
-                    color: Theme.of(context).dividerColor,
+                  border: Border.all(color: Theme.of(context).dividerColor),
+                ),
+                child: Obx(
+                  () => DropdownButton<String>(
+                    value: controller.selectedDuration.value,
+                    items: controller.durations.map((duration) {
+                      return DropdownMenuItem(
+                        value: duration,
+                        child: Text(
+                          duration,
+                          style: TextStyle(
+                            fontSize: 14.w,
+                            color: Theme.of(
+                              context,
+                            ).textTheme.bodyMedium?.color,
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      if (value != null) {
+                        controller.selectedDuration.value = value;
+                      }
+                    },
+                    isExpanded: true,
+                    underline: const SizedBox(),
                   ),
                 ),
-                child: Obx(() => DropdownButton<String>(
-                      value: controller.selectedDuration.value,
-                      items: controller.durations.map((duration) {
-                        return DropdownMenuItem(
-                          value: duration,
-                          child: Text(
-                            duration,
-                            style: TextStyle(
-                              fontSize: 14.w,
-                              color:
-                                  Theme.of(context).textTheme.bodyMedium?.color,
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        if (value != null) {
-                          controller.selectedDuration.value = value;
-                        }
-                      },
-                      isExpanded: true,
-                      underline: const SizedBox(),
-                    )),
               ),
               24.vGap,
               SizedBox(
@@ -284,8 +280,12 @@ class DoNotDisturbPage extends GetView<DoNotDisturbController> {
     );
   }
 
-  Widget _buildSection(BuildContext context, String title, String description,
-      List<Widget> children) {
+  Widget _buildSection(
+    BuildContext context,
+    String title,
+    String description,
+    List<Widget> children,
+  ) {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,

@@ -18,10 +18,7 @@ class TrackingSettingsPage extends GetView<TrackingSettingsController> {
       appBar: AppBar(
         title: Text(
           AppConst.settings.tracking,
-          style: TextStyle(
-            fontSize: 16.w,
-            fontWeight: FontWeight.w500,
-          ),
+          style: TextStyle(fontSize: 16.w, fontWeight: FontWeight.w500),
         ),
       ),
       body: Obx(() {
@@ -104,11 +101,12 @@ class TrackingSettingsPage extends GetView<TrackingSettingsController> {
             ),
             if (controller.isLoading.value)
               Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: Center(child: DisRefreshLoading()))
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Center(child: DisRefreshLoading()),
+              ),
           ],
         );
       }),
@@ -128,9 +126,7 @@ class TrackingSettingsPage extends GetView<TrackingSettingsController> {
           ),
         ],
       ),
-      child: Column(
-        children: children,
-      ),
+      child: Column(children: children),
     );
   }
 

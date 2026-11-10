@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart' hide Category;
-import 'package:emoji_picker_flutter/emoji_picker_flutter.dart' as emoji
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart'
+    as emoji
     show Category;
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:linux_do/utils/storage_manager.dart';
@@ -47,7 +48,8 @@ class EmojiManager {
 
       _isInitialized = true;
       debugPrint(
-          'EmojiManager 初始化完成，${_categoryEmojis.length} 个分组，${_emojiMap.length} 个表情');
+        'EmojiManager 初始化完成，${_categoryEmojis.length} 个分组，${_emojiMap.length} 个表情',
+      );
     } catch (e, stackTrace) {
       debugPrint('EmojiManager 初始化失败: $e --- $stackTrace');
     }
@@ -74,11 +76,7 @@ class CustomEmoji {
   final String url;
   final String group;
 
-  CustomEmoji({
-    required this.name,
-    required this.url,
-    required this.group,
-  });
+  CustomEmoji({required this.name, required this.url, required this.group});
 
   factory CustomEmoji.fromJson(Map<String, dynamic> json) {
     String url = json['url'] as String? ?? '';
@@ -154,7 +152,10 @@ class CustomEmojiGroup {
 }
 
 List<InlineSpan> parseTextWithEmojis(
-    String text, double? fontSize, BuildContext context) {
+  String text,
+  double? fontSize,
+  BuildContext context,
+) {
   final bool isAnimated =
       StorageManager.getBool('animated_emoji_enabled') ?? true;
   final RegExp emojiRegex = RegExp(r':([a-zA-Z0-9_]+):');

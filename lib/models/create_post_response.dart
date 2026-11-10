@@ -8,11 +8,7 @@ class CreatePostResponse {
   final CreatePost post;
   final bool? success;
 
-  CreatePostResponse({
-    this.action,
-    required this.post,
-    this.success,
-  });
+  CreatePostResponse({this.action, required this.post, this.success});
 
   factory CreatePostResponse.fromJson(Map<String, dynamic> json) =>
       _$CreatePostResponseFromJson(json);

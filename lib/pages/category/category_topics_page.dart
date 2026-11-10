@@ -28,8 +28,10 @@ class CategoryTopicsPage extends GetView<CategoryTopicsController> {
                 width: 40.w,
                 child: IconButton(
                   padding: EdgeInsets.zero,
-                  icon: Icon(Icons.menu_rounded,
-                      color: Theme.of(context).iconTheme.color),
+                  icon: Icon(
+                    Icons.menu_rounded,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
                   onPressed: () {
                     controller.scaffoldKey.currentState?.openDrawer();
                   },
@@ -60,21 +62,25 @@ class CategoryTopicsPage extends GetView<CategoryTopicsController> {
                     containerBorderRadius: 4.w,
                     initialIndex: controller.currentTabIndex,
                     containerBorder: Border.all(
-                        width: .4, color: Theme.of(context).primaryColor),
+                      width: .4,
+                      color: Theme.of(context).primaryColor,
+                    ),
                     containerColor: Theme.of(context).cardColor,
                     containerBoxShadow: [
                       BoxShadow(
-                        color: Theme.of(context)
-                            .shadowColor
-                            .withValues(alpha: 0.05),
+                        color: Theme.of(
+                          context,
+                        ).shadowColor.withValues(alpha: 0.05),
                         blurRadius: 10,
                       ),
                     ],
                     slidersGradients: [
-                      LinearGradient(colors: [
-                        Theme.of(context).primaryColor,
-                        Theme.of(context).primaryColor.withValues(alpha: .6)
-                      ])
+                      LinearGradient(
+                        colors: [
+                          Theme.of(context).primaryColor,
+                          Theme.of(context).primaryColor.withValues(alpha: .6),
+                        ],
+                      ),
                     ],
                     onSelect: (index) => controller.currentTabIndex = index,
                     children: [
@@ -102,9 +108,10 @@ class CategoryTopicsPage extends GetView<CategoryTopicsController> {
         child: TextScroll(
           AppConst.slogan.replaceAll('\n', ' '),
           style: TextStyle(
-              fontSize: 15.sp,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).primaryColor),
+            fontSize: 15.sp,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).primaryColor,
+          ),
           mode: TextScrollMode.endless,
           intervalSpaces: 10,
           velocity: const Velocity(pixelsPerSecond: Offset(80, 0)),
@@ -190,14 +197,16 @@ class CategoryTopicsPage extends GetView<CategoryTopicsController> {
 
   Widget _buildTabText(String text, int index) {
     final context = Get.context!;
-    return Obx(() => Text(
-          text,
-          style: TextStyle(
-            fontSize: 14.w,
-            color: controller.currentTabIndex == index
-                ? AppColors.white
-                : Theme.of(context).textTheme.bodyMedium?.color,
-          ),
-        ));
+    return Obx(
+      () => Text(
+        text,
+        style: TextStyle(
+          fontSize: 14.w,
+          color: controller.currentTabIndex == index
+              ? AppColors.white
+              : Theme.of(context).textTheme.bodyMedium?.color,
+        ),
+      ),
+    );
   }
 }

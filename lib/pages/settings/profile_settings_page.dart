@@ -19,10 +19,7 @@ class ProfileSettingsPage extends GetView<ProfileSettingsController> {
       appBar: AppBar(
         title: Text(
           AppConst.settings.profile,
-          style: TextStyle(
-            fontSize: 16.w,
-            fontWeight: FontWeight.w500,
-          ),
+          style: TextStyle(fontSize: 16.w, fontWeight: FontWeight.w500),
         ),
       ),
       body: Obx(() {
@@ -307,12 +304,7 @@ class ProfileSettingsPage extends GetView<ProfileSettingsController> {
   }
 
   Widget _buildDivider() {
-    return Divider(
-      height: 1.w,
-      thickness: 1.w,
-      indent: 16.w,
-      endIndent: 16.w,
-    );
+    return Divider(height: 1.w, thickness: 1.w, indent: 16.w, endIndent: 16.w);
   }
 
   void _showIntroductionDialog(BuildContext context) {
@@ -340,10 +332,7 @@ class ProfileSettingsPage extends GetView<ProfileSettingsController> {
                   ),
                   IconButton(
                     onPressed: () => Get.back(),
-                    icon: Icon(
-                      CupertinoIcons.clear,
-                      size: 20.w,
-                    ),
+                    icon: Icon(CupertinoIcons.clear, size: 20.w),
                   ),
                 ],
               ),
@@ -398,10 +387,7 @@ class ProfileSettingsPage extends GetView<ProfileSettingsController> {
                   ),
                   IconButton(
                     onPressed: () => Get.back(),
-                    icon: Icon(
-                      CupertinoIcons.clear,
-                      size: 20.w,
-                    ),
+                    icon: Icon(CupertinoIcons.clear, size: 20.w),
                   ),
                 ],
               ),
@@ -409,9 +395,7 @@ class ProfileSettingsPage extends GetView<ProfileSettingsController> {
               Container(
                 height: 300.w,
                 decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Theme.of(context).dividerColor,
-                  ),
+                  border: Border.all(color: Theme.of(context).dividerColor),
                   borderRadius: BorderRadius.circular(8.w),
                 ),
                 child: ListView.builder(
@@ -443,10 +427,9 @@ class ProfileSettingsPage extends GetView<ProfileSettingsController> {
                                 timezone,
                                 style: TextStyle(
                                   fontSize: 14.w,
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.color,
+                                  color: Theme.of(
+                                    context,
+                                  ).textTheme.bodyMedium?.color,
                                 ),
                               ),
                             ),
@@ -495,10 +478,7 @@ class ProfileSettingsPage extends GetView<ProfileSettingsController> {
                   ),
                   IconButton(
                     onPressed: () => Get.back(),
-                    icon: Icon(
-                      CupertinoIcons.clear,
-                      size: 20.w,
-                    ),
+                    icon: Icon(CupertinoIcons.clear, size: 20.w),
                   ),
                 ],
               ),
@@ -552,10 +532,7 @@ class ProfileSettingsPage extends GetView<ProfileSettingsController> {
                   ),
                   IconButton(
                     onPressed: () => Get.back(),
-                    icon: Icon(
-                      CupertinoIcons.clear,
-                      size: 20.w,
-                    ),
+                    icon: Icon(CupertinoIcons.clear, size: 20.w),
                   ),
                 ],
               ),
@@ -609,10 +586,7 @@ class ProfileSettingsPage extends GetView<ProfileSettingsController> {
                   ),
                   IconButton(
                     onPressed: () => Get.back(),
-                    icon: Icon(
-                      CupertinoIcons.clear,
-                      size: 20.w,
-                    ),
+                    icon: Icon(CupertinoIcons.clear, size: 20.w),
                   ),
                 ],
               ),
@@ -666,10 +640,7 @@ class ProfileSettingsPage extends GetView<ProfileSettingsController> {
                   ),
                   IconButton(
                     onPressed: () => Get.back(),
-                    icon: Icon(
-                      CupertinoIcons.clear,
-                      size: 20.w,
-                    ),
+                    icon: Icon(CupertinoIcons.clear, size: 20.w),
                   ),
                 ],
               ),
@@ -751,11 +722,11 @@ class ProfileSettingsPage extends GetView<ProfileSettingsController> {
                       ),
                       trailing:
                           controller.selectedBadge.value?.name == badge.name
-                              ? Icon(
-                                  CupertinoIcons.checkmark_circle_fill,
-                                  color: Theme.of(context).primaryColor,
-                                )
-                              : null,
+                          ? Icon(
+                              CupertinoIcons.checkmark_circle_fill,
+                              color: Theme.of(context).primaryColor,
+                            )
+                          : null,
                       onTap: () {
                         controller.cardBadge.value = badge.name;
                         controller.selectedBadge.value = badge;

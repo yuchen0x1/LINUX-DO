@@ -53,8 +53,11 @@ class PostContentAction extends StatelessWidget {
     final actionType = post.actionCode;
     switch (actionType) {
       case pinnedGloballyEnabled:
-        return Icon(CupertinoIcons.pin_fill,
-            size: 16.w, color: Theme.of(context).primaryColor);
+        return Icon(
+          CupertinoIcons.pin_fill,
+          size: 16.w,
+          color: Theme.of(context).primaryColor,
+        );
       default:
         return const SizedBox();
     }
@@ -69,17 +72,21 @@ class PostContentAction extends StatelessWidget {
           text: TextSpan(
             children: [
               TextSpan(
-                  text: updateAt.format('yyyy-MM-dd'),
-                  style: TextStyle(
-                      fontSize: 12.w,
-                      fontFamily: AppFontFamily.dinPro,
-                      color: Theme.of(context).primaryColor)),
+                text: updateAt.format('yyyy-MM-dd'),
+                style: TextStyle(
+                  fontSize: 12.w,
+                  fontFamily: AppFontFamily.dinPro,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
               TextSpan(
-                  text: ' 全站置顶',
-                  style: TextStyle(
-                      fontSize: 12.w,
-                      fontFamily: AppFontFamily.dinPro,
-                      color: Theme.of(context).textTheme.bodyMedium?.color)),
+                text: ' 全站置顶',
+                style: TextStyle(
+                  fontSize: 12.w,
+                  fontFamily: AppFontFamily.dinPro,
+                  color: Theme.of(context).textTheme.bodyMedium?.color,
+                ),
+              ),
             ],
           ),
         );

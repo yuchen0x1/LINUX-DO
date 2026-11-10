@@ -8,9 +8,7 @@ const double _kMinIndicatorSize = 36.0;
 
 const double _kDefaultStrokeWidth = 2;
 
-enum Indicator {
-  ballBeat,
-}
+enum Indicator { ballBeat }
 
 /// Entrance of the loading.
 class LoadingIndicator extends StatelessWidget {
@@ -55,10 +53,7 @@ class LoadingIndicator extends StatelessWidget {
       ),
       child: AspectRatio(
         aspectRatio: 1,
-        child: Container(
-          color: backgroundColor,
-          child: BallBeat(),
-        ),
+        child: Container(color: backgroundColor, child: BallBeat()),
       ),
     );
   }
@@ -128,8 +123,8 @@ class _ShapePainter extends CustomPainter {
     this.data,
     this.strokeWidth, {
     this.pathColor,
-  })  : _paint = Paint()..isAntiAlias = true,
-        super();
+  }) : _paint = Paint()..isAntiAlias = true,
+       super();
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -183,7 +178,11 @@ class _ShapePainter extends CustomPainter {
           ..strokeWidth = strokeWidth
           ..style = PaintingStyle.stroke;
         final rect = Rect.fromLTWH(
-            size.width / 4, size.height / 4, size.width / 2, size.height / 2);
+          size.width / 4,
+          size.height / 4,
+          size.width / 2,
+          size.height / 2,
+        );
         canvas.drawArc(rect, -3 * pi / 4, pi / 2, false, _paint);
         canvas.drawArc(rect, 3 * pi / 4, -pi / 2, false, _paint);
         break;
@@ -192,18 +191,23 @@ class _ShapePainter extends CustomPainter {
           ..color = color
           ..strokeWidth = strokeWidth
           ..style = PaintingStyle.stroke;
-        canvas.drawCircle(Offset(size.width / 2, size.height / 2),
-            size.shortestSide / 2, _paint);
+        canvas.drawCircle(
+          Offset(size.width / 2, size.height / 2),
+          size.shortestSide / 2,
+          _paint,
+        );
         break;
       case Shape.line:
         _paint
           ..color = color
           ..style = PaintingStyle.fill;
         canvas.drawRRect(
-            RRect.fromRectAndRadius(
-                Rect.fromLTWH(0, 0, size.width, size.height),
-                Radius.circular(size.shortestSide / 2)),
-            _paint);
+          RRect.fromRectAndRadius(
+            Rect.fromLTWH(0, 0, size.width, size.height),
+            Radius.circular(size.shortestSide / 2),
+          ),
+          _paint,
+        );
         break;
       case Shape.triangle:
         final offsetY = size.height / 4;
@@ -223,7 +227,12 @@ class _ShapePainter extends CustomPainter {
           ..color = color
           ..style = PaintingStyle.fill;
         canvas.drawArc(
-            Offset.zero & size, data!, pi * 2 - 2 * data!, true, _paint);
+          Offset.zero & size,
+          data!,
+          pi * 2 - 2 * data!,
+          true,
+          _paint,
+        );
         break;
       case Shape.circleSemi:
         _paint
@@ -261,23 +270,31 @@ class _BallBeatState extends State<BallBeat> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     for (int i = 0; i < 6; i++) {
-      _animationControllers.add(AnimationController(
-        value: _delayInMills[i] / _durationInMills,
-        vsync: this,
-        duration: const Duration(milliseconds: _durationInMills),
-      ));
-      _scaleAnimations.add(TweenSequence([
-        TweenSequenceItem(
-          tween: Tween(begin: 1.0, end: 0.3)
-              .chain(CurveTween(curve: Curves.easeOutQuad)),
-          weight: 1,
+      _animationControllers.add(
+        AnimationController(
+          value: _delayInMills[i] / _durationInMills,
+          vsync: this,
+          duration: const Duration(milliseconds: _durationInMills),
         ),
-        TweenSequenceItem(
-          tween: Tween(begin: 0.3, end: 1.0)
-              .chain(CurveTween(curve: Curves.easeInQuad)),
-          weight: 1,
-        ),
-      ]).animate(_animationControllers[i]));
+      );
+      _scaleAnimations.add(
+        TweenSequence([
+          TweenSequenceItem(
+            tween: Tween(
+              begin: 1.0,
+              end: 0.3,
+            ).chain(CurveTween(curve: Curves.easeOutQuad)),
+            weight: 1,
+          ),
+          TweenSequenceItem(
+            tween: Tween(
+              begin: 0.3,
+              end: 1.0,
+            ).chain(CurveTween(curve: Curves.easeInQuad)),
+            weight: 1,
+          ),
+        ]).animate(_animationControllers[i]),
+      );
       _animationControllers[i].repeat();
     }
   }
@@ -292,29 +309,28 @@ class _BallBeatState extends State<BallBeat> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (ctx, constraint) {
-      List<Widget> widgets = List.filled(11, Container());
-      for (int i = 0; i < 11; i++) {
-        if (i.isEven) {
-          widgets[i] = Expanded(
-            child: FadeTransition(
-              opacity: _scaleAnimations[i ~/ 2],
-              child: IndicatorShapeWidget(
-                shape: Shape.circle,
-                index: i ~/ 2,
+    return LayoutBuilder(
+      builder: (ctx, constraint) {
+        List<Widget> widgets = List.filled(11, Container());
+        for (int i = 0; i < 11; i++) {
+          if (i.isEven) {
+            widgets[i] = Expanded(
+              child: FadeTransition(
+                opacity: _scaleAnimations[i ~/ 2],
+                child: IndicatorShapeWidget(shape: Shape.circle, index: i ~/ 2),
               ),
-            ),
-          );
-        } else {
-          widgets[i] = const SizedBox(width: 2);
+            );
+          } else {
+            widgets[i] = const SizedBox(width: 2);
+          }
         }
-      }
 
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: widgets,
-      );
-    });
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: widgets,
+        );
+      },
+    );
   }
 }
 
@@ -340,8 +356,8 @@ class DecorateData {
     double? strokeWidth,
     this.pathBackgroundColor,
     required this.pause,
-  })  : _strokeWidth = strokeWidth,
-        assert(colors.length > 0);
+  }) : _strokeWidth = strokeWidth,
+       assert(colors.length > 0);
 
   double get strokeWidth => _strokeWidth ?? _kDefaultStrokeWidth;
 

@@ -15,19 +15,21 @@ class NotificationPage extends GetView<NotificationController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => StateView(
-          state: controller.getViewState(),
-          child: DisSmartRefresher(
-            controller: controller.refreshController,
-            enablePullDown: false,
-            enablePullUp: true,
-            onLoading: controller.onLoadMore,
-            child: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.w),
-              children: _buildGroupedChildren(context),
-            ),
+    return Obx(
+      () => StateView(
+        state: controller.getViewState(),
+        child: DisSmartRefresher(
+          controller: controller.refreshController,
+          enablePullDown: false,
+          enablePullUp: true,
+          onLoading: controller.onLoadMore,
+          child: ListView(
+            padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.w),
+            children: _buildGroupedChildren(context),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   List<Widget> _buildGroupedChildren(BuildContext context) {
@@ -37,10 +39,14 @@ class NotificationPage extends GetView<NotificationController> {
     final children = <Widget>[];
     for (final (header, items) in grouped) {
       children.add(_GroupHeader(title: header));
-      children.addAll(items.map((n) => Padding(
+      children.addAll(
+        items.map(
+          (n) => Padding(
             padding: EdgeInsets.only(bottom: 4.w),
             child: _NotificationItem(notification: n),
-          )));
+          ),
+        ),
+      );
     }
     return children;
   }
@@ -57,11 +63,11 @@ class _NotificationItem extends StatelessWidget {
     return InkWell(
       onTap: () {
         if (notification.topicId != null) {
-          Get.toNamed(Routes.TOPIC_DETAIL,
-              arguments: notification.topicId,
-              parameters: {
-                'postNumber': notification.postNumber.toString(),
-              });
+          Get.toNamed(
+            Routes.TOPIC_DETAIL,
+            arguments: notification.topicId,
+            parameters: {'postNumber': notification.postNumber.toString()},
+          );
         }
       },
       child: Container(
@@ -77,17 +83,18 @@ class _NotificationItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: theme.primaryColor),
-                  borderRadius: BorderRadius.circular(20.w),
-                ),
-                child: CachedImage(
-                  imageUrl: notification.getAvatarUrl(),
-                  width: 34.w,
-                  height: 34.w,
-                  borderRadius: BorderRadius.circular(4.w),
-                  circle: !notification.isWebMaster(),
-                )),
+              decoration: BoxDecoration(
+                border: Border.all(color: theme.primaryColor),
+                borderRadius: BorderRadius.circular(20.w),
+              ),
+              child: CachedImage(
+                imageUrl: notification.getAvatarUrl(),
+                width: 34.w,
+                height: 34.w,
+                borderRadius: BorderRadius.circular(4.w),
+                circle: !notification.isWebMaster(),
+              ),
+            ),
             12.hGap,
             Expanded(
               child: Column(

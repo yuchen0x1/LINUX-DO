@@ -26,21 +26,21 @@ UploadImageResponse _$UploadImageResponseFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$UploadImageResponseToJson(
-        UploadImageResponse instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'url': instance.url,
-      'original_filename': instance.originalFilename,
-      'filesize': instance.filesize,
-      'width': instance.width,
-      'height': instance.height,
-      'thumbnail_width': instance.thumbnailWidth,
-      'thumbnail_height': instance.thumbnailHeight,
-      'extension': instance.extension,
-      'short_url': instance.shortUrl,
-      'short_path': instance.shortPath,
-      'retain_hours': instance.retainHours,
-      'human_filesize': instance.humanFilesize,
-      'dominant_color': instance.dominantColor,
-      'thumbnail': instance.thumbnail,
-    };
+  UploadImageResponse instance,
+) => <String, dynamic>{
+  'id': instance.id,
+  'url': instance.url,
+  'original_filename': instance.originalFilename,
+  'filesize': instance.filesize,
+  'width': instance.width,
+  'height': instance.height,
+  'thumbnail_width': instance.thumbnailWidth,
+  'thumbnail_height': instance.thumbnailHeight,
+  'extension': instance.extension,
+  'short_url': instance.shortUrl,
+  'short_path': instance.shortPath,
+  'retain_hours': instance.retainHours,
+  'human_filesize': instance.humanFilesize,
+  'dominant_color': instance.dominantColor,
+  'thumbnail': instance.thumbnail,
+};

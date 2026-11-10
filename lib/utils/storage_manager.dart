@@ -66,7 +66,9 @@ class StorageManager {
 
   /// 获取JSON对象
   static T? getJson<T>(
-      String key, T Function(Map<String, dynamic> json) fromJson) {
+    String key,
+    T Function(Map<String, dynamic> json) fromJson,
+  ) {
     final String? jsonString = getString(key);
     if (jsonString == null) return null;
 

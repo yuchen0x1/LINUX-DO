@@ -48,13 +48,10 @@ class _PostsSelectorState extends State<PostsSelector>
       vsync: this,
     );
 
-    _heightAnimation = Tween<double>(
-      begin: _defaultHeight,
-      end: _defaultHeight,
-    ).animate(CurvedAnimation(
-      parent: _expandController,
-      curve: Curves.easeInOut,
-    ));
+    _heightAnimation = Tween<double>(begin: _defaultHeight, end: _defaultHeight)
+        .animate(
+          CurvedAnimation(parent: _expandController, curve: Curves.easeInOut),
+        );
   }
 
   @override
@@ -85,10 +82,13 @@ class _PostsSelectorState extends State<PostsSelector>
   void _handleDragUpdate(DragUpdateDetails details) {
     if (!mounted) return;
     setState(() {
-      final maxHeight =
-          _isLongPressed ? _heightAnimation.value : _defaultHeight;
-      _dragPosition = (_dragPosition + details.delta.dy)
-          .clamp(0, maxHeight - _handleHeight);
+      final maxHeight = _isLongPressed
+          ? _heightAnimation.value
+          : _defaultHeight;
+      _dragPosition = (_dragPosition + details.delta.dy).clamp(
+        0,
+        maxHeight - _handleHeight,
+      );
 
       // 计算新的索引，但只更新内部状态
       if (widget.postsCount > 1) {
@@ -142,8 +142,10 @@ class _PostsSelectorState extends State<PostsSelector>
     final RenderBox box = context.findRenderObject() as RenderBox;
     final localPosition = box.globalToLocal(details.globalPosition);
     setState(() {
-      _dragPosition = (localPosition.dy - _handleHeight / 2)
-          .clamp(0, _heightAnimation.value - _handleHeight);
+      _dragPosition = (localPosition.dy - _handleHeight / 2).clamp(
+        0,
+        _heightAnimation.value - _handleHeight,
+      );
 
       // 计算新的索引，但只更新内部状态
       final progress = _dragPosition / (_heightAnimation.value - _handleHeight);
@@ -158,23 +160,22 @@ class _PostsSelectorState extends State<PostsSelector>
   void _updateExpandedHeight(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final appBarHeight = MediaQuery.of(context).padding.top + kToolbarHeight;
-    final maxExpandedHeight = screenHeight -
+    final maxExpandedHeight =
+        screenHeight -
         appBarHeight -
         MediaQuery.of(context).padding.bottom -
         100.w;
 
-    final newExpandedHeight =
-        widget.postsCount > 200 ? maxExpandedHeight : screenHeight * 0.5;
+    final newExpandedHeight = widget.postsCount > 200
+        ? maxExpandedHeight
+        : screenHeight * 0.5;
 
     if (_expandedHeight != newExpandedHeight) {
       _expandedHeight = newExpandedHeight;
-      _heightAnimation = Tween<double>(
-        begin: _defaultHeight,
-        end: _expandedHeight,
-      ).animate(CurvedAnimation(
-        parent: _expandController,
-        curve: Curves.easeInOut,
-      ));
+      _heightAnimation =
+          Tween<double>(begin: _defaultHeight, end: _expandedHeight).animate(
+            CurvedAnimation(parent: _expandController, curve: Curves.easeInOut),
+          );
     }
   }
 
@@ -200,9 +201,10 @@ class _PostsSelectorState extends State<PostsSelector>
               color: Theme.of(context).cardColor.withValues(alpha: 0.7),
               borderRadius: const BorderRadius.all(Radius.circular(16)).w,
               border: Border.all(
-                  color: isDark
-                      ? Colors.white.withValues(alpha: 0.15)
-                      : Colors.black.withValues(alpha: 0.15)),
+                color: isDark
+                    ? Colors.white.withValues(alpha: 0.15)
+                    : Colors.black.withValues(alpha: 0.15),
+              ),
             ),
             child: Stack(
               children: [
@@ -215,8 +217,9 @@ class _PostsSelectorState extends State<PostsSelector>
                     height: _handleHeight,
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(16)).w,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(16),
+                      ).w,
                     ),
                     child: Center(
                       child: Text(

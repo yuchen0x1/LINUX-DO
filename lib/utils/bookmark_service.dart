@@ -38,8 +38,9 @@ class BookmarkService extends GetxService {
         data.forEach((category, items) {
           if (bookmarksByCategory.containsKey(category)) {
             final List itemsList = items as List;
-            final bookmarks =
-                itemsList.map((item) => BookmarkItem.fromJson(item)).toList();
+            final bookmarks = itemsList
+                .map((item) => BookmarkItem.fromJson(item))
+                .toList();
             bookmarksByCategory[category]!.assignAll(bookmarks);
           }
         });
@@ -76,8 +77,9 @@ class BookmarkService extends GetxService {
       }
 
       // 检查是否已存在该主题
-      final existingIndex = bookmarksByCategory[category]!
-          .indexWhere((bookmark) => bookmark.id == item.id);
+      final existingIndex = bookmarksByCategory[category]!.indexWhere(
+        (bookmark) => bookmark.id == item.id,
+      );
 
       if (existingIndex >= 0) {
         // 替换现有收藏
@@ -101,8 +103,9 @@ class BookmarkService extends GetxService {
     try {
       if (bookmarksByCategory.containsKey(category)) {
         final lengthBefore = bookmarksByCategory[category]!.length;
-        bookmarksByCategory[category]!
-            .removeWhere((bookmark) => bookmark.id == id);
+        bookmarksByCategory[category]!.removeWhere(
+          (bookmark) => bookmark.id == id,
+        );
 
         final removed = bookmarksByCategory[category]!.length < lengthBefore;
 

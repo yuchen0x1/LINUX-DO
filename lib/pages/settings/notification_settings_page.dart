@@ -18,10 +18,7 @@ class NotificationSettingsPage extends GetView<NotificationSettingsController> {
       appBar: AppBar(
         title: Text(
           AppConst.settings.notificationSettingsTitle,
-          style: TextStyle(
-            fontSize: 16.w,
-            fontWeight: FontWeight.w500,
-          ),
+          style: TextStyle(fontSize: 16.w, fontWeight: FontWeight.w500),
         ),
       ),
       body: Obx(() {
@@ -115,11 +112,12 @@ class NotificationSettingsPage extends GetView<NotificationSettingsController> {
             ),
             if (controller.isLoading.value)
               Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: Center(child: DisRefreshLoading()))
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Center(child: DisRefreshLoading()),
+              ),
           ],
         );
       }),
@@ -139,9 +137,7 @@ class NotificationSettingsPage extends GetView<NotificationSettingsController> {
           ),
         ],
       ),
-      child: Column(
-        children: children,
-      ),
+      child: Column(children: children),
     );
   }
 

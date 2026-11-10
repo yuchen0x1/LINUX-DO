@@ -27,34 +27,34 @@ class WebViewPage extends GetView<WebViewController> {
       ),
       body: Stack(
         children: [
-          Obx(() => InAppWebView(
-                initialUrlRequest: controller.isHtml.value
-                    ? null
-                    : URLRequest(url: WebUri(controller.content.value)),
-                initialData: controller.isHtml.value
-                    ? InAppWebViewInitialData(data: controller.content.value)
-                    : null,
-                initialSettings: InAppWebViewSettings(
-                  useShouldOverrideUrlLoading: true,
-                  mediaPlaybackRequiresUserGesture: false,
-                  useOnLoadResource: true,
-                  javaScriptEnabled: true,
-                  supportZoom: true,
-                  allowsInlineMediaPlayback: true,
-                  disableContextMenu: false,
-                ),
-                onWebViewCreated: controller.onWebViewCreated,
-                onLoadStart: controller.onLoadStart,
-                onProgressChanged: controller.onProgressChanged,
-                onLoadStop: controller.onLoadStop,
-                onTitleChanged: controller.onTitleChanged,
-                shouldOverrideUrlLoading: controller.shouldOverrideUrlLoading,
-              )),
+          Obx(
+            () => InAppWebView(
+              initialUrlRequest: controller.isHtml.value
+                  ? null
+                  : URLRequest(url: WebUri(controller.content.value)),
+              initialData: controller.isHtml.value
+                  ? InAppWebViewInitialData(data: controller.content.value)
+                  : null,
+              initialSettings: InAppWebViewSettings(
+                useShouldOverrideUrlLoading: true,
+                mediaPlaybackRequiresUserGesture: false,
+                useOnLoadResource: true,
+                javaScriptEnabled: true,
+                supportZoom: true,
+                allowsInlineMediaPlayback: true,
+                disableContextMenu: false,
+              ),
+              onWebViewCreated: controller.onWebViewCreated,
+              onLoadStart: controller.onLoadStart,
+              onProgressChanged: controller.onProgressChanged,
+              onLoadStop: controller.onLoadStop,
+              onTitleChanged: controller.onTitleChanged,
+              shouldOverrideUrlLoading: controller.shouldOverrideUrlLoading,
+            ),
+          ),
           Obx(() {
             if (controller.loadingProgress < 0.5) {
-              return Center(
-                child: DisRefreshLoading(),
-              );
+              return Center(child: DisRefreshLoading());
             }
             return const SizedBox();
           }),

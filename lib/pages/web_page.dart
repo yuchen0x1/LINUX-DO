@@ -77,8 +77,10 @@ class _WebPageState extends State<WebPage> with ToastMixin {
   Future<void> _initCookieJar() async {
     final directory = await getApplicationDocumentsDirectory();
     final cookiePath = '${directory.path}/.cookies/';
-    _cookieJar =
-        PersistCookieJar(ignoreExpires: true, storage: FileStorage(cookiePath));
+    _cookieJar = PersistCookieJar(
+      ignoreExpires: true,
+      storage: FileStorage(cookiePath),
+    );
     setState(() {});
   }
 
@@ -117,7 +119,7 @@ class _WebPageState extends State<WebPage> with ToastMixin {
               ..domain = HttpConfig.domain
               ..path = '/'
               ..httpOnly = true
-              ..secure = true
+              ..secure = true,
           ]);
           await StorageManager.setData(AppConst.identifier.token, value);
         } else if (name == NetClient.forumSession) {
@@ -127,10 +129,12 @@ class _WebPageState extends State<WebPage> with ToastMixin {
               ..domain = HttpConfig.domain
               ..path = '/'
               ..httpOnly = true
-              ..secure = true
+              ..secure = true,
           ]);
           await StorageManager.setData(
-              AppConst.identifier.sessionCookie, value);
+            AppConst.identifier.sessionCookie,
+            value,
+          );
         } else if (name == NetClient.cfClearance && needsCfVerification) {
           hasCfCookie = true;
           await _cookieJar.saveFromResponse(uri, [
@@ -138,14 +142,15 @@ class _WebPageState extends State<WebPage> with ToastMixin {
               ..domain = HttpConfig.domain
               ..path = '/'
               ..httpOnly = true
-              ..secure = true
+              ..secure = true,
           ]);
           await StorageManager.setData(AppConst.identifier.cfClearance, value);
         }
       }
 
       // 根据是否需要 CF 验证来判断登录条件
-      bool isLoginSuccess = hasTokenCookie &&
+      bool isLoginSuccess =
+          hasTokenCookie &&
           hasSessionCookie &&
           (!needsCfVerification || (needsCfVerification && hasCfCookie));
 
@@ -157,18 +162,22 @@ class _WebPageState extends State<WebPage> with ToastMixin {
 
         for (int i = 0; i < maxRetries; i++) {
           // 首先尝试从 meta 标签获取
-          result = await _controller?.evaluateJavascript(source: '''
+          result = await _controller?.evaluateJavascript(
+            source: '''
             (function() {
               const meta = document.querySelector('meta[name="csrf-token"]');
               return meta ? meta.getAttribute('content') : null;
             })();
-        ''');
+        ''',
+          );
 
           // 如果 meta 标签获取失败，尝试通过 API 获取
           if (result == null ||
               result.toString() == '{}' ||
               result.toString().isEmpty) {
-            result = await _controller?.evaluateJavascript(source: '''
+            result = await _controller?.evaluateJavascript(
+              source:
+                  '''
               fetch('${HttpConfig.baseUrl}session/csrf', {
                 credentials: 'include',
                 headers: {
@@ -191,7 +200,8 @@ class _WebPageState extends State<WebPage> with ToastMixin {
                 console.error('请求失败:', error);
                 return null;
               });
-      ''');
+      ''',
+            );
           }
 
           // 检查是否获取到有效的 token
@@ -199,11 +209,13 @@ class _WebPageState extends State<WebPage> with ToastMixin {
               result.toString() != '{}' &&
               result.toString().isNotEmpty) {
             // 更新请求头
-            NetClient.getDio.options.headers['x-csrf-token'] =
-                result.toString();
+            NetClient.getDio.options.headers['x-csrf-token'] = result
+                .toString();
 
             await StorageManager.setData(
-                AppConst.identifier.csrfToken, result.toString());
+              AppConst.identifier.csrfToken,
+              result.toString(),
+            );
             break;
           } else {
             if (i < maxRetries - 1) {
@@ -226,7 +238,9 @@ class _WebPageState extends State<WebPage> with ToastMixin {
         }
       } else {
         // 如果没有获取到所需的 cookies，尝试请求相关接口
-        await _controller?.evaluateJavascript(source: '''
+        await _controller?.evaluateJavascript(
+          source:
+              '''
           fetch('${HttpConfig.baseUrl}session/csrf', {
             credentials: 'include',
             headers: { 'X-Requested-With': 'XMLHttpRequest' }
@@ -237,7 +251,8 @@ class _WebPageState extends State<WebPage> with ToastMixin {
           }).catch(error => {
             console.error('请求失败:', error);
           });
-        ''');
+        ''',
+        );
       }
     } catch (e) {
       l.e('检查 cookies 失败: $e');
@@ -261,7 +276,8 @@ class _WebPageState extends State<WebPage> with ToastMixin {
         children: [
           InAppWebView(
             initialUrlRequest: URLRequest(
-                url: WebUri(widget.initialUrl ?? HttpConfig.baseUrl)),
+              url: WebUri(widget.initialUrl ?? HttpConfig.baseUrl),
+            ),
             initialSettings: InAppWebViewSettings(
               javaScriptEnabled: true,
               useOnDownloadStart: true,
@@ -309,7 +325,8 @@ class _WebPageState extends State<WebPage> with ToastMixin {
               await _checkAndSaveCookies();
 
               // 注入辅助脚本
-              await controller.evaluateJavascript(source: '''
+              await controller.evaluateJavascript(
+                source: '''
                 // 自动点击验证按钮
                 function autoClickTurnstile() {
                   const buttons = document.querySelectorAll('button, input[type="submit"]');
@@ -321,7 +338,8 @@ class _WebPageState extends State<WebPage> with ToastMixin {
                   }
                 }
                 setInterval(autoClickTurnstile, 1000);
-              ''');
+              ''',
+              );
             },
             // ignore: deprecated_member_use
             onLoadError: (controller, url, code, message) {
@@ -338,8 +356,9 @@ class _WebPageState extends State<WebPage> with ToastMixin {
                 final payload = uri.queryParameters['payload'];
                 if (payload != null && payload.isNotEmpty) {
                   try {
-                    final decrypted =
-                        UserApiKeyAuthService().decryptPayload(payload);
+                    final decrypted = UserApiKeyAuthService().decryptPayload(
+                      payload,
+                    );
                     final data = decrypted.startsWith('{')
                         ? decrypted
                         : '{"key":"$decrypted"}';
@@ -348,7 +367,9 @@ class _WebPageState extends State<WebPage> with ToastMixin {
                     if (key != null && key.isNotEmpty) {
                       await UserApiKeyAuthService().saveApiKey(key);
                       await StorageManager.setData(
-                          AppConst.identifier.isLogin, true);
+                        AppConst.identifier.isLogin,
+                        true,
+                      );
                       Get.find<GlobalController>().setIsLogin(true);
                       showSuccess('官方 API Key 授权成功');
                       Get.back(result: true);
@@ -381,8 +402,9 @@ class _WebPageState extends State<WebPage> with ToastMixin {
                 'recaptcha.net',
               ];
 
-              bool isAllowed =
-                  allowedDomains.any((domain) => uri.host.endsWith(domain));
+              bool isAllowed = allowedDomains.any(
+                (domain) => uri.host.endsWith(domain),
+              );
 
               if (isAllowed) {
                 return NavigationActionPolicy.ALLOW;

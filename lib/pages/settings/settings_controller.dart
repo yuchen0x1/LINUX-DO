@@ -34,11 +34,11 @@ class SettingsController extends BaseController {
   final isPushEnabled = false.obs;
 
   List<String> get themeModeOptions => [
-        AppConst.settings.themeSystem,
-        AppConst.settings.themeLight,
-        AppConst.settings.themeDark,
-        AppConst.settings.themeAmoled,
-      ];
+    AppConst.settings.themeSystem,
+    AppConst.settings.themeLight,
+    AppConst.settings.themeDark,
+    AppConst.settings.themeAmoled,
+  ];
 
   String get selectedThemeMode {
     if (isAmoled.value) return AppConst.settings.themeAmoled;
@@ -164,7 +164,10 @@ class SettingsController extends BaseController {
               Row(
                 children: [
                   TrustLevelBadge(
-                      level: level, showTitle: false, fontSize: 12.sp),
+                    level: level,
+                    showTitle: false,
+                    fontSize: 12.sp,
+                  ),
                   8.hGap,
                   Text(
                     title,
@@ -187,32 +190,33 @@ class SettingsController extends BaseController {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: privileges
-                        .map((p) => Padding(
-                              padding: EdgeInsets.only(bottom: 8.w),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    CupertinoIcons.checkmark_seal_fill,
-                                    size: 14.w,
-                                    color: color,
-                                  ),
-                                  6.hGap,
-                                  Expanded(
-                                    child: Text(
-                                      p,
-                                      style: TextStyle(
-                                        fontSize: 13.sp,
-                                        color: Theme.of(Get.context!)
-                                            .textTheme
-                                            .bodyMedium
-                                            ?.color,
-                                      ),
+                        .map(
+                          (p) => Padding(
+                            padding: EdgeInsets.only(bottom: 8.w),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  CupertinoIcons.checkmark_seal_fill,
+                                  size: 14.w,
+                                  color: color,
+                                ),
+                                6.hGap,
+                                Expanded(
+                                  child: Text(
+                                    p,
+                                    style: TextStyle(
+                                      fontSize: 13.sp,
+                                      color: Theme.of(
+                                        Get.context!,
+                                      ).textTheme.bodyMedium?.color,
                                     ),
                                   ),
-                                ],
-                              ),
-                            ))
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
                         .toList(),
                   ),
                 ),
@@ -255,8 +259,9 @@ class SettingsController extends BaseController {
     try {
       // 只替换主色，保留 AppTheme 里的卡片 / 背景 / 文字 / 输入框等定制，
       // 否则换色后整个 App 的外观会回退成 Material 默认值。
-      final baseTheme =
-          Get.isDarkMode ? AppTheme.darkTheme : AppTheme.lightTheme;
+      final baseTheme = Get.isDarkMode
+          ? AppTheme.darkTheme
+          : AppTheme.lightTheme;
       final theme = AppTheme.withPrimaryColor(base: baseTheme, primary: color);
 
       Get.changeTheme(theme);
@@ -278,8 +283,10 @@ class SettingsController extends BaseController {
 
   /// 常见问题页面
   void toFaq() {
-    Get.toNamed(Routes.WEBVIEW,
-        arguments: '${HttpConfig.baseUrl}${AppConst.faq}');
+    Get.toNamed(
+      Routes.WEBVIEW,
+      arguments: '${HttpConfig.baseUrl}${AppConst.faq}',
+    );
   }
 
   /// 更新浏览器提示

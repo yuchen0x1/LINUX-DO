@@ -30,72 +30,83 @@ class LeaderboardPage extends GetView<LeaderboardController> {
     final screenWidth = MediaQuery.of(context).size.width;
     final nameWidth = screenWidth.w / 3 - 16.w / 3;
 
-    final contentView = Obx(() => DisSmartRefresher(
-          enablePullDown: false,
-          enablePullUp: controller.hasMore.value,
-          onLoading: controller.loadMore,
-          controller: controller.refreshController,
-          child: CustomScrollView(
-            slivers: [
-              SliverPadding(
-                padding: EdgeInsets.symmetric(horizontal: margin),
-                sliver: SliverToBoxAdapter(
-                  child: _buildTopItem(
-                      bidSize,
-                      crownSize,
-                      avatarSize,
-                      labelSize,
-                      screenWidth,
-                      context,
-                      nameWidth,
-                      nameSize,
-                      smallTop,
-                      smallSize,
-                      margin),
+    final contentView = Obx(
+      () => DisSmartRefresher(
+        enablePullDown: false,
+        enablePullUp: controller.hasMore.value,
+        onLoading: controller.loadMore,
+        controller: controller.refreshController,
+        child: CustomScrollView(
+          slivers: [
+            SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: margin),
+              sliver: SliverToBoxAdapter(
+                child: _buildTopItem(
+                  bidSize,
+                  crownSize,
+                  avatarSize,
+                  labelSize,
+                  screenWidth,
+                  context,
+                  nameWidth,
+                  nameSize,
+                  smallTop,
+                  smallSize,
+                  margin,
                 ),
               ),
-              SliverPadding(
-                padding: EdgeInsets.all(margin),
-                sliver: SliverPersistentHeader(
-                  pinned: true,
-                  delegate: StickyTabBarDelegate(
-                      height: 60.w, child: _buildMeItem(labelSize, context)),
+            ),
+            SliverPadding(
+              padding: EdgeInsets.all(margin),
+              sliver: SliverPersistentHeader(
+                pinned: true,
+                delegate: StickyTabBarDelegate(
+                  height: 60.w,
+                  child: _buildMeItem(labelSize, context),
                 ),
               ),
-              SliverPadding(
-                padding: EdgeInsets.symmetric(horizontal: margin),
-                sliver: _buildListView(labelSize),
-              ),
-            ],
-          ),
-        ));
-
-    return Scaffold(
-        backgroundColor: AppColors.logoColor1,
-        appBar: AppBar(
-          backgroundColor: AppColors.logoColor1,
-          leading: IconButton(
-              onPressed: () => Get.back(),
-              icon: const Icon(
-                Icons.arrow_back_ios_new_rounded,
-                color: AppColors.white,
-              )),
-          title: Text(AppConst.leaderboard.title,
-              style: TextStyle(
-                  fontSize: 15.sp,
-                  color: AppColors.white,
-                  fontWeight: FontWeight.bold)),
-          actions: [
-            IconButton(
-                onPressed: _showTips,
-                icon: const Icon(
-                  CupertinoIcons.question_circle_fill,
-                  color: AppColors.white,
-                )),
-            8.hGap
+            ),
+            SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: margin),
+              sliver: _buildListView(labelSize),
+            ),
           ],
         ),
-        body: Obx(() => StateView(state: _getViewState(), child: contentView)));
+      ),
+    );
+
+    return Scaffold(
+      backgroundColor: AppColors.logoColor1,
+      appBar: AppBar(
+        backgroundColor: AppColors.logoColor1,
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: AppColors.white,
+          ),
+        ),
+        title: Text(
+          AppConst.leaderboard.title,
+          style: TextStyle(
+            fontSize: 15.sp,
+            color: AppColors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: _showTips,
+            icon: const Icon(
+              CupertinoIcons.question_circle_fill,
+              color: AppColors.white,
+            ),
+          ),
+          8.hGap,
+        ],
+      ),
+      body: Obx(() => StateView(state: _getViewState(), child: contentView)),
+    );
   }
 
   void _showTips() {
@@ -143,11 +154,7 @@ class LeaderboardPage extends GetView<LeaderboardController> {
                   const Spacer(),
                   IconButton(
                     onPressed: () => Get.back(),
-                    icon: Icon(
-                      Icons.close,
-                      color: AppColors.white,
-                      size: 20.w,
-                    ),
+                    icon: Icon(Icons.close, color: AppColors.white, size: 20.w),
                   ),
                 ],
               ),
@@ -196,17 +203,18 @@ class LeaderboardPage extends GetView<LeaderboardController> {
   }
 
   SizedBox _buildTopItem(
-      double bidSize,
-      double crownSize,
-      double avatarSize,
-      double labelSize,
-      double screenWidth,
-      BuildContext context,
-      double nameWidth,
-      double nameSize,
-      double smallTop,
-      double smallSize,
-      double margin) {
+    double bidSize,
+    double crownSize,
+    double avatarSize,
+    double labelSize,
+    double screenWidth,
+    BuildContext context,
+    double nameWidth,
+    double nameSize,
+    double smallTop,
+    double smallSize,
+    double margin,
+  ) {
     // 检查是否有足够的数据
     if (controller.topListData.length < 3) {
       return const SizedBox.shrink();
@@ -221,10 +229,11 @@ class LeaderboardPage extends GetView<LeaderboardController> {
       child: Stack(
         children: [
           Positioned(
-              top: bidSize / 1.5 + crownSize / 2,
-              left: 0,
-              right: 0,
-              child: Image.asset(AppImages.leaderboardTop)),
+            top: bidSize / 1.5 + crownSize / 2,
+            left: 0,
+            right: 0,
+            child: Image.asset(AppImages.leaderboardTop),
+          ),
           SizedBox(
             width: double.infinity,
             height: avatarSize + labelSize,
@@ -249,10 +258,7 @@ class LeaderboardPage extends GetView<LeaderboardController> {
                     decoration: BoxDecoration(
                       color: AppColors.white,
                       shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppColors.l1,
-                        width: 2.w,
-                      ),
+                      border: Border.all(color: AppColors.l1, width: 2.w),
                       boxShadow: [
                         BoxShadow(
                           color: AppColors.l1.withValues(alpha: 0.3),
@@ -290,8 +296,12 @@ class LeaderboardPage extends GetView<LeaderboardController> {
                   child: SizedBox(
                     width: nameWidth,
                     height: nameSize,
-                    child: getName(context, top1.displayName,
-                        top1.formattedScore, nameSize),
+                    child: getName(
+                      context,
+                      top1.displayName,
+                      top1.formattedScore,
+                      nameSize,
+                    ),
                   ),
                 ),
 
@@ -305,10 +315,7 @@ class LeaderboardPage extends GetView<LeaderboardController> {
                     decoration: BoxDecoration(
                       color: AppColors.white,
                       shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppColors.l3,
-                        width: 2.w,
-                      ),
+                      border: Border.all(color: AppColors.l3, width: 2.w),
                       boxShadow: [
                         BoxShadow(
                           color: AppColors.l3.withValues(alpha: 0.3),
@@ -347,8 +354,12 @@ class LeaderboardPage extends GetView<LeaderboardController> {
                   child: SizedBox(
                     width: nameWidth,
                     height: nameSize,
-                    child: getName(context, top3.displayName,
-                        top3.formattedScore, nameSize),
+                    child: getName(
+                      context,
+                      top3.displayName,
+                      top3.formattedScore,
+                      nameSize,
+                    ),
                   ),
                 ),
 
@@ -362,10 +373,7 @@ class LeaderboardPage extends GetView<LeaderboardController> {
                     decoration: BoxDecoration(
                       color: AppColors.white,
                       shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppColors.l2,
-                        width: 2.w,
-                      ),
+                      border: Border.all(color: AppColors.l2, width: 2.w),
                       boxShadow: [
                         BoxShadow(
                           color: AppColors.l2.withValues(alpha: 0.3),
@@ -403,8 +411,12 @@ class LeaderboardPage extends GetView<LeaderboardController> {
                   child: SizedBox(
                     width: nameWidth,
                     height: nameSize,
-                    child: getName(context, top2.displayName,
-                        top2.formattedScore, nameSize),
+                    child: getName(
+                      context,
+                      top2.displayName,
+                      top2.formattedScore,
+                      nameSize,
+                    ),
                   ),
                 ),
               ],
@@ -417,13 +429,10 @@ class LeaderboardPage extends GetView<LeaderboardController> {
 
   SliverList _buildListView(double labelSize) {
     return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          final item = controller.leaderboardData[index];
-          return _buildLeaderboardItem(context, item, index, labelSize);
-        },
-        childCount: controller.leaderboardData.length,
-      ),
+      delegate: SliverChildBuilderDelegate((context, index) {
+        final item = controller.leaderboardData[index];
+        return _buildLeaderboardItem(context, item, index, labelSize);
+      }, childCount: controller.leaderboardData.length),
     );
   }
 
@@ -434,7 +443,8 @@ class LeaderboardPage extends GetView<LeaderboardController> {
       padding: EdgeInsets.symmetric(horizontal: 10.w),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-            colors: [AppColors.primary, AppColors.secondary2]),
+          colors: [AppColors.primary, AppColors.secondary2],
+        ),
         borderRadius: BorderRadius.circular(16.w),
       ),
       child: Row(
@@ -457,9 +467,7 @@ class LeaderboardPage extends GetView<LeaderboardController> {
                           child: Text(
                             me.toString(),
                             textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
+                            style: Theme.of(context).textTheme.titleMedium
                                 ?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12.w,
@@ -470,16 +478,17 @@ class LeaderboardPage extends GetView<LeaderboardController> {
                         ),
                       ),
                     ],
-                  ))
+                  ),
+                )
               : Text(
                   me?.position.toString() ?? '',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: AppFontFamily.dinPro,
-                        fontSize: 26.w,
-                        color: AppColors.white,
-                      ),
+                    fontWeight: FontWeight.bold,
+                    fontFamily: AppFontFamily.dinPro,
+                    fontSize: 26.w,
+                    color: AppColors.white,
+                  ),
                 ),
           14.hGap,
           Column(
@@ -490,17 +499,17 @@ class LeaderboardPage extends GetView<LeaderboardController> {
                 '我 (${me?.user.displayName ?? ''})',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.white,
-                    ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleMedium?.copyWith(color: AppColors.white),
               ),
               Text(
                 me?.user.formattedScore ?? '',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.white,
-                      fontSize: 12.w,
-                      fontFamily: AppFontFamily.dinPro,
-                    ),
+                  color: AppColors.white,
+                  fontSize: 12.w,
+                  fontFamily: AppFontFamily.dinPro,
+                ),
               ),
             ],
           ),
@@ -519,14 +528,18 @@ class LeaderboardPage extends GetView<LeaderboardController> {
               borderColor: AppColors.white,
             ),
           ),
-          6.hGap
+          6.hGap,
         ],
       ),
     );
   }
 
   Widget getName(
-      BuildContext context, String name, String points, double size) {
+    BuildContext context,
+    String name,
+    String points,
+    double size,
+  ) {
     return SizedBox(
       height: size,
       child: Column(
@@ -536,19 +549,19 @@ class LeaderboardPage extends GetView<LeaderboardController> {
           Text(
             name,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontSize: 10.w,
-                  fontFamily: AppFontFamily.dinPro,
-                  color: Colors.white,
-                ),
+              fontSize: 10.w,
+              fontFamily: AppFontFamily.dinPro,
+              color: Colors.white,
+            ),
           ),
           Text(
             points,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.white,
-                  fontSize: 14.w,
-                  fontFamily: AppFontFamily.dinPro,
-                  fontWeight: FontWeight.bold,
-                ),
+              color: Colors.white,
+              fontSize: 14.w,
+              fontFamily: AppFontFamily.dinPro,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),
@@ -573,10 +586,10 @@ class LeaderboardPage extends GetView<LeaderboardController> {
                 rank.toString(),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14.w,
-                      color: Colors.white,
-                    ),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14.w,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
@@ -586,7 +599,11 @@ class LeaderboardPage extends GetView<LeaderboardController> {
   }
 
   Widget _buildLeaderboardItem(
-      BuildContext context, LeaderboardUser item, int index, double labelSize) {
+    BuildContext context,
+    LeaderboardUser item,
+    int index,
+    double labelSize,
+  ) {
     final finalIndex = index + 4;
     return Container(
       margin: EdgeInsets.only(bottom: 8.w),
@@ -612,11 +629,11 @@ class LeaderboardPage extends GetView<LeaderboardController> {
                     finalIndex.toString(),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: AppFontFamily.dinPro,
-                          fontSize: 12.w,
-                          color: AppColors.primary,
-                        ),
+                      fontWeight: FontWeight.bold,
+                      fontFamily: AppFontFamily.dinPro,
+                      fontSize: 12.w,
+                      color: AppColors.primary,
+                    ),
                   ),
                 ),
           16.hGap,
@@ -629,34 +646,35 @@ class LeaderboardPage extends GetView<LeaderboardController> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.white,
-                        fontFamily: AppFontFamily.dinPro,
-                      ),
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.white,
+                    fontFamily: AppFontFamily.dinPro,
+                  ),
                 ),
                 4.vGap,
                 RichText(
-                    text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: '${AppConst.leaderboard.points}: ',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontSize: 12.w,
-                            color: AppColors.white,
-                            fontFamily: AppFontFamily.dinPro,
-                          ),
-                    ),
-                    TextSpan(
-                      text: '${item.formattedScore} ',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontSize: 14.w,
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: AppFontFamily.dinPro,
-                          ),
-                    ),
-                  ],
-                ))
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '${AppConst.leaderboard.points}: ',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontSize: 12.w,
+                          color: AppColors.white,
+                          fontFamily: AppFontFamily.dinPro,
+                        ),
+                      ),
+                      TextSpan(
+                        text: '${item.formattedScore} ',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontSize: 14.w,
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: AppFontFamily.dinPro,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -686,21 +704,17 @@ class LeaderboardPage extends GetView<LeaderboardController> {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          Image.asset(
-            AppImages.lOther,
-            width: labelSize,
-            height: labelSize,
-          ),
+          Image.asset(AppImages.lOther, width: labelSize, height: labelSize),
           Positioned.fill(
             child: Center(
               child: Text(
                 '$rank',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12.w,
-                      color: Colors.white,
-                    ),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12.w,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),

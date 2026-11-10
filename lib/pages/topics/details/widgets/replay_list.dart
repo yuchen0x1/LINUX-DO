@@ -35,8 +35,9 @@ class ReplayList extends StatelessWidget {
               children: [
                 Obx(() {
                   // 获取回复加载状态和数据
-                  final isLoading =
-                      controller.loadingReplies.contains(post.id ?? 0);
+                  final isLoading = controller.loadingReplies.contains(
+                    post.id ?? 0,
+                  );
                   final replies = controller.postReplies[post.id ?? 0] ?? [];
 
                   return ExpandablePanel(
@@ -60,16 +61,17 @@ class ReplayList extends StatelessWidget {
                         gradient: LinearGradient(
                           colors: [
                             Theme.of(context).primaryColor,
-                            Theme.of(context)
-                                .primaryColor
-                                .withValues(alpha: 0.6),
+                            Theme.of(
+                              context,
+                            ).primaryColor.withValues(alpha: 0.6),
                           ],
                         ),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4)
-                            .w,
+                          horizontal: 8,
+                          vertical: 4,
+                        ).w,
                         child: Row(
                           children: [
                             const ExpandableIcon(
@@ -104,9 +106,7 @@ class ReplayList extends StatelessWidget {
                         ? Center(
                             child: Padding(
                               padding: const EdgeInsets.all(16).w,
-                              child: DisRefreshLoading(
-                                fontSize: 12,
-                              ),
+                              child: DisRefreshLoading(fontSize: 12),
                             ),
                           )
                         : _buildReplyList(context, replies),
@@ -136,8 +136,9 @@ class ReplayList extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children:
-            replies.map((reply) => _buildReplyItem(context, reply)).toList(),
+        children: replies
+            .map((reply) => _buildReplyItem(context, reply))
+            .toList(),
       ),
     );
   }
@@ -179,10 +180,7 @@ class ReplayList extends StatelessWidget {
             ),
           ),
           4.vGap,
-          Divider(
-            height: 1.h,
-            color: Theme.of(context).dividerColor,
-          ),
+          Divider(height: 1.h, color: Theme.of(context).dividerColor),
         ],
       ),
     );

@@ -41,10 +41,7 @@ class BrowserTipsSheet extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
             child: Text(
               AppConst.posts.openBrowser,
-              style: TextStyle(
-                fontSize: 16.w,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 16.w, fontWeight: FontWeight.bold),
             ),
           ),
           // URL 预览
@@ -126,10 +123,7 @@ class BrowserTipsSheet extends StatelessWidget {
               12.hGap,
               Text(
                 title,
-                style: TextStyle(
-                  fontSize: 15.w,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: TextStyle(fontSize: 15.w, fontWeight: FontWeight.w500),
               ),
               const Spacer(),
               Icon(

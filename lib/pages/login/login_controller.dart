@@ -173,7 +173,9 @@ class LoginController extends BaseController {
         final directory = await getApplicationDocumentsDirectory();
         final cookiePath = '${directory.path}/.cookies/';
         final cookieJar = PersistCookieJar(
-            ignoreExpires: true, storage: FileStorage(cookiePath));
+          ignoreExpires: true,
+          storage: FileStorage(cookiePath),
+        );
 
         final uri = Uri.parse('${HttpConfig.baseUrl}login');
 
@@ -203,7 +205,9 @@ class LoginController extends BaseController {
         await StorageManager.setData(AppConst.identifier.token, data['t']);
 
         await StorageManager.setData(
-            AppConst.identifier.cfClearance, data['cf']);
+          AppConst.identifier.cfClearance,
+          data['cf'],
+        );
 
         NetClient.getDio.options.headers['x-csrf-token'] = data['c'];
 

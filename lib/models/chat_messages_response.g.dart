@@ -7,22 +7,22 @@ part of 'chat_messages_response.dart';
 // **************************************************************************
 
 ChatMessagesResponse _$ChatMessagesResponseFromJson(
-        Map<String, dynamic> json) =>
-    ChatMessagesResponse(
-      messages: (json['messages'] as List<dynamic>)
-          .map((e) => ChatDetailMessage.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      tracking: json['tracking'] as Map<String, dynamic>,
-      meta: ChatMessageMeta.fromJson(json['meta'] as Map<String, dynamic>),
-    );
+  Map<String, dynamic> json,
+) => ChatMessagesResponse(
+  messages: (json['messages'] as List<dynamic>)
+      .map((e) => ChatDetailMessage.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  tracking: json['tracking'] as Map<String, dynamic>,
+  meta: ChatMessageMeta.fromJson(json['meta'] as Map<String, dynamic>),
+);
 
 Map<String, dynamic> _$ChatMessagesResponseToJson(
-        ChatMessagesResponse instance) =>
-    <String, dynamic>{
-      'messages': instance.messages,
-      'tracking': instance.tracking,
-      'meta': instance.meta,
-    };
+  ChatMessagesResponse instance,
+) => <String, dynamic>{
+  'messages': instance.messages,
+  'tracking': instance.tracking,
+  'meta': instance.meta,
+};
 
 ChatMessageMeta _$ChatMessageMetaFromJson(Map<String, dynamic> json) =>
     ChatMessageMeta(

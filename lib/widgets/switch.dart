@@ -66,12 +66,15 @@ class _DisSwitchState extends State<DisSwitch>
   void initState() {
     super.initState();
     animationController = AnimationController(
-        vsync: this,
-        lowerBound: 0.0,
-        upperBound: 1.0,
-        duration: widget.animationDuration);
-    animation =
-        CurvedAnimation(parent: animationController, curve: Curves.easeInOut);
+      vsync: this,
+      lowerBound: 0.0,
+      upperBound: 1.0,
+      duration: widget.animationDuration,
+    );
+    animation = CurvedAnimation(
+      parent: animationController,
+      curve: Curves.easeInOut,
+    );
     animationController.addListener(() {
       setState(() {
         value = animation.value;
@@ -111,7 +114,9 @@ class _DisSwitchState extends State<DisSwitch>
         padding: EdgeInsets.all(5.w),
         width: widget.width.w,
         decoration: BoxDecoration(
-            color: transitionColor, borderRadius: BorderRadius.circular(50.w)),
+          color: transitionColor,
+          borderRadius: BorderRadius.circular(50.w),
+        ),
         child: Stack(
           children: <Widget>[
             Transform.translate(
@@ -125,9 +130,10 @@ class _DisSwitchState extends State<DisSwitch>
                   child: Text(
                     widget.textOff,
                     style: TextStyle(
-                        color: widget.textOffColor,
-                        fontWeight: FontWeight.w500,
-                        fontSize: widget.textSize.w),
+                      color: widget.textOffColor,
+                      fontWeight: FontWeight.w500,
+                      fontSize: widget.textSize.w,
+                    ),
                   ),
                 ),
               ),
@@ -143,9 +149,10 @@ class _DisSwitchState extends State<DisSwitch>
                   child: Text(
                     widget.textOn,
                     style: TextStyle(
-                        color: widget.textOnColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: widget.textSize.w),
+                      color: widget.textOnColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: widget.textSize.w,
+                    ),
                   ),
                 ),
               ),
@@ -159,7 +166,9 @@ class _DisSwitchState extends State<DisSwitch>
                   width: 30.w,
                   alignment: Alignment.center,
                   decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: AppColors.white),
+                    shape: BoxShape.circle,
+                    color: AppColors.white,
+                  ),
                   child: Stack(
                     children: <Widget>[
                       Center(
@@ -186,7 +195,7 @@ class _DisSwitchState extends State<DisSwitch>
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

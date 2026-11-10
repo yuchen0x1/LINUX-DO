@@ -10,12 +10,8 @@ class TopicTags extends StatelessWidget {
   final ListDensity? density;
   final int? categoryId;
 
-  const TopicTags({
-    Key? key,
-    required this.tags,
-    this.density,
-    this.categoryId,
-  }) : super(key: key);
+  const TopicTags({Key? key, required this.tags, this.density, this.categoryId})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,20 +19,20 @@ class TopicTags extends StatelessWidget {
     final fontSize = density == ListDensity.compact
         ? 8.0
         : density == ListDensity.normal
-            ? 9.0
-            : 10.0;
+        ? 9.0
+        : 10.0;
 
     final margin = density == ListDensity.compact
         ? 4.0
         : density == ListDensity.normal
-            ? 6.0
-            : 8.0;
+        ? 6.0
+        : 8.0;
 
     final padding = density == ListDensity.compact
         ? const EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0)
         : density == ListDensity.normal
-            ? const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0)
-            : const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3.0);
+        ? const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.0)
+        : const EdgeInsets.symmetric(horizontal: 8.0, vertical: 3.0);
 
     return Padding(
       padding: const EdgeInsets.only(top: 4).w,
@@ -46,10 +42,7 @@ class TopicTags extends StatelessWidget {
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           // 分类徽章（对齐网页：分类色块 + 分类名）
-          _CategoryBadge(
-            categoryId: categoryId,
-            fontSize: fontSize,
-          ),
+          _CategoryBadge(categoryId: categoryId, fontSize: fontSize),
           ...tags.map((tag) {
             final color = Tag.getTagColors(tag);
             return Container(
@@ -60,10 +53,7 @@ class TopicTags extends StatelessWidget {
               ),
               child: Text(
                 tag,
-                style: TextStyle(
-                  fontSize: fontSize.w,
-                  color: color.textColor,
-                ),
+                style: TextStyle(fontSize: fontSize.w, color: color.textColor),
               ),
             );
           }).toList(),

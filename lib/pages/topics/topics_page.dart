@@ -47,54 +47,71 @@ class _TopicsPageState extends State<TopicsPage>
                     child: LayoutBuilder(
                       builder:
                           (BuildContext context, BoxConstraints constraints) {
-                        final top = constraints.biggest.height;
+                            final top = constraints.biggest.height;
 
-                        // 计算折叠进度
-                        final collapsedProgress = ((180.w - top) /
-                                (180.w - kToolbarHeight - appBarHeight))
-                            .clamp(0.0, 1.0);
+                            // 计算折叠进度
+                            final collapsedProgress =
+                                ((180.w - top) /
+                                        (180.w - kToolbarHeight - appBarHeight))
+                                    .clamp(0.0, 1.0);
 
-                        return Stack(
-                          children: [
-                            // 搜索框（固定在AppBar下方）
-                            _buildTopWidget(appBarHeight, collapsedProgress,
-                                menuWidth, context, margin, horizontalPadding),
-                            // 背景图片（只在展开状态显示）
-                            if (collapsedProgress < 1)
-                              Positioned(
-                                top: kToolbarHeight + appBarHeight,
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    Get.put(BannerPickerController(
-                                        controller.bannerSettings.value));
-                                    final result =
-                                        await Get.dialog<BannerSettings>(
-                                      const BannerPickerDialog(),
-                                    );
-                                    Get.delete<BannerPickerController>();
-                                    if (result != null) {
-                                      await controller
-                                          .saveBannerSettings(result);
-                                    }
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.symmetric(
-                                        horizontal: margin),
-                                    padding: const EdgeInsets.only(bottom: 6).w,
-                                    child: Opacity(
-                                      opacity: 1 - collapsedProgress,
-                                      child: Obx(() =>
-                                          controller.getBannerImage(context)),
+                            return Stack(
+                              children: [
+                                // 搜索框（固定在AppBar下方）
+                                _buildTopWidget(
+                                  appBarHeight,
+                                  collapsedProgress,
+                                  menuWidth,
+                                  context,
+                                  margin,
+                                  horizontalPadding,
+                                ),
+                                // 背景图片（只在展开状态显示）
+                                if (collapsedProgress < 1)
+                                  Positioned(
+                                    top: kToolbarHeight + appBarHeight,
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 0,
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        Get.put(
+                                          BannerPickerController(
+                                            controller.bannerSettings.value,
+                                          ),
+                                        );
+                                        final result =
+                                            await Get.dialog<BannerSettings>(
+                                              const BannerPickerDialog(),
+                                            );
+                                        Get.delete<BannerPickerController>();
+                                        if (result != null) {
+                                          await controller.saveBannerSettings(
+                                            result,
+                                          );
+                                        }
+                                      },
+                                      child: Container(
+                                        margin: EdgeInsets.symmetric(
+                                          horizontal: margin,
+                                        ),
+                                        padding: const EdgeInsets.only(
+                                          bottom: 6,
+                                        ).w,
+                                        child: Opacity(
+                                          opacity: 1 - collapsedProgress,
+                                          child: Obx(
+                                            () => controller.getBannerImage(
+                                              context,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                          ],
-                        );
-                      },
+                              ],
+                            );
+                          },
                     ),
                   ),
                 ),
@@ -109,16 +126,13 @@ class _TopicsPageState extends State<TopicsPage>
                     gradient: LinearGradient(
                       colors: [
                         Theme.of(context).primaryColor,
-                        Theme.of(context).primaryColor.withValues(alpha: 0.6)
+                        Theme.of(context).primaryColor.withValues(alpha: 0.6),
                       ],
                     ),
                   ),
                   child: Text(
                     AppConst.slogan.replaceAll('\n', ''),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14.w,
-                    ),
+                    style: TextStyle(color: Colors.white, fontSize: 14.w),
                   ),
                 ),
               ),
@@ -133,9 +147,9 @@ class _TopicsPageState extends State<TopicsPage>
                       color: Theme.of(context).cardColor,
                       border: Border(
                         top: BorderSide(
-                          color: Theme.of(context)
-                              .dividerColor
-                              .withValues(alpha: .1),
+                          color: Theme.of(
+                            context,
+                          ).dividerColor.withValues(alpha: .1),
                           width: 0.5,
                         ),
                       ),
@@ -174,12 +188,13 @@ class _TopicsPageState extends State<TopicsPage>
   }
 
   Positioned _buildTopWidget(
-      double appBarHeight,
-      double collapsedProgress,
-      double menuWidth,
-      BuildContext context,
-      double margin,
-      double horizontalPadding) {
+    double appBarHeight,
+    double collapsedProgress,
+    double menuWidth,
+    BuildContext context,
+    double margin,
+    double horizontalPadding,
+  ) {
     final logoWidth = 100.w;
     return Positioned(
       top: kToolbarHeight,
@@ -193,10 +208,7 @@ class _TopicsPageState extends State<TopicsPage>
             child: GestureDetector(
               onTap: () {
                 final delegate = TopicSearchDelegate(controller);
-                showSearch(
-                  context: context,
-                  delegate: delegate,
-                ).then((_) {
+                showSearch(context: context, delegate: delegate).then((_) {
                   if (controller.lastSearchQuery.value.isNotEmpty) {
                     delegate.query = controller.lastSearchQuery.value;
                     delegate.showResults(context);
@@ -281,10 +293,16 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
     return SizedBox.expand(
-        child: Container(
-            color: Theme.of(context).scaffoldBackgroundColor, child: child));
+      child: Container(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        child: child,
+      ),
+    );
   }
 
   @override
@@ -301,13 +319,13 @@ class TopicSearchDelegate extends SearchDelegate<String> {
   static const String searchHistoryKey = 'topic_search_history';
 
   TopicSearchDelegate(this.controller)
-      : super(
-          searchFieldLabel: AppConst.posts.searchTopic,
-          searchFieldStyle: TextStyle(
-            fontSize: 14.w,
-            color: Get.theme.textTheme.bodyMedium?.color,
-          ),
-        ) {
+    : super(
+        searchFieldLabel: AppConst.posts.searchTopic,
+        searchFieldStyle: TextStyle(
+          fontSize: 14.w,
+          color: Get.theme.textTheme.bodyMedium?.color,
+        ),
+      ) {
     // 加载搜索历史
     _loadSearchHistory();
   }
@@ -400,9 +418,9 @@ class TopicSearchDelegate extends SearchDelegate<String> {
                           borderRadius: BorderRadius.circular(16.w),
                           boxShadow: [
                             BoxShadow(
-                              color: Theme.of(context)
-                                  .shadowColor
-                                  .withValues(alpha: 0.1),
+                              color: Theme.of(
+                                context,
+                              ).shadowColor.withValues(alpha: 0.1),
                               blurRadius: 8,
                               offset: const Offset(0, 4),
                             ),
@@ -415,9 +433,9 @@ class TopicSearchDelegate extends SearchDelegate<String> {
                               width: 40.w,
                               height: 40.w,
                               decoration: BoxDecoration(
-                                color: Theme.of(context)
-                                    .primaryColor
-                                    .withValues(alpha: 0.1),
+                                color: Theme.of(
+                                  context,
+                                ).primaryColor.withValues(alpha: 0.1),
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
@@ -432,10 +450,9 @@ class TopicSearchDelegate extends SearchDelegate<String> {
                               style: TextStyle(
                                 fontSize: 16.w,
                                 fontWeight: FontWeight.w600,
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .titleLarge
-                                    ?.color,
+                                color: Theme.of(
+                                  context,
+                                ).textTheme.titleLarge?.color,
                               ),
                             ),
                             12.vGap,
@@ -460,11 +477,12 @@ class TopicSearchDelegate extends SearchDelegate<String> {
                                     child: Container(
                                       height: 40.w,
                                       decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .primaryColor
-                                            .withValues(alpha: 0.1),
-                                        borderRadius:
-                                            BorderRadius.circular(20.w),
+                                        color: Theme.of(
+                                          context,
+                                        ).primaryColor.withValues(alpha: 0.1),
+                                        borderRadius: BorderRadius.circular(
+                                          20.w,
+                                        ),
                                       ),
                                       alignment: Alignment.center,
                                       child: Text(
@@ -490,13 +508,13 @@ class TopicSearchDelegate extends SearchDelegate<String> {
                                         gradient: LinearGradient(
                                           colors: [
                                             Theme.of(context).primaryColor,
-                                            Theme.of(context)
-                                                .primaryColor
+                                            Theme.of(context).primaryColor
                                                 .withValues(alpha: 0.6),
                                           ],
                                         ),
-                                        borderRadius:
-                                            BorderRadius.circular(20.w),
+                                        borderRadius: BorderRadius.circular(
+                                          20.w,
+                                        ),
                                       ),
                                       alignment: Alignment.center,
                                       child: Text(
@@ -515,8 +533,9 @@ class TopicSearchDelegate extends SearchDelegate<String> {
                         ),
                       ),
                     ),
-                    barrierColor:
-                        Theme.of(context).shadowColor.withValues(alpha: 0.4),
+                    barrierColor: Theme.of(
+                      context,
+                    ).shadowColor.withValues(alpha: 0.4),
                   );
                 },
               ),
@@ -640,19 +659,20 @@ class TopicSearchDelegate extends SearchDelegate<String> {
               onTap: () async {
                 _saveSearchHistory(query);
                 controller.lastSearchQuery.value = query;
-                await Get.toNamed(Routes.TOPIC_DETAIL,
-                    arguments: topic.id, preventDuplicates: true);
+                await Get.toNamed(
+                  Routes.TOPIC_DETAIL,
+                  arguments: topic.id,
+                  preventDuplicates: true,
+                );
               },
               borderRadius: BorderRadius.circular(4.w),
               splashColor: Theme.of(context).primaryColor.withValues(alpha: .1),
-              highlightColor:
-                  Theme.of(context).primaryColor.withValues(alpha: .05),
+              highlightColor: Theme.of(
+                context,
+              ).primaryColor.withValues(alpha: .05),
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 3.w, horizontal: 12.w),
-                padding: EdgeInsets.symmetric(
-                  horizontal: 12.w,
-                  vertical: 8.w,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.w),
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(4.w),
@@ -671,7 +691,9 @@ class TopicSearchDelegate extends SearchDelegate<String> {
                               return Container(
                                 margin: EdgeInsets.only(right: 8.w),
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 8.w, vertical: 2.w),
+                                  horizontal: 8.w,
+                                  vertical: 2.w,
+                                ),
                                 decoration: BoxDecoration(
                                   color: color.backgroundColor,
                                   border: Border.all(
@@ -733,15 +755,18 @@ class TopicSearchDelegate extends SearchDelegate<String> {
         spans.add(TextSpan(text: title.substring(cursor, matchIndex)));
       }
       final matchEnd = matchIndex + keyword.length;
-      spans.add(TextSpan(
-        text: title.substring(matchIndex, matchEnd),
-        style: baseStyle.copyWith(
-          color: Theme.of(context).primaryColor,
-          fontWeight: FontWeight.bold,
-          backgroundColor:
-              Theme.of(context).primaryColor.withValues(alpha: 0.16),
+      spans.add(
+        TextSpan(
+          text: title.substring(matchIndex, matchEnd),
+          style: baseStyle.copyWith(
+            color: Theme.of(context).primaryColor,
+            fontWeight: FontWeight.bold,
+            backgroundColor: Theme.of(
+              context,
+            ).primaryColor.withValues(alpha: 0.16),
+          ),
         ),
-      ));
+      );
       cursor = matchEnd;
     }
 

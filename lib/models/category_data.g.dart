@@ -7,99 +7,94 @@ part of 'category_data.dart';
 // **************************************************************************
 
 CategoryListResponse _$CategoryListResponseFromJson(
-        Map<String, dynamic> json) =>
-    CategoryListResponse(
-      CategoryList.fromJson(json['category_list'] as Map<String, dynamic>),
-    );
+  Map<String, dynamic> json,
+) => CategoryListResponse(
+  CategoryList.fromJson(json['category_list'] as Map<String, dynamic>),
+);
 
 Map<String, dynamic> _$CategoryListResponseToJson(
-        CategoryListResponse instance) =>
-    <String, dynamic>{
-      'category_list': instance.categoryList,
-    };
+  CategoryListResponse instance,
+) => <String, dynamic>{'category_list': instance.categoryList};
 
 CategoryList _$CategoryListFromJson(Map<String, dynamic> json) => CategoryList(
-      (json['categories'] as List<dynamic>)
-          .map((e) => Category.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
+  (json['categories'] as List<dynamic>)
+      .map((e) => Category.fromJson(e as Map<String, dynamic>))
+      .toList(),
+);
 
 Map<String, dynamic> _$CategoryListToJson(CategoryList instance) =>
-    <String, dynamic>{
-      'categories': instance.categories,
-    };
+    <String, dynamic>{'categories': instance.categories};
 
 Category _$CategoryFromJson(Map<String, dynamic> json) => Category(
-      id: (json['id'] as num).toInt(),
-      name: json['name'] as String?,
-      color: json['color'] as String?,
-      textColor: json['text_color'] as String?,
-      description: json['description'] as String?,
-      topicCount: (json['topic_count'] as num?)?.toInt(),
-      postCount: (json['post_count'] as num?)?.toInt(),
-      position: (json['position'] as num?)?.toInt(),
-      descriptionText: json['description_text'] as String?,
-      descriptionExcerpt: json['description_excerpt'] as String?,
-      topicUrl: json['topic_url'] as String?,
-      readRestricted: json['read_restricted'] as bool?,
-      permission: (json['permission'] as num?)?.toInt(),
-      notificationLevel: (json['notification_level'] as num?)?.toInt(),
-      canEdit: json['can_edit'] as bool?,
-      topicTemplate: json['topic_template'] as String?,
-      hasChildren: json['has_children'] as bool?,
-      sortOrder: json['sort_order'] as String?,
-      sortAscending: json['sort_ascending'] as bool?,
-      showSubcategoryList: json['show_subcategory_list'] as bool?,
-      numFeaturedTopics: (json['num_featured_topics'] as num?)?.toInt(),
-      defaultView: json['default_view'] as String?,
-      subcategoryListStyle: json['subcategory_list_style'] as String?,
-      defaultTopPeriod: json['default_top_period'] as String?,
-      defaultListFilter: json['default_list_filter'] as String?,
-      minimumRequiredTags: (json['minimum_required_tags'] as num?)?.toInt(),
-      navigateToFirstPostAfterRead:
-          json['navigate_to_first_post_after_read'] as bool?,
-      uploadedLogo: json['uploaded_logo'] == null
-          ? null
-          : UploadedImage.fromJson(
-              json['uploaded_logo'] as Map<String, dynamic>),
-      uploadedBackground: json['uploaded_background'] == null
-          ? null
-          : UploadedImage.fromJson(
-              json['uploaded_background'] as Map<String, dynamic>),
-    );
+  id: (json['id'] as num).toInt(),
+  name: json['name'] as String?,
+  color: json['color'] as String?,
+  textColor: json['text_color'] as String?,
+  description: json['description'] as String?,
+  topicCount: (json['topic_count'] as num?)?.toInt(),
+  postCount: (json['post_count'] as num?)?.toInt(),
+  position: (json['position'] as num?)?.toInt(),
+  descriptionText: json['description_text'] as String?,
+  descriptionExcerpt: json['description_excerpt'] as String?,
+  topicUrl: json['topic_url'] as String?,
+  readRestricted: json['read_restricted'] as bool?,
+  permission: (json['permission'] as num?)?.toInt(),
+  notificationLevel: (json['notification_level'] as num?)?.toInt(),
+  canEdit: json['can_edit'] as bool?,
+  topicTemplate: json['topic_template'] as String?,
+  hasChildren: json['has_children'] as bool?,
+  sortOrder: json['sort_order'] as String?,
+  sortAscending: json['sort_ascending'] as bool?,
+  showSubcategoryList: json['show_subcategory_list'] as bool?,
+  numFeaturedTopics: (json['num_featured_topics'] as num?)?.toInt(),
+  defaultView: json['default_view'] as String?,
+  subcategoryListStyle: json['subcategory_list_style'] as String?,
+  defaultTopPeriod: json['default_top_period'] as String?,
+  defaultListFilter: json['default_list_filter'] as String?,
+  minimumRequiredTags: (json['minimum_required_tags'] as num?)?.toInt(),
+  navigateToFirstPostAfterRead:
+      json['navigate_to_first_post_after_read'] as bool?,
+  uploadedLogo: json['uploaded_logo'] == null
+      ? null
+      : UploadedImage.fromJson(json['uploaded_logo'] as Map<String, dynamic>),
+  uploadedBackground: json['uploaded_background'] == null
+      ? null
+      : UploadedImage.fromJson(
+          json['uploaded_background'] as Map<String, dynamic>,
+        ),
+);
 
 Map<String, dynamic> _$CategoryToJson(Category instance) => <String, dynamic>{
-      'id': instance.id,
-      'name': instance.name,
-      'color': instance.color,
-      'text_color': instance.textColor,
-      'description': instance.description,
-      'topic_count': instance.topicCount,
-      'post_count': instance.postCount,
-      'position': instance.position,
-      'description_text': instance.descriptionText,
-      'description_excerpt': instance.descriptionExcerpt,
-      'topic_url': instance.topicUrl,
-      'read_restricted': instance.readRestricted,
-      'permission': instance.permission,
-      'notification_level': instance.notificationLevel,
-      'can_edit': instance.canEdit,
-      'topic_template': instance.topicTemplate,
-      'has_children': instance.hasChildren,
-      'sort_order': instance.sortOrder,
-      'sort_ascending': instance.sortAscending,
-      'show_subcategory_list': instance.showSubcategoryList,
-      'num_featured_topics': instance.numFeaturedTopics,
-      'default_view': instance.defaultView,
-      'subcategory_list_style': instance.subcategoryListStyle,
-      'default_top_period': instance.defaultTopPeriod,
-      'default_list_filter': instance.defaultListFilter,
-      'minimum_required_tags': instance.minimumRequiredTags,
-      'navigate_to_first_post_after_read':
-          instance.navigateToFirstPostAfterRead,
-      'uploaded_logo': instance.uploadedLogo,
-      'uploaded_background': instance.uploadedBackground,
-    };
+  'id': instance.id,
+  'name': instance.name,
+  'color': instance.color,
+  'text_color': instance.textColor,
+  'description': instance.description,
+  'topic_count': instance.topicCount,
+  'post_count': instance.postCount,
+  'position': instance.position,
+  'description_text': instance.descriptionText,
+  'description_excerpt': instance.descriptionExcerpt,
+  'topic_url': instance.topicUrl,
+  'read_restricted': instance.readRestricted,
+  'permission': instance.permission,
+  'notification_level': instance.notificationLevel,
+  'can_edit': instance.canEdit,
+  'topic_template': instance.topicTemplate,
+  'has_children': instance.hasChildren,
+  'sort_order': instance.sortOrder,
+  'sort_ascending': instance.sortAscending,
+  'show_subcategory_list': instance.showSubcategoryList,
+  'num_featured_topics': instance.numFeaturedTopics,
+  'default_view': instance.defaultView,
+  'subcategory_list_style': instance.subcategoryListStyle,
+  'default_top_period': instance.defaultTopPeriod,
+  'default_list_filter': instance.defaultListFilter,
+  'minimum_required_tags': instance.minimumRequiredTags,
+  'navigate_to_first_post_after_read': instance.navigateToFirstPostAfterRead,
+  'uploaded_logo': instance.uploadedLogo,
+  'uploaded_background': instance.uploadedBackground,
+};
 
 UploadedImage _$UploadedImageFromJson(Map<String, dynamic> json) =>
     UploadedImage(
@@ -140,8 +135,9 @@ CategoryTopic _$CategoryTopicFromJson(Map<String, dynamic> json) =>
       liked: json['liked'] as bool?,
       hasAcceptedAnswer: json['has_accepted_answer'] as bool,
       canHaveAnswer: json['can_have_answer'] as bool,
-      lastPoster:
-          LastPoster.fromJson(json['last_poster'] as Map<String, dynamic>),
+      lastPoster: LastPoster.fromJson(
+        json['last_poster'] as Map<String, dynamic>,
+      ),
     );
 
 Map<String, dynamic> _$CategoryTopicToJson(CategoryTopic instance) =>
@@ -173,12 +169,12 @@ Map<String, dynamic> _$CategoryTopicToJson(CategoryTopic instance) =>
     };
 
 LastPoster _$LastPosterFromJson(Map<String, dynamic> json) => LastPoster(
-      id: (json['id'] as num).toInt(),
-      username: json['username'] as String,
-      name: json['name'] as String,
-      avatarTemplate: json['avatar_template'] as String,
-      animatedAvatar: json['animated_avatar'] as String?,
-    );
+  id: (json['id'] as num).toInt(),
+  username: json['username'] as String,
+  name: json['name'] as String,
+  avatarTemplate: json['avatar_template'] as String,
+  animatedAvatar: json['animated_avatar'] as String?,
+);
 
 Map<String, dynamic> _$LastPosterToJson(LastPoster instance) =>
     <String, dynamic>{

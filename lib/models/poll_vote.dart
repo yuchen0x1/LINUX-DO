@@ -14,10 +14,7 @@ class PollVote {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'poll': poll?.toJson(),
-      'vote': vote,
-    };
+    return {'poll': poll?.toJson(), 'vote': vote};
   }
 }
 
@@ -33,12 +30,11 @@ class PollVotersResponse {
       votersMap = {};
       (json['voters'] as Map<String, dynamic>).forEach((key, value) {
         votersMap![key] = List<PollVoter>.from(
-            (value as List).map((x) => PollVoter.fromJson(x)));
+          (value as List).map((x) => PollVoter.fromJson(x)),
+        );
       });
     }
 
-    return PollVotersResponse(
-      voters: votersMap,
-    );
+    return PollVotersResponse(voters: votersMap);
   }
 }

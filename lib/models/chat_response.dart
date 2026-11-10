@@ -11,10 +11,7 @@ class ChatResponse {
   @JsonKey(name: 'direct_message_channels')
   final List<ChatMessage>? directMessageChannels;
 
-  ChatResponse({
-    this.publicChannels,
-    this.directMessageChannels,
-  });
+  ChatResponse({this.publicChannels, this.directMessageChannels});
 
   factory ChatResponse.fromJson(Map<String, dynamic> json) =>
       _$ChatResponseFromJson(json);

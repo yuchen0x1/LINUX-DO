@@ -26,18 +26,17 @@ class DisAppUpdate {
         ),
         backgroundColor: Theme.of(Get.context!).cardColor,
         child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16).w,
-          ),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(16).w),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Stack(
                 children: [
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 24, vertical: 24)
-                            .w,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 24,
+                    ).w,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -45,9 +44,9 @@ class DisAppUpdate {
                         end: Alignment.bottomRight,
                         colors: [
                           Theme.of(Get.context!).primaryColor,
-                          Theme.of(Get.context!)
-                              .primaryColor
-                              .withValues(alpha: 0.6),
+                          Theme.of(
+                            Get.context!,
+                          ).primaryColor.withValues(alpha: 0.6),
                         ],
                       ),
                       borderRadius: BorderRadius.circular(16).w,
@@ -77,8 +76,9 @@ class DisAppUpdate {
                         16.vGap,
                         Container(
                           padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4)
-                              .w,
+                            horizontal: 8,
+                            vertical: 4,
+                          ).w,
                           decoration: BoxDecoration(
                             color: Colors.white.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(4.w),
@@ -92,7 +92,7 @@ class DisAppUpdate {
                               color: Colors.white,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -100,30 +100,32 @@ class DisAppUpdate {
                     right: -36,
                     top: 40,
                     child: Transform.rotate(
-                        angle: pi / 4,
-                        child: GlowingTextSweep(
-                            text: 'LINUX.DO',
-                            style: TextStyle(
-                                fontSize: 52.w,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: AppFontFamily.dinPro,
-                                color: Colors.white.withValues(alpha: 0.2)),
-                            glowColor: Colors.white,
-                            sweepDuration: const Duration(seconds: 2))),
+                      angle: pi / 4,
+                      child: GlowingTextSweep(
+                        text: 'LINUX.DO',
+                        style: TextStyle(
+                          fontSize: 52.w,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: AppFontFamily.dinPro,
+                          color: Colors.white.withValues(alpha: 0.2),
+                        ),
+                        glowColor: Colors.white,
+                        sweepDuration: const Duration(seconds: 2),
+                      ),
+                    ),
                   ),
                 ],
               ),
 
               Container(
                 width: double.infinity,
-                constraints: BoxConstraints(
-                  maxHeight: 220.w,
-                ),
+                constraints: BoxConstraints(maxHeight: 220.w),
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 20)
-                          .w,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 20,
+                  ).w,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: updateItems.asMap().entries.map((entry) {
@@ -131,9 +133,8 @@ class DisAppUpdate {
                       final item = entry.value;
                       return Padding(
                         padding: EdgeInsets.only(
-                                bottom:
-                                    index == updateItems.length - 1 ? 0 : 12)
-                            .w,
+                          bottom: index == updateItems.length - 1 ? 0 : 12,
+                        ).w,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -142,10 +143,9 @@ class DisAppUpdate {
                               width: 6.w,
                               height: 6.w,
                               decoration: BoxDecoration(
-                                color: Theme.of(Get.context!)
-                                    .textTheme
-                                    .titleSmall
-                                    ?.color,
+                                color: Theme.of(
+                                  Get.context!,
+                                ).textTheme.titleSmall?.color,
                                 shape: BoxShape.circle,
                               ),
                             ),
@@ -156,10 +156,9 @@ class DisAppUpdate {
                                 style: TextStyle(
                                   fontSize: 12.w,
                                   height: 1.5,
-                                  color: Theme.of(Get.context!)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.color,
+                                  color: Theme.of(
+                                    Get.context!,
+                                  ).textTheme.bodyMedium?.color,
                                 ),
                               ),
                             ),
@@ -191,28 +190,31 @@ class DisAppUpdate {
                     ),
                     12.hGap,
                     Expanded(
-                        child: DisButton(
-                      text: AppConst.settings.updateNow,
-                      type: ButtonType.primary,
-                      onPressed: () {
-                        Get.back();
-                        final raw = appVersion.downloadUrl;
-                        if (raw == null || raw.isEmpty) return;
+                      child: DisButton(
+                        text: AppConst.settings.updateNow,
+                        type: ButtonType.primary,
+                        onPressed: () {
+                          Get.back();
+                          final raw = appVersion.downloadUrl;
+                          if (raw == null || raw.isEmpty) return;
 
-                        // GitHub 源给绝对地址；旧自建接口给相对路径
-                        final url = raw.startsWith('http')
-                            ? raw
-                            : '${HttpConfig.otherUrl}$raw';
+                          // GitHub 源给绝对地址；旧自建接口给相对路径
+                          final url = raw.startsWith('http')
+                              ? raw
+                              : '${HttpConfig.otherUrl}$raw';
 
-                        if (!UpdateChecker.isTrustedDownload(url)) {
-                          l.w('拒绝打开非可信下载地址: $url');
-                          return;
-                        }
-                        l.d('下载地址: $url');
-                        launchUrl(Uri.parse(url),
-                            mode: LaunchMode.externalApplication);
-                      },
-                    )),
+                          if (!UpdateChecker.isTrustedDownload(url)) {
+                            l.w('拒绝打开非可信下载地址: $url');
+                            return;
+                          }
+                          l.d('下载地址: $url');
+                          launchUrl(
+                            Uri.parse(url),
+                            mode: LaunchMode.externalApplication,
+                          );
+                        },
+                      ),
+                    ),
                   ],
                 ),
               ),

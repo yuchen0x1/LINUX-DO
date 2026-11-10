@@ -28,20 +28,17 @@ class PersonalPage extends GetView<PersonalController> {
       body: Obx(() {
         // 检查用户信息是否已加载
         final userInfo = controller.userInfo;
-        final expandedHeight =
-            userInfo?.user?.backgroundUrl != null ? 380.w : 280.w;
+        final expandedHeight = userInfo?.user?.backgroundUrl != null
+            ? 380.w
+            : 280.w;
         // 如果用户信息为空，显示加载状态
         if (userInfo == null) {
-          return Center(
-            child: DisRefreshLoading(),
-          );
+          return Center(child: DisRefreshLoading());
         }
 
         final user = userInfo.user;
         if (user == null) {
-          return const Center(
-            child: Text('无法加载用户信息'),
-          );
+          return const Center(child: Text('无法加载用户信息'));
         }
 
         return NestedScrollView(
@@ -58,8 +55,10 @@ class PersonalPage extends GetView<PersonalController> {
                   final top = constraints.biggest.height;
                   final shrinkOffset = expandedHeight - top;
                   final progress =
-                      (shrinkOffset / (expandedHeight - kToolbarHeight))
-                          .clamp(0.0, 1.0);
+                      (shrinkOffset / (expandedHeight - kToolbarHeight)).clamp(
+                        0.0,
+                        1.0,
+                      );
 
                   // 更新滚动进度
                   WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -67,9 +66,9 @@ class PersonalPage extends GetView<PersonalController> {
                   });
 
                   return Container(
-                    color: Theme.of(context)
-                        .primaryColor
-                        .withValues(alpha: progress),
+                    color: Theme.of(
+                      context,
+                    ).primaryColor.withValues(alpha: progress),
                     child: FlexibleSpaceBar(
                       background: Stack(
                         fit: StackFit.expand,
@@ -81,7 +80,8 @@ class PersonalPage extends GetView<PersonalController> {
                               child: user.backgroundUrl != null
                                   ? CachedImage(
                                       imageUrl: user.backgroundUrl ?? '',
-                                      fit: BoxFit.cover)
+                                      fit: BoxFit.cover,
+                                    )
                                   : Image.asset(
                                       AppImages.profileHeaderBg,
                                       fit: BoxFit.cover,
@@ -95,8 +95,9 @@ class PersonalPage extends GetView<PersonalController> {
                                 sigmaY: progress * 50,
                               ),
                               child: Container(
-                                color: Colors.black
-                                    .withValues(alpha: progress * 0.7),
+                                color: Colors.black.withValues(
+                                  alpha: progress * 0.7,
+                                ),
                               ),
                             ),
                           // 渐变遮罩
@@ -114,32 +115,35 @@ class PersonalPage extends GetView<PersonalController> {
                           ),
 
                           Positioned(
-                              bottom: 6.w,
-                              left: lerpDouble(-1.w, 56.w, progress) ?? -1.w,
-                              right: 32.w,
-                              child: Container(
-                                width: MediaQuery.of(context).size.width - 16.w,
-                                height: 64.w,
-                                decoration: BoxDecoration(
-                                  color: AppColors.white.withValues(alpha: 0.1),
-                                  borderRadius: BorderRadius.only(
-                                    bottomRight: const Radius.circular(100).w,
-                                    topRight: const Radius.circular(100).w,
-                                  ),
-                                  border: Border.all(
-                                      color: Theme.of(context)
-                                          .cardColor
-                                          .withValues(alpha: 0.0),
-                                      width: .4.w),
+                            bottom: 6.w,
+                            left: lerpDouble(-1.w, 56.w, progress) ?? -1.w,
+                            right: 32.w,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width - 16.w,
+                              height: 64.w,
+                              decoration: BoxDecoration(
+                                color: AppColors.white.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: const Radius.circular(100).w,
+                                  topRight: const Radius.circular(100).w,
                                 ),
-                              )),
+                                border: Border.all(
+                                  color: Theme.of(
+                                    context,
+                                  ).cardColor.withValues(alpha: 0.0),
+                                  width: .4.w,
+                                ),
+                              ),
+                            ),
+                          ),
 
                           // 用户信息
                           Positioned(
-                              bottom: lerpDouble(10.w, 16.w, progress) ?? 10.w,
-                              left: lerpDouble(8.w, 56.w, progress) ?? 8.w,
-                              right: 0,
-                              child: _buildProfile(user, progress, context)),
+                            bottom: lerpDouble(10.w, 16.w, progress) ?? 10.w,
+                            left: lerpDouble(8.w, 56.w, progress) ?? 8.w,
+                            right: 0,
+                            child: _buildProfile(user, progress, context),
+                          ),
                         ],
                       ),
                     ),
@@ -176,8 +180,9 @@ class PersonalPage extends GetView<PersonalController> {
                     opacity: showAvatar ? 1.0 : 0.0,
                     child: showAvatar
                         ? Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 1).w,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 1,
+                            ).w,
                             child: Row(
                               children: [
                                 IconButton(
@@ -192,10 +197,12 @@ class PersonalPage extends GetView<PersonalController> {
                                 ),
                                 Container(
                                   decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: AppColors.white, width: 1.w),
-                                      borderRadius:
-                                          BorderRadius.circular(80.w)),
+                                    border: Border.all(
+                                      color: AppColors.white,
+                                      width: 1.w,
+                                    ),
+                                    borderRadius: BorderRadius.circular(80.w),
+                                  ),
                                   child: CachedImage(
                                     imageUrl: user.avatarUrl,
                                     circle: !user.isWebMaster(),
@@ -242,9 +249,9 @@ class PersonalPage extends GetView<PersonalController> {
                     borderRadius: BorderRadius.circular(12.w),
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(context)
-                            .shadowColor
-                            .withValues(alpha: 0.05),
+                        color: Theme.of(
+                          context,
+                        ).shadowColor.withValues(alpha: 0.05),
                         blurRadius: 10,
                         offset: const Offset(0, 2),
                       ),
@@ -258,10 +265,12 @@ class PersonalPage extends GetView<PersonalController> {
                     initialIndex: 0,
                     containerColor: Theme.of(context).cardColor,
                     slidersGradients: [
-                      LinearGradient(colors: [
-                        Theme.of(context).primaryColor,
-                        Theme.of(context).primaryColor.withValues(alpha: 0.6)
-                      ])
+                      LinearGradient(
+                        colors: [
+                          Theme.of(context).primaryColor,
+                          Theme.of(context).primaryColor.withValues(alpha: 0.6),
+                        ],
+                      ),
                     ],
                     onSelect: (index) => controller.changeTab(index),
                     children: [
@@ -339,7 +348,10 @@ class PersonalPage extends GetView<PersonalController> {
   }
 
   Widget _buildProfile(
-      CurrentUser user, double progress, BuildContext context) {
+    CurrentUser user,
+    double progress,
+    BuildContext context,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -347,9 +359,12 @@ class PersonalPage extends GetView<PersonalController> {
           children: [
             Container(
               decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Theme.of(context).primaryColor, width: 2.w),
-                  borderRadius: BorderRadius.circular(45.w)),
+                border: Border.all(
+                  color: Theme.of(context).primaryColor,
+                  width: 2.w,
+                ),
+                borderRadius: BorderRadius.circular(45.w),
+              ),
               child: CachedImage(
                 imageUrl: user.avatarUrl,
                 circle: true,
@@ -402,7 +417,7 @@ class PersonalPage extends GetView<PersonalController> {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ],
@@ -415,14 +430,14 @@ class _StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
   final Widget child;
   final double height;
 
-  _StickyTabBarDelegate({
-    required this.child,
-    this.height = 40.0,
-  });
+  _StickyTabBarDelegate({required this.child, this.height = 40.0});
 
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
       child: child,

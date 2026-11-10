@@ -40,8 +40,9 @@ class BadgeController extends BaseController with Concatenated {
   void _updateFilteredBadges() {
     final newMap = <int, List<BadgeDetail>>{};
     for (var grouping in badgeGroupings) {
-      var groupBadges =
-          badges.where((b) => b.badgeGroupingId == grouping.id).toList();
+      var groupBadges = badges
+          .where((b) => b.badgeGroupingId == grouping.id)
+          .toList();
       if (selectedIndex.value == 1) {
         groupBadges = groupBadges.where((b) => b.hasBadge).toList();
       }

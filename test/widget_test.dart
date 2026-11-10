@@ -16,10 +16,7 @@ void main() {
 
   testWidgets('startup page renders', (WidgetTester tester) async {
     await tester.pumpWidget(
-      const MyApp(
-        designSize: Size(1024, 768),
-        initialRoute: Routes.STARTUP,
-      ),
+      const MyApp(designSize: Size(1024, 768), initialRoute: Routes.STARTUP),
     );
     await tester.pump();
 

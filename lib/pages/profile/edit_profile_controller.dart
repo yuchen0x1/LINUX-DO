@@ -56,31 +56,33 @@ class EditProfileController extends BaseController with ToastMixin {
         .toList();
 
     badges.insert(
-        0,
-        BadgeDetail(
-          id: 0,
-          name: '无',
-          description: '无',
-          grantCount: 0,
-          allowTitle: true,
-          multipleGrant: false,
-          listable: false,
-          enabled: false,
-          badgeGroupingId: 0,
-          system: false,
-          slug: '',
-          hasBadge: false,
-          manuallyGrantable: false,
-          showInPostHeader: false,
-          badgeTypeId: 0,
-        ));
+      0,
+      BadgeDetail(
+        id: 0,
+        name: '无',
+        description: '无',
+        grantCount: 0,
+        allowTitle: true,
+        multipleGrant: false,
+        listable: false,
+        enabled: false,
+        badgeGroupingId: 0,
+        system: false,
+        slug: '',
+        hasBadge: false,
+        manuallyGrantable: false,
+        showInPostHeader: false,
+        badgeTypeId: 0,
+      ),
+    );
 
     nameController = TextEditingController(text: userInfo?.name ?? '');
     usernameController = TextEditingController(text: userInfo?.username ?? '');
     userTitle.value = userInfo?.title ?? '';
     emailController = TextEditingController(text: userInfo?.email ?? '');
     backupEmailController = TextEditingController(
-        text: userInfo?.secondaryEmails?.firstOrNull ?? '');
+      text: userInfo?.secondaryEmails?.firstOrNull ?? '',
+    );
   }
 
   void _loadUserInfo() {
@@ -101,8 +103,9 @@ class EditProfileController extends BaseController with ToastMixin {
 
       // 更新账户状态
       linkedAccounts.value = allAccounts.map((account) {
-        final existing = associatedAccounts
-            .firstWhereOrNull((a) => a['name'] == account['name']);
+        final existing = associatedAccounts.firstWhereOrNull(
+          (a) => a['name'] == account['name'],
+        );
         if (existing != null) {
           return existing;
         }
@@ -147,8 +150,9 @@ class EditProfileController extends BaseController with ToastMixin {
       );
 
       // 更新关联账户列表
-      final index =
-          linkedAccounts.indexWhere((account) => account['name'] == type);
+      final index = linkedAccounts.indexWhere(
+        (account) => account['name'] == type,
+      );
       if (index != -1) {
         linkedAccounts[index] = {'name': type};
       }

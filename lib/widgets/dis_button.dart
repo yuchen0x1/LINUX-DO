@@ -210,7 +210,8 @@ class _DisButtonState extends State<DisButton> with TickerProviderStateMixin {
           SizedBox(
             width: iconSize,
             height: iconSize,
-            child: widget.loadingStateWidget ??
+            child:
+                widget.loadingStateWidget ??
                 CircularProgressIndicator(
                   strokeWidth: 2.w,
                   valueColor: AlwaysStoppedAnimation<Color>(
@@ -223,7 +224,8 @@ class _DisButtonState extends State<DisButton> with TickerProviderStateMixin {
             widget.text ?? '',
             style: TextStyle(
               fontSize: fontSize,
-              color: widget.type == ButtonType.primary ||
+              color:
+                  widget.type == ButtonType.primary ||
                       widget.type == ButtonType.transform
                   ? Colors.white
                   : theme.primaryColor,
@@ -319,26 +321,27 @@ class _DisButtonState extends State<DisButton> with TickerProviderStateMixin {
   ButtonStyle _getButtonStyle(ThemeData theme) {
     final baseStyle = switch (widget.type) {
       ButtonType.primary => ElevatedButton.styleFrom(
-          textStyle: TextStyle(fontSize: widget.fontSize),
-          backgroundColor: Colors.transparent,
-          foregroundColor: Colors.white,
-          padding: _getPadding(),
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(widget.borderRadius ?? 4.w),
-          ),
+        textStyle: TextStyle(fontSize: widget.fontSize),
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        padding: _getPadding(),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(widget.borderRadius ?? 4.w),
         ),
+      ),
       ButtonType.secondary => ElevatedButton.styleFrom(
-          backgroundColor: theme.primaryColor.withValues(alpha: .1),
-          textStyle: TextStyle(fontSize: widget.fontSize),
-          foregroundColor: theme.primaryColor,
-          padding: _getPadding(),
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(widget.borderRadius ?? 4.w),
-          ),
+        backgroundColor: theme.primaryColor.withValues(alpha: .1),
+        textStyle: TextStyle(fontSize: widget.fontSize),
+        foregroundColor: theme.primaryColor,
+        padding: _getPadding(),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(widget.borderRadius ?? 4.w),
         ),
-      ButtonType.text => TextButton.styleFrom(
+      ),
+      ButtonType.text =>
+        TextButton.styleFrom(
           foregroundColor: theme.primaryColor,
           padding: _getPadding(),
           textStyle: TextStyle(fontSize: widget.fontSize),
@@ -346,16 +349,17 @@ class _DisButtonState extends State<DisButton> with TickerProviderStateMixin {
             borderRadius: BorderRadius.circular(widget.borderRadius ?? 4.w),
           ),
         ).copyWith(
-          backgroundColor: WidgetStateProperty.resolveWith<Color?>(
-            (Set<WidgetState> states) {
-              if (states.contains(WidgetState.hovered)) {
-                return theme.primaryColor.withValues(alpha: .05);
-              }
-              return null;
-            },
-          ),
+          backgroundColor: WidgetStateProperty.resolveWith<Color?>((
+            Set<WidgetState> states,
+          ) {
+            if (states.contains(WidgetState.hovered)) {
+              return theme.primaryColor.withValues(alpha: .05);
+            }
+            return null;
+          }),
         ),
-      ButtonType.outline => OutlinedButton.styleFrom(
+      ButtonType.outline =>
+        OutlinedButton.styleFrom(
           foregroundColor: theme.primaryColor,
           padding: _getPadding(),
           textStyle: TextStyle(fontSize: widget.fontSize),
@@ -364,25 +368,25 @@ class _DisButtonState extends State<DisButton> with TickerProviderStateMixin {
             borderRadius: BorderRadius.circular(widget.borderRadius ?? 4.w),
           ),
         ).copyWith(
-          backgroundColor: WidgetStateProperty.resolveWith<Color?>(
-            (Set<WidgetState> states) {
-              if (states.contains(WidgetState.hovered)) {
-                return theme.primaryColor.withValues(alpha: .05);
-              }
-              return Colors.white;
-            },
-          ),
+          backgroundColor: WidgetStateProperty.resolveWith<Color?>((
+            Set<WidgetState> states,
+          ) {
+            if (states.contains(WidgetState.hovered)) {
+              return theme.primaryColor.withValues(alpha: .05);
+            }
+            return Colors.white;
+          }),
         ),
       ButtonType.transform => ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          foregroundColor: Colors.white,
-          textStyle: TextStyle(fontSize: widget.fontSize),
-          padding: _getPadding(),
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(widget.borderRadius ?? 4.w),
-          ),
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white,
+        textStyle: TextStyle(fontSize: widget.fontSize),
+        padding: _getPadding(),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(widget.borderRadius ?? 4.w),
         ),
+      ),
     };
 
     return baseStyle;
@@ -534,14 +538,10 @@ class _LiDoTransformButtonState extends State<LiDoTransformButton>
     final ButtonStyle outlinedButtonStyle = OutlinedButton.styleFrom(
       padding: padding,
       shape: shape,
-      side: BorderSide(
-        color: widget.buttonColor,
-      ),
+      side: BorderSide(color: widget.buttonColor),
     );
 
-    final ButtonStyle textButtonStyle = TextButton.styleFrom(
-      padding: padding,
-    );
+    final ButtonStyle textButtonStyle = TextButton.styleFrom(padding: padding);
 
     switch (widget.type) {
       case LiDoTransformButtonType.elevated:
@@ -579,8 +579,9 @@ class _LiDoTransformButtonState extends State<LiDoTransformButton>
   }
 
   Widget _buildChildren(BuildContext context) {
-    double contentGap =
-        widget.type == LiDoTransformButtonType.text ? 0.0 : widget.contentGap;
+    double contentGap = widget.type == LiDoTransformButtonType.text
+        ? 0.0
+        : widget.contentGap;
     Widget contentWidget;
 
     switch (_state) {
@@ -666,7 +667,8 @@ class _LiDoTransformButtonState extends State<LiDoTransformButton>
       ..addListener(() {
         setState(() {
           _width = initialWidth - ((initialWidth - targetWidth) * _anim!.value);
-          _borderRadius = initialBorderRadius -
+          _borderRadius =
+              initialBorderRadius -
               ((initialBorderRadius - targetBorderRadius) * _anim!.value);
         });
       })

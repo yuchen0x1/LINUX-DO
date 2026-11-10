@@ -93,11 +93,7 @@ class ChatableData {
   @JsonKey(name: 'uploaded_logo')
   final UploadedLogo? uploadedLogo;
 
-  ChatableData({
-    this.group,
-    this.users,
-    this.uploadedLogo,
-  });
+  ChatableData({this.group, this.users, this.uploadedLogo});
 
   factory ChatableData.fromJson(Map<String, dynamic> json) =>
       _$ChatableDataFromJson(json);
@@ -133,11 +129,7 @@ class UserStatus {
   @JsonKey(name: 'ends_at')
   final String? endsAt;
 
-  UserStatus({
-    this.description,
-    this.emoji,
-    this.endsAt,
-  });
+  UserStatus({this.description, this.emoji, this.endsAt});
 
   factory UserStatus.fromJson(Map<String, dynamic> json) =>
       _$UserStatusFromJson(json);

@@ -11,30 +11,35 @@ class SummaryPage extends GetView<SummaryController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => StateView(
-          state: controller.getViewState(),
-          child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 14.w),
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              _buildStatSection(
-                context,
-                title: '基础统计',
-                items: controller.topStats.value ?? [],
-              ),
-              _buildStatSection(
-                context,
-                title: '互动数据',
-                items: controller.bottomStats.value ?? [],
-              ),
-            ],
-          ),
-        ));
+    return Obx(
+      () => StateView(
+        state: controller.getViewState(),
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 14.w),
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          children: [
+            _buildStatSection(
+              context,
+              title: '基础统计',
+              items: controller.topStats.value ?? [],
+            ),
+            _buildStatSection(
+              context,
+              title: '互动数据',
+              items: controller.bottomStats.value ?? [],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
-  Widget _buildStatSection(BuildContext context,
-      {required String title, required List<StatItem> items}) {
+  Widget _buildStatSection(
+    BuildContext context, {
+    required String title,
+    required List<StatItem> items,
+  }) {
     return Card(
       elevation: 0,
       margin: EdgeInsets.only(top: 8.w, bottom: 16.w),
@@ -66,10 +71,12 @@ class SummaryPage extends GetView<SummaryController> {
   Widget _buildStatList(BuildContext context, List<StatItem> items) {
     return Column(
       children: items
-          .map((item) => Padding(
-                padding: EdgeInsets.only(bottom: 12.w),
-                child: _StatItem(item: item),
-              ))
+          .map(
+            (item) => Padding(
+              padding: EdgeInsets.only(bottom: 12.w),
+              child: _StatItem(item: item),
+            ),
+          )
           .toList(),
     );
   }
@@ -78,10 +85,7 @@ class SummaryPage extends GetView<SummaryController> {
 class _StatItem extends StatelessWidget {
   final StatItem item;
 
-  const _StatItem({
-    Key? key,
-    required this.item,
-  }) : super(key: key);
+  const _StatItem({Key? key, required this.item}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +96,8 @@ class _StatItem extends StatelessWidget {
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(8.r),
         border: Border.all(
-            color: Theme.of(context).dividerColor.withValues(alpha: 0.5)),
+          color: Theme.of(context).dividerColor.withValues(alpha: 0.5),
+        ),
       ),
       child: Row(
         children: [

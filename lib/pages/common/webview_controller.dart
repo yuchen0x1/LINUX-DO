@@ -7,8 +7,9 @@ class WebViewController extends BaseController {
   final title = ''.obs;
   final content = ''.obs;
   final isHtml = false.obs;
-  Rx<InAppWebViewController?> webViewController =
-      Rx<InAppWebViewController?>(null);
+  Rx<InAppWebViewController?> webViewController = Rx<InAppWebViewController?>(
+    null,
+  );
 
   @override
   void onInit() {
@@ -22,14 +23,16 @@ class WebViewController extends BaseController {
   void onWebViewCreated(InAppWebViewController controller) {
     webViewController.value = controller;
     // 注入JavaScript代码以启用文本选择
-    controller.evaluateJavascript(source: '''
+    controller.evaluateJavascript(
+      source: '''
       document.documentElement.style.webkitUserSelect = 'text';
       document.documentElement.style.userSelect = 'text';
       document.addEventListener('contextmenu', function(e) {
         e.preventDefault();
         return false;
       });
-    ''');
+    ''',
+    );
   }
 
   void onLoadStart(InAppWebViewController controller, WebUri? url) {
@@ -42,10 +45,12 @@ class WebViewController extends BaseController {
 
   void onLoadStop(InAppWebViewController controller, WebUri? url) {
     loadingProgress.value = 1.0;
-    controller.evaluateJavascript(source: '''
+    controller.evaluateJavascript(
+      source: '''
       document.documentElement.style.webkitUserSelect = 'text';
       document.documentElement.style.userSelect = 'text';
-    ''');
+    ''',
+    );
   }
 
   void onTitleChanged(InAppWebViewController controller, String? titleText) {

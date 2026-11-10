@@ -6,7 +6,9 @@ class ApiResponse<T> {
   ApiResponse({this.code, this.message, this.data});
 
   ApiResponse.fromJson(
-      Map<String, dynamic> json, T Function(dynamic)? fromJson) {
+    Map<String, dynamic> json,
+    T Function(dynamic)? fromJson,
+  ) {
     code = json['code'] ?? 200; // 默认成功状态码为 200
     message = json['message'] ?? 'success';
     if (json['data'] != null && fromJson != null) {

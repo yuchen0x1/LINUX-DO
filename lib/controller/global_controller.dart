@@ -68,8 +68,9 @@ class GlobalController extends BaseController with Concatenated {
   }
 
   void _checkClientId() {
-    String? clientSaveId =
-        StorageManager.getString(AppConst.identifier.clientId);
+    String? clientSaveId = StorageManager.getString(
+      AppConst.identifier.clientId,
+    );
     if (clientSaveId != null && clientSaveId.isNotEmpty) {
       clientId = clientSaveId;
     } else {

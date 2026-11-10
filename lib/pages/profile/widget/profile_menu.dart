@@ -34,12 +34,21 @@ class ProfileMenu extends StatelessWidget with ToastMixin {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _buildStatItem('信任等级', user?.trustLevel.toString() ?? '',
-                        () => Get.toNamed(Routes.CONNECT)),
                     _buildStatItem(
-                        '徽章数', user?.badgeCount.toString() ?? '', () {}),
+                      '信任等级',
+                      user?.trustLevel.toString() ?? '',
+                      () => Get.toNamed(Routes.CONNECT),
+                    ),
                     _buildStatItem(
-                        '积分', '${user?.gamificationScore ?? 0}', () {}),
+                      '徽章数',
+                      user?.badgeCount.toString() ?? '',
+                      () {},
+                    ),
+                    _buildStatItem(
+                      '积分',
+                      '${user?.gamificationScore ?? 0}',
+                      () {},
+                    ),
                   ],
                 ),
               ),
@@ -49,50 +58,55 @@ class ProfileMenu extends StatelessWidget with ToastMixin {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     _buildFeatureButton(
-                        CupertinoIcons.hand_thumbsup_fill,
-                        '点赞',
-                        'Likes',
-                        [
-                          const Color(0xFF5B86E5).withValues(alpha: 0.7),
-                          const Color(0xFF36D1DC).withValues(alpha: 0.7)
-                        ],
-                        () => controller.toLikePage()),
+                      CupertinoIcons.hand_thumbsup_fill,
+                      '点赞',
+                      'Likes',
+                      [
+                        const Color(0xFF5B86E5).withValues(alpha: 0.7),
+                        const Color(0xFF36D1DC).withValues(alpha: 0.7),
+                      ],
+                      () => controller.toLikePage(),
+                    ),
                     _buildFeatureButton(
-                        CupertinoIcons.bookmark_fill,
-                        '收藏',
-                        'Favorite',
-                        [
-                          const Color(0xFFf46b45).withValues(alpha: 0.7),
-                          const Color(0xFFFFB75E).withValues(alpha: 0.7)
-                        ],
-                        () => controller.toCollectPage()),
+                      CupertinoIcons.bookmark_fill,
+                      '收藏',
+                      'Favorite',
+                      [
+                        const Color(0xFFf46b45).withValues(alpha: 0.7),
+                        const Color(0xFFFFB75E).withValues(alpha: 0.7),
+                      ],
+                      () => controller.toCollectPage(),
+                    ),
                     _buildFeatureButton(
-                        CupertinoIcons.heart_fill,
-                        '关注',
-                        'Followed',
-                        [
-                          const Color(0xFF45B649).withValues(alpha: 0.7),
-                          const Color(0xFFDCE35B).withValues(alpha: 0.7)
-                        ],
-                        () => controller.toFollowPage()),
+                      CupertinoIcons.heart_fill,
+                      '关注',
+                      'Followed',
+                      [
+                        const Color(0xFF45B649).withValues(alpha: 0.7),
+                        const Color(0xFFDCE35B).withValues(alpha: 0.7),
+                      ],
+                      () => controller.toFollowPage(),
+                    ),
                     _buildFeatureButton(
-                        CupertinoIcons.person_2_fill,
-                        '关注者',
-                        'Followers',
-                        [
-                          const Color(0xFF4e54c8).withValues(alpha: 0.7),
-                          const Color(0xFF8f94fb).withValues(alpha: 0.7)
-                        ],
-                        () => controller.toFollowPage()),
+                      CupertinoIcons.person_2_fill,
+                      '关注者',
+                      'Followers',
+                      [
+                        const Color(0xFF4e54c8).withValues(alpha: 0.7),
+                        const Color(0xFF8f94fb).withValues(alpha: 0.7),
+                      ],
+                      () => controller.toFollowPage(),
+                    ),
                     _buildFeatureButton(
-                        CupertinoIcons.flame_fill,
-                        '热门',
-                        'Popular',
-                        [
-                          const Color(0xFFe53935).withValues(alpha: 0.7),
-                          const Color(0xFFe35d5b).withValues(alpha: 0.7)
-                        ],
-                        () => controller.toPopularPage()),
+                      CupertinoIcons.flame_fill,
+                      '热门',
+                      'Popular',
+                      [
+                        const Color(0xFFe53935).withValues(alpha: 0.7),
+                        const Color(0xFFe35d5b).withValues(alpha: 0.7),
+                      ],
+                      () => controller.toPopularPage(),
+                    ),
                   ],
                 ),
               ),
@@ -124,33 +138,39 @@ class ProfileMenu extends StatelessWidget with ToastMixin {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // 页面指示器
-                Obx(() => Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        2,
-                        (index) => Container(
-                          margin: EdgeInsets.symmetric(horizontal: 2.w),
-                          width: controller.featurePageIndex.value == index
-                              ? 16.w
-                              : 4.w,
-                          height: 4.w,
-                          decoration: BoxDecoration(
-                            gradient: controller.featurePageIndex.value == index
-                                ? LinearGradient(colors: [
+                Obx(
+                  () => Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      2,
+                      (index) => Container(
+                        margin: EdgeInsets.symmetric(horizontal: 2.w),
+                        width: controller.featurePageIndex.value == index
+                            ? 16.w
+                            : 4.w,
+                        height: 4.w,
+                        decoration: BoxDecoration(
+                          gradient: controller.featurePageIndex.value == index
+                              ? LinearGradient(
+                                  colors: [
                                     Theme.of(context).primaryColor,
-                                    Theme.of(context)
-                                        .primaryColor
-                                        .withValues(alpha: 0.6)
-                                  ])
-                                : LinearGradient(colors: [
+                                    Theme.of(
+                                      context,
+                                    ).primaryColor.withValues(alpha: 0.6),
+                                  ],
+                                )
+                              : LinearGradient(
+                                  colors: [
                                     Colors.grey.withValues(alpha: 0.5),
-                                    Colors.grey.withValues(alpha: 0.5)
-                                  ]),
-                            borderRadius: BorderRadius.circular(2.w),
-                          ),
+                                    Colors.grey.withValues(alpha: 0.5),
+                                  ],
+                                ),
+                          borderRadius: BorderRadius.circular(2.w),
                         ),
                       ),
-                    )),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -174,18 +194,20 @@ class ProfileMenu extends StatelessWidget with ToastMixin {
           ),
           Text(
             label,
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: Colors.grey,
-            ),
+            style: TextStyle(fontSize: 12.sp, color: Colors.grey),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildFeatureButton(IconData icon, String label, String subtitle,
-      List<Color> colors, VoidCallback onTap) {
+  Widget _buildFeatureButton(
+    IconData icon,
+    String label,
+    String subtitle,
+    List<Color> colors,
+    VoidCallback onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -220,11 +242,7 @@ class ProfileMenu extends StatelessWidget with ToastMixin {
                   ),
                 ),
                 child: Center(
-                  child: Icon(
-                    icon,
-                    size: 16.w,
-                    color: Colors.white,
-                  ),
+                  child: Icon(icon, size: 16.w, color: Colors.white),
                 ),
               ),
             ),
@@ -245,7 +263,7 @@ class ProfileMenu extends StatelessWidget with ToastMixin {
                 fontFamily: AppFontFamily.dinPro,
               ),
             ),
-            6.vGap
+            6.vGap,
           ],
         ),
       ),
@@ -259,7 +277,11 @@ class TopCurveClipper extends CustomClipper<Path> {
     final path = Path();
     path.lineTo(0, size.height - 20);
     path.quadraticBezierTo(
-        size.width / 2, size.height, size.width, size.height - 20);
+      size.width / 2,
+      size.height,
+      size.width,
+      size.height - 20,
+    );
     path.lineTo(size.width, 0);
     path.lineTo(0, 0);
     return path;

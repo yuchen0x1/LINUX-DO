@@ -98,8 +98,7 @@ class ProxyService {
         // 抛出让 HttpClient 走默认解析路径（connectionFactory 不允许返回 null）
         throw const SocketException('DoH 未解析到地址');
       }
-      final port =
-          uri.hasPort ? uri.port : (uri.scheme == 'https' ? 443 : 80);
+      final port = uri.hasPort ? uri.port : (uri.scheme == 'https' ? 443 : 80);
       return Socket.startConnect(InternetAddress(addresses.first), port);
     };
   }

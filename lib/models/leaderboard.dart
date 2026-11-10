@@ -25,10 +25,7 @@ class PersonalRank {
   final LeaderboardUser user;
   final int position;
 
-  PersonalRank({
-    required this.user,
-    required this.position,
-  });
+  PersonalRank({required this.user, required this.position});
 
   factory PersonalRank.fromJson(Map<String, dynamic> json) =>
       _$PersonalRankFromJson(json);
@@ -103,7 +100,9 @@ class LeaderboardUser {
   // 获取格式化后的分数
   String get formattedScore {
     return totalScore.toString().replaceAllMapped(
-        RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+      (Match m) => '${m[1]},',
+    );
   }
 
   // 获取头像URL

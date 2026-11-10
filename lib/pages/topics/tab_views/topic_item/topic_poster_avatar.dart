@@ -55,8 +55,9 @@ class TopicPosterAvatar extends StatelessWidget {
                   : (nickName),
               style: TextStyle(
                 fontSize: 9.w,
-                fontWeight:
-                    isOriginalPoster ? FontWeight.w400 : FontWeight.w500,
+                fontWeight: isOriginalPoster
+                    ? FontWeight.w400
+                    : FontWeight.w500,
                 color: isOriginalPoster
                     ? Theme.of(context).textTheme.bodySmall?.color
                     : AppColors.secondary2,

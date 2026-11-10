@@ -32,11 +32,7 @@ import '../utils/log.dart';
 import 'state_view.dart';
 import '../const/app_const.dart';
 
-enum AvatarActions {
-  openCard,
-  openUserInfo,
-  noAction,
-}
+enum AvatarActions { openCard, openUserInfo, noAction }
 
 class AvatarWidget extends StatelessWidget {
   final String avatarUrl;
@@ -87,14 +83,15 @@ class AvatarWidget extends StatelessWidget {
         }
       },
       child: CachedImage(
-          imageUrl: avatarUrl,
-          width: size,
-          height: size,
-          circle: circle,
-          backgroundColor: backgroundColor,
-          borderRadius: BorderRadius.circular(borderRadius),
-          borderColor: borderColor ?? AppColors.transparent,
-          showBorder: true),
+        imageUrl: avatarUrl,
+        width: size,
+        height: size,
+        circle: circle,
+        backgroundColor: backgroundColor,
+        borderRadius: BorderRadius.circular(borderRadius),
+        borderColor: borderColor ?? AppColors.transparent,
+        showBorder: true,
+      ),
     );
   }
 }
@@ -104,12 +101,13 @@ class UserInfoCard extends GetView<UserInfoCardController> {
   final Post? post;
   final String? title;
   final bool toPersonalPage;
-  const UserInfoCard(
-      {super.key,
-      required this.username,
-      this.post,
-      this.title,
-      this.toPersonalPage = true});
+  const UserInfoCard({
+    super.key,
+    required this.username,
+    this.post,
+    this.title,
+    this.toPersonalPage = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -119,72 +117,73 @@ class UserInfoCard extends GetView<UserInfoCardController> {
     return Container(
       width: globalController.isAnonymousMode ? 300.w : 380.w,
       constraints: BoxConstraints(
-          maxHeight: globalController.isAnonymousMode ? 380.w : 450.w),
+        maxHeight: globalController.isAnonymousMode ? 380.w : 450.w,
+      ),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12.w),
       ),
-      child: Obx(() => StateView(
-            state: _getViewState(),
-            child: Stack(
-              children: [
-                // 卡片背景半透明图片
-                _buildBackground(context),
+      child: Obx(
+        () => StateView(
+          state: _getViewState(),
+          child: Stack(
+            children: [
+              // 卡片背景半透明图片
+              _buildBackground(context),
 
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // 顶部背景和头像
-                    _buildHeader(context),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 顶部背景和头像
+                  _buildHeader(context),
 
-                    // 用户信息
-                    _buildUserInfo(context),
+                  // 用户信息
+                  _buildUserInfo(context),
 
-                    // 统计信息
-                    _buildStats(context),
+                  // 统计信息
+                  _buildStats(context),
 
-                    // 其他信息
-                    _buildOtherInfo(context),
+                  // 其他信息
+                  _buildOtherInfo(context),
 
-                    // 徽章
-                    _buildBadges(context),
+                  // 徽章
+                  _buildBadges(context),
 
-                    // 底部按钮
-                    globalController.isAnonymousMode
-                        ? Center(
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 16.0),
-                              child: Text(
-                                '尊贵的游客,该功能需要登录 🤨',
-                                style: TextStyle(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.color,
-                                    fontSize: 10.w),
+                  // 底部按钮
+                  globalController.isAnonymousMode
+                      ? Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 16.0),
+                            child: Text(
+                              '尊贵的游客,该功能需要登录 🤨',
+                              style: TextStyle(
+                                color: Theme.of(
+                                  context,
+                                ).textTheme.bodyMedium?.color,
+                                fontSize: 10.w,
                               ),
                             ),
-                          )
-                        : _buildActions(context),
-                  ],
-                ),
-
-                // 加载中
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: controller._coverLoading.value
-                      ? const Center(
-                          child: DisSquareLoading(),
+                          ),
                         )
-                      : const SizedBox(),
-                )
-              ],
-            ),
-          )),
+                      : _buildActions(context),
+                ],
+              ),
+
+              // 加载中
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: controller._coverLoading.value
+                    ? const Center(child: DisSquareLoading())
+                    : const SizedBox(),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -199,12 +198,13 @@ class UserInfoCard extends GetView<UserInfoCardController> {
       child: Opacity(
         opacity: 0.16,
         child: CachedImage(
-            imageUrl: user?.backgroundUrl ?? '',
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12.w),
-              topRight: Radius.circular(12.w),
-            ),
-            fit: BoxFit.cover),
+          imageUrl: user?.backgroundUrl ?? '',
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(12.w),
+            topRight: Radius.circular(12.w),
+          ),
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }
@@ -236,24 +236,25 @@ class UserInfoCard extends GetView<UserInfoCardController> {
           left: 20.w,
           bottom: -20.w,
           child: Container(
-              padding: EdgeInsets.all(2.w),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius:
-                      BorderRadius.circular(user?.id != 1 ? 30.w : 4.w)),
-              child: GestureDetector(
-                onTap: () {
-                  if (toPersonalPage == true) {
-                    Get.toNamed(Routes.PERSONAL, arguments: username);
-                  }
-                },
-                child: CachedImage(
-                  imageUrl: user?.avatarUrl ?? '',
-                  width: 60,
-                  height: 60,
-                  circle: user?.id != 1,
-                ),
-              )),
+            padding: EdgeInsets.all(2.w),
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              borderRadius: BorderRadius.circular(user?.id != 1 ? 30.w : 4.w),
+            ),
+            child: GestureDetector(
+              onTap: () {
+                if (toPersonalPage == true) {
+                  Get.toNamed(Routes.PERSONAL, arguments: username);
+                }
+              },
+              child: CachedImage(
+                imageUrl: user?.avatarUrl ?? '',
+                width: 60,
+                height: 60,
+                circle: user?.id != 1,
+              ),
+            ),
+          ),
         ),
 
         // 关闭按钮
@@ -262,11 +263,7 @@ class UserInfoCard extends GetView<UserInfoCardController> {
           top: 8.w,
           child: IconButton(
             onPressed: () => Get.back(),
-            icon: Icon(
-              Icons.close,
-              color: Colors.white,
-              size: 20.w,
-            ),
+            icon: Icon(Icons.close, color: Colors.white, size: 20.w),
           ),
         ),
 
@@ -279,10 +276,16 @@ class UserInfoCard extends GetView<UserInfoCardController> {
             children: [
               16.hGap,
               _buildTopTimeItem(
-                  context, AppConst.user.joinTime, '${user?.cakedate}'),
+                context,
+                AppConst.user.joinTime,
+                '${user?.cakedate}',
+              ),
               16.hGap,
-              _buildTopTimeItem(context, AppConst.user.postTime,
-                  _getRelativeTime(user?.lastPostedAt ?? '')),
+              _buildTopTimeItem(
+                context,
+                AppConst.user.postTime,
+                _getRelativeTime(user?.lastPostedAt ?? ''),
+              ),
             ],
           ),
         ),
@@ -306,8 +309,10 @@ class UserInfoCard extends GetView<UserInfoCardController> {
               ),
               user?.admin == true
                   ? Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.w),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 4.w,
+                        vertical: 2.w,
+                      ),
                       decoration: BoxDecoration(
                         color: AppColors.white,
                         borderRadius: BorderRadius.circular(4.w),
@@ -355,14 +360,26 @@ class UserInfoCard extends GetView<UserInfoCardController> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildStatItem(context, AppConst.user.points,
-              formattedScore(user?.gamificationScore ?? 0)),
           _buildStatItem(
-              context, AppConst.user.follow, '${user?.totalFollowing ?? 0}'),
+            context,
+            AppConst.user.points,
+            formattedScore(user?.gamificationScore ?? 0),
+          ),
           _buildStatItem(
-              context, AppConst.user.followers, '${user?.totalFollowers ?? 0}'),
-          _buildStatItem(context, AppConst.user.solutions,
-              '${user?.acceptedAnswers ?? 0}'),
+            context,
+            AppConst.user.follow,
+            '${user?.totalFollowing ?? 0}',
+          ),
+          _buildStatItem(
+            context,
+            AppConst.user.followers,
+            '${user?.totalFollowers ?? 0}',
+          ),
+          _buildStatItem(
+            context,
+            AppConst.user.solutions,
+            '${user?.acceptedAnswers ?? 0}',
+          ),
         ],
       ),
     );
@@ -386,10 +403,7 @@ class UserInfoCard extends GetView<UserInfoCardController> {
           4.vGap,
           Text(
             label,
-            style: TextStyle(
-              fontSize: 8.w,
-              color: Theme.of(context).hintColor,
-            ),
+            style: TextStyle(fontSize: 8.w, color: Theme.of(context).hintColor),
           ),
         ],
       ),
@@ -411,10 +425,7 @@ class UserInfoCard extends GetView<UserInfoCardController> {
         4.vGap,
         Text(
           label,
-          style: TextStyle(
-            fontSize: 12.w,
-            color: Theme.of(context).hintColor,
-          ),
+          style: TextStyle(fontSize: 12.w, color: Theme.of(context).hintColor),
         ),
       ],
     );
@@ -427,56 +438,60 @@ class UserInfoCard extends GetView<UserInfoCardController> {
       child: Column(
         children: [
           SizedBox(
-              height: 30.w,
-              width: double.infinity,
-              child: DisButton(
-                text: AppConst.user.like,
-                onPressed: () {
-                  controller.fetchCategorys();
-                  _showAcceptDialog();
-                },
-                icon: CupertinoIcons.hand_thumbsup,
-                size: ButtonSize.small,
-              )),
+            height: 30.w,
+            width: double.infinity,
+            child: DisButton(
+              text: AppConst.user.like,
+              onPressed: () {
+                controller.fetchCategorys();
+                _showAcceptDialog();
+              },
+              icon: CupertinoIcons.hand_thumbsup,
+              size: ButtonSize.small,
+            ),
+          ),
           6.vGap,
           SizedBox(
-              height: 30.w,
-              width: double.infinity,
-              child: DisButton(
-                text: user?.isFollowed == true
-                    ? AppConst.user.unfollowUser
-                    : AppConst.user.followUser,
-                onPressed: () {
-                  controller.followUser();
-                },
-                icon: CupertinoIcons.person_crop_circle_badge_plus,
-                size: ButtonSize.small,
-              )),
+            height: 30.w,
+            width: double.infinity,
+            child: DisButton(
+              text: user?.isFollowed == true
+                  ? AppConst.user.unfollowUser
+                  : AppConst.user.followUser,
+              onPressed: () {
+                controller.followUser();
+              },
+              icon: CupertinoIcons.person_crop_circle_badge_plus,
+              size: ButtonSize.small,
+            ),
+          ),
           6.vGap,
           SizedBox(
             height: 30.w,
             child: Row(
               children: [
                 Expanded(
-                    child: DisButton(
-                  text: AppConst.user.message,
-                  onPressed: () {
-                    _showPrivateMessageDialog();
-                  },
-                  icon: CupertinoIcons.envelope_circle,
-                  size: ButtonSize.small,
-                )),
+                  child: DisButton(
+                    text: AppConst.user.message,
+                    onPressed: () {
+                      _showPrivateMessageDialog();
+                    },
+                    icon: CupertinoIcons.envelope_circle,
+                    size: ButtonSize.small,
+                  ),
+                ),
                 12.hGap,
                 Expanded(
-                    child: DisButton(
-                  text: AppConst.user.chat,
-                  onPressed: () {
-                    controller.toChatDetail();
-                  },
-                  type: ButtonType.secondary,
-                  icon: CupertinoIcons.chat_bubble_2,
-                  size: ButtonSize.small,
-                )),
+                  child: DisButton(
+                    text: AppConst.user.chat,
+                    onPressed: () {
+                      controller.toChatDetail();
+                    },
+                    type: ButtonType.secondary,
+                    icon: CupertinoIcons.chat_bubble_2,
+                    size: ButtonSize.small,
+                  ),
+                ),
               ],
             ),
           ),
@@ -499,7 +514,9 @@ class UserInfoCard extends GetView<UserInfoCardController> {
 
   String formattedScore(int score) {
     return score.toString().replaceAllMapped(
-        RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+      (Match m) => '${m[1]},',
+    );
   }
 
   ViewState _getViewState() {
@@ -540,7 +557,9 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                     Flexible(
                       child: Container(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 4.w, vertical: 3.w),
+                          horizontal: 4.w,
+                          vertical: 3.w,
+                        ),
                         decoration: BoxDecoration(
                           color: badgeColor.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(4.w),
@@ -573,15 +592,14 @@ class UserInfoCard extends GetView<UserInfoCardController> {
     return Container(
       width: double.infinity,
       height: 60.w,
-      margin: EdgeInsets.symmetric(
-        horizontal: 12.w,
-      ),
+      margin: EdgeInsets.symmetric(horizontal: 12.w),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(4.w),
         border: Border.all(
-            color: Theme.of(context).primaryColor.withValues(alpha: 0.3),
-            width: .6.w),
+          color: Theme.of(context).primaryColor.withValues(alpha: 0.3),
+          width: .6.w,
+        ),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8.w),
@@ -594,16 +612,13 @@ class UserInfoCard extends GetView<UserInfoCardController> {
               fontSize: 11.w,
               customWidgetBuilder: (element) {
                 final srcTmp = element.attributes['src'];
-                final src = srcTmp?.startsWith('http://') == true ||
+                final src =
+                    srcTmp?.startsWith('http://') == true ||
                         srcTmp?.startsWith('https://') == true
                     ? srcTmp
                     : null;
                 if (element.localName == 'img' && src != null) {
-                  return Image.network(
-                    src,
-                    width: 20.w,
-                    height: 20.w,
-                  );
+                  return Image.network(src, width: 20.w, height: 20.w);
                 }
                 return const SizedBox();
               },
@@ -635,10 +650,7 @@ class UserInfoCard extends GetView<UserInfoCardController> {
             children: [
               Text(
                 '您觉得 ${user?.name ?? username} 的优点是什么？',
-                style: TextStyle(
-                  fontSize: 16.w,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 16.w, fontWeight: FontWeight.bold),
               ),
               16.vGap,
               Container(
@@ -646,15 +658,19 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                   maxHeight: MediaQuery.of(Get.context!).size.height * 0.5,
                 ),
                 child: SingleChildScrollView(
-                  child: Obx(() => Wrap(
-                        spacing: 8.w,
-                        runSpacing: 8.w,
-                        children: controller._categorys.value
-                                ?.map((e) =>
-                                    _buildAdvantageItem(e.name ?? '', e.id))
-                                .toList() ??
-                            [],
-                      )),
+                  child: Obx(
+                    () => Wrap(
+                      spacing: 8.w,
+                      runSpacing: 8.w,
+                      children:
+                          controller._categorys.value
+                              ?.map(
+                                (e) => _buildAdvantageItem(e.name ?? '', e.id),
+                              )
+                              .toList() ??
+                          [],
+                    ),
+                  ),
                 ),
               ),
               16.vGap,
@@ -662,7 +678,8 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Obx(() {
-                    final likesRemaining = Get.find<GlobalController>()
+                    final likesRemaining =
+                        Get.find<GlobalController>()
                             .userInfo
                             ?.user
                             ?.voteCount ??
@@ -680,25 +697,25 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                     onPressed: () => Get.back(),
                     child: Text(
                       AppConst.cancel,
-                      style: TextStyle(
-                        color: Theme.of(Get.context!).hintColor,
-                      ),
+                      style: TextStyle(color: Theme.of(Get.context!).hintColor),
                     ),
                   ),
                   8.hGap,
-                  Obx(() => DisButton(
-                        text: AppConst.user.like,
-                        type: ButtonType.transform,
-                        loading: controller._loading.value,
-                        onPressed:
-                            controller._endorseUserCategorys.value?.isEmpty ==
-                                    true
-                                ? null
-                                : () {
-                                    controller.fetchEndorseUserCategorys();
-                                  },
-                        size: ButtonSize.small,
-                      )),
+                  Obx(
+                    () => DisButton(
+                      text: AppConst.user.like,
+                      type: ButtonType.transform,
+                      loading: controller._loading.value,
+                      onPressed:
+                          controller._endorseUserCategorys.value?.isEmpty ==
+                              true
+                          ? null
+                          : () {
+                              controller.fetchEndorseUserCategorys();
+                            },
+                      size: ButtonSize.small,
+                    ),
+                  ),
                 ],
               ),
             ],
@@ -717,8 +734,9 @@ class UserInfoCard extends GetView<UserInfoCardController> {
         onTap: () {
           final currentList = controller._endorseUserCategorys.value ?? [];
           if (isSelected) {
-            controller._endorseUserCategorys.value =
-                currentList.where((element) => element != id).toList();
+            controller._endorseUserCategorys.value = currentList
+                .where((element) => element != id)
+                .toList();
           } else {
             controller._endorseUserCategorys.value = [...currentList, id];
           }
@@ -801,9 +819,9 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                     end: Alignment.centerRight,
                     colors: [
                       Theme.of(Get.context!).primaryColor,
-                      Theme.of(Get.context!)
-                          .primaryColor
-                          .withValues(alpha: 0.6),
+                      Theme.of(
+                        Get.context!,
+                      ).primaryColor.withValues(alpha: 0.6),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(4.w),
@@ -843,10 +861,7 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                       child: OverflowBox(
                         alignment: Alignment.topLeft,
                         maxHeight: 68.w,
-                        child: HtmlWidget(
-                          html: content ?? '',
-                          fontSize: 12.w,
-                        ),
+                        child: HtmlWidget(html: content ?? '', fontSize: 12.w),
                       ),
                     ),
                   ),
@@ -862,9 +877,9 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            Theme.of(Get.context!)
-                                .cardColor
-                                .withValues(alpha: 0),
+                            Theme.of(
+                              Get.context!,
+                            ).cardColor.withValues(alpha: 0),
                             Theme.of(Get.context!).cardColor,
                           ],
                         ),
@@ -896,13 +911,13 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                             : user?.name ?? '',
                         style: TextStyle(
                           fontSize: 12.w,
-                          fontWeight:
-                              user?.id != 1 ? FontWeight.w500 : FontWeight.w600,
+                          fontWeight: user?.id != 1
+                              ? FontWeight.w500
+                              : FontWeight.w600,
                           color: user?.id != 1
-                              ? Theme.of(Get.context!)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.color
+                              ? Theme.of(
+                                  Get.context!,
+                                ).textTheme.titleMedium?.color
                               : Theme.of(Get.context!).primaryColor,
                         ),
                       ),
@@ -910,8 +925,9 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                         user?.userTitle ?? '',
                         style: TextStyle(
                           fontSize: 10.w,
-                          color:
-                              Theme.of(Get.context!).textTheme.bodySmall?.color,
+                          color: Theme.of(
+                            Get.context!,
+                          ).textTheme.bodySmall?.color,
                         ),
                       ),
                     ],
@@ -925,7 +941,8 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                         Obx(
                           () => Checkbox(
                             fillColor: WidgetStateProperty.all(
-                                Theme.of(Get.context!).canvasColor),
+                              Theme.of(Get.context!).canvasColor,
+                            ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(4.w),
                             ),
@@ -942,10 +959,9 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                           AppConst.posts.officialWarning,
                           style: TextStyle(
                             fontSize: 10.w,
-                            color: Theme.of(Get.context!)
-                                .textTheme
-                                .bodyMedium
-                                ?.color,
+                            color: Theme.of(
+                              Get.context!,
+                            ).textTheme.bodyMedium?.color,
                           ),
                         ),
                       ],
@@ -957,17 +973,15 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                   color: Theme.of(Get.context!).cardColor,
                   borderRadius: BorderRadius.circular(8.w),
                   border: Border.all(
-                    color: Theme.of(Get.context!)
-                        .primaryColor
-                        .withValues(alpha: 0.3),
+                    color: Theme.of(
+                      Get.context!,
+                    ).primaryColor.withValues(alpha: 0.3),
                   ),
                 ),
                 child: TextField(
                   controller: controller.titleController,
                   maxLines: 1,
-                  style: TextStyle(
-                    fontSize: 10.w,
-                  ),
+                  style: TextStyle(fontSize: 10.w),
                   decoration: InputDecoration(
                     hintText: AppConst.posts.titlePlaceholder,
                     hintStyle: TextStyle(
@@ -987,17 +1001,15 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                   color: Theme.of(Get.context!).cardColor,
                   borderRadius: BorderRadius.circular(8.w),
                   border: Border.all(
-                    color: Theme.of(Get.context!)
-                        .primaryColor
-                        .withValues(alpha: 0.3),
+                    color: Theme.of(
+                      Get.context!,
+                    ).primaryColor.withValues(alpha: 0.3),
                   ),
                 ),
                 child: TextField(
                   controller: controller.messageController,
                   maxLines: 4,
-                  style: TextStyle(
-                    fontSize: 10.w,
-                  ),
+                  style: TextStyle(fontSize: 10.w),
                   decoration: InputDecoration(
                     hintText: AppConst.posts.messagePlaceholder,
                     hintStyle: TextStyle(
@@ -1012,47 +1024,47 @@ class UserInfoCard extends GetView<UserInfoCardController> {
               ),
               6.vGap,
               // 图片列表
-              Obx(() => Column(
-                    children: controller.uploadedImages
-                        .map((image) => Container(
-                              margin: EdgeInsets.only(bottom: 4.w),
-                              decoration: BoxDecoration(
-                                color: Theme.of(Get.context!).cardColor,
-                                borderRadius: BorderRadius.circular(4.w),
-                                border: Border.all(
-                                  color: Theme.of(Get.context!)
-                                      .dividerColor
-                                      .withValues(alpha: 0.1),
+              Obx(
+                () => Column(
+                  children: controller.uploadedImages
+                      .map(
+                        (image) => Container(
+                          margin: EdgeInsets.only(bottom: 4.w),
+                          decoration: BoxDecoration(
+                            color: Theme.of(Get.context!).cardColor,
+                            borderRadius: BorderRadius.circular(4.w),
+                            border: Border.all(
+                              color: Theme.of(
+                                Get.context!,
+                              ).dividerColor.withValues(alpha: 0.1),
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  image.originalFilename,
+                                  style: TextStyle(
+                                    fontSize: 10.w,
+                                    color: Theme.of(
+                                      Get.context!,
+                                    ).textTheme.bodyMedium?.color,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      image.originalFilename,
-                                      style: TextStyle(
-                                        fontSize: 10.w,
-                                        color: Theme.of(Get.context!)
-                                            .textTheme
-                                            .bodyMedium
-                                            ?.color,
-                                      ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () => controller.removeImage(image),
-                                    child: Icon(
-                                      CupertinoIcons.delete,
-                                      size: 16.w,
-                                    ),
-                                  ),
-                                ],
+                              GestureDetector(
+                                onTap: () => controller.removeImage(image),
+                                child: Icon(CupertinoIcons.delete, size: 16.w),
                               ),
-                            ))
-                        .toList(),
-                  )),
+                            ],
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
               6.vGap,
               // 底部工具栏
               Row(
@@ -1068,14 +1080,14 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                     ),
                   ),
                   12.hGap,
-                  Obx(() => controller.isUploading.value
-                      ? SizedBox(
-                          height: 20.w,
-                          child: DisRefreshLoading(
-                            fontSize: 8,
-                          ),
-                        )
-                      : const SizedBox()),
+                  Obx(
+                    () => controller.isUploading.value
+                        ? SizedBox(
+                            height: 20.w,
+                            child: DisRefreshLoading(fontSize: 8),
+                          )
+                        : const SizedBox(),
+                  ),
                   const Spacer(),
                   DisButton(
                     text: AppConst.posts.send,
@@ -1133,8 +1145,10 @@ class UserInfoCardController extends BaseController {
     try {
       isLoading.value = _isFirst.value;
       _coverLoading.value = !_isFirst.value;
-      final user = await apiService.getUserCard(username,
-          includePostCountFor: postCount);
+      final user = await apiService.getUserCard(
+        username,
+        includePostCountFor: postCount,
+      );
       _userInfo.value = user;
       isLoading.value = _isFirst.value = false;
       _coverLoading.value = false;
@@ -1158,7 +1172,9 @@ class UserInfoCardController extends BaseController {
     try {
       _loading.value = true;
       await apiService.endorseUserCategory(
-          '', _endorseUserCategorys.value ?? []);
+        '',
+        _endorseUserCategorys.value ?? [],
+      );
       Get.back();
 
       /// 成功后,刷新用户信息
@@ -1198,8 +1214,9 @@ class UserInfoCardController extends BaseController {
   // 生成短文件名
   String _generateShortFileName(String originalFileName) {
     final extension = originalFileName.split('.').last;
-    final timestamp =
-        DateTime.now().millisecondsSinceEpoch.toString().substring(8);
+    final timestamp = DateTime.now().millisecondsSinceEpoch
+        .toString()
+        .substring(8);
     final random = (1000 + Random().nextInt(9000)).toString();
     return 'img_${timestamp}_$random.$extension';
   }
@@ -1237,7 +1254,9 @@ class UserInfoCardController extends BaseController {
         );
 
         // 打印上传响应信息
-        l.d('Image upload response - shortUrl: ${response.shortUrl}, url: ${response.url}');
+        l.d(
+          'Image upload response - shortUrl: ${response.shortUrl}, url: ${response.url}',
+        );
 
         uploadedImages.add(response);
 
@@ -1248,7 +1267,8 @@ class UserInfoCardController extends BaseController {
         final cursorPosition = messageController.selection.baseOffset;
 
         if (cursorPosition >= 0) {
-          final newContent = currentContent.substring(0, cursorPosition) +
+          final newContent =
+              currentContent.substring(0, cursorPosition) +
               imageMarkdown +
               currentContent.substring(cursorPosition);
           messageController.text = newContent;

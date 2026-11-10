@@ -40,10 +40,12 @@ class PopularPage extends GetView<PopularController> {
               initialIndex: currentIndex,
               containerColor: Theme.of(context).cardColor,
               slidersGradients: [
-                LinearGradient(colors: [
-                  Theme.of(context).primaryColor,
-                  Theme.of(context).primaryColor.withValues(alpha: 0.6)
-                ])
+                LinearGradient(
+                  colors: [
+                    Theme.of(context).primaryColor,
+                    Theme.of(context).primaryColor.withValues(alpha: 0.6),
+                  ],
+                ),
               ],
               onSelect: (index) => controller.switchTab(index),
               children: [
@@ -83,16 +85,18 @@ class PopularPage extends GetView<PopularController> {
 
   // 构建标签文本
   Widget _buildTabText(BuildContext context, String text, int index) {
-    return Obx(() => Text(
-          text,
-          style: TextStyle(
-            fontSize: 12.sp,
-            color: controller.selectedIndex.value == index
-                ? Colors.white
-                : Theme.of(context).primaryColor,
-            fontWeight: FontWeight.w600,
-          ),
-        ));
+    return Obx(
+      () => Text(
+        text,
+        style: TextStyle(
+          fontSize: 12.sp,
+          color: controller.selectedIndex.value == index
+              ? Colors.white
+              : Theme.of(context).primaryColor,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
   }
 
   // 构建话题页面
@@ -142,8 +146,9 @@ class PopularPage extends GetView<PopularController> {
     final color = c != null
         ? Color(int.parse(c)).withValues(alpha: 0.6)
         : Theme.of(context).primaryColor.withValues(alpha: 0.6);
-    final textColor =
-        tc != null ? Color(int.parse(tc)) : Theme.of(context).primaryColor;
+    final textColor = tc != null
+        ? Color(int.parse(tc))
+        : Theme.of(context).primaryColor;
 
     return GestureDetector(
       onTap: () {
@@ -200,7 +205,9 @@ class PopularPage extends GetView<PopularController> {
                         if (category != null)
                           Container(
                             padding: EdgeInsets.symmetric(
-                                horizontal: 8.w, vertical: 4.w),
+                              horizontal: 8.w,
+                              vertical: 4.w,
+                            ),
                             decoration: BoxDecoration(
                               color: color,
                               borderRadius: BorderRadius.circular(4.w),
@@ -240,8 +247,9 @@ class PopularPage extends GetView<PopularController> {
                             style: TextStyle(
                               fontSize: 11.sp,
                               fontFamily: AppFontFamily.dinPro,
-                              color:
-                                  Theme.of(context).textTheme.bodySmall?.color,
+                              color: Theme.of(
+                                context,
+                              ).textTheme.bodySmall?.color,
                             ),
                           ),
                         ),
@@ -252,8 +260,9 @@ class PopularPage extends GetView<PopularController> {
                             Icon(
                               CupertinoIcons.heart_circle,
                               size: 14.w,
-                              color:
-                                  Theme.of(context).textTheme.bodyMedium?.color,
+                              color: Theme.of(
+                                context,
+                              ).textTheme.bodyMedium?.color,
                             ),
                             4.hGap,
                             Text(
@@ -261,10 +270,9 @@ class PopularPage extends GetView<PopularController> {
                               style: TextStyle(
                                 fontSize: 12.sp,
                                 fontFamily: AppFontFamily.dinPro,
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.color,
+                                color: Theme.of(
+                                  context,
+                                ).textTheme.bodyMedium?.color,
                               ),
                             ),
                           ],
@@ -278,8 +286,9 @@ class PopularPage extends GetView<PopularController> {
                             Icon(
                               CupertinoIcons.chat_bubble_text,
                               size: 14.w,
-                              color:
-                                  Theme.of(context).textTheme.bodyMedium?.color,
+                              color: Theme.of(
+                                context,
+                              ).textTheme.bodyMedium?.color,
                             ),
                             4.hGap,
                             Text(
@@ -287,16 +296,15 @@ class PopularPage extends GetView<PopularController> {
                               style: TextStyle(
                                 fontSize: 12.sp,
                                 fontFamily: AppFontFamily.dinPro,
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.color,
+                                color: Theme.of(
+                                  context,
+                                ).textTheme.bodyMedium?.color,
                               ),
                             ),
                           ],
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -392,11 +400,9 @@ class PopularPage extends GetView<PopularController> {
                   Icon(
                     CupertinoIcons.link,
                     size: 14.w,
-                    color: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.color
-                        ?.withValues(alpha: 0.7),
+                    color: Theme.of(
+                      context,
+                    ).textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
                   ),
                   6.hGap,
                   Text(
@@ -404,21 +410,21 @@ class PopularPage extends GetView<PopularController> {
                     style: TextStyle(
                       fontSize: 10.sp,
                       fontFamily: AppFontFamily.dinPro,
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.color
-                          ?.withValues(alpha: 0.7),
+                      color: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
                     ),
                   ),
                   const Spacer(),
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 3)
-                            .w,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 3,
+                    ).w,
                     decoration: BoxDecoration(
-                      color:
-                          Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                      color: Theme.of(
+                        context,
+                      ).primaryColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12).w,
                     ),
                     child: Row(
@@ -545,10 +551,7 @@ class PopularPage extends GetView<PopularController> {
               if (excerpt.isNotEmpty)
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  child: HtmlWidget(
-                    html: excerpt,
-                    fontSize: 13,
-                  ),
+                  child: HtmlWidget(html: excerpt, fontSize: 13),
                 ),
 
               // 底部信息栏
@@ -571,7 +574,9 @@ class PopularPage extends GetView<PopularController> {
                     if (likeCount > 0)
                       Container(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 8.w, vertical: 3.w),
+                          horizontal: 8.w,
+                          vertical: 3.w,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.red.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(12).w,
@@ -650,22 +655,19 @@ class PopularPage extends GetView<PopularController> {
 
     final logoUrl = categoryItem?.logo?.imageUrl;
     final tc = categoryItem?.textColor;
-    final textColor =
-        tc != null ? Color(int.parse(tc)) : Theme.of(context).primaryColor;
+    final textColor = tc != null
+        ? Color(int.parse(tc))
+        : Theme.of(context).primaryColor;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12).w,
       elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4).w,
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4).w),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: () {},
         child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-          ),
+          decoration: BoxDecoration(color: Theme.of(context).cardColor),
           padding: const EdgeInsets.all(12).w,
           child: Row(
             children: [
@@ -845,12 +847,10 @@ class PopularPage extends GetView<PopularController> {
                 height: 120.w,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        badgeColor,
-                        badgeColor.withValues(alpha: 0.6),
-                      ]),
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [badgeColor, badgeColor.withValues(alpha: 0.6)],
+                  ),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(16.w),
                     topRight: Radius.circular(16.w),
@@ -936,7 +936,9 @@ class PopularPage extends GetView<PopularController> {
                         badge.longDescription!.isNotEmpty) ...[
                       8.vGap,
                       HtmlWidget(
-                          html: badge.longDescription!, onLinkTap: (url) {})
+                        html: badge.longDescription!,
+                        onLinkTap: (url) {},
+                      ),
                     ],
                     16.vGap,
                     Row(

@@ -1,5 +1,6 @@
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart' hide Category;
-import 'package:emoji_picker_flutter/emoji_picker_flutter.dart' as emoji
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart'
+    as emoji
     show Category;
 import 'package:flutter/foundation.dart';
 
@@ -60,10 +61,7 @@ class CustomEmojiGroup {
   final String group;
   final List<CustomEmojiData> emojis;
 
-  CustomEmojiGroup({
-    required this.group,
-    required this.emojis,
-  });
+  CustomEmojiGroup({required this.group, required this.emojis});
 
   factory CustomEmojiGroup.fromJson(String group, List<dynamic> json) {
     try {
@@ -71,11 +69,7 @@ class CustomEmojiGroup {
         group: group,
         emojis: json.map((e) {
           if (e is! Map<String, dynamic>) {
-            return CustomEmojiData(
-              name: 'invalid',
-              url: '',
-              group: group,
-            );
+            return CustomEmojiData(name: 'invalid', url: '', group: group);
           }
           return CustomEmojiData.fromJson(e);
         }).toList(),

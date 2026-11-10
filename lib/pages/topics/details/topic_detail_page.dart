@@ -71,14 +71,15 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
               right: controller.isReplying.value ? -50.w : 16.w,
               bottom: MediaQuery.of(context).padding.bottom + 16.w,
               child: PostsSelector(
-                  postsCount: postsCount,
-                  currentIndex: controller.currentPostIndex.value,
-                  controller: controller,
-                  onIndexChanged: (index) {
-                    if (!controller.isLoading.value) {
-                      controller.scrollToPost(index);
-                    }
-                  }),
+                postsCount: postsCount,
+                currentIndex: controller.currentPostIndex.value,
+                controller: controller,
+                onIndexChanged: (index) {
+                  if (!controller.isLoading.value) {
+                    controller.scrollToPost(index);
+                  }
+                },
+              ),
             );
           }),
         ],
@@ -102,47 +103,50 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
       scrolledUnderElevation: 0.0,
       centerTitle: false,
       leading: IconButton(
-        icon: Icon(
-          CupertinoIcons.chevron_left_circle,
-          size: 24.w,
-        ),
+        icon: Icon(CupertinoIcons.chevron_left_circle, size: 24.w),
         onPressed: () => Get.back(),
       ),
       title: _buildHeader(context),
       actions: [
-        Obx(() => AnimatedOpacity(
-              duration: const Duration(milliseconds: 300),
-              opacity: controller.isBlinking.value ? 1.0 : 0.0,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 800),
-                margin: const EdgeInsets.symmetric(horizontal: 8),
-                width: 8.w,
-                height: 8.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: controller.updateSuccess.value
-                      ? Colors.green.withValues(
-                          alpha: controller.isBlinking.value ? 0.3 : 1.0)
-                      : Colors.red.withValues(
-                          alpha: controller.isBlinking.value ? 0.3 : 1.0),
-                ),
+        Obx(
+          () => AnimatedOpacity(
+            duration: const Duration(milliseconds: 300),
+            opacity: controller.isBlinking.value ? 1.0 : 0.0,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 800),
+              margin: const EdgeInsets.symmetric(horizontal: 8),
+              width: 8.w,
+              height: 8.w,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: controller.updateSuccess.value
+                    ? Colors.green.withValues(
+                        alpha: controller.isBlinking.value ? 0.3 : 1.0,
+                      )
+                    : Colors.red.withValues(
+                        alpha: controller.isBlinking.value ? 0.3 : 1.0,
+                      ),
               ),
-            )),
+            ),
+          ),
+        ),
         Get.find<GlobalController>().isAnonymousMode
             ? const SizedBox.shrink()
             : MoreMenu(controller: controller),
         Get.find<GlobalController>().isAnonymousMode
             ? const SizedBox.shrink()
             : IconButton(
-                icon: Obx(() => Icon(
-                      controller.isFooderVisible.value
-                          ? CupertinoIcons.chevron_up_circle
-                          : CupertinoIcons.chevron_down_circle,
-                    )),
+                icon: Obx(
+                  () => Icon(
+                    controller.isFooderVisible.value
+                        ? CupertinoIcons.chevron_up_circle
+                        : CupertinoIcons.chevron_down_circle,
+                  ),
+                ),
                 onPressed: () {
                   controller.isFooderVisible.toggle();
                 },
-              )
+              ),
       ],
     );
   }
@@ -156,59 +160,66 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
       children: [
         Positioned.fill(
           bottom: controller.isReplying.value ? 380.w : 0,
-          child: Obx(() => ScrollablePositionedList.builder(
-                padding: const EdgeInsets.only(bottom: 20).w,
-                key: PageStorageKey('topic_detail_${topic.id}'),
-                itemScrollController: controller.itemScrollController,
-                itemPositionsListener: controller.itemPositionsListener,
-                initialScrollIndex: controller.initialScrollIndex.value,
-                physics: const AlwaysScrollableScrollPhysics(),
-                itemCount: controller.replyTree.length + 2,
-                minCacheExtent: 300,
-                addAutomaticKeepAlives: false,
-                addRepaintBoundaries: false,
-                itemBuilder: (context, index) {
-                  // 头部加载指示器
-                  if (index == 0) {
-                    return Obx(() => controller.hasPrevious.value &&
+          child: Obx(
+            () => ScrollablePositionedList.builder(
+              padding: const EdgeInsets.only(bottom: 20).w,
+              key: PageStorageKey('topic_detail_${topic.id}'),
+              itemScrollController: controller.itemScrollController,
+              itemPositionsListener: controller.itemPositionsListener,
+              initialScrollIndex: controller.initialScrollIndex.value,
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemCount: controller.replyTree.length + 2,
+              minCacheExtent: 300,
+              addAutomaticKeepAlives: false,
+              addRepaintBoundaries: false,
+              itemBuilder: (context, index) {
+                // 头部加载指示器
+                if (index == 0) {
+                  return Obx(
+                    () =>
+                        controller.hasPrevious.value &&
                             !controller.isLoading.value
                         ? Container(
                             padding: const EdgeInsets.symmetric(vertical: 10).w,
                             alignment: Alignment.center,
-                            child: DisRefreshLoading())
-                        : const SizedBox());
-                  }
+                            child: DisRefreshLoading(),
+                          )
+                        : const SizedBox(),
+                  );
+                }
 
-                  // 底部加载指示器
-                  if (index == controller.replyTree.length + 1) {
-                    return Obx(() => controller.hasMore.value &&
-                            !controller.isLoading.value
+                // 底部加载指示器
+                if (index == controller.replyTree.length + 1) {
+                  return Obx(
+                    () =>
+                        controller.hasMore.value && !controller.isLoading.value
                         ? Container(
                             padding: const EdgeInsets.symmetric(vertical: 10).w,
                             alignment: Alignment.center,
-                            child: DisRefreshLoading())
-                        : const SizedBox());
-                  }
+                            child: DisRefreshLoading(),
+                          )
+                        : const SizedBox(),
+                  );
+                }
 
-                  // 帖子内容
-                  if (controller.isLoading.value ||
-                      index - 1 >= controller.replyTree.length) {
-                    return const SizedBox();
-                  }
+                // 帖子内容
+                if (controller.isLoading.value ||
+                    index - 1 >= controller.replyTree.length) {
+                  return const SizedBox();
+                }
 
-                  final node = controller.replyTree[index - 1];
-                  return _buildPostItem(context, node);
-                },
-              )),
+                final node = controller.replyTree[index - 1];
+                return _buildPostItem(context, node);
+              },
+            ),
+          ),
         ),
         AnimatedPositioned(
           duration: const Duration(milliseconds: 500),
           top: controller.isFooderVisible.value ? 0.w : -200.w,
           left: 0,
           right: 0,
-          child: Container(
-            child: _buildExpand(context, topic),
-          ),
+          child: Container(child: _buildExpand(context, topic)),
         ),
         // 回复输入框
         Obx(() {
@@ -259,12 +270,13 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
                     right: 0,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 4)
-                          .w,
+                        horizontal: 10,
+                        vertical: 4,
+                      ).w,
                       decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .primaryColor
-                            .withValues(alpha: 0.1),
+                        color: Theme.of(
+                          context,
+                        ).primaryColor.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.only(
                           topRight: const Radius.circular(12).w,
                           bottomLeft: const Radius.circular(12).w,
@@ -289,16 +301,20 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
                             onTap: () {
                               if (node.post.replyToPostNumber != null) {
                                 controller.scrollToPost(
-                                    node.post.replyToPostNumber! - 1);
+                                  node.post.replyToPostNumber! - 1,
+                                );
                               }
                             },
                             child: PostReply(
-                                post: node.post, controller: controller),
+                              post: node.post,
+                              controller: controller,
+                            ),
                           ),
                         )
                       : const SizedBox(),
                   node.post.isForumMaster(
-                              controller.topic.value?.userId ?? 0) &&
+                            controller.topic.value?.userId ?? 0,
+                          ) &&
                           node.post.postType == 1
                       ? Positioned(
                           bottom: 14.w,
@@ -306,15 +322,16 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
                           child: OwnerBanner(
                             onTap: () {
                               controller.startReply(
-                                  node.post.postNumber,
-                                  node.post.cooked,
-                                  node.post.name?.isEmpty ?? true
-                                      ? node.post.username
-                                      : node.post.name);
+                                node.post.postNumber,
+                                node.post.cooked,
+                                node.post.name?.isEmpty ?? true
+                                    ? node.post.username
+                                    : node.post.name,
+                              );
                             },
                           ),
                         )
-                      : const SizedBox()
+                      : const SizedBox(),
                 ],
               ),
             ),
@@ -348,15 +365,14 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
         children: [
           EmojiText(
             topic.title ?? '',
-            style: theme.textTheme.titleMedium
-                ?.copyWith(fontSize: 10.sp, fontFamily: AppFontFamily.dinPro),
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontSize: 10.sp,
+              fontFamily: AppFontFamily.dinPro,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 6, top: 4).w,
-            child: Divider(
-              height: 1.h,
-              color: theme.dividerColor,
-            ),
+            child: Divider(height: 1.h, color: theme.dividerColor),
           ),
           Row(
             children: [
@@ -385,14 +401,15 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
                           ? createUser?.username ?? ''
                           : createUser?.name ?? '',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                          fontSize: 10.sp,
-                          fontFamily: AppFontFamily.dinPro,
-                          color: createUser?.isWebMaster() ?? false
-                              ? Theme.of(context).primaryColor
-                              : theme.textTheme.bodyMedium?.color,
-                          fontWeight: createUser?.isWebMaster() ?? false
-                              ? FontWeight.bold
-                              : FontWeight.normal),
+                        fontSize: 10.sp,
+                        fontFamily: AppFontFamily.dinPro,
+                        color: createUser?.isWebMaster() ?? false
+                            ? Theme.of(context).primaryColor
+                            : theme.textTheme.bodyMedium?.color,
+                        fontWeight: createUser?.isWebMaster() ?? false
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                      ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -461,23 +478,24 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
                   fontSize: 12.w,
                   onPressed: () {
                     controller.startReply(
-                        null, topic.title, topic.details?.createdBy?.username);
+                      null,
+                      topic.title,
+                      topic.details?.createdBy?.username,
+                    );
                   },
                 ),
-              )
+              ),
             ],
           ),
           if (topic.details?.links?.isNotEmpty ?? false) ...[
             Padding(
               padding: const EdgeInsets.only(bottom: 6, top: 4).w,
-              child: Divider(
-                height: 1.h,
-                color: theme.dividerColor,
-              ),
+              child: Divider(height: 1.h, color: theme.dividerColor),
             ),
             SizedBox(
-              height:
-                  calculateLinkListHeight(topic.details?.links?.length ?? 0),
+              height: calculateLinkListHeight(
+                topic.details?.links?.length ?? 0,
+              ),
               child: ListView.builder(
                 padding: EdgeInsets.zero,
                 itemCount: topic.details?.links?.length ?? 0,
@@ -497,8 +515,9 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
                           child: Text(
                             link?.title ?? link?.url ?? '',
                             style: theme.textTheme.bodyMedium?.copyWith(
-                                fontSize: 10.sp,
-                                fontFamily: AppFontFamily.dinPro),
+                              fontSize: 10.sp,
+                              fontFamily: AppFontFamily.dinPro,
+                            ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -507,8 +526,9 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
                         Text(
                           link?.clicks?.toString() ?? '',
                           style: theme.textTheme.bodyMedium?.copyWith(
-                              fontSize: 10.sp,
-                              fontFamily: AppFontFamily.dinPro),
+                            fontSize: 10.sp,
+                            fontFamily: AppFontFamily.dinPro,
+                          ),
                         ),
                       ],
                     ),
@@ -557,9 +577,7 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
                   size: 18.w,
                   color: theme.hintColor,
                 ),
-                style: IconButton.styleFrom(
-                  padding: EdgeInsets.all(4.w),
-                ),
+                style: IconButton.styleFrom(padding: EdgeInsets.all(4.w)),
               ),
             ],
           ),
@@ -583,8 +601,11 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
                 children: [
                   Row(
                     children: [
-                      Icon(CupertinoIcons.reply,
-                          size: 16.sp, color: theme.hintColor),
+                      Icon(
+                        CupertinoIcons.reply,
+                        size: 16.sp,
+                        color: theme.hintColor,
+                      ),
                       8.hGap,
                       RichText(
                         text: TextSpan(
@@ -670,20 +691,18 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
                     textInputAction: TextInputAction.newline,
-                    style: TextStyle(
-                      fontSize: 11.w,
-                      height: 1.4,
-                    ),
+                    style: TextStyle(fontSize: 11.w, height: 1.4),
                     decoration: InputDecoration(
-                        hintText: AppConst.posts.replyPlaceholder,
-                        hintStyle: TextStyle(
-                          fontSize: 13.w,
-                          color: theme.hintColor.withValues(alpha: 0.3),
-                        ),
-                        contentPadding: const EdgeInsets.all(10).w,
-                        border: InputBorder.none,
-                        isDense: true,
-                        fillColor: AppColors.transparent),
+                      hintText: AppConst.posts.replyPlaceholder,
+                      hintStyle: TextStyle(
+                        fontSize: 13.w,
+                        color: theme.hintColor.withValues(alpha: 0.3),
+                      ),
+                      contentPadding: const EdgeInsets.all(10).w,
+                      border: InputBorder.none,
+                      isDense: true,
+                      fillColor: AppColors.transparent,
+                    ),
                   ),
                 ),
 
@@ -742,24 +761,27 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
 
                 16.vGap,
                 // 发送按钮
-                Obx(() => AnimatedScale(
-                      scale: controller.replyContent.value.isEmpty ? 0.8 : 1.0,
+                Obx(
+                  () => AnimatedScale(
+                    scale: controller.replyContent.value.isEmpty ? 0.8 : 1.0,
+                    duration: const Duration(milliseconds: 200),
+                    child: AnimatedOpacity(
+                      opacity: controller.replyContent.value.isEmpty ? 0 : 1,
                       duration: const Duration(milliseconds: 200),
-                      child: AnimatedOpacity(
-                        opacity: controller.replyContent.value.isEmpty ? 0 : 1,
-                        duration: const Duration(milliseconds: 200),
-                        child: SizedBox(
-                          width: double.infinity,
-                          height: 40.w,
-                          child: DisButton(
-                              text: AppConst.posts.send,
-                              onPressed: controller.sendReply,
-                              type: ButtonType.transform,
-                              useWidthAnimation: true,
-                              loading: controller.isSending.value),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 40.w,
+                        child: DisButton(
+                          text: AppConst.posts.send,
+                          onPressed: controller.sendReply,
+                          type: ButtonType.transform,
+                          useWidthAnimation: true,
+                          loading: controller.isSending.value,
                         ),
                       ),
-                    )),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -780,43 +802,43 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
   }
 
   Widget _buildMenus(BuildContext context) => Row(
-        children: [
-          controller.isUploading.value
-              ? Center(
-                  child: SizedBox(
-                    width: 18.w,
-                    height: 18.w,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 1.5,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Theme.of(context).primaryColor,
-                      ),
-                    ),
+    children: [
+      controller.isUploading.value
+          ? Center(
+              child: SizedBox(
+                width: 18.w,
+                height: 18.w,
+                child: CircularProgressIndicator(
+                  strokeWidth: 1.5,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).primaryColor,
                   ),
-                )
-              : IconButton(
-                  onPressed: controller.pickAndUploadImage,
-                  icon: Icon(
-                    CupertinoIcons.camera_fill,
-                    color: Theme.of(context).primaryColor,
-                    size: 18.w,
-                  ),
-                  padding: EdgeInsets.zero,
-                  constraints: BoxConstraints(minWidth: 40.w, minHeight: 40.w),
                 ),
-          // 表情切换
-          IconButton(
-            icon: Icon(
-              CupertinoIcons.smiley_fill,
-              color: Theme.of(context).primaryColor,
-              size: 18.w,
+              ),
+            )
+          : IconButton(
+              onPressed: controller.pickAndUploadImage,
+              icon: Icon(
+                CupertinoIcons.camera_fill,
+                color: Theme.of(context).primaryColor,
+                size: 18.w,
+              ),
+              padding: EdgeInsets.zero,
+              constraints: BoxConstraints(minWidth: 40.w, minHeight: 40.w),
             ),
-            onPressed: () {
-              controller.toggleEmojiPicker();
-            },
-          )
-        ],
-      );
+      // 表情切换
+      IconButton(
+        icon: Icon(
+          CupertinoIcons.smiley_fill,
+          color: Theme.of(context).primaryColor,
+          size: 18.w,
+        ),
+        onPressed: () {
+          controller.toggleEmojiPicker();
+        },
+      ),
+    ],
+  );
 
   // 计算链接列表的高度，基于条目数量
   double calculateLinkListHeight(int linkCount) {
@@ -831,7 +853,10 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
 
   // 根据Post_type 分别展示不同的楼层内容
   Widget buildPostContent(
-      Post post, TopicDetailController controller, BuildContext context) {
+    Post post,
+    TopicDetailController controller,
+    BuildContext context,
+  ) {
     /**
      *  1：普通帖子（Regular Post）
         2：版主操作帖子（Moderator Post）
@@ -842,9 +867,10 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
     switch (post.postType) {
       case 3:
         return PostContentAction(
-            post: post,
-            controller: controller,
-            title: controller.topic.value?.title);
+          post: post,
+          controller: controller,
+          title: controller.topic.value?.title,
+        );
       default:
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -853,10 +879,7 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
             PostHeader(post: post, title: controller.topic.value?.title),
             2.vGap,
             PostContent(post: post, isReply: false, controller: controller),
-            Divider(
-              height: 1.h,
-              color: Theme.of(context).dividerColor,
-            ),
+            Divider(height: 1.h, color: Theme.of(context).dividerColor),
             12.vGap,
             if (post.replyCount != null && post.replyCount! > 0) ...[
               ReplayList(controller: controller, post: post),

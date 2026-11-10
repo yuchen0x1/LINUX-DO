@@ -48,8 +48,9 @@ class Tag {
   // 从 JSON 文件加载所有标签并初始化颜色
   static Future<void> init() async {
     try {
-      final String jsonString =
-          await rootBundle.loadString('assets/json/tags.json');
+      final String jsonString = await rootBundle.loadString(
+        'assets/json/tags.json',
+      );
       final Map<String, dynamic> jsonData = json.decode(jsonString);
       final List<dynamic> tags = jsonData['tags'];
 
@@ -72,10 +73,7 @@ class TagColor {
   final Color textColor;
   final Color backgroundColor;
 
-  const TagColor({
-    required this.textColor,
-    required this.backgroundColor,
-  });
+  const TagColor({required this.textColor, required this.backgroundColor});
 }
 
 class CategoryManager {
@@ -91,8 +89,9 @@ class CategoryManager {
       return;
     }
     try {
-      final String jsonString =
-          await rootBundle.loadString('assets/json/category.json');
+      final String jsonString = await rootBundle.loadString(
+        'assets/json/category.json',
+      );
       final List<dynamic> jsonList = json.decode(jsonString);
 
       for (var item in jsonList) {
@@ -135,8 +134,9 @@ class BadgeManager {
     if (_badges.isNotEmpty) return;
 
     try {
-      final String jsonString =
-          await rootBundle.loadString('assets/json/badge.json');
+      final String jsonString = await rootBundle.loadString(
+        'assets/json/badge.json',
+      );
       final List<dynamic> jsonList = json.decode(jsonString);
       for (var item in jsonList) {
         final badge = BadgeDetail(

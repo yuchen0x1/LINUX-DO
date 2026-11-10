@@ -40,8 +40,8 @@ class TopicContent extends StatelessWidget {
     final spacing = density == ListDensity.compact
         ? 2.0
         : density == ListDensity.normal
-            ? 4.0
-            : 8.0;
+        ? 4.0
+        : 8.0;
 
     return Stack(
       children: [
@@ -116,7 +116,7 @@ class TopicContent extends StatelessWidget {
               ),
             ),
           ],
-        )
+        ),
       ],
     );
   }

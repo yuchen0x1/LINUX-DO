@@ -66,9 +66,7 @@ class CreatePostPage extends GetView<CreatePostController> {
       ),
       body: Column(
         children: [
-          Expanded(
-            child: _buildPostContent(context),
-          ),
+          Expanded(child: _buildPostContent(context)),
           _buildBottomToolbar(context),
         ],
       ),
@@ -112,11 +110,9 @@ class CreatePostPage extends GetView<CreatePostController> {
                       fillColor: AppColors.transparent,
                       hintStyle: TextStyle(
                         fontSize: 14.w,
-                        color: Theme.of(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.color
-                            ?.withValues(alpha: .3),
+                        color: Theme.of(
+                          context,
+                        ).textTheme.bodyMedium?.color?.withValues(alpha: .3),
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -135,51 +131,56 @@ class CreatePostPage extends GetView<CreatePostController> {
                 // 帖子内容输入区
                 Expanded(
                   child: TextField(
-                      controller: controller.contentController,
-                      maxLines: null,
-                      maxLength: 2000,
-                      focusNode: controller.contentFocusNode,
-                      style: TextStyle(
+                    controller: controller.contentController,
+                    maxLines: null,
+                    maxLength: 2000,
+                    focusNode: controller.contentFocusNode,
+                    style: TextStyle(
+                      fontSize: 13.w,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
+                      fontFamily: AppFontFamily.dinPro,
+                      fontWeight: FontWeight.w600,
+                      height: 1,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: "提问、回复请记得：真诚、友善、团结、专业，共建你我引以为荣之社区。",
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.only(
+                        left: 30,
+                        right: 12,
+                      ).w,
+                      fillColor: AppColors.transparent,
+                      hintStyle: TextStyle(
                         fontSize: 13.w,
-                        color: Theme.of(context).textTheme.bodyMedium?.color,
-                        fontFamily: AppFontFamily.dinPro,
-                        fontWeight: FontWeight.w600,
-                        height: 1,
+                        color: Theme.of(
+                          context,
+                        ).textTheme.bodyMedium?.color?.withValues(alpha: .3),
+                        fontWeight: FontWeight.w400,
                       ),
-                      decoration: InputDecoration(
-                        hintText: "提问、回复请记得：真诚、友善、团结、专业，共建你我引以为荣之社区。",
-                        border: InputBorder.none,
-                        contentPadding:
-                            const EdgeInsets.only(left: 30, right: 12).w,
-                        fillColor: AppColors.transparent,
-                        hintStyle: TextStyle(
-                          fontSize: 13.w,
-                          color: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.color
-                              ?.withValues(alpha: .3),
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      buildCounter: (context,
-                          {required int currentLength,
+                    ),
+                    buildCounter:
+                        (
+                          context, {
+                          required int currentLength,
                           required int? maxLength,
-                          required bool isFocused}) {
-                        if (maxLength == null) return null;
-                        final color = currentLength > maxLength * 0.9
-                            ? Colors.red
-                            : currentLength > maxLength * 0.7
-                                ? Colors.orange
-                                : Colors.grey;
-                        return Text(
-                          '$currentLength/$maxLength',
-                          style: TextStyle(
+                          required bool isFocused,
+                        }) {
+                          if (maxLength == null) return null;
+                          final color = currentLength > maxLength * 0.9
+                              ? Colors.red
+                              : currentLength > maxLength * 0.7
+                              ? Colors.orange
+                              : Colors.grey;
+                          return Text(
+                            '$currentLength/$maxLength',
+                            style: TextStyle(
                               color: color,
                               fontSize: 11.w,
-                              fontFamily: AppFontFamily.dinPro),
-                        );
-                      }),
+                              fontFamily: AppFontFamily.dinPro,
+                            ),
+                          );
+                        },
+                  ),
                 ),
               ],
             ),
@@ -193,7 +194,11 @@ class CreatePostPage extends GetView<CreatePostController> {
             return Container(
               height: 60.w,
               margin: EdgeInsets.only(
-                  left: 12.w, right: 12.w, bottom: 16.w, top: 20.w),
+                left: 12.w,
+                right: 12.w,
+                bottom: 16.w,
+                top: 20.w,
+              ),
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemCount: controller.uploadedImages.length,
@@ -269,108 +274,104 @@ class CreatePostPage extends GetView<CreatePostController> {
   }
 
   Widget _buildMenus(BuildContext context) => Obx(() {
-        return Container(
-          padding: EdgeInsets.only(
-                  left: 12,
-                  right: 12,
-                  bottom: controller.isShowEmojiPicker.value ||
-                          controller.isShowKeyboard.value
-                      ? 0
-                      : 26)
-              .w,
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            border: Border(
-              top: BorderSide(
-                color: Theme.of(context).dividerColor,
-                width: 0.5,
-              ),
+    return Container(
+      padding: EdgeInsets.only(
+        left: 12,
+        right: 12,
+        bottom:
+            controller.isShowEmojiPicker.value ||
+                controller.isShowKeyboard.value
+            ? 0
+            : 26,
+      ).w,
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        border: Border(
+          top: BorderSide(color: Theme.of(context).dividerColor, width: 0.5),
+        ),
+      ),
+      child: Row(
+        children: [
+          controller.isUploading.value
+              ? Center(
+                  child: SizedBox(
+                    width: 18.w,
+                    height: 18.w,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 1.5,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ),
+                )
+              : IconButton(
+                  onPressed: controller.pickAndUploadImage,
+                  icon: Icon(
+                    CupertinoIcons.camera_fill,
+                    color: Theme.of(context).primaryColor,
+                    size: 18.w,
+                  ),
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(minWidth: 40.w, minHeight: 40.w),
+                ),
+          // 分类按钮
+          IconButton(
+            onPressed: () {
+              _showCategoryPicker(context);
+            },
+            icon: Icon(
+              CupertinoIcons.square_grid_2x2_fill,
+              color: Theme.of(context).primaryColor,
+              size: 18.w,
             ),
+            padding: EdgeInsets.zero,
+            constraints: BoxConstraints(minWidth: 40.w, minHeight: 40.w),
           ),
-          child: Row(
-            children: [
-              controller.isUploading.value
-                  ? Center(
-                      child: SizedBox(
-                        width: 18.w,
-                        height: 18.w,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 1.5,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            Theme.of(context).primaryColor,
-                          ),
-                        ),
-                      ),
-                    )
-                  : IconButton(
-                      onPressed: controller.pickAndUploadImage,
-                      icon: Icon(
-                        CupertinoIcons.camera_fill,
-                        color: Theme.of(context).primaryColor,
-                        size: 18.w,
-                      ),
-                      padding: EdgeInsets.zero,
-                      constraints:
-                          BoxConstraints(minWidth: 40.w, minHeight: 40.w),
-                    ),
-              // 分类按钮
-              IconButton(
-                onPressed: () {
-                  _showCategoryPicker(context);
-                },
-                icon: Icon(
-                  CupertinoIcons.square_grid_2x2_fill,
-                  color: Theme.of(context).primaryColor,
-                  size: 18.w,
+          // tag按钮
+          controller.selectedCategoryName.value == null
+              ? const SizedBox.shrink()
+              : IconButton(
+                  onPressed: () {
+                    _showTagPicker(context);
+                  },
+                  icon: Icon(
+                    CupertinoIcons.tag_circle_fill,
+                    color: Theme.of(context).primaryColor,
+                    size: 18.w,
+                  ),
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(minWidth: 40.w, minHeight: 40.w),
                 ),
-                padding: EdgeInsets.zero,
-                constraints: BoxConstraints(minWidth: 40.w, minHeight: 40.w),
-              ),
-              // tag按钮
-              controller.selectedCategoryName.value == null
-                  ? const SizedBox.shrink()
-                  : IconButton(
-                      onPressed: () {
-                        _showTagPicker(context);
-                      },
-                      icon: Icon(
-                        CupertinoIcons.tag_circle_fill,
-                        color: Theme.of(context).primaryColor,
-                        size: 18.w,
-                      ),
-                      padding: EdgeInsets.zero,
-                      constraints:
-                          BoxConstraints(minWidth: 40.w, minHeight: 40.w),
-                    ),
-              // 预览
-              IconButton(
-                onPressed: () {
-                  controller.togglePreview();
-                },
-                icon: Icon(
-                  CupertinoIcons.eye_fill,
-                  color: Theme.of(context).primaryColor,
-                  size: 18.w,
-                ),
-                padding: EdgeInsets.zero,
-                constraints: BoxConstraints(minWidth: 40.w, minHeight: 40.w),
-              ),
-              const Spacer(),
-              // 表情切换
-              IconButton(
-                icon: Icon(
-                  CupertinoIcons.smiley_fill,
-                  color: Theme.of(context).primaryColor,
-                  size: 18.w,
-                ),
-                onPressed: () {
-                  controller.toggleEmojiPicker();
-                },
-              )
-            ],
+          // 预览
+          IconButton(
+            onPressed: () {
+              controller.togglePreview();
+            },
+            icon: Icon(
+              CupertinoIcons.eye_fill,
+              color: Theme.of(context).primaryColor,
+              size: 18.w,
+            ),
+            padding: EdgeInsets.zero,
+            constraints: BoxConstraints(minWidth: 40.w, minHeight: 40.w),
           ),
-        );
-      });
+          const Spacer(),
+          // 表情切换
+          IconButton(
+            icon: Icon(
+              CupertinoIcons.smiley_fill,
+              color: Theme.of(context).primaryColor,
+              size: 18.w,
+            ),
+            onPressed: () {
+              controller.toggleEmojiPicker();
+            },
+          ),
+        ],
+      ),
+    );
+  });
 
   Padding _buildCategoryAndTags(BuildContext context) {
     return Padding(
@@ -391,54 +392,57 @@ class CreatePostPage extends GetView<CreatePostController> {
                   ),
           ),
           4.vGap,
-          Obx(() => SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: controller.tags.isEmpty
-                    ? const SizedBox.shrink()
-                    : Row(
-                        children: controller.tags.map((tag) {
-                          final color = Tag.getTagColors(tag);
-                          return Container(
-                            margin: EdgeInsets.only(right: 8.w),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 6.w, vertical: 2.w),
-                            decoration: BoxDecoration(
+          Obx(
+            () => SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: controller.tags.isEmpty
+                  ? const SizedBox.shrink()
+                  : Row(
+                      children: controller.tags.map((tag) {
+                        final color = Tag.getTagColors(tag);
+                        return Container(
+                          margin: EdgeInsets.only(right: 8.w),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 6.w,
+                            vertical: 2.w,
+                          ),
+                          decoration: BoxDecoration(
+                            color: color.backgroundColor,
+                            border: Border.all(
                               color: color.backgroundColor,
-                              border: Border.all(
-                                color: color.backgroundColor,
-                                width: 0.5,
+                              width: 0.5,
+                            ),
+                            borderRadius: BorderRadius.circular(4.w),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                tag,
+                                style: TextStyle(
+                                  fontSize: 10.w,
+                                  color: color.textColor,
+                                  fontFamily: AppFontFamily.dinPro,
+                                ),
                               ),
-                              borderRadius: BorderRadius.circular(4.w),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  tag,
-                                  style: TextStyle(
-                                    fontSize: 10.w,
-                                    color: color.textColor,
-                                    fontFamily: AppFontFamily.dinPro,
-                                  ),
+                              4.hGap,
+                              InkWell(
+                                onTap: () => controller.removeTag(tag),
+                                child: Icon(
+                                  CupertinoIcons.xmark,
+                                  size: 10.w,
+                                  color: Theme.of(
+                                    context,
+                                  ).textTheme.bodyMedium?.color,
                                 ),
-                                4.hGap,
-                                InkWell(
-                                  onTap: () => controller.removeTag(tag),
-                                  child: Icon(
-                                    CupertinoIcons.xmark,
-                                    size: 10.w,
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.color,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }).toList(),
-                      ),
-              ))
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    ),
+            ),
+          ),
         ],
       ),
     );
@@ -473,9 +477,11 @@ class CreatePostPage extends GetView<CreatePostController> {
                       ),
                     ),
                     IconButton(
-                      icon: Icon(CupertinoIcons.chevron_down,
-                          size: 16.w,
-                          color: Theme.of(context).textTheme.bodyMedium?.color),
+                      icon: Icon(
+                        CupertinoIcons.chevron_down,
+                        size: 16.w,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
+                      ),
                       onPressed: () => Navigator.pop(context),
                     ),
                   ],
@@ -497,54 +503,57 @@ class CreatePostPage extends GetView<CreatePostController> {
 
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
-                child: Obx(() => controller.tags.isEmpty
-                    ? const SizedBox()
-                    : SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: controller.tags.map((tag) {
-                            final color = Tag.getTagColors(tag);
-                            return Container(
-                              margin: EdgeInsets.only(right: 8.w),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8.w, vertical: 2.w),
-                              decoration: BoxDecoration(
-                                color: color.backgroundColor,
-                                border: Border.all(
-                                  color: color.backgroundColor,
-                                  width: 0.5,
+                child: Obx(
+                  () => controller.tags.isEmpty
+                      ? const SizedBox()
+                      : SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: controller.tags.map((tag) {
+                              final color = Tag.getTagColors(tag);
+                              return Container(
+                                margin: EdgeInsets.only(right: 8.w),
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 8.w,
+                                  vertical: 2.w,
                                 ),
-                                borderRadius: BorderRadius.circular(4.w),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    tag,
-                                    style: TextStyle(
-                                      fontSize: 11.w,
-                                      color: color.textColor,
-                                      fontFamily: AppFontFamily.dinPro,
-                                    ),
+                                decoration: BoxDecoration(
+                                  color: color.backgroundColor,
+                                  border: Border.all(
+                                    color: color.backgroundColor,
+                                    width: 0.5,
                                   ),
-                                  4.hGap,
-                                  InkWell(
-                                    onTap: () => controller.removeTag(tag),
-                                    child: Icon(
-                                      CupertinoIcons.xmark,
-                                      size: 10.w,
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.color,
+                                  borderRadius: BorderRadius.circular(4.w),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      tag,
+                                      style: TextStyle(
+                                        fontSize: 11.w,
+                                        color: color.textColor,
+                                        fontFamily: AppFontFamily.dinPro,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }).toList(),
+                                    4.hGap,
+                                    InkWell(
+                                      onTap: () => controller.removeTag(tag),
+                                      child: Icon(
+                                        CupertinoIcons.xmark,
+                                        size: 10.w,
+                                        color: Theme.of(
+                                          context,
+                                        ).textTheme.bodyMedium?.color,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          ),
                         ),
-                      )),
+                ),
               ),
 
               // 标签列表
@@ -559,15 +568,19 @@ class CreatePostPage extends GetView<CreatePostController> {
                   }
 
                   return ListView.separated(
-                    padding:
-                        EdgeInsets.only(left: 16.w, right: 16.w, top: 10.w),
+                    padding: EdgeInsets.only(
+                      left: 16.w,
+                      right: 16.w,
+                      top: 10.w,
+                    ),
                     itemCount: controller.tagResults.length,
                     separatorBuilder: (_, __) => 1.vGap,
                     itemBuilder: (context, index) {
                       final tag = controller.tagResults[index];
                       final color = Tag.getTagColors(tag.name);
-                      final isSelected =
-                          controller.tags.contains(tag.targetTag ?? tag.name);
+                      final isSelected = controller.tags.contains(
+                        tag.targetTag ?? tag.name,
+                      );
                       return GestureDetector(
                         onTap: () {
                           if (!isSelected) {
@@ -583,9 +596,13 @@ class CreatePostPage extends GetView<CreatePostController> {
                             children: [
                               Container(
                                 margin: EdgeInsets.symmetric(
-                                    horizontal: 8.w, vertical: 4.w),
+                                  horizontal: 8.w,
+                                  vertical: 4.w,
+                                ),
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 8.w, vertical: 2.w),
+                                  horizontal: 8.w,
+                                  vertical: 2.w,
+                                ),
                                 decoration: BoxDecoration(
                                   color: color.backgroundColor,
                                   border: Border.all(
@@ -607,10 +624,9 @@ class CreatePostPage extends GetView<CreatePostController> {
                                 'x (${tag.count})',
                                 style: TextStyle(
                                   fontSize: 10.w,
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.color,
+                                  color: Theme.of(
+                                    context,
+                                  ).textTheme.bodyMedium?.color,
                                   fontFamily: AppFontFamily.dinPro,
                                 ),
                               ),
@@ -662,9 +678,11 @@ class CreatePostPage extends GetView<CreatePostController> {
                       ),
                     ),
                     IconButton(
-                      icon: Icon(CupertinoIcons.chevron_down,
-                          size: 16.w,
-                          color: Theme.of(context).textTheme.bodyMedium?.color),
+                      icon: Icon(
+                        CupertinoIcons.chevron_down,
+                        size: 16.w,
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
+                      ),
                       onPressed: () => Navigator.pop(context),
                     ),
                   ],
@@ -685,8 +703,11 @@ class CreatePostPage extends GetView<CreatePostController> {
                   }
 
                   return ListView.separated(
-                    padding:
-                        EdgeInsets.only(left: 16.w, right: 16.w, top: 10.w),
+                    padding: EdgeInsets.only(
+                      left: 16.w,
+                      right: 16.w,
+                      top: 10.w,
+                    ),
                     itemCount: categories.length,
                     separatorBuilder: (_, __) => Container(),
                     itemBuilder: (context, index) {
@@ -694,7 +715,8 @@ class CreatePostPage extends GetView<CreatePostController> {
                       return CategoryItem(
                         category: category,
                         stats: controller.categoryStats[category.id] ?? {},
-                        isSelected: controller.selectedCategory.value?.id ==
+                        isSelected:
+                            controller.selectedCategory.value?.id ==
                             category.id,
                         onTap: (category, level) {
                           controller.updateSelectedCategory(category, level);

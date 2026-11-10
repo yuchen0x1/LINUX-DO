@@ -68,8 +68,9 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
               topRight: Radius.circular(8.w),
             ),
             child: AspectRatio(
-              aspectRatio:
-                  _isInitialized ? _controller.value.aspectRatio : 16 / 9,
+              aspectRatio: _isInitialized
+                  ? _controller.value.aspectRatio
+                  : 16 / 9,
               child: Stack(
                 alignment: Alignment.center,
                 children: [
@@ -78,9 +79,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                   else
                     Container(
                       color: theme.primaryColor.withValues(alpha: 0.1),
-                      child: const Center(
-                        child: DisSquareLoading(),
-                      ),
+                      child: const Center(child: DisSquareLoading()),
                     ),
                   if (_isInitialized)
                     AnimatedOpacity(
@@ -150,15 +149,17 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                             allowScrubbing: true,
                             colors: VideoProgressColors(
                               playedColor: Theme.of(context).primaryColor,
-                              bufferedColor: Theme.of(context)
-                                  .primaryColor
-                                  .withValues(alpha: 0.3),
-                              backgroundColor: Theme.of(context)
-                                  .primaryColor
-                                  .withValues(alpha: 0.1),
+                              bufferedColor: Theme.of(
+                                context,
+                              ).primaryColor.withValues(alpha: 0.3),
+                              backgroundColor: Theme.of(
+                                context,
+                              ).primaryColor.withValues(alpha: 0.1),
                             ),
                             padding: EdgeInsets.symmetric(
-                                vertical: 8.w, horizontal: 4.w),
+                              vertical: 8.w,
+                              horizontal: 4.w,
+                            ),
                           ),
                         )
                       : SizedBox(height: 32.w),

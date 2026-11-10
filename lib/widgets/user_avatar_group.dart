@@ -54,15 +54,16 @@ class UserAvatarGroup extends StatelessWidget {
         : null;
 
     // 计算需要显示的头像数量
-    final displayCount =
-        avatarUrls.length > maxDisplayed ? maxDisplayed : avatarUrls.length;
+    final displayCount = avatarUrls.length > maxDisplayed
+        ? maxDisplayed
+        : avatarUrls.length;
 
     // 计算组件宽度
     final double containerWidth = displayCount > 0
         ? avatarSize +
-            (displayCount - 1) * (avatarSize - overlap) +
-            (avatarUrls.length > maxDisplayed ? avatarSize : 0) +
-            6.w
+              (displayCount - 1) * (avatarSize - overlap) +
+              (avatarUrls.length > maxDisplayed ? avatarSize : 0) +
+              6.w
         : 0;
 
     return Container(
@@ -72,7 +73,8 @@ class UserAvatarGroup extends StatelessWidget {
         color: bgColor,
         borderRadius: BorderRadius.circular(borderRadius),
         border: border,
-        boxShadow: boxShadow ??
+        boxShadow:
+            boxShadow ??
             [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.1),
@@ -131,10 +133,7 @@ class UserAvatarGroup extends StatelessWidget {
       height: avatarSize,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(
-          color: Theme.of(context).cardColor,
-          width: 1.2.w,
-        ),
+        border: Border.all(color: Theme.of(context).cardColor, width: 1.2.w),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(avatarSize / 2),

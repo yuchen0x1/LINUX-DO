@@ -22,10 +22,7 @@ class SecuritySettingsPage extends GetView<SecuritySettingsController> {
       appBar: AppBar(
         title: Text(
           AppConst.settings.security,
-          style: TextStyle(
-            fontSize: 16.w,
-            fontWeight: FontWeight.w500,
-          ),
+          style: TextStyle(fontSize: 16.w, fontWeight: FontWeight.w500),
         ),
       ),
       body: Obx(() {
@@ -94,8 +91,9 @@ class SecuritySettingsPage extends GetView<SecuritySettingsController> {
                   width: 40.w,
                   height: 40.w,
                   decoration: BoxDecoration(
-                    color:
-                        Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                    color: Theme.of(
+                      context,
+                    ).primaryColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8.w),
                   ),
                   child: FaIcon(
@@ -114,29 +112,30 @@ class SecuritySettingsPage extends GetView<SecuritySettingsController> {
                           Text(
                             device.browser ?? '',
                             style: TextStyle(
-                                fontSize: 14.w,
-                                fontWeight: FontWeight.w500,
-                                color: device.isActive ?? false
-                                    ? Theme.of(context)
-                                        .textTheme
-                                        .titleMedium
-                                        ?.color
-                                    : Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.color,
-                                fontFamily: AppFontFamily.dinPro),
+                              fontSize: 14.w,
+                              fontWeight: FontWeight.w500,
+                              color: device.isActive ?? false
+                                  ? Theme.of(
+                                      context,
+                                    ).textTheme.titleMedium?.color
+                                  : Theme.of(
+                                      context,
+                                    ).textTheme.bodySmall?.color,
+                              fontFamily: AppFontFamily.dinPro,
+                            ),
                           ),
                           8.hGap,
                           Container(
                             padding: EdgeInsets.symmetric(
-                                horizontal: 6.w, vertical: 2.w),
+                              horizontal: 6.w,
+                              vertical: 2.w,
+                            ),
                             decoration: BoxDecoration(
                               color: device.isActive ?? false
                                   ? AppColors.success.withValues(alpha: 0.1)
-                                  : Theme.of(context)
-                                      .disabledColor
-                                      .withValues(alpha: 0.1),
+                                  : Theme.of(
+                                      context,
+                                    ).disabledColor.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(4.w),
                             ),
                             child: Text(
@@ -144,11 +143,12 @@ class SecuritySettingsPage extends GetView<SecuritySettingsController> {
                                   ? AppConst.settings.active
                                   : AppConst.settings.inactive,
                               style: TextStyle(
-                                  fontSize: 9.w,
-                                  color: device.isActive ?? false
-                                      ? AppColors.success
-                                      : Theme.of(context).disabledColor,
-                                  fontFamily: AppFontFamily.dinPro),
+                                fontSize: 9.w,
+                                color: device.isActive ?? false
+                                    ? AppColors.success
+                                    : Theme.of(context).disabledColor,
+                                fontFamily: AppFontFamily.dinPro,
+                              ),
                             ),
                           ),
                         ],
@@ -157,9 +157,10 @@ class SecuritySettingsPage extends GetView<SecuritySettingsController> {
                       Text(
                         device.location ?? '',
                         style: TextStyle(
-                            fontSize: 10.w,
-                            color: Theme.of(context).textTheme.bodySmall?.color,
-                            fontFamily: AppFontFamily.dinPro),
+                          fontSize: 10.w,
+                          color: Theme.of(context).textTheme.bodySmall?.color,
+                          fontFamily: AppFontFamily.dinPro,
+                        ),
                       ),
                     ],
                   ),
@@ -222,25 +223,31 @@ class SecuritySettingsPage extends GetView<SecuritySettingsController> {
     );
   }
 
-  Widget _buildInfoItem(BuildContext context, String label, String value,
-      {CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.start}) {
+  Widget _buildInfoItem(
+    BuildContext context,
+    String label,
+    String value, {
+    CrossAxisAlignment crossAxisAlignment = CrossAxisAlignment.start,
+  }) {
     return Column(
       crossAxisAlignment: crossAxisAlignment,
       children: [
         Text(
           label,
           style: TextStyle(
-              fontSize: 10.w,
-              color: Theme.of(context).textTheme.bodySmall?.color,
-              fontFamily: AppFontFamily.dinPro),
+            fontSize: 10.w,
+            color: Theme.of(context).textTheme.bodySmall?.color,
+            fontFamily: AppFontFamily.dinPro,
+          ),
         ),
         4.vGap,
         Text(
           value,
           style: TextStyle(
-              fontSize: 12.w,
-              color: Theme.of(context).textTheme.titleMedium?.color,
-              fontFamily: AppFontFamily.dinPro),
+            fontSize: 12.w,
+            color: Theme.of(context).textTheme.titleMedium?.color,
+            fontFamily: AppFontFamily.dinPro,
+          ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -289,10 +296,9 @@ class SecuritySettingsPage extends GetView<SecuritySettingsController> {
                 width: 50.w,
                 height: 50.w,
                 decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .error
-                      .withValues(alpha: 0.1),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.error.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -357,14 +363,13 @@ class SecuritySettingsPage extends GetView<SecuritySettingsController> {
               Text(
                 AppConst.settings.sendResetEmail,
                 style: TextStyle(
-                    fontSize: 16.w,
-                    fontWeight: FontWeight.w600,
-                    color: Theme.of(context).textTheme.titleLarge?.color),
+                  fontSize: 16.w,
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).textTheme.titleLarge?.color,
+                ),
               ),
               controller.isEmailSent.value
-                  ? Text(
-                      AppConst.settings.sendEmailSuccess,
-                    )
+                  ? Text(AppConst.settings.sendEmailSuccess)
                   : const SizedBox.shrink(),
             ],
           ),

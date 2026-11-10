@@ -5,11 +5,7 @@ import 'package:linux_do/models/topic_model.dart';
 import 'package:linux_do/utils/storage_manager.dart';
 import 'package:linux_do/utils/user_cache.dart';
 
-enum ListDensity {
-  compact,
-  normal,
-  loose,
-}
+enum ListDensity { compact, normal, loose }
 
 class FontSizeController extends BaseController {
   // 帖子内容字体大小
@@ -77,12 +73,15 @@ void main() {
   /// 加载字体大小设置
   void _loadFontSizeSettings() {
     // 从存储中读取设置
-    final savedPostFontSize =
-        StorageManager.getDouble(AppConst.identifier.postFontSize);
-    final savedReplyFontSize =
-        StorageManager.getDouble(AppConst.identifier.replyFontSize);
-    final savedSimplified =
-        StorageManager.getBool(AppConst.identifier.simplified);
+    final savedPostFontSize = StorageManager.getDouble(
+      AppConst.identifier.postFontSize,
+    );
+    final savedReplyFontSize = StorageManager.getDouble(
+      AppConst.identifier.replyFontSize,
+    );
+    final savedSimplified = StorageManager.getBool(
+      AppConst.identifier.simplified,
+    );
 
     if (savedPostFontSize != null) {
       postFontSize.value = savedPostFontSize;

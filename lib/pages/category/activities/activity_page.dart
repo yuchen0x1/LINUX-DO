@@ -18,23 +18,22 @@ class ActivityPage extends GetView<EventController> {
       appBar: AppBar(
         title: Text(
           AppConst.activity.title,
-          style: TextStyle(
-            fontSize: 16.w,
-            fontWeight: FontWeight.bold,
+          style: TextStyle(fontSize: 16.w, fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: Obx(
+        () => StateView(
+          state: _getViewState(),
+          onRetry: controller.fetchEvents,
+          child: Column(
+            children: [
+              _buildCalendar(context),
+              16.vGap,
+              _buildEventList(context),
+            ],
           ),
         ),
       ),
-      body: Obx(() => StateView(
-            state: _getViewState(),
-            onRetry: controller.fetchEvents,
-            child: Column(
-              children: [
-                _buildCalendar(context),
-                16.vGap,
-                _buildEventList(context),
-              ],
-            ),
-          )),
     );
   }
 
@@ -56,20 +55,22 @@ class ActivityPage extends GetView<EventController> {
         color: Colors.transparent,
         child: CalendarDatePicker2(
           config: CalendarDatePicker2Config(
-            monthBuilder: (
-                {decoration,
-                isCurrentMonth,
-                isDisabled,
-                isSelected,
-                required month,
-                textStyle}) {
-              return Center(
-                child: Text(
-                  controller.monthNames[month - 1],
-                  style: textStyle,
-                ),
-              );
-            },
+            monthBuilder:
+                ({
+                  decoration,
+                  isCurrentMonth,
+                  isDisabled,
+                  isSelected,
+                  required month,
+                  textStyle,
+                }) {
+                  return Center(
+                    child: Text(
+                      controller.monthNames[month - 1],
+                      style: textStyle,
+                    ),
+                  );
+                },
             calendarType: CalendarDatePicker2Type.range,
             selectedDayHighlightColor: Theme.of(context).primaryColor,
             weekdayLabels: ['日', '一', '二', '三', '四', '五', '六'],
@@ -116,10 +117,7 @@ class ActivityPage extends GetView<EventController> {
       return Center(
         child: Text(
           AppConst.activity.noEvents,
-          style: TextStyle(
-            color: Theme.of(context).hintColor,
-            fontSize: 14.w,
-          ),
+          style: TextStyle(color: Theme.of(context).hintColor, fontSize: 14.w),
         ),
       );
     }
@@ -163,10 +161,7 @@ class ActivityPage extends GetView<EventController> {
               children: [
                 Text(
                   event.name,
-                  style: TextStyle(
-                    fontSize: 16.w,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 16.w, fontWeight: FontWeight.bold),
                 ),
                 8.vGap,
                 Text(

@@ -18,9 +18,7 @@ Future<void> showProxySettingsDialog(BuildContext context) async {
 
   await Get.dialog(
     Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.w),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.w)),
       child: StatefulBuilder(
         builder: (context, setState) => Padding(
           padding: EdgeInsets.all(16.w),
@@ -64,10 +62,7 @@ Future<void> showProxySettingsDialog(BuildContext context) async {
               12.vGap,
               Row(
                 children: [
-                  Text(
-                    '启用代理',
-                    style: TextStyle(fontSize: 14.sp),
-                  ),
+                  Text('启用代理', style: TextStyle(fontSize: 14.sp)),
                   const Spacer(),
                   Switch(
                     value: enabled,
@@ -122,19 +117,28 @@ Future<void> showProxySettingsDialog(BuildContext context) async {
                             int.tryParse(p) == null ||
                             int.parse(p) <= 0 ||
                             int.parse(p) > 65535)) {
-                      Get.snackbar('提示', '请填写正确的代理主机与端口',
-                          snackPosition: SnackPosition.BOTTOM);
+                      Get.snackbar(
+                        '提示',
+                        '请填写正确的代理主机与端口',
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
                       return;
                     }
-                    await ProxyService()
-                        .save(enabled: enabled, host: h, port: p);
+                    await ProxyService().save(
+                      enabled: enabled,
+                      host: h,
+                      port: p,
+                    );
                     // 立即应用到 Dio 网络层
                     try {
                       NetClient.getInstance().applyProxy();
                     } catch (_) {}
                     Get.back();
-                    Get.snackbar('已保存', enabled ? '代理已生效：$h:$p' : '已恢复直连',
-                        snackPosition: SnackPosition.BOTTOM);
+                    Get.snackbar(
+                      '已保存',
+                      enabled ? '代理已生效：$h:$p' : '已恢复直连',
+                      snackPosition: SnackPosition.BOTTOM,
+                    );
                   },
                   child: Text(
                     '保存并生效',

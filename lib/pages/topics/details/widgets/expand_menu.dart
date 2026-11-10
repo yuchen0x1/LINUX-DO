@@ -49,88 +49,95 @@ class ExpandMenu extends StatelessWidget {
           ),
           8.vGap,
           GestureDetector(
-              onTap: () => controller.toggleBookmark(post),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _BookmarkButton(post: post, controller: controller),
-                  4.hGap,
-                  Text(
-                    '添加书签',
-                    style: TextStyle(
-                      fontSize: 13.w,
-                      color: Theme.of(context).textTheme.bodyMedium?.color,
-                    ),
+            onTap: () => controller.toggleBookmark(post),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _BookmarkButton(post: post, controller: controller),
+                4.hGap,
+                Text(
+                  '添加书签',
+                  style: TextStyle(
+                    fontSize: 13.w,
+                    color: Theme.of(context).textTheme.bodyMedium?.color,
                   ),
-                ],
-              )),
+                ),
+              ],
+            ),
+          ),
           8.vGap,
           GestureDetector(
-              onTap: () => controller.reportPost(post, '举报', ''),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _ReportButton(post: post, controller: controller),
-                  4.hGap,
-                  Text(
-                    '举报',
-                    style: TextStyle(
-                      fontSize: 13.w,
-                      color: Theme.of(context).textTheme.bodyMedium?.color,
-                    ),
+            onTap: () => controller.reportPost(post, '举报', ''),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _ReportButton(post: post, controller: controller),
+                4.hGap,
+                Text(
+                  '举报',
+                  style: TextStyle(
+                    fontSize: 13.w,
+                    color: Theme.of(context).textTheme.bodyMedium?.color,
                   ),
-                ],
-              )),
+                ),
+              ],
+            ),
+          ),
           if (post.canEdit != true) ...[
             8.vGap,
             GestureDetector(
-                onTap: () => controller.editPost(post),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _EditButton(post: post, controller: controller),
-                    4.hGap,
-                    Text(
-                      '编辑',
-                      style: TextStyle(
-                        fontSize: 13.w,
-                        color: Theme.of(context).textTheme.bodyMedium?.color,
-                      ),
+              onTap: () => controller.editPost(post),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _EditButton(post: post, controller: controller),
+                  4.hGap,
+                  Text(
+                    '编辑',
+                    style: TextStyle(
+                      fontSize: 13.w,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                     ),
-                  ],
-                )),
+                  ),
+                ],
+              ),
+            ),
           ],
           if (post.canDelete != true) ...[
             8.vGap,
             GestureDetector(
-                onTap: () => controller.deletePost(post),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _DeleteButton(post: post, controller: controller),
-                    4.hGap,
-                    Text(
-                      '删除',
-                      style: TextStyle(
-                        fontSize: 13.w,
-                        color: Theme.of(context).textTheme.bodyMedium?.color,
-                      ),
+              onTap: () => controller.deletePost(post),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _DeleteButton(post: post, controller: controller),
+                  4.hGap,
+                  Text(
+                    '删除',
+                    style: TextStyle(
+                      fontSize: 13.w,
+                      color: Theme.of(context).textTheme.bodyMedium?.color,
                     ),
-                  ],
-                ))
+                  ),
+                ],
+              ),
+            ),
           ],
         ],
       ),
-      child: Icon(CupertinoIcons.ellipsis_circle,
-          size: 18.w, color: Theme.of(context).hintColor),
+      child: Icon(
+        CupertinoIcons.ellipsis_circle,
+        size: 18.w,
+        color: Theme.of(context).hintColor,
+      ),
     );
   }
 }
@@ -144,8 +151,11 @@ class _EditButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Icon(CupertinoIcons.pencil_circle,
-        size: 22.w, color: Theme.of(context).hintColor);
+    return Icon(
+      CupertinoIcons.pencil_circle,
+      size: 22.w,
+      color: Theme.of(context).hintColor,
+    );
   }
 }
 
@@ -156,8 +166,11 @@ class _ReportButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Icon(CupertinoIcons.exclamationmark_circle_fill,
-        size: 22.w, color: Theme.of(context).hintColor);
+    return Icon(
+      CupertinoIcons.exclamationmark_circle_fill,
+      size: 22.w,
+      color: Theme.of(context).hintColor,
+    );
   }
 
   // 显示举报对话框
@@ -173,9 +186,7 @@ class _ReportButton extends StatelessWidget {
         ),
         child: Container(
           width: 0.8.sw,
-          constraints: BoxConstraints(
-            maxHeight: 0.7.sh,
-          ),
+          constraints: BoxConstraints(maxHeight: 0.7.sh),
           padding: const EdgeInsets.all(20).w,
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
@@ -230,12 +241,13 @@ class _ReportButton extends StatelessWidget {
                                         ? Get.theme.primaryColor
                                         : Colors.white,
                                     borderRadius: const BorderRadius.all(
-                                            Radius.circular(8))
-                                        .w,
+                                      Radius.circular(8),
+                                    ).w,
                                     boxShadow: [
                                       BoxShadow(
-                                        color:
-                                            Colors.black.withValues(alpha: 0.1),
+                                        color: Colors.black.withValues(
+                                          alpha: 0.1,
+                                        ),
                                         blurRadius: 10,
                                       ),
                                     ],
@@ -274,7 +286,8 @@ class _ReportButton extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16.w),
                     ),
                     child: Obx(() {
-                      final isOther = selectedIndex.value ==
+                      final isOther =
+                          selectedIndex.value ==
                           AppConst.posts.reasons.length - 1;
                       if (isOther) {
                         return TextField(
@@ -324,17 +337,18 @@ class _ReportButton extends StatelessWidget {
                 SizedBox(
                   width: 0.65.sw,
                   child: DisButton(
-                      text: AppConst.posts.reportButton,
-                      onPressed: () {
-                        final reason =
-                            AppConst.posts.reasons[selectedIndex.value];
-                        final value = reason['value']!;
-                        final isOther = selectedIndex.value ==
-                            AppConst.posts.reasons.length - 1;
-                        final desc =
-                            isOther ? customDesc.value : reason['desc']!;
-                        controller.reportPost(post, value, desc);
-                      }),
+                    text: AppConst.posts.reportButton,
+                    onPressed: () {
+                      final reason =
+                          AppConst.posts.reasons[selectedIndex.value];
+                      final value = reason['value']!;
+                      final isOther =
+                          selectedIndex.value ==
+                          AppConst.posts.reasons.length - 1;
+                      final desc = isOther ? customDesc.value : reason['desc']!;
+                      controller.reportPost(post, value, desc);
+                    },
+                  ),
                 ),
               ],
             ),
@@ -353,8 +367,11 @@ class _CopyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Icon(CupertinoIcons.doc_circle,
-        size: 22.w, color: Theme.of(context).hintColor);
+    return Icon(
+      CupertinoIcons.doc_circle,
+      size: 22.w,
+      color: Theme.of(context).hintColor,
+    );
   }
 }
 
@@ -366,14 +383,17 @@ class _BookmarkButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Icon(
+    return Obx(
+      () => Icon(
         controller.bookmarkedPosts[post.postNumber ?? -1] ?? false
             ? CupertinoIcons.book_circle_fill
             : CupertinoIcons.book_circle,
         size: 22.w,
         color: controller.bookmarkedPosts[post.postNumber ?? -1] ?? false
             ? Theme.of(context).primaryColor
-            : Theme.of(context).hintColor));
+            : Theme.of(context).hintColor,
+      ),
+    );
   }
 }
 
@@ -389,8 +409,11 @@ class _DeleteButton extends StatelessWidget {
       onTap: () => controller.deletePost(post),
       child: Row(
         children: [
-          Icon(CupertinoIcons.trash_circle_fill,
-              size: 22.w, color: Theme.of(context).hintColor),
+          Icon(
+            CupertinoIcons.trash_circle_fill,
+            size: 22.w,
+            color: Theme.of(context).hintColor,
+          ),
         ],
       ),
     );

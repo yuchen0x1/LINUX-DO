@@ -130,10 +130,7 @@ class _QRScannerPageState extends State<QRScannerPage>
           ),
         ),
         leading: IconButton(
-          icon: Icon(
-            CupertinoIcons.back,
-            size: 24.w,
-          ),
+          icon: Icon(CupertinoIcons.back, size: 24.w),
           onPressed: () => Get.back(),
         ),
         actions: [
@@ -147,10 +144,7 @@ class _QRScannerPageState extends State<QRScannerPage>
             onPressed: _toggleTorch,
           ),
           IconButton(
-            icon: Icon(
-              CupertinoIcons.camera_rotate,
-              size: 24.w,
-            ),
+            icon: Icon(CupertinoIcons.camera_rotate, size: 24.w),
             onPressed: () => controller.switchCamera(),
           ),
         ],
@@ -158,58 +152,137 @@ class _QRScannerPageState extends State<QRScannerPage>
       body: isLoading
           ? const Center(child: DisSquareLoading())
           : error != null
-              ? Center(
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 24.w),
-                    padding: EdgeInsets.all(24.w),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.circular(12.w),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(context)
-                              .shadowColor
-                              .withValues(alpha: 0.1),
-                          blurRadius: 12.w,
-                          offset: Offset(0, 4.w),
-                        ),
-                      ],
+          ? Center(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 24.w),
+                padding: EdgeInsets.all(24.w),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.circular(12.w),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(
+                        context,
+                      ).shadowColor.withValues(alpha: 0.1),
+                      blurRadius: 12.w,
+                      offset: Offset(0, 4.w),
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          CupertinoIcons.exclamationmark_circle,
-                          size: 48.w,
-                          color: Theme.of(context).colorScheme.error,
-                        ),
-                        16.vGap,
-                        Text(
-                          error!,
-                          style: TextStyle(
-                            fontSize: 14.w,
-                            color: Theme.of(context).colorScheme.error,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        24.vGap,
-                        SizedBox(
-                          width: 120.w,
-                          child: DisButton(
-                            text: '重试',
-                            type: ButtonType.primary,
-                            onPressed: () {
-                              setState(() => error = null);
-                              _checkPermission();
-                            },
-                          ),
-                        ),
-                      ],
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      CupertinoIcons.exclamationmark_circle,
+                      size: 48.w,
+                      color: Theme.of(context).colorScheme.error,
                     ),
-                  ),
-                )
-              : !hasPermission
-                  ? Center(
+                    16.vGap,
+                    Text(
+                      error!,
+                      style: TextStyle(
+                        fontSize: 14.w,
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    24.vGap,
+                    SizedBox(
+                      width: 120.w,
+                      child: DisButton(
+                        text: '重试',
+                        type: ButtonType.primary,
+                        onPressed: () {
+                          setState(() => error = null);
+                          _checkPermission();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : !hasPermission
+          ? Center(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 24.w),
+                padding: EdgeInsets.all(24.w),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.circular(12.w),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(
+                        context,
+                      ).shadowColor.withValues(alpha: 0.1),
+                      blurRadius: 12.w,
+                      offset: Offset(0, 4.w),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      CupertinoIcons.camera,
+                      size: 48.w,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    16.vGap,
+                    Text(
+                      '需要相机权限来扫描二维码',
+                      style: TextStyle(
+                        fontSize: 16.w,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: AppFontFamily.dinPro,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    8.vGap,
+                    Text(
+                      '请在设置中允许访问相机',
+                      style: TextStyle(
+                        fontSize: 14.w,
+                        color: Theme.of(context).hintColor,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    24.vGap,
+                    SizedBox(
+                      width: 120.w,
+                      child: DisButton(
+                        text: '去设置',
+                        type: ButtonType.primary,
+                        onPressed: () async {
+                          if (await openAppSettings()) {
+                            await Future.delayed(const Duration(seconds: 1));
+                            _checkPermission();
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : Stack(
+              children: [
+                MobileScanner(
+                  controller: controller,
+                  onDetect: (capture) {
+                    l.d('检测到条码: ${capture.barcodes.length}个');
+                    final List<Barcode> barcodes = capture.barcodes;
+                    for (final barcode in barcodes) {
+                      l.d('条码类型: ${barcode.format}, 内容: ${barcode.rawValue}');
+                      if (barcode.rawValue != null) {
+                        Get.back(result: barcode.rawValue);
+                        break;
+                      }
+                    }
+                  },
+                  errorBuilder: (context, error) {
+                    l.e('相机错误: ${error.errorCode}');
+                    return Center(
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 24.w),
                         padding: EdgeInsets.all(24.w),
@@ -218,9 +291,9 @@ class _QRScannerPageState extends State<QRScannerPage>
                           borderRadius: BorderRadius.circular(12.w),
                           boxShadow: [
                             BoxShadow(
-                              color: Theme.of(context)
-                                  .shadowColor
-                                  .withValues(alpha: 0.1),
+                              color: Theme.of(
+                                context,
+                              ).shadowColor.withValues(alpha: 0.1),
                               blurRadius: 12.w,
                               offset: Offset(0, 4.w),
                             ),
@@ -230,26 +303,16 @@ class _QRScannerPageState extends State<QRScannerPage>
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(
-                              CupertinoIcons.camera,
+                              CupertinoIcons.camera_fill,
                               size: 48.w,
-                              color: Theme.of(context).primaryColor,
+                              color: Theme.of(context).colorScheme.error,
                             ),
                             16.vGap,
                             Text(
-                              '需要相机权限来扫描二维码',
-                              style: TextStyle(
-                                fontSize: 16.w,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: AppFontFamily.dinPro,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            8.vGap,
-                            Text(
-                              '请在设置中允许访问相机',
+                              '相机初始化失败: ${error.errorCode}',
                               style: TextStyle(
                                 fontSize: 14.w,
-                                color: Theme.of(context).hintColor,
+                                color: Theme.of(context).colorScheme.error,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -257,95 +320,20 @@ class _QRScannerPageState extends State<QRScannerPage>
                             SizedBox(
                               width: 120.w,
                               child: DisButton(
-                                text: '去设置',
+                                text: '重试',
                                 type: ButtonType.primary,
-                                onPressed: () async {
-                                  if (await openAppSettings()) {
-                                    await Future.delayed(
-                                        const Duration(seconds: 1));
-                                    _checkPermission();
-                                  }
-                                },
+                                onPressed: _startScanner,
                               ),
                             ),
                           ],
                         ),
                       ),
-                    )
-                  : Stack(
-                      children: [
-                        MobileScanner(
-                          controller: controller,
-                          onDetect: (capture) {
-                            l.d('检测到条码: ${capture.barcodes.length}个');
-                            final List<Barcode> barcodes = capture.barcodes;
-                            for (final barcode in barcodes) {
-                              l.d('条码类型: ${barcode.format}, 内容: ${barcode.rawValue}');
-                              if (barcode.rawValue != null) {
-                                Get.back(result: barcode.rawValue);
-                                break;
-                              }
-                            }
-                          },
-                          errorBuilder: (context, error) {
-                            l.e('相机错误: ${error.errorCode}');
-                            return Center(
-                              child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 24.w),
-                                padding: EdgeInsets.all(24.w),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).cardColor,
-                                  borderRadius: BorderRadius.circular(12.w),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Theme.of(context)
-                                          .shadowColor
-                                          .withValues(alpha: 0.1),
-                                      blurRadius: 12.w,
-                                      offset: Offset(0, 4.w),
-                                    ),
-                                  ],
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      CupertinoIcons.camera_fill,
-                                      size: 48.w,
-                                      color:
-                                          Theme.of(context).colorScheme.error,
-                                    ),
-                                    16.vGap,
-                                    Text(
-                                      '相机初始化失败: ${error.errorCode}',
-                                      style: TextStyle(
-                                        fontSize: 14.w,
-                                        color:
-                                            Theme.of(context).colorScheme.error,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    24.vGap,
-                                    SizedBox(
-                                      width: 120.w,
-                                      child: DisButton(
-                                        text: '重试',
-                                        type: ButtonType.primary,
-                                        onPressed: _startScanner,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        CustomPaint(
-                          painter: ScannerOverlay(),
-                          child: Container(),
-                        ),
-                      ],
-                    ),
+                    );
+                  },
+                ),
+                CustomPaint(painter: ScannerOverlay(), child: Container()),
+              ],
+            ),
     );
   }
 }
@@ -365,8 +353,8 @@ class ScannerOverlay extends CustomPainter {
       Path.combine(
         PathOperation.difference,
         Path()..addRect(Rect.fromLTWH(0, 0, size.width, size.height)),
-        Path()
-          ..addRRect(RRect.fromRectAndRadius(
+        Path()..addRRect(
+          RRect.fromRectAndRadius(
             Rect.fromLTWH(
               cutoutPosition,
               (size.height - cutoutSize) / 2,
@@ -374,7 +362,8 @@ class ScannerOverlay extends CustomPainter {
               cutoutSize,
             ),
             const Radius.circular(12),
-          )),
+          ),
+        ),
       ),
       paint,
     );

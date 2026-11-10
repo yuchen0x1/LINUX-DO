@@ -60,15 +60,13 @@ class OwnerPainter extends CustomPainter {
     canvas.drawRect(rect, bannerPaint);
 
     final textStyle = TextStyle(
-        color: Colors.white,
-        fontSize: bannerWidth * 0.8,
-        fontWeight: FontWeight.bold,
-        fontFamily: AppFontFamily.dinPro);
-
-    final textSpan = TextSpan(
-      text: text,
-      style: textStyle,
+      color: Colors.white,
+      fontSize: bannerWidth * 0.8,
+      fontWeight: FontWeight.bold,
+      fontFamily: AppFontFamily.dinPro,
     );
+
+    final textSpan = TextSpan(text: text, style: textStyle);
     final textPainter = TextPainter(
       text: textSpan,
       textDirection: TextDirection.ltr,
@@ -76,11 +74,9 @@ class OwnerPainter extends CustomPainter {
 
     textPainter.layout();
     textPainter.paint(
-        canvas,
-        Offset(
-          -textPainter.width / 2,
-          -textPainter.height / 2,
-        ));
+      canvas,
+      Offset(-textPainter.width / 2, -textPainter.height / 2),
+    );
 
     // 恢复画布状态
     canvas.restore();

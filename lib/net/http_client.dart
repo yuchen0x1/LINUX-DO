@@ -140,11 +140,14 @@ class NetClient {
       final directory = await getApplicationDocumentsDirectory();
       final cookiePath = '${directory.path}/.cookies/';
       cookieJar = PersistCookieJar(
-          ignoreExpires: true, storage: FileStorage(cookiePath));
+        ignoreExpires: true,
+        storage: FileStorage(cookiePath),
+      );
     }
     // 确保在添加 CookieManager 之前清除其他可能存在的 CookieManager
-    _dio.interceptors
-        .removeWhere((interceptor) => interceptor is CookieManager);
+    _dio.interceptors.removeWhere(
+      (interceptor) => interceptor is CookieManager,
+    );
     _dio.interceptors.add(CookieManager(cookieJar));
   }
 
@@ -168,79 +171,84 @@ class NetClient {
     // 注册两次会导致嵌套重试（次数与等待时间不可预测）。
 
     // 添加 Cookie 管理拦截器
-    _dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) async {
-        // 从 cookie jar 获取 cookies
-        final uri = Uri.parse(options.uri.toString());
-        final cookies = await cookieJar.loadForRequest(uri);
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          // 从 cookie jar 获取 cookies
+          final uri = Uri.parse(options.uri.toString());
+          final cookies = await cookieJar.loadForRequest(uri);
 
-        // 如果有 cookies，添加到请求头
-        if (cookies.isNotEmpty) {
-          options.headers['Cookie'] = cookies
-              .map((cookie) => '${cookie.name}=${cookie.value}')
-              .join('; ');
-        }
-        // 如果是 POST 请求，添加 Referer
-        if (options.method == 'POST' &&
-            !options.headers.containsKey('Referer')) {
-          options.headers['Referer'] = '${HttpConfig.baseUrl}${options.path}';
-        }
+          // 如果有 cookies，添加到请求头
+          if (cookies.isNotEmpty) {
+            options.headers['Cookie'] = cookies
+                .map((cookie) => '${cookie.name}=${cookie.value}')
+                .join('; ');
+          }
+          // 如果是 POST 请求，添加 Referer
+          if (options.method == 'POST' &&
+              !options.headers.containsKey('Referer')) {
+            options.headers['Referer'] = '${HttpConfig.baseUrl}${options.path}';
+          }
 
-        return handler.next(options);
-      },
-      onResponse: (response, handler) async {
-        await _handleCookies(response);
-        return handler.next(response);
-      },
-      onError: (DioException e, handler) async {
-        // if (e.response != null) {
-        //   await _handleCookies(e.response!);
-        // }
-        return handler.next(e);
-      },
-    ));
+          return handler.next(options);
+        },
+        onResponse: (response, handler) async {
+          await _handleCookies(response);
+          return handler.next(response);
+        },
+        onError: (DioException e, handler) async {
+          // if (e.response != null) {
+          //   await _handleCookies(e.response!);
+          // }
+          return handler.next(e);
+        },
+      ),
+    );
 
     // 添加错误处理拦截器
-    _dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) {
-        // 优先检查官方 User API Key
-        final userApiKey = UserApiKeyAuthService().apiKey;
-        if (userApiKey != null && userApiKey.isNotEmpty) {
-          options.headers['User-Api-Key'] = userApiKey;
-        }
-
-        // 从本地存储获取CSRF Token
-        final csrfToken =
-            StorageManager.getString(AppConst.identifier.csrfToken);
-        if (csrfToken != null && csrfToken.isNotEmpty) {
-          //l.d('添加 csrfToken : $csrfToken');
-          options.headers['X-CSRF-Token'] = csrfToken;
-        }
-        return handler.next(options);
-      },
-      onResponse: (response, handler) {
-        try {
-          // 检查并保存CSRF Token
-          final csrfToken = response.headers.value('X-CSRF-Token');
-          if (csrfToken != null) {
-            StorageManager.setData(AppConst.identifier.csrfToken, csrfToken);
-            //l.d('保存 csrfToken : $csrfToken');
+    _dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) {
+          // 优先检查官方 User API Key
+          final userApiKey = UserApiKeyAuthService().apiKey;
+          if (userApiKey != null && userApiKey.isNotEmpty) {
+            options.headers['User-Api-Key'] = userApiKey;
           }
 
-          final username = response.headers.value('x-discourse-username');
-          if (username != null && username.isNotEmpty) {
-            StorageManager.setData(AppConst.identifier.username, username);
+          // 从本地存储获取CSRF Token
+          final csrfToken = StorageManager.getString(
+            AppConst.identifier.csrfToken,
+          );
+          if (csrfToken != null && csrfToken.isNotEmpty) {
+            //l.d('添加 csrfToken : $csrfToken');
+            options.headers['X-CSRF-Token'] = csrfToken;
           }
-        } catch (e) {
-          l.e('处理响应头错误: $e');
-        }
-        return handler.next(response);
-      },
-      onError: (error, handler) {
-        _handleError(error);
-        return handler.next(error);
-      },
-    ));
+          return handler.next(options);
+        },
+        onResponse: (response, handler) {
+          try {
+            // 检查并保存CSRF Token
+            final csrfToken = response.headers.value('X-CSRF-Token');
+            if (csrfToken != null) {
+              StorageManager.setData(AppConst.identifier.csrfToken, csrfToken);
+              //l.d('保存 csrfToken : $csrfToken');
+            }
+
+            final username = response.headers.value('x-discourse-username');
+            if (username != null && username.isNotEmpty) {
+              StorageManager.setData(AppConst.identifier.username, username);
+            }
+          } catch (e) {
+            l.e('处理响应头错误: $e');
+          }
+          return handler.next(response);
+        },
+        onError: (error, handler) {
+          _handleError(error);
+          return handler.next(error);
+        },
+      ),
+    );
 
     // 添加日志拦截器
     _dio.interceptors.add(
@@ -248,7 +256,8 @@ class NetClient {
         onRequest: (options, handler) {
           final sb = StringBuffer();
           sb.writeln(
-              '┌─────────────────────────── Request ───────────────────────────');
+            '┌─────────────────────────── Request ───────────────────────────',
+          );
           sb.writeln('│ ${options.method} ${options.uri}');
           sb.writeln('│ Headers:');
           _writeRedactedHeaders(sb, options.headers);
@@ -259,14 +268,16 @@ class NetClient {
             sb.writeln('│ Query: ${options.queryParameters}');
           }
           sb.writeln(
-              '└─────────────────────────────────────────────────────────────────────');
+            '└─────────────────────────────────────────────────────────────────────',
+          );
           l.d(sb.toString());
           return handler.next(options);
         },
         onResponse: (response, handler) {
           final sb = StringBuffer();
           sb.writeln(
-              '┌─────────────────────────── Response ───────────────────────────');
+            '┌─────────────────────────── Response ───────────────────────────',
+          );
           sb.writeln('│ Status: ${response.statusCode}');
           sb.writeln('│ Headers:');
           response.headers.forEach((name, values) {
@@ -274,7 +285,8 @@ class NetClient {
           });
           sb.writeln('│ Body: ${response.data}');
           sb.writeln(
-              '└─────────────────────────────────────────────────────────────────────');
+            '└─────────────────────────────────────────────────────────────────────',
+          );
           l.d(sb.toString());
 
           return handler.next(response);
@@ -282,9 +294,11 @@ class NetClient {
         onError: (error, handler) {
           final sb = StringBuffer();
           sb.writeln(
-              '┌─────────────────────────── Request Error ───────────────────────────');
+            '┌─────────────────────────── Request Error ───────────────────────────',
+          );
           sb.writeln(
-              '│ 请求类型: ${error.requestOptions.method} URL: ${error.requestOptions.uri}');
+            '│ 请求类型: ${error.requestOptions.method} URL: ${error.requestOptions.uri}',
+          );
           sb.writeln('│ Headers:');
           error.requestOptions.headers.forEach((key, value) {
             sb.writeln('│   $key: ${redactHeader(key, value)}');
@@ -298,7 +312,8 @@ class NetClient {
           }
           sb.writeln('│ Error: ${error.message}');
           sb.writeln(
-              '└─────────────────────────────────────────────────────────────────────');
+            '└─────────────────────────────────────────────────────────────────────',
+          );
           l.e(sb.toString());
           return handler.next(error);
         },
@@ -616,7 +631,8 @@ class NetClient {
       final cfRay = headers.value('cf-ray');
 
       // 如果响应头中包含 Cloudflare 相关信息，说明网站使用了 Cloudflare
-      final enabled = (server?.toLowerCase().contains('cloudflare') ?? false) ||
+      final enabled =
+          (server?.toLowerCase().contains('cloudflare') ?? false) ||
           (cfRay != null);
       _cfEnabledCache = enabled;
       _cfEnabledCheckedAt = DateTime.now();

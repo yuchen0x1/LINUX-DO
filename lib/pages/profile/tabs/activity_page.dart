@@ -18,7 +18,8 @@ class ActivityPage extends GetView<ActivityController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => StateView(
+    return Obx(
+      () => StateView(
         state: controller.getViewState(),
         child: DisSmartRefresher(
           controller: controller.refreshController,
@@ -34,17 +35,16 @@ class ActivityPage extends GetView<ActivityController> {
               return _ActivityItem(action: action);
             },
           ),
-        )));
+        ),
+      ),
+    );
   }
 }
 
 class _ActivityItem extends StatelessWidget {
   final UserAction action;
 
-  const _ActivityItem({
-    Key? key,
-    required this.action,
-  }) : super(key: key);
+  const _ActivityItem({Key? key, required this.action}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,19 +55,17 @@ class _ActivityItem extends StatelessWidget {
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.r),
-        side: BorderSide(
-          color: theme.dividerColor.withValues(alpha: 0.1),
-        ),
+        side: BorderSide(color: theme.dividerColor.withValues(alpha: 0.1)),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(12.r),
         onTap: () {
           if (action.topicId != null) {
-            Get.toNamed(Routes.TOPIC_DETAIL,
-                arguments: action.topicId,
-                parameters: {
-                  'postNumber': action.postNumber.toString(),
-                });
+            Get.toNamed(
+              Routes.TOPIC_DETAIL,
+              arguments: action.topicId,
+              parameters: {'postNumber': action.postNumber.toString()},
+            );
           }
         },
         child: Padding(
@@ -112,12 +110,15 @@ class _ActivityItem extends StatelessWidget {
                                 ? Container(
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                          color: theme.primaryColor,
-                                          width: .5.w),
+                                        color: theme.primaryColor,
+                                        width: .5.w,
+                                      ),
                                       borderRadius: BorderRadius.circular(4.w),
                                     ),
                                     padding: EdgeInsets.symmetric(
-                                        horizontal: 4.w, vertical: 1.3.w),
+                                      horizontal: 4.w,
+                                      vertical: 1.3.w,
+                                    ),
                                     child: Row(
                                       children: [
                                         CachedImage(
@@ -133,7 +134,7 @@ class _ActivityItem extends StatelessWidget {
                                             fontSize: 10.sp,
                                             color: theme.primaryColor,
                                           ),
-                                        )
+                                        ),
                                       ],
                                     ),
                                   )
@@ -148,7 +149,7 @@ class _ActivityItem extends StatelessWidget {
                               ),
                             ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -167,10 +168,7 @@ class _ActivityItem extends StatelessWidget {
                       maxLines: 3,
                       textOverflow: TextOverflow.ellipsis,
                     ),
-                    "img": Style(
-                      width: Width(16.w),
-                      height: Height(16.w),
-                    ),
+                    "img": Style(width: Width(16.w), height: Height(16.w)),
                   },
                 ),
               ],

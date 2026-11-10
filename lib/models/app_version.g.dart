@@ -7,13 +7,13 @@ part of 'app_version.dart';
 // **************************************************************************
 
 AppVersion _$AppVersionFromJson(Map<String, dynamic> json) => AppVersion(
-      hasUpdate: json['has_update'] as bool?,
-      latestVersion: json['latest_version'] as String?,
-      downloadUrl: json['download_url'] as String?,
-      releaseNotes: json['release_notes'] as String?,
-      isForceUpdate: json['is_force_update'] as bool?,
-      minRequiredVersion: json['min_required_version'] as String?,
-    );
+  hasUpdate: json['has_update'] as bool?,
+  latestVersion: json['latest_version'] as String?,
+  downloadUrl: json['download_url'] as String?,
+  releaseNotes: json['release_notes'] as String?,
+  isForceUpdate: json['is_force_update'] as bool?,
+  minRequiredVersion: json['min_required_version'] as String?,
+);
 
 Map<String, dynamic> _$AppVersionToJson(AppVersion instance) =>
     <String, dynamic>{

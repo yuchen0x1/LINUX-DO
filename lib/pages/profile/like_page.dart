@@ -21,23 +21,27 @@ class LikePage extends GetView<LikeController> {
         title: Container(
           width: MediaQuery.of(context).size.width - 180.w,
           margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 3.w),
-          child: Obx(() => SlideSwitcher(
-                containerHeight: 36.w,
-                containerWight: MediaQuery.of(context).size.width - 180.w,
-                initialIndex: controller.selectedIndex.value,
-                containerColor: Theme.of(context).cardColor,
-                slidersGradients: [
-                  LinearGradient(colors: [
+          child: Obx(
+            () => SlideSwitcher(
+              containerHeight: 36.w,
+              containerWight: MediaQuery.of(context).size.width - 180.w,
+              initialIndex: controller.selectedIndex.value,
+              containerColor: Theme.of(context).cardColor,
+              slidersGradients: [
+                LinearGradient(
+                  colors: [
                     Theme.of(context).primaryColor,
-                    Theme.of(context).primaryColor.withValues(alpha: 0.6)
-                  ])
-                ],
-                onSelect: (index) => controller.switchTab(index),
-                children: [
-                  _buildTabText(context, '最多赞', 0),
-                  _buildTabText(context, '赞最多', 1),
-                ],
-              )),
+                    Theme.of(context).primaryColor.withValues(alpha: 0.6),
+                  ],
+                ),
+              ],
+              onSelect: (index) => controller.switchTab(index),
+              children: [
+                _buildTabText(context, '最多赞', 0),
+                _buildTabText(context, '赞最多', 1),
+              ],
+            ),
+          ),
         ),
         elevation: 0,
         centerTitle: true,
@@ -63,16 +67,18 @@ class LikePage extends GetView<LikeController> {
 
   // 构建标签文本
   Widget _buildTabText(BuildContext context, String text, int index) {
-    return Obx(() => Text(
-          text,
-          style: TextStyle(
-            fontSize: 13.w,
-            color: controller.selectedIndex.value == index
-                ? Colors.white
-                : Theme.of(context).primaryColor,
-            fontWeight: FontWeight.w600,
-          ),
-        ));
+    return Obx(
+      () => Text(
+        text,
+        style: TextStyle(
+          fontSize: 13.w,
+          color: controller.selectedIndex.value == index
+              ? Colors.white
+              : Theme.of(context).primaryColor,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
   }
 
   // 构建最多赞网格 - 展示用户收到的赞
@@ -81,7 +87,9 @@ class LikePage extends GetView<LikeController> {
         controller.summaryData.value?.userSummary?.mostLikedByUsers;
 
     if (likedData == null || likedData.isEmpty) {
-      return Center(child: Text('暂无数据', style: TextStyle(fontSize: 14.sp)));
+      return Center(
+        child: Text('暂无数据', style: TextStyle(fontSize: 14.sp)),
+      );
     }
 
     return Padding(
@@ -98,11 +106,7 @@ class LikePage extends GetView<LikeController> {
         itemCount: likedData.length,
         itemBuilder: (context, index) {
           final item = likedData[index];
-          return _buildLikeCard(
-            context,
-            item: item,
-            isUser: true,
-          );
+          return _buildLikeCard(context, item: item, isUser: true);
         },
       ),
     );
@@ -113,7 +117,9 @@ class LikePage extends GetView<LikeController> {
     final likedData = controller.summaryData.value?.userSummary?.mostLikedUsers;
 
     if (likedData == null || likedData.isEmpty) {
-      return Center(child: Text('暂无数据', style: TextStyle(fontSize: 14.sp)));
+      return Center(
+        child: Text('暂无数据', style: TextStyle(fontSize: 14.sp)),
+      );
     }
 
     return Padding(
@@ -130,11 +136,7 @@ class LikePage extends GetView<LikeController> {
         itemCount: likedData.length,
         itemBuilder: (context, index) {
           final item = likedData[index];
-          return _buildLikeCard(
-            context,
-            item: item,
-            isUser: false,
-          );
+          return _buildLikeCard(context, item: item, isUser: false);
         },
       ),
     );
@@ -290,26 +292,26 @@ class LikePage extends GetView<LikeController> {
                     ),
                   )
                 : imageUrl != null && imageUrl.isNotEmpty
-                    ? Container(
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).cardColor,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.1),
-                              blurRadius: 4,
-                              spreadRadius: 1,
-                            ),
-                          ],
+                ? Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.1),
+                          blurRadius: 4,
+                          spreadRadius: 1,
                         ),
-                        padding: EdgeInsets.all(4.w),
-                        child: CachedImage(
-                          imageUrl: imageUrl,
-                          width: 16,
-                          height: 16,
-                        ),
-                      )
-                    : const SizedBox.shrink(),
+                      ],
+                    ),
+                    padding: EdgeInsets.all(4.w),
+                    child: CachedImage(
+                      imageUrl: imageUrl,
+                      width: 16,
+                      height: 16,
+                    ),
+                  )
+                : const SizedBox.shrink(),
           ),
         ],
       ),

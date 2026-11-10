@@ -46,11 +46,13 @@ class DrawerMenu extends GetView<DrawerMenuController> with ToastMixin {
                     right: Spacing.md,
                     child: Text.rich(
                       TextSpan(
-                          text: ' \n${AppConst.siteName}',
-                          style: TextStyle(
-                              fontSize: AppSizes.fontLarge,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.white)),
+                        text: ' \n${AppConst.siteName}',
+                        style: TextStyle(
+                          fontSize: AppSizes.fontLarge,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -72,41 +74,50 @@ class DrawerMenu extends GetView<DrawerMenuController> with ToastMixin {
                         title: AppConst.drawerMenu.externalLinks,
                         items: [
                           MenuItem(
-                              icon: CupertinoIcons.eye,
-                              title: AppConst.drawerMenu.status,
-                              url: AppConst.drawerMenu.statusUrl),
+                            icon: CupertinoIcons.eye,
+                            title: AppConst.drawerMenu.status,
+                            url: AppConst.drawerMenu.statusUrl,
+                          ),
                           MenuItem(
-                              icon: CupertinoIcons.link,
-                              title: AppConst.drawerMenu.connect,
-                              url: AppConst.drawerMenu.connectUrl),
+                            icon: CupertinoIcons.link,
+                            title: AppConst.drawerMenu.connect,
+                            url: AppConst.drawerMenu.connectUrl,
+                          ),
                           MenuItem(
-                              icon: CupertinoIcons.gift,
-                              title: AppConst.drawerMenu.lottery,
-                              url: AppConst.drawerMenu.lotteryUrl),
+                            icon: CupertinoIcons.gift,
+                            title: AppConst.drawerMenu.lottery,
+                            url: AppConst.drawerMenu.lotteryUrl,
+                          ),
                           MenuItem(
-                              icon: CupertinoIcons.paperplane,
-                              title: AppConst.drawerMenu.telegramChannel,
-                              url: AppConst.drawerMenu.channelUrl),
+                            icon: CupertinoIcons.paperplane,
+                            title: AppConst.drawerMenu.telegramChannel,
+                            url: AppConst.drawerMenu.channelUrl,
+                          ),
                           MenuItem(
-                              icon: CupertinoIcons.paperplane,
-                              title: AppConst.drawerMenu.telegram,
-                              url: AppConst.drawerMenu.jaTGUrl),
+                            icon: CupertinoIcons.paperplane,
+                            title: AppConst.drawerMenu.telegram,
+                            url: AppConst.drawerMenu.jaTGUrl,
+                          ),
                         ],
                       ),
                       // 类别
-                      Obx(() => _buildSection(
-                            context: context,
-                            title: AppConst.drawerMenu.categories,
-                            items: controller.categoryItems,
-                            showViewAll: true,
-                          )),
+                      Obx(
+                        () => _buildSection(
+                          context: context,
+                          title: AppConst.drawerMenu.categories,
+                          items: controller.categoryItems,
+                          showViewAll: true,
+                        ),
+                      ),
                       // 标签
-                      Obx(() => _buildSection(
-                            context: context,
-                            title: AppConst.drawerMenu.tags,
-                            items: controller.tagItems,
-                            showViewAll: true,
-                          )),
+                      Obx(
+                        () => _buildSection(
+                          context: context,
+                          title: AppConst.drawerMenu.tags,
+                          items: controller.tagItems,
+                          showViewAll: true,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -151,7 +162,7 @@ class DrawerMenu extends GetView<DrawerMenuController> with ToastMixin {
                     size: AppSizes.iconSmall,
                     color: Theme.of(context).primaryColor,
                   ),
-                )
+                ),
               ],
             ],
           ),
@@ -267,12 +278,14 @@ class DrawerMenuController extends GetxController {
     for (var categoryId in sidebarCategoryIds) {
       final category = categoryManager.getCategory(categoryId);
       if (category != null) {
-        categoryItems.add(MenuItem(
-          icon: _getCategoryIcon(category.name),
-          title: category.name,
-          hasNew: false,
-          category: category,
-        ));
+        categoryItems.add(
+          MenuItem(
+            icon: _getCategoryIcon(category.name),
+            title: category.name,
+            hasNew: false,
+            category: category,
+          ),
+        );
       }
     }
   }
@@ -285,14 +298,16 @@ class DrawerMenuController extends GetxController {
 
     for (var tag in sidebarTags) {
       if (tag.name != null) {
-        tagItems.add(MenuItem(
-          // TODO: 图标方案待定
-          // icon: _getTagIcon(tag.name!),
-          icon: null,
-          title: tag.name!,
-          hasNew: false,
-          isTag: true,
-        ));
+        tagItems.add(
+          MenuItem(
+            // TODO: 图标方案待定
+            // icon: _getTagIcon(tag.name!),
+            icon: null,
+            title: tag.name!,
+            hasNew: false,
+            isTag: true,
+          ),
+        );
       }
     }
 

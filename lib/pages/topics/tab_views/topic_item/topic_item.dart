@@ -47,8 +47,8 @@ class TopicItem extends StatelessWidget with Concatenated {
       final padding = density == ListDensity.compact
           ? const EdgeInsets.all(8)
           : density == ListDensity.normal
-              ? const EdgeInsets.all(12)
-              : const EdgeInsets.all(15);
+          ? const EdgeInsets.all(12)
+          : const EdgeInsets.all(15);
 
       return Container(
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4).w,
@@ -115,13 +115,17 @@ class TopicItem extends StatelessWidget with Concatenated {
           backgroundColor: AppColors.warning,
           foregroundColor: Colors.white,
           borderRadius: BorderRadius.only(
-              topRight: const Radius.circular(4).w,
-              bottomRight: const Radius.circular(4).w),
+            topRight: const Radius.circular(4).w,
+            bottomRight: const Radius.circular(4).w,
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(CupertinoIcons.bell_slash,
-                  size: 20.w, color: AppColors.white),
+              Icon(
+                CupertinoIcons.bell_slash,
+                size: 20.w,
+                color: AppColors.white,
+              ),
               SizedBox(height: 4.w),
               Text(
                 '免打扰',

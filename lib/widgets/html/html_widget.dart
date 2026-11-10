@@ -109,15 +109,17 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
             ),
             // 代码块样式
             "pre": Style(
-              backgroundColor:
-                  Theme.of(context).primaryColor.withValues(alpha: 0.1),
+              backgroundColor: Theme.of(
+                context,
+              ).primaryColor.withValues(alpha: 0.1),
               padding: HtmlPaddings.all(12.w),
               margin: Margins.symmetric(vertical: 8.h),
               fontFamily: AppFontFamily.dinPro,
             ),
             "code": Style(
-              backgroundColor:
-                  Theme.of(context).primaryColor.withValues(alpha: 0),
+              backgroundColor: Theme.of(
+                context,
+              ).primaryColor.withValues(alpha: 0),
               padding: HtmlPaddings.symmetric(horizontal: 4.w, vertical: 2.h),
               fontFamily: AppFontFamily.dinPro,
               fontSize: FontSize(13.sp),
@@ -133,8 +135,9 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                   width: 4.w,
                 ),
               ),
-              backgroundColor:
-                  Theme.of(context).primaryColor.withValues(alpha: 0.05),
+              backgroundColor: Theme.of(
+                context,
+              ).primaryColor.withValues(alpha: 0.05),
             ),
             // 标题样式
             "h1": Style(
@@ -253,10 +256,7 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.w),
         ),
-        child: UserInfoCard(
-          toPersonalPage: false,
-          username: username,
-        ),
+        child: UserInfoCard(toPersonalPage: false, username: username),
       ),
       barrierColor: Colors.black.withValues(alpha: 0.5),
     );
@@ -268,10 +268,7 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
       builder: (extensionContext) {
         return Padding(
           padding: const EdgeInsets.only(bottom: 10).w,
-          child: Divider(
-            height: 1,
-            color: theme.dividerColor,
-          ),
+          child: Divider(height: 1, color: theme.dividerColor),
         );
       },
     );
@@ -294,17 +291,20 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
           final article = extensionContext.element
               ?.getElementsByClassName('onebox-body')
               .firstOrNull;
-          final githubRow =
-              article?.getElementsByClassName('github-row').firstOrNull;
+          final githubRow = article
+              ?.getElementsByClassName('github-row')
+              .firstOrNull;
 
           // 获取缩略图
-          final thumbnailImg =
-              githubRow?.getElementsByTagName('img').firstOrNull;
+          final thumbnailImg = githubRow
+              ?.getElementsByTagName('img')
+              .firstOrNull;
           final thumbnailSrc = thumbnailImg?.attributes['src'];
 
           // 获取标题
-          final titleElement =
-              githubRow?.getElementsByTagName('h3').firstOrNull;
+          final titleElement = githubRow
+              ?.getElementsByTagName('h3')
+              .firstOrNull;
           final titleLink = titleElement?.getElementsByTagName('a').firstOrNull;
           final titleText = titleLink?.text ?? '';
 
@@ -319,10 +319,7 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
             decoration: BoxDecoration(
               color: theme.cardColor,
               borderRadius: BorderRadius.circular(12).w,
-              border: Border.all(
-                color: theme.dividerColor,
-                width: 1,
-              ),
+              border: Border.all(color: theme.dividerColor, width: 1),
               boxShadow: [
                 BoxShadow(
                   color: theme.shadowColor.withValues(alpha: 0.1),
@@ -357,9 +354,7 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                             fit: BoxFit.cover,
                             placeholder: Container(
                               color: theme.primaryColor.withValues(alpha: 0.1),
-                              child: Center(
-                                child: DisRefreshLoading(),
-                              ),
+                              child: Center(child: DisRefreshLoading()),
                             ),
                             errorWidget: Container(
                               color: theme.colorScheme.surfaceContainerHighest,
@@ -367,8 +362,9 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                                 child: Icon(
                                   Icons.broken_image_outlined,
                                   size: 40.w,
-                                  color: theme.iconTheme.color
-                                      ?.withValues(alpha: 0.5),
+                                  color: theme.iconTheme.color?.withValues(
+                                    alpha: 0.5,
+                                  ),
                                 ),
                               ),
                             ),
@@ -461,10 +457,7 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
             decoration: BoxDecoration(
               color: theme.cardColor,
               borderRadius: BorderRadius.circular(12).w,
-              border: Border.all(
-                color: theme.dividerColor,
-                width: 1,
-              ),
+              border: Border.all(color: theme.dividerColor, width: 1),
               boxShadow: [
                 BoxShadow(
                   color: theme.shadowColor.withValues(alpha: 0.1),
@@ -547,7 +540,8 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
         final topicId = extensionContext.element?.attributes['data-topic'];
         final avatarImg = titleDiv?.getElementsByTagName('img').firstOrNull;
         final avatarSrc = avatarImg?.attributes['src'];
-        final content = extensionContext.element
+        final content =
+            extensionContext.element
                 ?.getElementsByTagName('blockquote')
                 .firstOrNull
                 ?.innerHtml ??
@@ -558,31 +552,35 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
             child: Column(
               children: [
                 ExpandablePanel(
-                    theme: const ExpandableThemeData(
-                      headerAlignment: ExpandablePanelHeaderAlignment.center,
-                      tapBodyToExpand: true,
-                      tapBodyToCollapse: true,
-                      hasIcon: false,
-                    ),
-                    onExpanded: (expanded) {
-                      if (expanded) {
-                        controller.loadLinkRow(int.parse(topicId ?? '0'),
-                            int.parse(postId ?? '0'));
-                      }
-                    },
-                    header: Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 0, vertical: 0)
-                              .w,
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: Container(
+                  theme: const ExpandableThemeData(
+                    headerAlignment: ExpandablePanelHeaderAlignment.center,
+                    tapBodyToExpand: true,
+                    tapBodyToCollapse: true,
+                    hasIcon: false,
+                  ),
+                  onExpanded: (expanded) {
+                    if (expanded) {
+                      controller.loadLinkRow(
+                        int.parse(topicId ?? '0'),
+                        int.parse(postId ?? '0'),
+                      );
+                    }
+                  },
+                  header: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 0,
+                      vertical: 0,
+                    ).w,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
                             decoration: BoxDecoration(
                               border: Border(
                                 left: BorderSide(
-                                  color:
-                                      theme.primaryColor.withValues(alpha: 0.5),
+                                  color: theme.primaryColor.withValues(
+                                    alpha: 0.5,
+                                  ),
                                   width: 4.w,
                                 ),
                               ),
@@ -622,7 +620,9 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                                             style: TextStyle(
                                               fontSize: 10.w,
                                               color: theme
-                                                  .textTheme.bodySmall?.color,
+                                                  .textTheme
+                                                  .bodySmall
+                                                  ?.color,
                                             ),
                                           ),
                                         ],
@@ -637,8 +637,9 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                                             iconColor: theme.primaryColor,
                                             iconSize: 14.w,
                                             iconRotationAngle: pi / 2,
-                                            iconPadding:
-                                                const EdgeInsets.only(right: 5),
+                                            iconPadding: const EdgeInsets.only(
+                                              right: 5,
+                                            ),
                                             hasIcon: false,
                                           ),
                                         ),
@@ -650,13 +651,15 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                                                   null) {
                                                 topicDetailController!
                                                     .scrollToPost(
-                                                        int.parse(postId));
+                                                      int.parse(postId),
+                                                    );
                                               }
                                             },
                                             child: Container(
                                               padding: EdgeInsets.symmetric(
-                                                  horizontal: 6.w,
-                                                  vertical: 3.w),
+                                                horizontal: 6.w,
+                                                vertical: 3.w,
+                                              ),
                                               decoration: BoxDecoration(
                                                 color: theme.primaryColor
                                                     .withValues(alpha: 0.1),
@@ -688,9 +691,9 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                                     ),
                                   ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 10)
-                                          .w,
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                  ).w,
                                   child: HtmlWidget(
                                     html: content,
                                     onLinkTap: onLinkTap,
@@ -699,62 +702,64 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                                 ),
                               ],
                             ),
-                          )),
-                        ],
-                      ),
-                    ),
-                    collapsed: Container(),
-                    expanded: Container(
-                      decoration: BoxDecoration(
-                        color: theme.primaryColor.withValues(alpha: 0.05),
-                      ),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10).w,
-                            child: Obx(() {
-                              final quotedContent = controller.getQuotedContent(
-                                int.parse(topicId ?? '0'),
-                                int.parse(postId ?? '0'),
-                              );
-
-                              // 如果有引用内容，检查并高亮匹配部分
-                              String highlightedContent = quotedContent ?? '';
-                              if (quotedContent != null && content.isNotEmpty) {
-                                // 移除HTML标签以进行纯文本比较
-                                final plainContent = content
-                                    .replaceAll(RegExp(r'<[^>]*>'), '')
-                                    .trim();
-                                final plainQuoted = quotedContent
-                                    .replaceAll(RegExp(r'<[^>]*>'), '')
-                                    .trim();
-
-                                if (plainQuoted.contains(plainContent)) {
-                                  // 在原始HTML中查找并高亮匹配部分
-                                  final contentWithoutTags = content
-                                      .replaceAll(RegExp(r'<[^>]*>'), '')
-                                      .trim();
-                                  // ignore: deprecated_member_use
-                                  final color =
-                                      // ignore: deprecated_member_use
-                                      '#${theme.primaryColor.value.toRadixString(16).padLeft(8, '0').substring(2)}';
-                                  highlightedContent = quotedContent.replaceAll(
-                                      contentWithoutTags,
-                                      '<span style="color: $color">$contentWithoutTags</span>');
-                                }
-                              }
-
-                              return HtmlWidget(
-                                html: highlightedContent,
-                                onLinkTap: onLinkTap,
-                                fontSize: fontSize,
-                              );
-                            }),
                           ),
-                        ],
-                      ),
-                    ))
+                        ),
+                      ],
+                    ),
+                  ),
+                  collapsed: Container(),
+                  expanded: Container(
+                    decoration: BoxDecoration(
+                      color: theme.primaryColor.withValues(alpha: 0.05),
+                    ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10).w,
+                          child: Obx(() {
+                            final quotedContent = controller.getQuotedContent(
+                              int.parse(topicId ?? '0'),
+                              int.parse(postId ?? '0'),
+                            );
+
+                            // 如果有引用内容，检查并高亮匹配部分
+                            String highlightedContent = quotedContent ?? '';
+                            if (quotedContent != null && content.isNotEmpty) {
+                              // 移除HTML标签以进行纯文本比较
+                              final plainContent = content
+                                  .replaceAll(RegExp(r'<[^>]*>'), '')
+                                  .trim();
+                              final plainQuoted = quotedContent
+                                  .replaceAll(RegExp(r'<[^>]*>'), '')
+                                  .trim();
+
+                              if (plainQuoted.contains(plainContent)) {
+                                // 在原始HTML中查找并高亮匹配部分
+                                final contentWithoutTags = content
+                                    .replaceAll(RegExp(r'<[^>]*>'), '')
+                                    .trim();
+                                // ignore: deprecated_member_use
+                                final color =
+                                    // ignore: deprecated_member_use
+                                    '#${theme.primaryColor.value.toRadixString(16).padLeft(8, '0').substring(2)}';
+                                highlightedContent = quotedContent.replaceAll(
+                                  contentWithoutTags,
+                                  '<span style="color: $color">$contentWithoutTags</span>',
+                                );
+                              }
+                            }
+
+                            return HtmlWidget(
+                              html: highlightedContent,
+                              onLinkTap: onLinkTap,
+                              fontSize: fontSize,
+                            );
+                          }),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -787,8 +792,10 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                         child: Stack(
                           children: [
                             ImageFiltered(
-                              imageFilter:
-                                  ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+                              imageFilter: ImageFilter.blur(
+                                sigmaX: 6,
+                                sigmaY: 6,
+                              ),
                               child: HtmlWidget(
                                 html: innerHtml,
                                 onLinkTap: onLinkTap,
@@ -815,8 +822,9 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
 
         // 如果是 lightbox-wrapper，只返回其中的图片内容
         if (extensionContext.classes.contains('lightbox-wrapper')) {
-          final imgElement =
-              extensionContext.element?.getElementsByTagName('img').firstOrNull;
+          final imgElement = extensionContext.element
+              ?.getElementsByTagName('img')
+              .firstOrNull;
           if (imgElement != null) {
             final imgSrc = imgElement.attributes['src'];
             if (imgSrc != null) {
@@ -844,10 +852,7 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.w),
-                    border: Border.all(
-                      color: theme.dividerColor,
-                      width: 1,
-                    ),
+                    border: Border.all(color: theme.dividerColor, width: 1),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.w),
@@ -856,9 +861,7 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                       width: double.infinity,
                       placeholder: Container(
                         color: theme.primaryColor.withValues(alpha: 0.1),
-                        child: Center(
-                          child: DisRefreshLoading(),
-                        ),
+                        child: Center(child: DisRefreshLoading()),
                       ),
                       errorWidget: Icon(
                         Icons.broken_image_outlined,
@@ -931,7 +934,8 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                                       ),
                                       "th": Style(
                                         padding: HtmlPaddings.all(8.w),
-                                        backgroundColor: theme.colorScheme
+                                        backgroundColor: theme
+                                            .colorScheme
                                             .surfaceContainerHighest,
                                         fontWeight: FontWeight.bold,
                                         textAlign: TextAlign.center,
@@ -944,15 +948,15 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                                         ),
                                       ),
                                     },
-                                    extensions: const [
-                                      TableHtmlExtension(),
-                                    ],
+                                    extensions: const [TableHtmlExtension()],
                                     onLinkTap: (url, _, __) {
                                       if (onLinkTap != null) {
                                         onLinkTap!(url);
                                       } else {
-                                        Get.toNamed(Routes.WEBVIEW,
-                                            arguments: url);
+                                        Get.toNamed(
+                                          Routes.WEBVIEW,
+                                          arguments: url,
+                                        );
                                       }
                                     },
                                   ),
@@ -977,7 +981,9 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                           label: Text(
                             '预览',
                             style: TextStyle(
-                                fontSize: 14.w, color: theme.primaryColor),
+                              fontSize: 14.w,
+                              color: theme.primaryColor,
+                            ),
                           ),
                         ),
                       ),
@@ -998,17 +1004,16 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
             margin: const EdgeInsets.symmetric(vertical: 8).w,
             padding: EdgeInsets.all(16.w),
             decoration: BoxDecoration(
-              color: theme.colorScheme.surfaceContainerHighest
-                  .withValues(alpha: 0.5),
+              color: theme.colorScheme.surfaceContainerHighest.withValues(
+                alpha: 0.5,
+              ),
               borderRadius: BorderRadius.circular(8).w,
               border: Border.all(color: theme.dividerColor),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                HtmlWidget(
-                  html: innerHtml,
-                ),
+                HtmlWidget(html: innerHtml),
 
                 // 按钮区域
                 6.vGap,
@@ -1033,9 +1038,11 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
 
         // 检查是否包含视频相关的类名
         final classNames = extensionContext.classes;
-        final isVideoBox = classNames.contains('onebox') &&
+        final isVideoBox =
+            classNames.contains('onebox') &&
             classNames.contains('video-onebox');
-        final isVideoOnebox = classNames.contains('onebox') &&
+        final isVideoOnebox =
+            classNames.contains('onebox') &&
             extensionContext.element?.outerHtml.contains('<video') == true;
 
         if (isVideoBox || isVideoOnebox) {
@@ -1046,8 +1053,9 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
 
           if (videoElement != null) {
             // 获取视频源
-            final sourceElement =
-                videoElement.getElementsByTagName('source').firstOrNull;
+            final sourceElement = videoElement
+                .getElementsByTagName('source')
+                .firstOrNull;
 
             final videoUrl = sourceElement?.attributes['src'];
 
@@ -1055,8 +1063,9 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
               return VideoPlayerWidget(videoUrl: videoUrl);
             } else {
               // 尝试从a标签获取视频URL
-              final aElement =
-                  videoElement.getElementsByTagName('a').firstOrNull;
+              final aElement = videoElement
+                  .getElementsByTagName('a')
+                  .firstOrNull;
 
               final linkUrl = aElement?.attributes['href'];
 
@@ -1068,8 +1077,9 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
             }
           } else {
             // 如果没有找到video元素，尝试直接从div中的a标签获取URL
-            final aElement =
-                extensionContext.element?.getElementsByTagName('a').firstOrNull;
+            final aElement = extensionContext.element
+                ?.getElementsByTagName('a')
+                .firstOrNull;
             if (aElement != null) {
               final linkUrl = aElement.attributes['href'];
               if (linkUrl != null && linkUrl.isNotEmpty) {
@@ -1097,7 +1107,8 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return _buildPollWidget(
-                  Get.find<PollController>(tag: 'poll_${polls![index].id}'));
+                Get.find<PollController>(tag: 'poll_${polls![index].id}'),
+              );
             },
             itemCount: polls!.length,
           );
@@ -1108,11 +1119,11 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
           extensionContext.element!
               .querySelectorAll('.lightbox-wrapper')
               .forEach((wrapper) {
-            dom.Element? img = wrapper.querySelector('img');
-            if (img != null) {
-              images.add(img);
-            }
-          });
+                dom.Element? img = wrapper.querySelector('img');
+                if (img != null) {
+                  images.add(img);
+                }
+              });
 
           if (images.isEmpty) {
             return const SizedBox.shrink();
@@ -1171,12 +1182,14 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                 children: [
                   if (language != null && language != 'null') ...[
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.w),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.w,
+                        vertical: 4.w,
+                      ),
                       decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .primaryColor
-                            .withValues(alpha: 0.1),
+                        color: Theme.of(
+                          context,
+                        ).primaryColor.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(4.w),
                       ),
                       child: Text(
@@ -1282,11 +1295,13 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                     javaScriptEnabled: true,
                   ),
                   onLoadStart: (controller, url) {
-                    controller.evaluateJavascript(source: '''
+                    controller.evaluateJavascript(
+                      source: '''
                             document.body.style.margin = '0';
                             document.body.style.padding = '0';
                             document.body.style.backgroundColor = 'transparent';
-                          ''');
+                          ''',
+                    );
                   },
                 ),
               ),
@@ -1299,10 +1314,7 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
           margin: EdgeInsets.symmetric(vertical: 8.h),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8.w),
-            border: Border.all(
-              color: Theme.of(context).dividerColor,
-              width: 1,
-            ),
+            border: Border.all(color: Theme.of(context).dividerColor, width: 1),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8.w),
@@ -1357,7 +1369,8 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
 
         // 检查是否是表情
         final isEmoji = extensionContext.classes.contains('emoji');
-        final isEmojiPath = imageUrl.contains('/uploads/default/original') ||
+        final isEmojiPath =
+            imageUrl.contains('/uploads/default/original') ||
             imageUrl.contains('/images/emoji/twitter/') ||
             imageUrl.contains('plugins/discourse-narrative-bot/images') ||
             imageUrl.contains('/images/emoji/apple/');
@@ -1385,10 +1398,7 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.w),
-              border: Border.all(
-                color: theme.dividerColor,
-                width: 1,
-              ),
+              border: Border.all(color: theme.dividerColor, width: 1),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8.w),
@@ -1397,9 +1407,7 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                 width: double.infinity,
                 placeholder: Container(
                   color: theme.primaryColor.withValues(alpha: 0.1),
-                  child: Center(
-                    child: DisRefreshLoading(),
-                  ),
+                  child: Center(child: DisRefreshLoading()),
                 ),
                 errorWidget: Icon(
                   Icons.broken_image_outlined,
@@ -1430,16 +1438,17 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
       // 处理表格中的列表元素
       document
           .querySelectorAll(
-              'th > ul > li, th > ol > li, td > ul > li, td > ol > li')
+            'th > ul > li, th > ol > li, td > ul > li, td > ol > li',
+          )
           .forEach((element) {
-        final span = dom.Element.tag('span');
-        span.innerHtml = element.innerHtml;
-        element.replaceWith(span);
-      });
+            final span = dom.Element.tag('span');
+            span.innerHtml = element.innerHtml;
+            element.replaceWith(span);
+          });
 
-      document
-          .querySelectorAll('th > ul, th > ol, td > ul, td > ol')
-          .forEach((element) {
+      document.querySelectorAll('th > ul, th > ol, td > ul, td > ol').forEach((
+        element,
+      ) {
         final span = dom.Element.tag('span');
         span.innerHtml = element.innerHtml;
         element.replaceWith(span);
@@ -1578,9 +1587,7 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
       barrierColor: Colors.black.withValues(alpha: 0.5),
       builder: (context) => Dialog(
         backgroundColor: theme.cardColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.w),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.w)),
         elevation: 16,
         insetPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 24.h),
         child: Container(
@@ -1594,10 +1601,7 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                 padding: EdgeInsets.only(bottom: 12.h),
                 decoration: BoxDecoration(
                   border: Border(
-                    bottom: BorderSide(
-                      color: theme.dividerColor,
-                      width: 0.5,
-                    ),
+                    bottom: BorderSide(color: theme.dividerColor, width: 0.5),
                   ),
                 ),
                 child: Row(
@@ -1657,7 +1661,8 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                     return Container(
                       decoration: BoxDecoration(
                         border: Border.all(
-                            color: theme.primaryColor.withValues(alpha: 0.5)),
+                          color: theme.primaryColor.withValues(alpha: 0.5),
+                        ),
                         borderRadius: BorderRadius.circular(8.w),
                       ),
                       child: NotificationListener<ScrollNotification>(
@@ -1691,7 +1696,8 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                                     "th": Style(
                                       padding: HtmlPaddings.all(12.w),
                                       backgroundColor: theme
-                                          .colorScheme.surfaceContainerHighest,
+                                          .colorScheme
+                                          .surfaceContainerHighest,
                                       fontWeight: FontWeight.bold,
                                       border: Border.all(
                                         color: theme.dividerColor,
@@ -1712,8 +1718,10 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                                     if (onLinkTap != null) {
                                       onLinkTap!(url);
                                     } else {
-                                      Get.toNamed(Routes.WEBVIEW,
-                                          arguments: url);
+                                      Get.toNamed(
+                                        Routes.WEBVIEW,
+                                        arguments: url,
+                                      );
                                     }
                                   },
                                 ),
@@ -1773,10 +1781,7 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                   decoration: BoxDecoration(
                     color: theme.primaryColor.withValues(alpha: .1),
                     border: Border(
-                      bottom: BorderSide(
-                        color: theme.dividerColor,
-                        width: .5,
-                      ),
+                      bottom: BorderSide(color: theme.dividerColor, width: .5),
                     ),
                   ),
                   child: Row(
@@ -1800,7 +1805,9 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                         () => controller.pollStatus.value == 'open'
                             ? Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Colors.green.withValues(alpha: .1),
                                   borderRadius: BorderRadius.circular(12),
@@ -1816,7 +1823,9 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                               )
                             : Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 4),
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
                                 decoration: BoxDecoration(
                                   color: Colors.red.withValues(alpha: .1),
                                   borderRadius: BorderRadius.circular(12),
@@ -1851,15 +1860,20 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                           Text(
                             controller.title.value,
                             style: TextStyle(
-                                fontSize: 11.w,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: AppFontFamily.dinPro),
+                              fontSize: 11.w,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: AppFontFamily.dinPro,
+                            ),
                           ),
                         ],
                       ),
                       18.vGap,
-                      ...controller.options.map((option) => Obx(() =>
-                          _buildPollOptionItem(context, controller, option))),
+                      ...controller.options.map(
+                        (option) => Obx(
+                          () =>
+                              _buildPollOptionItem(context, controller, option),
+                        ),
+                      ),
 
                       // 投票信息
                       Row(
@@ -1875,18 +1889,21 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                               text: TextSpan(
                                 children: [
                                   TextSpan(
-                                      text: '${controller.voteCount.value}',
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: theme.primaryColor,
-                                          fontWeight: FontWeight.w600,
-                                          fontFamily: AppFontFamily.dinPro)),
+                                    text: '${controller.voteCount.value}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: theme.primaryColor,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: AppFontFamily.dinPro,
+                                    ),
+                                  ),
                                   TextSpan(
-                                      text: ' 人参与投票',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: theme
-                                              .textTheme.bodySmall?.color)),
+                                    text: ' 人参与投票',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: theme.textTheme.bodySmall?.color,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -1894,15 +1911,17 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                           const Spacer(),
                           SizedBox(
                             height: 32.w,
-                            child: Obx(() => DisButton(
-                                  fontSize: 12,
-                                  text: controller.hasVoted.value
-                                      ? '修改投票'
-                                      : '提交投票',
-                                  type: ButtonType.transform,
-                                  loading: controller.isVoting.value,
-                                  onPressed: () => controller.submitVote(),
-                                )),
+                            child: Obx(
+                              () => DisButton(
+                                fontSize: 12,
+                                text: controller.hasVoted.value
+                                    ? '修改投票'
+                                    : '提交投票',
+                                type: ButtonType.transform,
+                                loading: controller.isVoting.value,
+                                onPressed: () => controller.submitVote(),
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -1923,7 +1942,8 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                             for (final optionId
                                 in controller.selectedOptionIds) {
                               allVoters.addAll(
-                                  controller.getVotersForOption(optionId));
+                                controller.getVotersForOption(optionId),
+                              );
                               if (voterType.isEmpty) {
                                 voterType = controller.getVoterType(optionId);
                               } else {
@@ -1945,7 +1965,11 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                             const Divider(),
                             8.vGap,
                             _buildVotersList(
-                                context, controller, voterType, allVoters),
+                              context,
+                              controller,
+                              voterType,
+                              allVoters,
+                            ),
                           ],
                         );
                       }),
@@ -1960,8 +1984,12 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
     );
   }
 
-  Widget _buildVotersList(BuildContext context, PollController controller,
-      String voterType, List<PollVoter> votersList) {
+  Widget _buildVotersList(
+    BuildContext context,
+    PollController controller,
+    String voterType,
+    List<PollVoter> votersList,
+  ) {
     final theme = Theme.of(context);
 
     return Column(
@@ -1984,16 +2012,18 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
           runSpacing: 6,
           children: [
             // 投票者头像列表
-            ...votersList.map((voter) => AvatarWidget(
-                  avatarUrl: voter.getAvatarUrl(),
-                  size: 21,
-                  borderRadius: 4,
-                  backgroundColor: theme.primaryColor.withValues(alpha: .1),
-                  username: voter.username ?? '',
-                  avatarActions: AvatarActions.openCard,
-                  toPersonalPage: false,
-                  borderColor: theme.primaryColor,
-                )),
+            ...votersList.map(
+              (voter) => AvatarWidget(
+                avatarUrl: voter.getAvatarUrl(),
+                size: 21,
+                borderRadius: 4,
+                backgroundColor: theme.primaryColor.withValues(alpha: .1),
+                username: voter.username ?? '',
+                avatarActions: AvatarActions.openCard,
+                toPersonalPage: false,
+                borderColor: theme.primaryColor,
+              ),
+            ),
 
             // 加载更多按钮
             Obx(() {
@@ -2037,7 +2067,7 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                 );
               }
               return const SizedBox.shrink();
-            })
+            }),
           ],
         ),
       ],
@@ -2045,7 +2075,10 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
   }
 
   Widget _buildPollOptionItem(
-      BuildContext context, PollController controller, PollOption option) {
+    BuildContext context,
+    PollController controller,
+    PollOption option,
+  ) {
     final theme = Theme.of(context);
     final isSelected = controller.isOptionSelected(option.id ?? '');
     final votePercent = controller.getOptionPercent(option.id ?? '');
@@ -2081,9 +2114,9 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                               width: constraints.maxWidth * votePercent / 100,
                               height: double.infinity,
                               decoration: BoxDecoration(
-                                  color:
-                                      theme.primaryColor.withValues(alpha: .2),
-                                  borderRadius: BorderRadius.circular(12).w),
+                                color: theme.primaryColor.withValues(alpha: .2),
+                                borderRadius: BorderRadius.circular(12).w,
+                              ),
                             ),
                           );
                         },
@@ -2133,8 +2166,9 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                         style: TextStyle(
                           fontSize: 12,
                           color: theme.textTheme.bodyLarge?.color,
-                          fontWeight:
-                              isSelected ? FontWeight.w500 : FontWeight.normal,
+                          fontWeight: isSelected
+                              ? FontWeight.w500
+                              : FontWeight.normal,
                         ),
                       ),
                     ),
@@ -2190,11 +2224,7 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
             fit: BoxFit.cover,
             placeholder: (context, url) => Container(
               color: Theme.of(context).disabledColor.withValues(alpha: 0.1),
-              child: Center(
-                child: DisRefreshLoading(
-                  opacity: 0.5,
-                ),
-              ),
+              child: Center(child: DisRefreshLoading(opacity: 0.5)),
             ),
             errorWidget: (context, url, error) => Container(
               color: Theme.of(context).disabledColor.withValues(alpha: 0.1),
@@ -2219,13 +2249,19 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
     return Row(
       children: [
         Expanded(
-          child:
-              _buildGridItemImage(context, images[0], fixedHeight: fixedHeight),
+          child: _buildGridItemImage(
+            context,
+            images[0],
+            fixedHeight: fixedHeight,
+          ),
         ),
         gap.hGap,
         Expanded(
-          child:
-              _buildGridItemImage(context, images[1], fixedHeight: fixedHeight),
+          child: _buildGridItemImage(
+            context,
+            images[1],
+            fixedHeight: fixedHeight,
+          ),
         ),
       ],
     );
@@ -2233,7 +2269,9 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
 
   // 辅助方法：构建三图布局
   Widget _buildThreeImagesLayout(
-      BuildContext context, List<dom.Element> images) {
+    BuildContext context,
+    List<dom.Element> images,
+  ) {
     const gap = 6.0;
     const mainImageHeight = 180.0; // 主图较大
     const smallImageHeight = 120.0; // 小图较小
@@ -2245,13 +2283,19 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
         Row(
           children: [
             Expanded(
-              child: _buildGridItemImage(context, images[1],
-                  fixedHeight: smallImageHeight),
+              child: _buildGridItemImage(
+                context,
+                images[1],
+                fixedHeight: smallImageHeight,
+              ),
             ),
             gap.hGap,
             Expanded(
-              child: _buildGridItemImage(context, images[2],
-                  fixedHeight: smallImageHeight),
+              child: _buildGridItemImage(
+                context,
+                images[2],
+                fixedHeight: smallImageHeight,
+              ),
             ),
           ],
         ),
@@ -2269,13 +2313,19 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
         Row(
           children: [
             Expanded(
-              child: _buildGridItemImage(context, images[0],
-                  fixedHeight: fixedHeight),
+              child: _buildGridItemImage(
+                context,
+                images[0],
+                fixedHeight: fixedHeight,
+              ),
             ),
             gap.hGap,
             Expanded(
-              child: _buildGridItemImage(context, images[1],
-                  fixedHeight: fixedHeight),
+              child: _buildGridItemImage(
+                context,
+                images[1],
+                fixedHeight: fixedHeight,
+              ),
             ),
           ],
         ),
@@ -2283,13 +2333,19 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
         Row(
           children: [
             Expanded(
-              child: _buildGridItemImage(context, images[2],
-                  fixedHeight: fixedHeight),
+              child: _buildGridItemImage(
+                context,
+                images[2],
+                fixedHeight: fixedHeight,
+              ),
             ),
             gap.hGap,
             Expanded(
-              child: _buildGridItemImage(context, images[3],
-                  fixedHeight: fixedHeight),
+              child: _buildGridItemImage(
+                context,
+                images[3],
+                fixedHeight: fixedHeight,
+              ),
             ),
           ],
         ),
@@ -2325,8 +2381,11 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                   padding: EdgeInsets.only(
                     right: colIndex < endIndex - startIndex - 1 ? gap : 0,
                   ),
-                  child: _buildGridItemImage(context, images[index],
-                      fixedHeight: gridItemHeight),
+                  child: _buildGridItemImage(
+                    context,
+                    images[index],
+                    fixedHeight: gridItemHeight,
+                  ),
                 ),
               );
             }),
@@ -2337,8 +2396,11 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
   }
 
   // 辅助方法：构建固定高度的单张图片
-  Widget _buildGridItemImage(BuildContext context, dom.Element imgElement,
-      {double fixedHeight = 120}) {
+  Widget _buildGridItemImage(
+    BuildContext context,
+    dom.Element imgElement, {
+    double fixedHeight = 120,
+  }) {
     final src = imgElement.attributes['src'];
     if (src == null) return const SizedBox.shrink();
 
@@ -2360,11 +2422,7 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
             fit: BoxFit.cover,
             placeholder: (context, url) => Container(
               color: Theme.of(context).disabledColor.withValues(alpha: 0.1),
-              child: Center(
-                child: DisRefreshLoading(
-                  opacity: 0.5,
-                ),
-              ),
+              child: Center(child: DisRefreshLoading(opacity: 0.5)),
             ),
             errorWidget: (context, url, error) => Container(
               color: Theme.of(context).disabledColor.withValues(alpha: 0.1),
@@ -2402,7 +2460,9 @@ class HtmlController extends BaseController {
 
     try {
       final response = await _apiService.getPostLinkRow(
-          topicId.toString(), postId.toString());
+        topicId.toString(),
+        postId.toString(),
+      );
       if (response.cooked != null) {
         quotedContents[key] = response.cooked!;
         quotedContents.refresh();
@@ -2426,16 +2486,16 @@ class HtmlController extends BaseController {
   }
 
   void updatePolicyAccepted() async {
-    _updatePolicyAccepted(
-      isPolicyAccepted.value ? 'unaccept' : 'accept',
-    );
+    _updatePolicyAccepted(isPolicyAccepted.value ? 'unaccept' : 'accept');
   }
 
   void _updatePolicyAccepted(String action) async {
     try {
       isLoading.value = true;
       final response = await _apiService.updatePolicyAccepted(
-          action, postId.value.toString());
+        action,
+        postId.value.toString(),
+      );
 
       if (response.isSuccess) {
         isPolicyAccepted.value = !isPolicyAccepted.value;
@@ -2519,8 +2579,10 @@ class PollController extends BaseController {
 
   String getVoterType(String optionId) {
     return options
-            .firstWhere((opt) => opt.id == optionId,
-                orElse: () => PollOption(id: '', html: '', votes: 0))
+            .firstWhere(
+              (opt) => opt.id == optionId,
+              orElse: () => PollOption(id: '', html: '', votes: 0),
+            )
             .html ??
         '';
   }
@@ -2533,8 +2595,10 @@ class PollController extends BaseController {
   // 检查是否有更多投票者可以加载
   bool hasMoreVoters(String optionId) {
     // 找到该选项的总投票数
-    final option = options.firstWhere((opt) => opt.id == optionId,
-        orElse: () => PollOption(id: '', html: '', votes: 0));
+    final option = options.firstWhere(
+      (opt) => opt.id == optionId,
+      orElse: () => PollOption(id: '', html: '', votes: 0),
+    );
 
     final totalVotes = option.votes ?? 0;
     final loadedVoters = voters[optionId]?.length ?? 0;
@@ -2597,8 +2661,10 @@ class PollController extends BaseController {
     if (totalVoters == 0) return 0;
 
     // 查找对应选项的票数
-    final option = options.firstWhere((opt) => opt.id == optionId,
-        orElse: () => PollOption(id: '', html: '', votes: 0));
+    final option = options.firstWhere(
+      (opt) => opt.id == optionId,
+      orElse: () => PollOption(id: '', html: '', votes: 0),
+    );
 
     // 计算百分比
     return (option.votes ?? 0) * 100.0 / totalVoters;
@@ -2650,8 +2716,10 @@ class PollController extends BaseController {
 
       // 调用API提交投票
       final response = await _apiService.submitVote(
-          poll.value.name ?? 'poll', selectedOptionIds.toList(),
-          postId: poll.value.postId);
+        poll.value.name ?? 'poll',
+        selectedOptionIds.toList(),
+        postId: poll.value.postId,
+      );
 
       if (response.poll != null) {
         final poll = response.poll;

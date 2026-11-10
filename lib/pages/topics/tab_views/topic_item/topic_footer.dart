@@ -26,8 +26,8 @@ class TopicFooter extends StatelessWidget {
     final fontSize = density == ListDensity.compact
         ? 8.0
         : density == ListDensity.normal
-            ? 10.0
-            : 11.0;
+        ? 10.0
+        : 11.0;
 
     return Padding(
       padding: const EdgeInsets.only(top: 8).w,
@@ -68,10 +68,7 @@ class TopicFooter extends StatelessWidget {
           6.hGap,
 
           // 用户头像组
-          if (avatarUrls.isNotEmpty)
-            UserAvatarGroup(
-              avatarUrls: avatarUrls,
-            ),
+          if (avatarUrls.isNotEmpty) UserAvatarGroup(avatarUrls: avatarUrls),
 
           const Spacer(),
 
@@ -82,11 +79,9 @@ class TopicFooter extends StatelessWidget {
               Icon(
                 CupertinoIcons.eye,
                 size: fontSize.w + 3,
-                color: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.color
-                    ?.withValues(alpha: 0.5),
+                color: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.color?.withValues(alpha: 0.5),
               ),
               SizedBox(width: 4.w),
               Text(
@@ -94,11 +89,9 @@ class TopicFooter extends StatelessWidget {
                 style: TextStyle(
                   fontSize: fontSize.w + 3,
                   fontFamily: AppFontFamily.dinPro,
-                  color: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.color
-                      ?.withValues(alpha: 0.5),
+                  color: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.color?.withValues(alpha: 0.5),
                 ),
               ),
             ],
@@ -114,11 +107,9 @@ class TopicFooter extends StatelessWidget {
               Icon(
                 CupertinoIcons.arrowshape_turn_up_left_2_fill,
                 size: fontSize.w + 3,
-                color: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.color
-                    ?.withValues(alpha: 0.5),
+                color: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.color?.withValues(alpha: 0.5),
               ),
               SizedBox(width: 4.w),
               Text(
@@ -126,11 +117,9 @@ class TopicFooter extends StatelessWidget {
                 style: TextStyle(
                   fontSize: fontSize.w + 3,
                   fontFamily: AppFontFamily.dinPro,
-                  color: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.color
-                      ?.withValues(alpha: 0.5),
+                  color: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.color?.withValues(alpha: 0.5),
                 ),
               ),
             ],

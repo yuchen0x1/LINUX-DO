@@ -7,12 +7,10 @@ part of 'chat_direct.dart';
 // **************************************************************************
 
 ChatDirect _$ChatDirectFromJson(Map<String, dynamic> json) => ChatDirect(
-      channel: json['channel'] == null
-          ? null
-          : ChatMessage.fromJson(json['channel'] as Map<String, dynamic>),
-    );
+  channel: json['channel'] == null
+      ? null
+      : ChatMessage.fromJson(json['channel'] as Map<String, dynamic>),
+);
 
 Map<String, dynamic> _$ChatDirectToJson(ChatDirect instance) =>
-    <String, dynamic>{
-      'channel': instance.channel,
-    };
+    <String, dynamic>{'channel': instance.channel};

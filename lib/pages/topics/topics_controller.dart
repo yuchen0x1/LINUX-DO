@@ -51,7 +51,7 @@ class TopicsController extends BaseController
     'unread',
     'unseen',
     'top',
-    'hot'
+    'hot',
   ];
 
   // 简单一些，本地定义tab
@@ -61,7 +61,7 @@ class TopicsController extends BaseController
     Tab(text: '未读'),
     Tab(text: '未看'),
     Tab(text: '排行'),
-    Tab(text: '热门')
+    Tab(text: '热门'),
   ];
 
   final isRefreshing = false.obs;
@@ -85,17 +85,7 @@ class TopicsController extends BaseController
   // 检查是否是游客模式
   void changeTabs() {
     if (globalController.isAnonymousMode) {
-      tabs = const [
-        Tab(
-          text: '最新',
-        ),
-        Tab(
-          text: '排行',
-        ),
-        Tab(
-          text: '热门',
-        ),
-      ];
+      tabs = const [Tab(text: '最新'), Tab(text: '排行'), Tab(text: '热门')];
       paths = const ['latest', 'top', 'hot'];
     }
   }
@@ -108,10 +98,10 @@ class TopicsController extends BaseController
 
   // 获取所有tab视图
   List<Widget> get tabViews => List.generate(
-        paths.length,
-        (index) => _buildTabView(index),
-        growable: false,
-      );
+    paths.length,
+    (index) => _buildTabView(index),
+    growable: false,
+  );
 
   // 处理滚动通知
   bool handleScrollNotification(ScrollNotification notification) {
@@ -248,9 +238,7 @@ class TopicsController extends BaseController
             }
 
             return ConstrainedBox(
-              constraints: BoxConstraints(
-                maxHeight: 380.w,
-              ),
+              constraints: BoxConstraints(maxHeight: 380.w),
               child: ListView.builder(
                 padding: EdgeInsets.symmetric(vertical: 8.w),
                 shrinkWrap: true,
@@ -304,9 +292,7 @@ class TopicsController extends BaseController
       searchError.value = '';
 
       // 调用搜索 API
-      final result = await _apiService.search(
-        query: filter,
-      );
+      final result = await _apiService.search(query: filter);
 
       // 保存搜索结果
       searchResult.value = result;
@@ -386,8 +372,9 @@ class TopicsController extends BaseController
   void _loadBannerSettings() {
     final savedSettings = StorageManager.getString(bannerSettingsKey);
     if (savedSettings != null) {
-      bannerSettings.value =
-          BannerSettings.fromJson(json.decode(savedSettings));
+      bannerSettings.value = BannerSettings.fromJson(
+        json.decode(savedSettings),
+      );
     }
   }
 
@@ -431,9 +418,6 @@ class TopicsController extends BaseController
       );
     }
 
-    return Image.asset(
-      AppImages.getBanner(context),
-      fit: BoxFit.contain,
-    );
+    return Image.asset(AppImages.getBanner(context), fit: BoxFit.contain);
   }
 }

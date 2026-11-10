@@ -50,7 +50,7 @@ class ChatRobotController extends BaseController {
     '怎么买便宜的VPS?',
     'SHELL脚本编程基础?',
     'Neo是谁?',
-    'LINUX系统优化技巧?'
+    'LINUX系统优化技巧?',
   ].obs;
 
   // 存储当前对话的topic_id
@@ -211,7 +211,6 @@ class ChatRobotController extends BaseController {
           break;
         }
       }
-
       /// 继续回复
       else {
         final createResponse = await apiService.createPost(

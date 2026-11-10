@@ -26,10 +26,7 @@ class BadgeWidget extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: badge.hasBadge
-              ? [
-                  badgeColor,
-                  badgeColor.withValues(alpha: 0.5),
-                ]
+              ? [badgeColor, badgeColor.withValues(alpha: 0.5)]
               : [
                   badgeColor.withValues(alpha: 0.01),
                   badgeColor.withValues(alpha: 0.01),
@@ -54,24 +51,25 @@ class BadgeWidget extends StatelessWidget {
           // 图标或图片
           if (badge.getImageUrl().isNotEmpty)
             Positioned(
-                right: 10.w,
-                bottom: 10.w,
-                child: Container(
-                  width: 40.w,
-                  height: 40.w,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
-                    shape: BoxShape.circle,
+              right: 10.w,
+              bottom: 10.w,
+              child: Container(
+                width: 40.w,
+                height: 40.w,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.2),
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: CachedImage(
+                    imageUrl: badge.getImageUrl(),
+                    width: 24.w,
+                    height: 24.w,
+                    circle: true,
                   ),
-                  child: Center(
-                    child: CachedImage(
-                      imageUrl: badge.getImageUrl(),
-                      width: 24.w,
-                      height: 24.w,
-                      circle: true,
-                    ),
-                  ),
-                ))
+                ),
+              ),
+            )
           else
             Positioned(
               right: 10.w,
@@ -135,52 +133,57 @@ class BadgeWidget extends StatelessWidget {
                 Row(
                   children: [
                     Flexible(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 6.w, vertical: 1.4.w),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12.w),
-                            color: AppColors.white.withValues(alpha: .5),
-                          ),
-                          child: Text(
-                            badgeTypeName ?? '',
-                            style: TextStyle(
-                              fontFamily: AppFontFamily.dinPro,
-                              fontSize: 11.sp,
-                              color: badge.hasBadge
-                                  ? badgeColor
-                                  : badgeColor.withValues(alpha: 0.4),
-                              fontWeight: FontWeight.w500,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 6.w,
+                              vertical: 1.4.w,
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        4.vGap,
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 8.w, vertical: 2.w),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16.w),
-                          ),
-                          child: Text(
-                            '已授予 ${formatNumber(badge.grantCount)} 个',
-                            style: TextStyle(
-                              fontFamily: AppFontFamily.dinPro,
-                              fontSize: 9.sp,
-                              color: badge.hasBadge
-                                  ? badgeColor
-                                  : badgeColor.withValues(alpha: 0.4),
-                              fontWeight: FontWeight.w500,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.w),
+                              color: AppColors.white.withValues(alpha: .5),
+                            ),
+                            child: Text(
+                              badgeTypeName ?? '',
+                              style: TextStyle(
+                                fontFamily: AppFontFamily.dinPro,
+                                fontSize: 11.sp,
+                                color: badge.hasBadge
+                                    ? badgeColor
+                                    : badgeColor.withValues(alpha: 0.4),
+                                fontWeight: FontWeight.w500,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                        ),
-                      ],
-                    )),
+                          4.vGap,
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8.w,
+                              vertical: 2.w,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16.w),
+                            ),
+                            child: Text(
+                              '已授予 ${formatNumber(badge.grantCount)} 个',
+                              style: TextStyle(
+                                fontFamily: AppFontFamily.dinPro,
+                                fontSize: 9.sp,
+                                color: badge.hasBadge
+                                    ? badgeColor
+                                    : badgeColor.withValues(alpha: 0.4),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     8.hGap,
                   ],
                 ),

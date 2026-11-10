@@ -33,9 +33,10 @@ class BookmarkController extends BaseController
 
     pageController = PageController(initialPage: selectedCategoryIndex.value);
     tabController = TabController(
-        length: categories.length,
-        vsync: this,
-        initialIndex: selectedCategoryIndex.value);
+      length: categories.length,
+      vsync: this,
+      initialIndex: selectedCategoryIndex.value,
+    );
 
     // 标签控制器监听
     tabController.addListener(() {
@@ -105,8 +106,10 @@ class BookmarkController extends BaseController
   // 删除收藏
   Future<void> removeBookmark(BookmarkItem item) async {
     final currentCategory = categories[selectedCategoryIndex.value];
-    final success =
-        await _bookmarkService.removeBookmark(item.id, currentCategory);
+    final success = await _bookmarkService.removeBookmark(
+      item.id,
+      currentCategory,
+    );
 
     if (success) {
       bookmarkItems.removeWhere((bookmark) => bookmark.id == item.id);
@@ -116,10 +119,7 @@ class BookmarkController extends BaseController
 
   // 跳转到主题详情
   void toTopicDetail(int topicId) {
-    Get.toNamed(
-      Routes.TOPIC_DETAIL,
-      arguments: topicId,
-    );
+    Get.toNamed(Routes.TOPIC_DETAIL, arguments: topicId);
   }
 
   // 刷新数据

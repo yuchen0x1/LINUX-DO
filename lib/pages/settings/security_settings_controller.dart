@@ -31,10 +31,12 @@ class SecuritySettingsController extends BaseController
         final deviceList = userInfo.user?.userAuthTokens ?? [];
         // Sort devices by seenAt time in descending order
         deviceList.sort((a, b) {
-          final aTime =
-              a.seenAt != null ? DateTime.parse(a.seenAt!) : DateTime(1970);
-          final bTime =
-              b.seenAt != null ? DateTime.parse(b.seenAt!) : DateTime(1970);
+          final aTime = a.seenAt != null
+              ? DateTime.parse(a.seenAt!)
+              : DateTime(1970);
+          final bTime = b.seenAt != null
+              ? DateTime.parse(b.seenAt!)
+              : DateTime(1970);
           return bTime.compareTo(aTime); // Descending order (most recent first)
         });
         devices.value = deviceList;

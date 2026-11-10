@@ -30,11 +30,14 @@ class ChatPage extends GetView<ChatListController> {
         leading: Padding(
           padding: EdgeInsets.only(left: 12.w),
           child: Center(
-            child: Text(AppConst.chat.title,
-                style: TextStyle(
-                    fontSize: 16.w,
-                    fontWeight: FontWeight.w600,
-                    color: Theme.of(context).textTheme.bodyLarge?.color)),
+            child: Text(
+              AppConst.chat.title,
+              style: TextStyle(
+                fontSize: 16.w,
+                fontWeight: FontWeight.w600,
+                color: Theme.of(context).textTheme.bodyLarge?.color,
+              ),
+            ),
           ),
         ),
       ),
@@ -93,9 +96,7 @@ class ChatPage extends GetView<ChatListController> {
                   Container(
                     width: 38.w,
                     height: 38.w,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
+                    decoration: const BoxDecoration(shape: BoxShape.circle),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(19.w),
                       child: Image.asset(
@@ -153,7 +154,9 @@ class ChatPage extends GetView<ChatListController> {
                             if (isRobot)
                               Container(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: 4.w, vertical: 1.w),
+                                  horizontal: 4.w,
+                                  vertical: 1.w,
+                                ),
                                 margin: EdgeInsets.only(right: 6.w),
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).primaryColor,
@@ -179,10 +182,9 @@ class ChatPage extends GetView<ChatListController> {
                                   fontFamily: AppFontFamily.dinPro,
                                   color: isRobot
                                       ? Theme.of(context).primaryColor
-                                      : Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge
-                                          ?.color,
+                                      : Theme.of(
+                                          context,
+                                        ).textTheme.bodyLarge?.color,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -210,15 +212,15 @@ class ChatPage extends GetView<ChatListController> {
                           isRobot
                               ? '我是LUNIX DO Bot, 随时解答你的问题'
                               : (message.lastMessage?.message ??
-                                  message.description ??
-                                  ''),
+                                    message.description ??
+                                    ''),
                           style: TextStyle(
                             fontSize: 11.w,
                             fontFamily: AppFontFamily.dinPro,
                             color: isRobot
-                                ? Theme.of(context)
-                                    .primaryColor
-                                    .withValues(alpha: .8)
+                                ? Theme.of(
+                                    context,
+                                  ).primaryColor.withValues(alpha: .8)
                                 : Theme.of(context).textTheme.bodyMedium?.color,
                           ),
                           maxLines: 1,
@@ -231,11 +233,13 @@ class ChatPage extends GetView<ChatListController> {
                           !isRobot)
                         Container(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 7.w, vertical: 2.w),
+                            horizontal: 7.w,
+                            vertical: 2.w,
+                          ),
                           decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .primaryColor
-                                .withValues(alpha: .8),
+                            color: Theme.of(
+                              context,
+                            ).primaryColor.withValues(alpha: .8),
                             borderRadius: BorderRadius.circular(100.w),
                           ),
                           child: Text(

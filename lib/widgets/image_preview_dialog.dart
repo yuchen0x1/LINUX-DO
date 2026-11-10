@@ -23,11 +23,8 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
   final String imageUrl;
   final String? heroTag;
 
-  const ImagePreviewDialog({
-    Key? key,
-    required this.imageUrl,
-    this.heroTag,
-  }) : super(key: key);
+  const ImagePreviewDialog({Key? key, required this.imageUrl, this.heroTag})
+    : super(key: key);
 
   // 将缩略图URL转换为原图URL
   String _getOriginalImageUrl(String url) {
@@ -63,9 +60,8 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
                   maxWidth: 2048,
                   maxHeight: 2048,
                 ),
-                loadingBuilder: (context, event) => Center(
-                  child: DisRefreshLoading(),
-                ),
+                loadingBuilder: (context, event) =>
+                    Center(child: DisRefreshLoading()),
                 errorBuilder: (context, error, stackTrace) {
                   l.e('图片加载失败: $error');
                   return Center(
@@ -115,11 +111,7 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
                   color: Colors.black45,
                   borderRadius: BorderRadius.circular(18.w),
                 ),
-                child: Icon(
-                  Icons.close,
-                  color: Colors.white,
-                  size: 20.w,
-                ),
+                child: Icon(Icons.close, color: Colors.white, size: 20.w),
               ),
             ),
           ),
@@ -187,8 +179,9 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.w),
                     ),
-                    backgroundColor:
-                        Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                    backgroundColor: Theme.of(
+                      context,
+                    ).primaryColor.withValues(alpha: 0.1),
                   ),
                   child: Text(
                     '取消',
@@ -289,9 +282,9 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
                 width: 60.w,
                 height: 60.w,
                 decoration: BoxDecoration(
-                  color: Theme.of(Get.context!)
-                      .primaryColor
-                      .withValues(alpha: 0.1),
+                  color: Theme.of(
+                    Get.context!,
+                  ).primaryColor.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -331,9 +324,9 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.w),
                           ),
-                          backgroundColor: Theme.of(Get.context!)
-                              .primaryColor
-                              .withValues(alpha: 0.1),
+                          backgroundColor: Theme.of(
+                            Get.context!,
+                          ).primaryColor.withValues(alpha: 0.1),
                         ),
                         child: Text(
                           '取消',
@@ -369,10 +362,7 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
                         ),
                         child: Text(
                           '去设置',
-                          style: TextStyle(
-                            fontSize: 14.w,
-                            color: Colors.white,
-                          ),
+                          style: TextStyle(fontSize: 14.w, color: Colors.white),
                         ),
                       ),
                     ),
@@ -399,8 +389,8 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
           }
 
           // 让用户选择保存位置
-          String? selectedDirectory =
-              await FilePicker.platform.getDirectoryPath();
+          String? selectedDirectory = await FilePicker.platform
+              .getDirectoryPath();
           if (selectedDirectory == null) {
             print('User cancelled directory selection');
             return;
@@ -446,10 +436,7 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
             title: const Text('需要权限'),
             content: const Text('保存文件需要存储权限，请在设置中开启。'),
             actions: [
-              DisButton(
-                onPressed: () => Get.back(result: false),
-                text: '取消',
-              ),
+              DisButton(onPressed: () => Get.back(result: false), text: '取消'),
               DisButton(
                 onPressed: () {
                   Get.back(result: true);
@@ -477,14 +464,15 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
 }
 
 /// 显示图片预览弹窗的便捷方法
-void showImagePreview(BuildContext context, String imageUrl,
-    {String? heroTag}) {
+void showImagePreview(
+  BuildContext context,
+  String imageUrl, {
+  String? heroTag,
+}) {
   l.d('showImagePreview: $imageUrl');
   showDialog(
     context: context,
-    builder: (context) => ImagePreviewDialog(
-      imageUrl: imageUrl,
-      heroTag: heroTag,
-    ),
+    builder: (context) =>
+        ImagePreviewDialog(imageUrl: imageUrl, heroTag: heroTag),
   );
 }

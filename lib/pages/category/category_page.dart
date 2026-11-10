@@ -61,24 +61,27 @@ class CategoryPage extends StatelessWidget {
                       fit: BoxFit.contain,
                     ),
                   ),
-                  10.hGap
+                  10.hGap,
                 ],
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title,
-                        style: TextStyle(
-                          fontSize: AppSizes.fontNormal,
-                          fontWeight: FontWeight.bold,
-                        )),
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: AppSizes.fontNormal,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     englishTitle != null
                         ? Text(
                             englishTitle,
                             style: TextStyle(
                               fontSize: AppSizes.fontTiny,
                               fontFamily: AppFontFamily.dinPro,
-                              color:
-                                  Theme.of(context).textTheme.bodyMedium?.color,
+                              color: Theme.of(
+                                context,
+                              ).textTheme.bodyMedium?.color,
                             ),
                           )
                         : const SizedBox.shrink(),
@@ -95,12 +98,14 @@ class CategoryPage extends StatelessWidget {
                     color: color,
                     borderRadius: BorderRadius.circular(6).w,
                   ),
-                  child: Text(slug,
-                      style: TextStyle(
-                        fontSize: 8.w,
-                        fontFamily: AppFontFamily.dinPro,
-                        color: textColor,
-                      )),
+                  child: Text(
+                    slug,
+                    style: TextStyle(
+                      fontSize: 8.w,
+                      fontFamily: AppFontFamily.dinPro,
+                      color: textColor,
+                    ),
+                  ),
                 ),
               16.hGap,
             ],

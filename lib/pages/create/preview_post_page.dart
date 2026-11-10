@@ -42,7 +42,11 @@ class PreviewPostPage extends GetView<PreviewPostController> {
                 width: double.infinity,
                 margin: EdgeInsets.all(12.w),
                 padding: EdgeInsets.only(
-                    left: 12.w, right: 12.w, top: 14.w, bottom: 12.w),
+                  left: 12.w,
+                  right: 12.w,
+                  top: 14.w,
+                  bottom: 12.w,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -65,9 +69,9 @@ class PreviewPostPage extends GetView<PreviewPostController> {
                               vertical: 4.w,
                             ),
                             decoration: BoxDecoration(
-                              color: Theme.of(context)
-                                  .primaryColor
-                                  .withValues(alpha: 0.1),
+                              color: Theme.of(
+                                context,
+                              ).primaryColor.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(4.w),
                             ),
                             child: Row(
@@ -106,8 +110,9 @@ class PreviewPostPage extends GetView<PreviewPostController> {
                                       ),
                                       decoration: BoxDecoration(
                                         color: color.backgroundColor,
-                                        borderRadius:
-                                            BorderRadius.circular(4.w),
+                                        borderRadius: BorderRadius.circular(
+                                          4.w,
+                                        ),
                                       ),
                                       child: Text(
                                         tag,
@@ -130,23 +135,23 @@ class PreviewPostPage extends GetView<PreviewPostController> {
 
               // 内容
               Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.symmetric(horizontal: 12.w),
-                  padding: EdgeInsets.all(12.w),
-                  child: controller.content.isEmpty
-                      ? Center(
-                          child: Text(
-                            AppConst.createPost.previewEmpty,
-                            style: TextStyle(
-                              fontSize: 14.w,
-                              color:
-                                  Theme.of(context).textTheme.bodyMedium?.color,
-                            ),
+                width: double.infinity,
+                margin: EdgeInsets.symmetric(horizontal: 12.w),
+                padding: EdgeInsets.all(12.w),
+                child: controller.content.isEmpty
+                    ? Center(
+                        child: Text(
+                          AppConst.createPost.previewEmpty,
+                          style: TextStyle(
+                            fontSize: 14.w,
+                            color: Theme.of(
+                              context,
+                            ).textTheme.bodyMedium?.color,
                           ),
-                        )
-                      : HtmlWidget(
-                          html: controller.content,
-                        )),
+                        ),
+                      )
+                    : HtmlWidget(html: controller.content),
+              ),
               24.vGap,
             ],
           ),

@@ -15,10 +15,7 @@ import 'package:cookie_jar/cookie_jar.dart' as cookie_jar;
 class CloudflareTimingsService extends StatefulWidget {
   final VoidCallback onCookiesLoaded;
 
-  const CloudflareTimingsService({
-    super.key,
-    required this.onCookiesLoaded,
-  });
+  const CloudflareTimingsService({super.key, required this.onCookiesLoaded});
 
   @override
   CloudflareTimingsServiceState createState() =>
@@ -79,7 +76,7 @@ class CloudflareTimingsServiceState extends State<CloudflareTimingsService>
           if (csrfToken != null) 'X-CSRF-Token': csrfToken,
           'Accept':
               'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-          'Accept-Language': 'zh-CN,zh-Hans;q=0.9'
+          'Accept-Language': 'zh-CN,zh-Hans;q=0.9',
         },
       ),
       onWebViewCreated: (InAppWebViewController controller) {
@@ -161,7 +158,8 @@ class CloudflareController extends BaseController {
   void injectScript() {
     if (webViewController == null) return;
 
-    webViewController!.evaluateJavascript(source: """
+    webViewController!.evaluateJavascript(
+      source: """
     document.querySelector('meta[name=viewport]').setAttribute('content', 'width=device-width, initial-scale=0.5, maximum-scale=2.0, user-scalable=yes');
     
     // 隐藏头像和昵称
@@ -221,9 +219,12 @@ class CloudflareController extends BaseController {
       
       console.log('已隐藏头像、昵称、分割线和交互按钮');
     })();
-    """);
+    """,
+    );
 
-    webViewController!.evaluateJavascript(source: """
+    webViewController!.evaluateJavascript(
+      source:
+          """
     // 监听 topics/timings 接口调用
     (function() {
       // 拦截 XMLHttpRequest
@@ -273,7 +274,8 @@ class CloudflareController extends BaseController {
       
       console.log('已设置 topics/timings 接口监听');
     })();
-    """);
+    """,
+    );
   }
 
   Future<void> updateTopicTiming(Map<String, dynamic> timings) async {
@@ -284,11 +286,12 @@ class CloudflareController extends BaseController {
     final Map<String, dynamic> requestData = {
       'topic_id': timings['topic_id'],
       'topic_time': timings['topic_time'],
-      'timings': timings['timings']
+      'timings': timings['timings'],
     };
 
     final isLoggedInResult = await webViewController?.evaluateJavascript(
-        source: 'document.querySelector(".current-user") !== null');
+      source: 'document.querySelector(".current-user") !== null',
+    );
 
     if (isLoggedInResult != true) {
       l.e('用户未登录，无法更新阅读时间');
@@ -296,14 +299,16 @@ class CloudflareController extends BaseController {
     }
 
     // 获取当前页面的所有 cookies
-    final cookiesResult =
-        await webViewController?.evaluateJavascript(source: '''
+    final cookiesResult = await webViewController?.evaluateJavascript(
+      source: '''
         document.cookie
-      ''');
+      ''',
+    );
 
     l.d('当前页面 cookies: $cookiesResult');
 
-    final js = '''
+    final js =
+        '''
       (function() {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', '${HttpConfig.baseUrl}topics/timings', true);
@@ -348,9 +353,9 @@ class CloudflareController extends BaseController {
     try {
       await CookieManager.instance().deleteAllCookies();
 
-      final cookieList = await NetClient.getInstance()
-          .cookieJar
-          .loadForRequest(Uri.parse(HttpConfig.baseUrl));
+      final cookieList = await NetClient.getInstance().cookieJar.loadForRequest(
+        Uri.parse(HttpConfig.baseUrl),
+      );
 
       final token = StorageManager.getString(AppConst.identifier.token) ?? '';
       final cfClearance =
@@ -397,11 +402,15 @@ class CloudflareController extends BaseController {
         },
       );
 
-      final allCookiesJs = cookieList.map((cookie) {
-        return "document.cookie='${cookie.name}=${cookie.value}; domain=${cookie.domain ?? HttpConfig.domain}; path=${cookie.path ?? '/'}'";
-      }).join(';');
+      final allCookiesJs = cookieList
+          .map((cookie) {
+            return "document.cookie='${cookie.name}=${cookie.value}; domain=${cookie.domain ?? HttpConfig.domain}; path=${cookie.path ?? '/'}'";
+          })
+          .join(';');
 
-      controller.evaluateJavascript(source: '''
+      controller.evaluateJavascript(
+        source:
+            '''
         $allCookiesJs;
         window.addEventListener('load', function() {
           const isLoggedIn = document.querySelector('.current-user') !== null;
@@ -414,7 +423,8 @@ class CloudflareController extends BaseController {
             }
           });
         });
-      ''');
+      ''',
+      );
     } catch (e, stack) {
       l.e('设置 cookies 失败: $e\n$stack');
     }
@@ -429,9 +439,12 @@ class CloudflareController extends BaseController {
     try {
       // 检查 Turnstile 是否存在
       final hasTurnstile =
-          await webViewController!.evaluateJavascript(source: '''
+          await webViewController!.evaluateJavascript(
+            source: '''
       !!document.querySelector('div.cf-turnstile')
-    ''') ?? false;
+    ''',
+          ) ??
+          false;
 
       if (!hasTurnstile) {
         isCloudflareDetected = false;
@@ -439,17 +452,22 @@ class CloudflareController extends BaseController {
       }
 
       final turnstileInfo =
-          await webViewController!.evaluateJavascript(source: '''
+          await webViewController!.evaluateJavascript(
+            source: '''
       const turnstile = document.querySelector('div.cf-turnstile');
       ({
         sitekey: turnstile?.getAttribute('data-sitekey') || 'unknown',
         action: turnstile?.getAttribute('data-action') || 'unknown',
         iframeSrc: document.querySelector('div.cf-turnstile iframe')?.src || 'none'
       })
-    ''') ?? {'sitekey': 'unknown', 'action': 'unknown', 'iframeSrc': 'none'};
+    ''',
+          ) ??
+          {'sitekey': 'unknown', 'action': 'unknown', 'iframeSrc': 'none'};
       l.d('Turnstile 配置: $turnstileInfo');
 
-      await webViewController!.evaluateJavascript(source: '''
+      await webViewController!.evaluateJavascript(
+        source:
+            '''
       const turnstile = document.querySelector('div.cf-turnstile iframe');
       if (turnstile) {
         // 模拟鼠标轨迹
@@ -475,16 +493,20 @@ class CloudflareController extends BaseController {
           });
         }
       }
-    ''');
+    ''',
+      );
 
       webViewController!.addJavaScriptHandler(
         handlerName: 'turnstileCallback',
         callback: (args) async {
           final token = args[0];
           l.d('收到 Turnstile token: $token');
-          await webViewController!.evaluateJavascript(source: '''
+          await webViewController!.evaluateJavascript(
+            source:
+                '''
           document.querySelector('input[name="cf-turnstile-response"]').value = '$token';
-        ''');
+        ''',
+          );
         },
       );
 
@@ -492,7 +514,8 @@ class CloudflareController extends BaseController {
       for (int i = 0; i < 12; i++) {
         await Future.delayed(const Duration(milliseconds: 500));
         final verification =
-            await webViewController!.evaluateJavascript(source: '''
+            await webViewController!.evaluateJavascript(
+              source: '''
         const response = document.querySelector('input[name="cf-turnstile-response"]')?.value;
         const cookies = document.cookie;
         const location = window.location.href;
@@ -502,32 +525,39 @@ class CloudflareController extends BaseController {
           cookies: cookies || '',
           location: location
         })
-      ''') ?? {'isValid': false, 'response': '', 'cookies': '', 'location': ''};
+      ''',
+            ) ??
+            {'isValid': false, 'response': '', 'cookies': '', 'location': ''};
 
         if (verification['isValid']) {
           isCloudflareDetected = false;
 
           // 同步 cookies
-          final webCookies = await CookieManager.instance()
-              .getCookies(url: WebUri(HttpConfig.baseUrl));
+          final webCookies = await CookieManager.instance().getCookies(
+            url: WebUri(HttpConfig.baseUrl),
+          );
           await NetClient.getInstance().cookieJar.saveFromResponse(
-                Uri.parse(HttpConfig.baseUrl),
-                webCookies
-                    .map((c) => cookie_jar.Cookie(c.name, c.value)
-                      ..domain = HttpConfig.domain
-                      ..path = '/'
-                      ..secure = true
-                      ..httpOnly = c.isHttpOnly ?? false)
-                    .toList(),
-              );
+            Uri.parse(HttpConfig.baseUrl),
+            webCookies
+                .map(
+                  (c) => cookie_jar.Cookie(c.name, c.value)
+                    ..domain = HttpConfig.domain
+                    ..path = '/'
+                    ..secure = true
+                    ..httpOnly = c.isHttpOnly ?? false,
+                )
+                .toList(),
+          );
 
           if (verification['response'].isNotEmpty) {
-            await webViewController!.evaluateJavascript(source: '''
+            await webViewController!.evaluateJavascript(
+              source: '''
             const form = document.querySelector('form');
             if (form) {
               form.submit();
             }
-          ''');
+          ''',
+            );
           }
 
           // 重新加载目标页面
@@ -557,16 +587,20 @@ class CloudflareController extends BaseController {
       final cookies = await CookieManager.instance().getCookies(url: domain);
       if (cookies.isNotEmpty) {
         await NetClient.getInstance().cookieJar.saveFromResponse(
-              Uri.parse(domain.toString()),
-              cookies
-                  .map((c) => cookie_jar.Cookie(c.name, c.value)
-                    ..domain = domain.host
-                    ..path = '/'
-                    ..secure = true
-                    ..httpOnly = c.isHttpOnly ?? false)
-                  .toList(),
-            );
-        l.d('从 $domain 同步 cookies: ${cookies.map((c) => "${c.name}=${c.value}")}');
+          Uri.parse(domain.toString()),
+          cookies
+              .map(
+                (c) => cookie_jar.Cookie(c.name, c.value)
+                  ..domain = domain.host
+                  ..path = '/'
+                  ..secure = true
+                  ..httpOnly = c.isHttpOnly ?? false,
+              )
+              .toList(),
+        );
+        l.d(
+          '从 $domain 同步 cookies: ${cookies.map((c) => "${c.name}=${c.value}")}',
+        );
       }
     }
   }
@@ -627,19 +661,22 @@ class CloudflareController extends BaseController {
     _isScrolling = true;
 
     final screenHeight = MediaQuery.of(Get.context!).size.height * 0.9;
-    webViewController?.scrollBy(x: 0, y: screenHeight.toInt()).then((_) {
-      Future.delayed(const Duration(milliseconds: 300), () {
-        _isScrolling = false;
-      });
+    webViewController
+        ?.scrollBy(x: 0, y: screenHeight.toInt())
+        .then((_) {
+          Future.delayed(const Duration(milliseconds: 300), () {
+            _isScrolling = false;
+          });
 
-      // 设置窗口定时器，在这段时间内的请求都会被延迟
-      _scrollWindowTimer?.cancel();
-      _scrollWindowTimer = Timer(_scrollTimeWindow, () {
-        // 时间窗口结束
-      });
-    }).catchError((error) {
-      _isScrolling = false;
-    });
+          // 设置窗口定时器，在这段时间内的请求都会被延迟
+          _scrollWindowTimer?.cancel();
+          _scrollWindowTimer = Timer(_scrollTimeWindow, () {
+            // 时间窗口结束
+          });
+        })
+        .catchError((error) {
+          _isScrolling = false;
+        });
   }
 }
 

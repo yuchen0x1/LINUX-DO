@@ -9,8 +9,9 @@ import 'package:linux_do/widgets/dis_button.dart';
 import '../const/app_colors.dart';
 import '../const/app_spacing.dart';
 
-MaterialColor primaryMaterial =
-    AppColors.createMaterialColor(AppColors.primary);
+MaterialColor primaryMaterial = AppColors.createMaterialColor(
+  AppColors.primary,
+);
 
 /// 颜色选择器弹窗
 class DisColorPicker {
@@ -54,9 +55,10 @@ class DisColorPicker {
         Text(
           AppConst.settings.themeColor,
           style: TextStyle(
-              fontSize: 15.w,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(Get.context!).primaryColor),
+            fontSize: 15.w,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(Get.context!).primaryColor,
+          ),
         ),
         IconButton(
           onPressed: () => Get.back(),
@@ -216,11 +218,13 @@ class _ColorPickerContentState extends State<_ColorPickerContent>
               spacing: 8.w,
               runSpacing: 8.w,
               children: _getMaterialColorShades(_currentMaterialColor!)
-                  .map((color) => _ColorCircle(
-                        color: color,
-                        isSelected: _currentColor == color,
-                        onTap: () => _onShadeSelected(color),
-                      ))
+                  .map(
+                    (color) => _ColorCircle(
+                      color: color,
+                      isSelected: _currentColor == color,
+                      onTap: () => _onShadeSelected(color),
+                    ),
+                  )
                   .toList(),
             ),
           ] else
@@ -229,11 +233,13 @@ class _ColorPickerContentState extends State<_ColorPickerContent>
               spacing: 8.w,
               runSpacing: 8.w,
               children: _colors
-                  .map((color) => _ColorCircle(
-                        color: color,
-                        isSelected: _currentMaterialColor == color,
-                        onTap: () => _onMaterialColorSelected(color),
-                      ))
+                  .map(
+                    (color) => _ColorCircle(
+                      color: color,
+                      isSelected: _currentMaterialColor == color,
+                      onTap: () => _onMaterialColorSelected(color),
+                    ),
+                  )
                   .toList(),
             ),
           16.vGap,

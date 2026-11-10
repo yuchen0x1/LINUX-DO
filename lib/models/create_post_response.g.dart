@@ -21,22 +21,22 @@ Map<String, dynamic> _$CreatePostResponseToJson(CreatePostResponse instance) =>
     };
 
 CreatePost _$CreatePostFromJson(Map<String, dynamic> json) => CreatePost(
-      id: (json['id'] as num).toInt(),
-      name: json['name'] as String,
-      username: json['username'] as String,
-      avatarTemplate: json['avatar_template'] as String,
-      createdAt: json['created_at'] as String,
-      cooked: json['cooked'] as String,
-      postNumber: (json['post_number'] as num).toInt(),
-      postType: (json['post_type'] as num).toInt(),
-      updatedAt: json['updated_at'] as String,
-      replyCount: (json['reply_count'] as num).toInt(),
-      topicId: (json['topic_id'] as num).toInt(),
-      topicSlug: json['topic_slug'] as String,
-      raw: json['raw'] as String,
-      yours: json['yours'] as bool,
-      canEdit: json['can_edit'] as bool,
-    );
+  id: (json['id'] as num).toInt(),
+  name: json['name'] as String,
+  username: json['username'] as String,
+  avatarTemplate: json['avatar_template'] as String,
+  createdAt: json['created_at'] as String,
+  cooked: json['cooked'] as String,
+  postNumber: (json['post_number'] as num).toInt(),
+  postType: (json['post_type'] as num).toInt(),
+  updatedAt: json['updated_at'] as String,
+  replyCount: (json['reply_count'] as num).toInt(),
+  topicId: (json['topic_id'] as num).toInt(),
+  topicSlug: json['topic_slug'] as String,
+  raw: json['raw'] as String,
+  yours: json['yours'] as bool,
+  canEdit: json['can_edit'] as bool,
+);
 
 Map<String, dynamic> _$CreatePostToJson(CreatePost instance) =>
     <String, dynamic>{

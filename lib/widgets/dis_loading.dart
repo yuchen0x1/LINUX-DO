@@ -118,12 +118,13 @@ class _DisBouncingChar extends StatelessWidget {
   final double? fontSize;
   final double? opacity;
 
-  const _DisBouncingChar(
-      {required this.char,
-      required this.offset,
-      required this.color,
-      this.fontSize = 16.0,
-      this.opacity = 1});
+  const _DisBouncingChar({
+    required this.char,
+    required this.offset,
+    required this.color,
+    this.fontSize = 16.0,
+    this.opacity = 1,
+  });
 
   @override
   Widget build(BuildContext context) {

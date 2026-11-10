@@ -42,7 +42,12 @@ class DisEmojiPicker extends StatelessWidget {
             // 默认的是真的丑  必须自定义
             customCategoryView: (config, state, tabController, pageController) {
               return _buildCustomCategory(
-                  context, tabController, pageController, state, config);
+                context,
+                tabController,
+                pageController,
+                state,
+                config,
+              );
             },
           ),
           bottomActionBarConfig: BottomActionBarConfig(
@@ -56,58 +61,64 @@ class DisEmojiPicker extends StatelessWidget {
     );
   }
 
-  Widget _buildCustomCategory(BuildContext context, TabController tabController,
-      PageController pageController, EmojiViewState state, Config config) {
-    final ValueNotifier<int> tabIndexNotifier =
-        ValueNotifier<int>(tabController.index);
+  Widget _buildCustomCategory(
+    BuildContext context,
+    TabController tabController,
+    PageController pageController,
+    EmojiViewState state,
+    Config config,
+  ) {
+    final ValueNotifier<int> tabIndexNotifier = ValueNotifier<int>(
+      tabController.index,
+    );
     tabController.addListener(() {
       tabIndexNotifier.value = tabController.index;
     });
 
     return ValueListenableBuilder<int>(
-        valueListenable: tabIndexNotifier,
-        builder: (context, currentIndex, child) {
-          return Container(
-            height: 44.w,
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-            ),
+      valueListenable: tabIndexNotifier,
+      builder: (context, currentIndex, child) {
+        return Container(
+          height: 44.w,
+          decoration: BoxDecoration(color: Theme.of(context).cardColor),
+          padding: EdgeInsets.zero,
+          child: TabBar(
+            tabAlignment: TabAlignment.start,
+            controller: tabController,
+            isScrollable: true,
             padding: EdgeInsets.zero,
-            child: TabBar(
-              tabAlignment: TabAlignment.start,
-              controller: tabController,
-              isScrollable: true,
-              padding: EdgeInsets.zero,
-              onTap: (index) {
-                pageController.jumpToPage(index);
-              },
-              dividerHeight: 0,
-              indicatorPadding: EdgeInsets.zero,
-              indicator: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: .9),
-                shape: BoxShape.circle,
-              ),
-              labelPadding: EdgeInsets.zero,
-              tabs: state.categoryEmoji.map((category) {
-                final icon = getIconForCategory(
-                    config.categoryViewConfig.categoryIcons, category.category);
-                final isSelected = tabController.index ==
-                    state.categoryEmoji.indexOf(category);
-                return Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.w),
-                  child: Icon(
-                    icon,
-                    size: 20.w,
-                    color: isSelected
-                        ? AppColors.white
-                        : Theme.of(context).textTheme.bodySmall?.color,
-                  ),
-                );
-              }).toList(),
+            onTap: (index) {
+              pageController.jumpToPage(index);
+            },
+            dividerHeight: 0,
+            indicatorPadding: EdgeInsets.zero,
+            indicator: BoxDecoration(
+              color: AppColors.primary.withValues(alpha: .9),
+              shape: BoxShape.circle,
             ),
-          );
-        });
+            labelPadding: EdgeInsets.zero,
+            tabs: state.categoryEmoji.map((category) {
+              final icon = getIconForCategory(
+                config.categoryViewConfig.categoryIcons,
+                category.category,
+              );
+              final isSelected =
+                  tabController.index == state.categoryEmoji.indexOf(category);
+              return Container(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.w),
+                child: Icon(
+                  icon,
+                  size: 20.w,
+                  color: isSelected
+                      ? AppColors.white
+                      : Theme.of(context).textTheme.bodySmall?.color,
+                ),
+              );
+            }).toList(),
+          ),
+        );
+      },
+    );
   }
 
   void _onEmojiSelected(Emoji emoji) {

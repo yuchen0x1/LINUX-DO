@@ -7,9 +7,7 @@ import 'package:get/get.dart';
 import 'log.dart';
 
 class BrowserUtil {
-  static Future<void> openUrlWithOptions({
-    required String url,
-  }) async {
+  static Future<void> openUrlWithOptions({required String url}) async {
     if (Platform.isAndroid) {
       try {
         final systemBarColor = Theme.of(Get.context!).colorScheme.surface;
@@ -40,16 +38,10 @@ class BrowserUtil {
       } catch (e) {
         l.e('打开Custom Tabs失败: $e');
         // 降级到普通浏览器
-        await launchUrlString(
-          url,
-          mode: LaunchMode.externalApplication,
-        );
+        await launchUrlString(url, mode: LaunchMode.externalApplication);
       }
     } else {
-      await launchUrlString(
-        url,
-        mode: LaunchMode.externalApplication,
-      );
+      await launchUrlString(url, mode: LaunchMode.externalApplication);
     }
   }
 }

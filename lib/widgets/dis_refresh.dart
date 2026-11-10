@@ -130,17 +130,12 @@ class _DisRefreshState extends State<DisRefresh> {
         complete: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.done,
-              color: Colors.grey,
-            ),
-            Container(
-              width: 15.0,
-            ),
+            const Icon(Icons.done, color: Colors.grey),
+            Container(width: 15.0),
             Text(
               '刷新完成',
               style: TextStyle(color: Colors.grey, fontSize: 12.w),
-            )
+            ),
           ],
         ),
       ),
@@ -153,9 +148,7 @@ class _DisRefreshState extends State<DisRefresh> {
               style: TextStyle(color: Colors.grey, fontSize: 12.w),
             );
           } else if (mode == LoadStatus.loading) {
-            body = const CircularProgressIndicator(
-              strokeWidth: 2,
-            );
+            body = const CircularProgressIndicator(strokeWidth: 2);
           } else if (mode == LoadStatus.failed) {
             body = Text(
               '加载失败',
@@ -172,10 +165,7 @@ class _DisRefreshState extends State<DisRefresh> {
               style: TextStyle(color: Colors.grey, fontSize: 12.w),
             );
           }
-          return SizedBox(
-            height: 55.0,
-            child: Center(child: body),
-          );
+          return SizedBox(height: 55.0, child: Center(child: body));
         },
       ),
       onRefresh: () async {

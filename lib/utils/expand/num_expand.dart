@@ -5,7 +5,9 @@ extension NumExpand on num {
   /// 转换为千分位格式
   String toThousands() {
     return toString().replaceAllMapped(
-        RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},');
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+      (Match m) => '${m[1]},',
+    );
   }
 
   /// 数字转中文
@@ -20,7 +22,7 @@ extension NumExpand on num {
       '六',
       '七',
       '八',
-      '九'
+      '九',
     ];
     const List<String> cnUnits = ['', '十', '百', '千', '万', '十', '百', '千', '亿'];
 

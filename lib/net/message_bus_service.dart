@@ -31,8 +31,9 @@ class MessageBusService {
   Future<void> init() async {
     if (_isInitialized) return;
     // 初始化本地通知
-    const androidSettings =
-        AndroidInitializationSettings('@mipmap/launcher_icon');
+    const androidSettings = AndroidInitializationSettings(
+      '@mipmap/launcher_icon',
+    );
     const initSettings = InitializationSettings(android: androidSettings);
     await _notificationsPlugin.initialize(
       initSettings,
@@ -58,9 +59,10 @@ class MessageBusService {
   /// 只是通知不可见（用户后续可在系统设置中开启）。
   Future<void> _ensureNotificationPermission() async {
     try {
-      final android =
-          _notificationsPlugin.resolvePlatformSpecificImplementation<
-              AndroidFlutterLocalNotificationsPlugin>();
+      final android = _notificationsPlugin
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >();
       if (android == null) return;
       final granted = await android.areNotificationsEnabled() ?? false;
       if (granted) return;
@@ -114,8 +116,9 @@ class MessageBusService {
 
     try {
       final dio = NetClient.getInstance().dio;
-      final response =
-          await dio.get('${HttpConfig.baseUrl}session/current.json');
+      final response = await dio.get(
+        '${HttpConfig.baseUrl}session/current.json',
+      );
       final data = response.data;
       if (data is! Map) return false;
 
@@ -128,7 +131,9 @@ class MessageBusService {
 
       await StorageManager.setData(AppConst.identifier.userId, id.toString());
       await StorageManager.setData(
-          AppConst.identifier.username, username.toString());
+        AppConst.identifier.username,
+        username.toString(),
+      );
       final displayName = currentUser['name'];
       if (displayName is String && displayName.isNotEmpty) {
         await StorageManager.setData(AppConst.identifier.name, displayName);
@@ -259,11 +264,7 @@ class MessageBusService {
         topicId: parsed.topicId,
       );
     } else if (channel.startsWith('/unread/')) {
-      _showNotification(
-        id: 1002,
-        title: '收到新的站内私信',
-        body: '您有一条新的未读消息。',
-      );
+      _showNotification(id: 1002, title: '收到新的站内私信', body: '您有一条新的未读消息。');
     }
   }
 
@@ -271,7 +272,10 @@ class MessageBusService {
   /// 字段缺失时退化为通用文案，不抛异常。
   _ParsedNotification _parseNotification(dynamic data) {
     if (data is! Map) {
-      return const _ParsedNotification(title: 'LINUX DO 社区互动提醒', body: '你有一条新提醒');
+      return const _ParsedNotification(
+        title: 'LINUX DO 社区互动提醒',
+        body: '你有一条新提醒',
+      );
     }
 
     final username = (data['username'] ?? data['display_username'] ?? '有人')

@@ -29,7 +29,7 @@ class EventController extends BaseController {
     "九月",
     "十月",
     "十一月",
-    "十二月"
+    "十二月",
   ];
 
   @override

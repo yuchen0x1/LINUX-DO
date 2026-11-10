@@ -58,14 +58,16 @@ class EmojiLoader {
 
       if (!isLoading) {
         isLoading = true;
-        loadFromAsset(assetPath).then((emojis) {
-          cachedEmojis = emojis;
-          isLoading = false;
-          debugPrint('表情异步加载完成，共 ${emojis.length} 个分组');
-        }).catchError((error) {
-          isLoading = false;
-          debugPrint('表情异步加载失败: $error');
-        });
+        loadFromAsset(assetPath)
+            .then((emojis) {
+              cachedEmojis = emojis;
+              isLoading = false;
+              debugPrint('表情异步加载完成，共 ${emojis.length} 个分组');
+            })
+            .catchError((error) {
+              isLoading = false;
+              debugPrint('表情异步加载失败: $error');
+            });
       }
 
       return [];

@@ -39,10 +39,7 @@ class SimplifiedItem extends StatelessWidget with Concatenated {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         border: Border(
-          bottom: BorderSide(
-            color: AppColors.divider,
-            width: 1.w,
-          ),
+          bottom: BorderSide(color: AppColors.divider, width: 1.w),
         ),
       ),
       child: InkWell(
@@ -147,10 +144,9 @@ class SimplifiedItem extends StatelessWidget with Concatenated {
                                   fontSize: 16.w,
                                   fontWeight: FontWeight.w500,
                                   fontFamily: AppFontFamily.dinPro,
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium
-                                      ?.color,
+                                  color: Theme.of(
+                                    context,
+                                  ).textTheme.titleMedium?.color,
                                 ),
                               ),
                             ),

@@ -137,11 +137,7 @@ class BadgeType {
   @JsonKey(name: 'sort_order')
   final int sortOrder;
 
-  BadgeType({
-    required this.id,
-    required this.name,
-    required this.sortOrder,
-  });
+  BadgeType({required this.id, required this.name, required this.sortOrder});
 
   factory BadgeType.fromJson(Map<String, dynamic> json) =>
       _$BadgeTypeFromJson(json);
@@ -507,11 +503,7 @@ class Tags {
   @JsonKey(name: 'pm_only')
   final bool? pmOnly;
 
-  Tags({
-    this.name,
-    this.description,
-    this.pmOnly,
-  });
+  Tags({this.name, this.description, this.pmOnly});
 
   factory Tags.fromJson(Map<String, dynamic> json) => _$TagsFromJson(json);
   Map<String, dynamic> toJson() => _$TagsToJson(this);

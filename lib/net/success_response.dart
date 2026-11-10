@@ -7,10 +7,7 @@ class SuccessResponse<T> {
   final String? success;
   final T? data;
 
-  SuccessResponse({
-    this.success,
-    this.data,
-  });
+  SuccessResponse({this.success, this.data});
 
   bool get isSuccess => success == 'OK';
 

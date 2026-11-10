@@ -40,10 +40,7 @@ class ProfileSettingsController extends BaseController with Concatenated {
   final badges = <BadgeDetail>[].obs;
 
   // 时区列表
-  final timezones = [
-    'Asia/Shanghai',
-    'Asia/Tokyo',
-  ];
+  final timezones = ['Asia/Shanghai', 'Asia/Tokyo'];
 
   @override
   void onInit() {
@@ -139,10 +136,7 @@ class ProfileSettingsController extends BaseController with Concatenated {
             children: [
               Stack(
                 children: [
-                  Image.network(
-                    imageUrl,
-                    fit: BoxFit.cover,
-                  ),
+                  Image.network(imageUrl, fit: BoxFit.cover),
                   Positioned(
                     right: 8,
                     top: 8,

@@ -252,8 +252,10 @@ class FollowController extends BaseController with Concatenated {
 
   // 跳转到帖子详情
   void toTopicDetail(int id, int postNumber) {
-    Get.toNamed(Routes.TOPIC_DETAIL, arguments: id, parameters: {
-      'postNumber': postNumber.toString(),
-    });
+    Get.toNamed(
+      Routes.TOPIC_DETAIL,
+      arguments: id,
+      parameters: {'postNumber': postNumber.toString()},
+    );
   }
 }

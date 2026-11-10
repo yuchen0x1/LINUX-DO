@@ -38,24 +38,22 @@ class _DocsPageState extends State<DocsPage>
           slivers: [
             SliverPadding(
               padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).padding.bottom),
+                bottom: MediaQuery.of(context).padding.bottom,
+              ),
               sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    final topic = controller.topics[index];
-                    return TopicItem(
-                      topic: topic,
-                      avatarUrl: controller.getLatestPosterAvatar(topic),
-                      username: controller.getNickName(topic),
-                      onTap: () => controller.toTopicDetail(topic.id),
-                      avatarUrls: controller.getAvatarUrls(topic),
-                      onDoNotDisturb: (topic) {
-                        controller.doNotDisturb(topic.id);
-                      },
-                    );
-                  },
-                  childCount: controller.topics.length,
-                ),
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  final topic = controller.topics[index];
+                  return TopicItem(
+                    topic: topic,
+                    avatarUrl: controller.getLatestPosterAvatar(topic),
+                    username: controller.getNickName(topic),
+                    onTap: () => controller.toTopicDetail(topic.id),
+                    avatarUrls: controller.getAvatarUrls(topic),
+                    onDoNotDisturb: (topic) {
+                      controller.doNotDisturb(topic.id);
+                    },
+                  );
+                }, childCount: controller.topics.length),
               ),
             ),
           ],

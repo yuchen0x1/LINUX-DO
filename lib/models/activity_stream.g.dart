@@ -7,18 +7,16 @@ part of 'activity_stream.dart';
 // **************************************************************************
 
 ActivityStreamResponse _$ActivityStreamResponseFromJson(
-        Map<String, dynamic> json) =>
-    ActivityStreamResponse(
-      events: (json['events'] as List<dynamic>)
-          .map((e) => ActivityEvent.fromJson(e as Map<String, dynamic>))
-          .toList(),
-    );
+  Map<String, dynamic> json,
+) => ActivityStreamResponse(
+  events: (json['events'] as List<dynamic>)
+      .map((e) => ActivityEvent.fromJson(e as Map<String, dynamic>))
+      .toList(),
+);
 
 Map<String, dynamic> _$ActivityStreamResponseToJson(
-        ActivityStreamResponse instance) =>
-    <String, dynamic>{
-      'events': instance.events,
-    };
+  ActivityStreamResponse instance,
+) => <String, dynamic>{'events': instance.events};
 
 ActivityEvent _$ActivityEventFromJson(Map<String, dynamic> json) =>
     ActivityEvent(
@@ -43,11 +41,11 @@ Map<String, dynamic> _$ActivityEventToJson(ActivityEvent instance) =>
     };
 
 ActivityPost _$ActivityPostFromJson(Map<String, dynamic> json) => ActivityPost(
-      id: (json['id'] as num).toInt(),
-      postNumber: (json['post_number'] as num).toInt(),
-      url: json['url'] as String,
-      topic: ActivityTopic.fromJson(json['topic'] as Map<String, dynamic>),
-    );
+  id: (json['id'] as num).toInt(),
+  postNumber: (json['post_number'] as num).toInt(),
+  url: json['url'] as String,
+  topic: ActivityTopic.fromJson(json['topic'] as Map<String, dynamic>),
+);
 
 Map<String, dynamic> _$ActivityPostToJson(ActivityPost instance) =>
     <String, dynamic>{
@@ -64,7 +62,4 @@ ActivityTopic _$ActivityTopicFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$ActivityTopicToJson(ActivityTopic instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'title': instance.title,
-    };
+    <String, dynamic>{'id': instance.id, 'title': instance.title};

@@ -44,9 +44,7 @@ abstract class BasePage<T extends BaseController> extends GetView<T> {
             if (controller.isLoading.value) {
               return Container(
                 color: Colors.black26,
-                child: const Center(
-                  child: CircularProgressIndicator(),
-                ),
+                child: const Center(child: CircularProgressIndicator()),
               );
             }
             return const SizedBox.shrink();

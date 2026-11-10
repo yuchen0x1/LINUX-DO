@@ -19,10 +19,7 @@ class EmailSettingsPage extends GetView<EmailSettingsController> {
       appBar: AppBar(
         title: Text(
           AppConst.settings.emailSettingsTitle,
-          style: TextStyle(
-            fontSize: 16.w,
-            fontWeight: FontWeight.w500,
-          ),
+          style: TextStyle(fontSize: 16.w, fontWeight: FontWeight.w500),
         ),
       ),
       body: Obx(() {
@@ -107,11 +104,12 @@ class EmailSettingsPage extends GetView<EmailSettingsController> {
             ),
             if (controller.isLoading.value)
               Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: Center(child: DisRefreshLoading()))
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Center(child: DisRefreshLoading()),
+              ),
           ],
         );
       }),
@@ -131,9 +129,7 @@ class EmailSettingsPage extends GetView<EmailSettingsController> {
           ),
         ],
       ),
-      child: Column(
-        children: children,
-      ),
+      child: Column(children: children),
     );
   }
 
@@ -141,9 +137,7 @@ class EmailSettingsPage extends GetView<EmailSettingsController> {
     Get.dialog(
       Dialog(
         backgroundColor: Theme.of(context).cardColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.w),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.w)),
         child: Container(
           width: 0.8.sw,
           padding: EdgeInsets.all(20.w),
@@ -163,10 +157,7 @@ class EmailSettingsPage extends GetView<EmailSettingsController> {
                   ),
                   IconButton(
                     onPressed: () => Get.back(),
-                    icon: Icon(
-                      CupertinoIcons.clear,
-                      size: 20.w,
-                    ),
+                    icon: Icon(CupertinoIcons.clear, size: 20.w),
                   ),
                 ],
               ),
@@ -225,10 +216,7 @@ class EmailSettingsPage extends GetView<EmailSettingsController> {
                 ),
                 IconButton(
                   padding: EdgeInsets.zero,
-                  constraints: BoxConstraints(
-                    minWidth: 24.w,
-                    minHeight: 24.w,
-                  ),
+                  constraints: BoxConstraints(minWidth: 24.w, minHeight: 24.w),
                   icon: Icon(
                     CupertinoIcons.question_diamond_fill,
                     size: 13.w,

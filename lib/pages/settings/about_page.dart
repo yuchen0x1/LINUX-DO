@@ -27,10 +27,7 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
       appBar: AppBar(
         title: Text(
           AppConst.settings.about,
-          style: TextStyle(
-            fontSize: 16.w,
-            fontWeight: FontWeight.w500,
-          ),
+          style: TextStyle(fontSize: 16.w, fontWeight: FontWeight.w500),
         ),
       ),
       body: Obx(() {
@@ -114,8 +111,10 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
             right: 0,
             top: 100.w,
             child: Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 10).w,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 10,
+              ).w,
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.only(
@@ -124,8 +123,9 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color:
-                        Theme.of(context).shadowColor.withValues(alpha: 0.05),
+                    color: Theme.of(
+                      context,
+                    ).shadowColor.withValues(alpha: 0.05),
                     blurRadius: 10,
                     offset: const Offset(0, 2),
                   ),
@@ -176,8 +176,11 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
         children: [
           Row(
             children: [
-              _buildLable(context, CupertinoIcons.chart_bar_square,
-                  AppConst.settings.communityData),
+              _buildLable(
+                context,
+                CupertinoIcons.chart_bar_square,
+                AppConst.settings.communityData,
+              ),
             ],
           ),
           6.vGap,
@@ -261,11 +264,7 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            icon,
-            size: 16.w,
-            color: Theme.of(context).primaryColor,
-          ),
+          Icon(icon, size: 16.w, color: Theme.of(context).primaryColor),
           6.hGap,
           Text(
             title,
@@ -363,8 +362,11 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildLable(context, CupertinoIcons.shield_lefthalf_fill,
-              AppConst.settings.ourModerators),
+          _buildLable(
+            context,
+            CupertinoIcons.shield_lefthalf_fill,
+            AppConst.settings.ourModerators,
+          ),
           16.vGap,
           GridView.builder(
             shrinkWrap: true,
@@ -379,7 +381,10 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
             padding: EdgeInsets.zero,
             itemBuilder: (context, index) {
               return _buildModeratorCard(
-                  context, data, data.about.moderatorIds[index]);
+                context,
+                data,
+                data.about.moderatorIds[index],
+              );
             },
           ),
         ],
@@ -388,7 +393,10 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
   }
 
   Widget _buildModeratorCard(
-      BuildContext context, AboutResponse data, int moderatorId) {
+    BuildContext context,
+    AboutResponse data,
+    int moderatorId,
+  ) {
     final user = data.findUserById(moderatorId);
     final name = user?.name == null || user?.name == ''
         ? user?.username ?? ''
@@ -430,8 +438,9 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
                       style: TextStyle(
                         fontSize: name.length > 12 ? 10.w : 12.w,
                         fontFamily: AppFontFamily.dinPro,
-                        fontWeight:
-                            user?.id != 1 ? FontWeight.w500 : FontWeight.w600,
+                        fontWeight: user?.id != 1
+                            ? FontWeight.w500
+                            : FontWeight.w600,
                         color: user?.id != 1
                             ? Theme.of(context).textTheme.titleMedium?.color
                             : Theme.of(context).primaryColor,
@@ -476,15 +485,19 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildLable(
-              context, CupertinoIcons.person_fill, AppConst.settings.ourAdmin),
+            context,
+            CupertinoIcons.person_fill,
+            AppConst.settings.ourAdmin,
+          ),
           12.vGap,
           Row(
             children: [
               AvatarWidget(
-                  avatarUrl: data.avatarUrl,
-                  circle: false,
-                  username: user?.username ?? '',
-                  borderColor: Theme.of(context).primaryColor),
+                avatarUrl: data.avatarUrl,
+                circle: false,
+                username: user?.username ?? '',
+                borderColor: Theme.of(context).primaryColor,
+              ),
               12.hGap,
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -507,9 +520,9 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
                     ),
                   ),
                 ],
-              )
+              ),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -535,8 +548,11 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildLable(context, CupertinoIcons.square_favorites_alt_fill,
-              AppConst.settings.websiteActivity),
+          _buildLable(
+            context,
+            CupertinoIcons.square_favorites_alt_fill,
+            AppConst.settings.websiteActivity,
+          ),
           16.vGap,
 
           // 用户活跃
@@ -553,12 +569,24 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
             spacing: 8.w,
             runSpacing: 8.w,
             children: [
-              _buildActivityTag(context, '日活跃用户', '${stats.activeUsersLastDay}',
-                  const Color(0xFF4CAF50)),
-              _buildActivityTag(context, '周活跃用户', '${stats.activeUsers7Days}',
-                  const Color(0xFF2196F3)),
-              _buildActivityTag(context, '月活跃用户', '${stats.activeUsers30Days}',
-                  const Color(0xFF9C27B0)),
+              _buildActivityTag(
+                context,
+                '日活跃用户',
+                '${stats.activeUsersLastDay}',
+                const Color(0xFF4CAF50),
+              ),
+              _buildActivityTag(
+                context,
+                '周活跃用户',
+                '${stats.activeUsers7Days}',
+                const Color(0xFF2196F3),
+              ),
+              _buildActivityTag(
+                context,
+                '月活跃用户',
+                '${stats.activeUsers30Days}',
+                const Color(0xFF9C27B0),
+              ),
             ],
           ),
 
@@ -577,12 +605,24 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
             spacing: 8.w,
             runSpacing: 8.w,
             children: [
-              _buildActivityTag(context, '今日发帖', '${stats.postsLastDay}',
-                  const Color(0xFFFF9800)),
-              _buildActivityTag(context, '周发帖量', '${stats.posts7Days}',
-                  const Color(0xFF00BCD4)),
-              _buildActivityTag(context, '月发帖量', '${stats.posts30Days}',
-                  const Color(0xFF673AB7)),
+              _buildActivityTag(
+                context,
+                '今日发帖',
+                '${stats.postsLastDay}',
+                const Color(0xFFFF9800),
+              ),
+              _buildActivityTag(
+                context,
+                '周发帖量',
+                '${stats.posts7Days}',
+                const Color(0xFF00BCD4),
+              ),
+              _buildActivityTag(
+                context,
+                '月发帖量',
+                '${stats.posts30Days}',
+                const Color(0xFF673AB7),
+              ),
             ],
           ),
 
@@ -601,12 +641,24 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
             spacing: 8.w,
             runSpacing: 8.w,
             children: [
-              _buildActivityTag(context, '今日点赞', '${stats.likesLastDay}',
-                  const Color(0xFFE91E63)),
-              _buildActivityTag(context, '周点赞量', '${stats.likes7Days}',
-                  const Color(0xFF795548)),
-              _buildActivityTag(context, '总点赞量', '${stats.likesCount}',
-                  const Color(0xFF607D8B)),
+              _buildActivityTag(
+                context,
+                '今日点赞',
+                '${stats.likesLastDay}',
+                const Color(0xFFE91E63),
+              ),
+              _buildActivityTag(
+                context,
+                '周点赞量',
+                '${stats.likes7Days}',
+                const Color(0xFF795548),
+              ),
+              _buildActivityTag(
+                context,
+                '总点赞量',
+                '${stats.likesCount}',
+                const Color(0xFF607D8B),
+              ),
             ],
           ),
 
@@ -625,12 +677,24 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
             spacing: 8.w,
             runSpacing: 8.w,
             children: [
-              _buildActivityTag(context, '今日消息', '${stats.chatMessagesLastDay}',
-                  const Color(0xFF3F51B5)),
-              _buildActivityTag(context, '活跃频道', '${stats.chatChannelsLastDay}',
-                  const Color(0xFF009688)),
-              _buildActivityTag(context, '聊天用户', '${stats.chatUsersLastDay}',
-                  const Color(0xFFFF5722)),
+              _buildActivityTag(
+                context,
+                '今日消息',
+                '${stats.chatMessagesLastDay}',
+                const Color(0xFF3F51B5),
+              ),
+              _buildActivityTag(
+                context,
+                '活跃频道',
+                '${stats.chatChannelsLastDay}',
+                const Color(0xFF009688),
+              ),
+              _buildActivityTag(
+                context,
+                '聊天用户',
+                '${stats.chatUsersLastDay}',
+                const Color(0xFFFF5722),
+              ),
             ],
           ),
         ],
@@ -639,26 +703,24 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
   }
 
   Widget _buildActivityTag(
-      BuildContext context, String label, String value, Color color) {
+    BuildContext context,
+    String label,
+    String value,
+    Color color,
+  ) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.w),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16.w),
-        border: Border.all(
-          color: color.withValues(alpha: 0.2),
-          width: 1.w,
-        ),
+        border: Border.all(color: color.withValues(alpha: 0.2), width: 1.w),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             label,
-            style: TextStyle(
-              fontSize: 10.w,
-              color: color,
-            ),
+            style: TextStyle(fontSize: 10.w, color: color),
           ),
           4.hGap,
           Text(
@@ -693,8 +755,11 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildLable(context, CupertinoIcons.chat_bubble_text_fill,
-              AppConst.settings.contactUs),
+          _buildLable(
+            context,
+            CupertinoIcons.chat_bubble_text_fill,
+            AppConst.settings.contactUs,
+          ),
           16.vGap,
           Container(
             padding: EdgeInsets.all(12.w),
@@ -776,8 +841,9 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
                 Container(
                   padding: EdgeInsets.all(8.w),
                   decoration: BoxDecoration(
-                    color:
-                        Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                    color: Theme.of(
+                      context,
+                    ).primaryColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8.w),
                   ),
                   child: Icon(
@@ -805,9 +871,9 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
                         style: TextStyle(
                           fontSize: 10.w,
                           height: 1.5,
-                          color: Theme.of(context)
-                              .primaryColor
-                              .withValues(alpha: 0.8),
+                          color: Theme.of(
+                            context,
+                          ).primaryColor.withValues(alpha: 0.8),
                         ),
                       ),
                     ],
@@ -842,8 +908,11 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildLable(context, CupertinoIcons.info_circle_fill,
-                AppConst.settings.versionInfo),
+            _buildLable(
+              context,
+              CupertinoIcons.info_circle_fill,
+              AppConst.settings.versionInfo,
+            ),
             16.vGap,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -893,7 +962,7 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
@@ -906,73 +975,72 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return StatefulBuilder(builder: (context, setState) {
-          return AlertDialog(
-            backgroundColor: Theme.of(context).cardColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6).w,
-            ),
-            title: Text(
-              '请输入密码',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 14.w,
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              backgroundColor: Theme.of(context).cardColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6).w,
               ),
-            ),
-            content: SizedBox(
-              height: 100.w,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    '该功能为测试功能，输入密码后,下次进入话题详情,会自动滚动刷帖子阅读数量,帖子阅读数目前测试只有在模拟器上生效,重启app后失效(如果打开后未登录,则先登录即可)',
-                    style: TextStyle(
-                      fontSize: 10.w,
-                      color: Theme.of(context).textTheme.bodySmall?.color,
+              title: Text(
+                '请输入密码',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14.w),
+              ),
+              content: SizedBox(
+                height: 100.w,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      '该功能为测试功能，输入密码后,下次进入话题详情,会自动滚动刷帖子阅读数量,帖子阅读数目前测试只有在模拟器上生效,重启app后失效(如果打开后未登录,则先登录即可)',
+                      style: TextStyle(
+                        fontSize: 10.w,
+                        color: Theme.of(context).textTheme.bodySmall?.color,
+                      ),
                     ),
-                  ),
-                  16.vGap,
-                  Expanded(
-                    child: TextField(
-                      controller: passwordController,
-                      decoration: InputDecoration(
-                        hintText: '请输入密码',
-                        filled: false,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding: const EdgeInsets.only(top: 12).w,
-                        prefixIcon: Icon(
-                          CupertinoIcons.lock_fill,
-                          color: Theme.of(context).primaryColor,
-                          size: 20.w,
+                    16.vGap,
+                    Expanded(
+                      child: TextField(
+                        controller: passwordController,
+                        decoration: InputDecoration(
+                          hintText: '请输入密码',
+                          filled: false,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: const EdgeInsets.only(top: 12).w,
+                          prefixIcon: Icon(
+                            CupertinoIcons.lock_fill,
+                            color: Theme.of(context).primaryColor,
+                            size: 20.w,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            actions: [
-              SizedBox(
-                height: 32.w,
-                child: DisButton(
-                  onPressed: () {
-                    if (passwordController.text == 'linux.do') {
-                      Get.find<GlobalController>().setShowHiddenContent(true);
-                      showSuccess('已开启');
-                    } else {
-                      showError('密码错误');
-                    }
-                    Get.back();
-                  },
-                  text: '确定',
+                  ],
                 ),
               ),
-            ],
-          );
-        });
+              actions: [
+                SizedBox(
+                  height: 32.w,
+                  child: DisButton(
+                    onPressed: () {
+                      if (passwordController.text == 'linux.do') {
+                        Get.find<GlobalController>().setShowHiddenContent(true);
+                        showSuccess('已开启');
+                      } else {
+                        showError('密码错误');
+                      }
+                      Get.back();
+                    },
+                    text: '确定',
+                  ),
+                ),
+              ],
+            );
+          },
+        );
       },
     );
   }

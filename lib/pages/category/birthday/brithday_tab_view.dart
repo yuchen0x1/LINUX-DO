@@ -34,11 +34,13 @@ class _BrithdayTabViewState extends State<BrithdayTabView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Obx(() => StateView(
-          state: _getViewState(),
-          onRetry: () => controller.fetchBirthdays(isRefresh: true),
-          child: _buildBirthdayList(context),
-        ));
+    return Obx(
+      () => StateView(
+        state: _getViewState(),
+        onRetry: () => controller.fetchBirthdays(isRefresh: true),
+        child: _buildBirthdayList(context),
+      ),
+    );
   }
 
   Widget _buildBirthdayList(BuildContext context) {
@@ -46,10 +48,7 @@ class _BrithdayTabViewState extends State<BrithdayTabView>
       return Center(
         child: Text(
           AppConst.birthday.noBirthdays,
-          style: TextStyle(
-            color: Theme.of(context).hintColor,
-            fontSize: 14.w,
-          ),
+          style: TextStyle(color: Theme.of(context).hintColor, fontSize: 14.w),
         ),
       );
     }
@@ -135,9 +134,9 @@ class _BrithdayTabViewState extends State<BrithdayTabView>
                               vertical: 2.w,
                             ),
                             decoration: BoxDecoration(
-                              color: Theme.of(context)
-                                  .primaryColor
-                                  .withValues(alpha: 0.1),
+                              color: Theme.of(
+                                context,
+                              ).primaryColor.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(4.w),
                             ),
                             child: Text(
@@ -150,7 +149,7 @@ class _BrithdayTabViewState extends State<BrithdayTabView>
                             ),
                           ),
                         ],
-                        120.hGap
+                        120.hGap,
                       ],
                     ),
                     2.vGap,

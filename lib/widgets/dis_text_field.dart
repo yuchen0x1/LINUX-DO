@@ -51,9 +51,7 @@ class DisTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     final defaultBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(8.w),
-      borderSide: BorderSide(
-        color: Theme.of(context).dividerColor,
-      ),
+      borderSide: BorderSide(color: Theme.of(context).dividerColor),
     );
 
     return TextField(
@@ -64,34 +62,31 @@ class DisTextField extends StatelessWidget {
       onChanged: onChanged,
       maxLines: maxLines,
       enabled: enabled,
-      style: style ??
+      style:
+          style ??
           TextStyle(
             fontSize: 14.w,
             color: Theme.of(context).textTheme.titleMedium?.color,
           ),
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: hintStyle ??
-            TextStyle(
-              fontSize: 14.w,
-              color: Theme.of(context).hintColor,
-            ),
-        contentPadding: contentPadding ??
-            EdgeInsets.symmetric(
-              horizontal: 12.w,
-              vertical: 12.w,
-            ),
+        hintStyle:
+            hintStyle ??
+            TextStyle(fontSize: 14.w, color: Theme.of(context).hintColor),
+        contentPadding:
+            contentPadding ??
+            EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.w),
         filled: true,
         fillColor: fillColor ?? Theme.of(context).cardColor,
         border: border ?? defaultBorder,
         enabledBorder: enabledBorder ?? defaultBorder,
-        focusedBorder: focusedBorder ??
+        focusedBorder:
+            focusedBorder ??
             defaultBorder.copyWith(
-              borderSide: BorderSide(
-                color: Theme.of(context).primaryColor,
-              ),
+              borderSide: BorderSide(color: Theme.of(context).primaryColor),
             ),
-        disabledBorder: disabledBorder ??
+        disabledBorder:
+            disabledBorder ??
             defaultBorder.copyWith(
               borderSide: BorderSide(
                 color: Theme.of(context).disabledColor.withValues(alpha: 0.1),

@@ -63,10 +63,7 @@ class _GlowingTextSweepState extends State<GlowingTextSweep>
         ).createShader(bounds);
       },
       blendMode: BlendMode.srcATop,
-      child: Text(
-        widget.text,
-        style: widget.style,
-      ),
+      child: Text(widget.text, style: widget.style),
     );
   }
 }

@@ -28,11 +28,14 @@ class ConnectPage extends GetView<ConnectController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Connect',
-            style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                fontFamily: AppFontFamily.dinPro)),
+        title: const Text(
+          'Connect',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            fontFamily: AppFontFamily.dinPro,
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -44,23 +47,28 @@ class ConnectPage extends GetView<ConnectController> {
               final data = controller.connectData.value;
               if (data == null) {
                 return Center(
-                    child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Data acquisition in progress ... ',
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Data acquisition in progress ... ',
                         style: TextStyle(
-                            fontSize: 14, fontFamily: AppFontFamily.dinPro)),
-                    6.hGap,
-                    SizedBox(
-                      width: 15,
-                      height: 15,
-                      child: CircularProgressIndicator(
-                        color: Theme.of(context).primaryColor,
-                        strokeWidth: 2,
+                          fontSize: 14,
+                          fontFamily: AppFontFamily.dinPro,
+                        ),
                       ),
-                    ),
-                  ],
-                ));
+                      6.hGap,
+                      SizedBox(
+                        width: 15,
+                        height: 15,
+                        child: CircularProgressIndicator(
+                          color: Theme.of(context).primaryColor,
+                          strokeWidth: 2,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
               }
 
               return ListView(
@@ -83,42 +91,44 @@ class ConnectPage extends GetView<ConnectController> {
       child: Opacity(
         opacity: 0,
         child: SizedBox(
-            width: double.infinity,
-            height: 1,
-            child: InAppWebView(
-              initialUrlRequest: URLRequest(
-                url: WebUri.uri(Uri.parse('https://connect.linux.do/')),
-              ),
-              initialSettings: InAppWebViewSettings(
-                useShouldOverrideUrlLoading: true,
-                mediaPlaybackRequiresUserGesture: false,
-                javaScriptEnabled: true,
-                cacheEnabled: true,
-                useHybridComposition: true,
-                allowsInlineMediaPlayback: true,
-              ),
-              onWebViewCreated: (webViewController) {
-                controller.webViewController = webViewController;
+          width: double.infinity,
+          height: 1,
+          child: InAppWebView(
+            initialUrlRequest: URLRequest(
+              url: WebUri.uri(Uri.parse('https://connect.linux.do/')),
+            ),
+            initialSettings: InAppWebViewSettings(
+              useShouldOverrideUrlLoading: true,
+              mediaPlaybackRequiresUserGesture: false,
+              javaScriptEnabled: true,
+              cacheEnabled: true,
+              useHybridComposition: true,
+              allowsInlineMediaPlayback: true,
+            ),
+            onWebViewCreated: (webViewController) {
+              controller.webViewController = webViewController;
 
-                // 设置cookie
-                controller.setupCookies(webViewController);
-              },
-              onLoadStop: (controller, url) {
-                if (url.toString().contains('connect.linux.do')) {
-                  controller
-                      .evaluateJavascript(
-                          source: "document.documentElement.outerHTML")
-                      .then((value) {
-                    if (value != null && value is String) {
-                      Get.find<ConnectController>().updateContent(value);
-                    }
-                  });
-                }
-              },
-              shouldOverrideUrlLoading: (controller, navigationAction) async {
-                return NavigationActionPolicy.ALLOW;
-              },
-            )),
+              // 设置cookie
+              controller.setupCookies(webViewController);
+            },
+            onLoadStop: (controller, url) {
+              if (url.toString().contains('connect.linux.do')) {
+                controller
+                    .evaluateJavascript(
+                      source: "document.documentElement.outerHTML",
+                    )
+                    .then((value) {
+                      if (value != null && value is String) {
+                        Get.find<ConnectController>().updateContent(value);
+                      }
+                    });
+              }
+            },
+            shouldOverrideUrlLoading: (controller, navigationAction) async {
+              return NavigationActionPolicy.ALLOW;
+            },
+          ),
+        ),
       ),
     );
   }
@@ -276,16 +286,20 @@ class FlipCardState extends State<FlipCard>
                     padding: const EdgeInsets.symmetric(horizontal: 16).w,
                     child: Row(
                       children: [
-                        Icon(CupertinoIcons.person,
-                            color: Theme.of(context).primaryColor, size: 18),
+                        Icon(
+                          CupertinoIcons.person,
+                          color: Theme.of(context).primaryColor,
+                          size: 18,
+                        ),
                         6.hGap,
                         Expanded(
                           child: Text(
                             '${userinfo?.name}',
                             maxLines: 1,
                             style: TextStyle(
-                              color:
-                                  Theme.of(context).textTheme.bodyMedium?.color,
+                              color: Theme.of(
+                                context,
+                              ).textTheme.bodyMedium?.color,
                               fontSize: 13,
                               fontFamily: AppFontFamily.dinPro,
                               overflow: TextOverflow.ellipsis,
@@ -301,35 +315,42 @@ class FlipCardState extends State<FlipCard>
                     padding: const EdgeInsets.symmetric(horizontal: 16).w,
                     child: Row(
                       children: [
-                        Icon(CupertinoIcons.mail,
-                            color: Theme.of(context).primaryColor, size: 18),
+                        Icon(
+                          CupertinoIcons.mail,
+                          color: Theme.of(context).primaryColor,
+                          size: 18,
+                        ),
                         6.hGap,
                         Expanded(
-                          child: Obx(() => Text(
-                                connectController
-                                    .getDisplayEmail(userinfo?.email),
-                                maxLines: 1,
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.color,
-                                  fontSize: 13,
-                                  fontFamily: AppFontFamily.dinPro,
-                                  overflow: TextOverflow.ellipsis,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              )),
+                          child: Obx(
+                            () => Text(
+                              connectController.getDisplayEmail(
+                                userinfo?.email,
+                              ),
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: Theme.of(
+                                  context,
+                                ).textTheme.bodyMedium?.color,
+                                fontSize: 13,
+                                fontFamily: AppFontFamily.dinPro,
+                                overflow: TextOverflow.ellipsis,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
                         ),
                         InkWell(
                           onTap: connectController.toggleEmailVisibility,
-                          child: Obx(() => Icon(
-                                connectController.isEmailVisible.value
-                                    ? CupertinoIcons.eye_slash
-                                    : CupertinoIcons.eye,
-                                color: Theme.of(context).primaryColor,
-                                size: 15,
-                              )),
+                          child: Obx(
+                            () => Icon(
+                              connectController.isEmailVisible.value
+                                  ? CupertinoIcons.eye_slash
+                                  : CupertinoIcons.eye,
+                              color: Theme.of(context).primaryColor,
+                              size: 15,
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -339,8 +360,11 @@ class FlipCardState extends State<FlipCard>
                     padding: const EdgeInsets.symmetric(horizontal: 16).w,
                     child: Row(
                       children: [
-                        Icon(CupertinoIcons.calendar,
-                            color: Theme.of(context).primaryColor, size: 18),
+                        Icon(
+                          CupertinoIcons.calendar,
+                          color: Theme.of(context).primaryColor,
+                          size: 18,
+                        ),
                         8.hGap,
                         Expanded(
                           child: Text(
@@ -350,8 +374,9 @@ class FlipCardState extends State<FlipCard>
                                 '无',
                             maxLines: 1,
                             style: TextStyle(
-                              color:
-                                  Theme.of(context).textTheme.bodyMedium?.color,
+                              color: Theme.of(
+                                context,
+                              ).textTheme.bodyMedium?.color,
                               fontSize: 13,
                               fontFamily: AppFontFamily.dinPro,
                               overflow: TextOverflow.ellipsis,
@@ -367,9 +392,9 @@ class FlipCardState extends State<FlipCard>
                     child: Text(
                       AppConst.sloganEn,
                       style: TextStyle(
-                        color: Theme.of(context)
-                            .primaryColor
-                            .withValues(alpha: .6),
+                        color: Theme.of(
+                          context,
+                        ).primaryColor.withValues(alpha: .6),
                         fontFamily: AppFontFamily.dinPro,
                         fontSize: 10.w,
                       ),
@@ -563,10 +588,7 @@ class FlipCardState extends State<FlipCard>
 class ConnectDataWidget extends StatelessWidget with ToastMixin {
   final ConnectData data;
 
-  const ConnectDataWidget({
-    super.key,
-    required this.data,
-  });
+  const ConnectDataWidget({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -589,48 +611,50 @@ class ConnectDataWidget extends StatelessWidget with ToastMixin {
             Padding(
               padding: const EdgeInsets.all(10.0).w,
               child: RichText(
-                  text: TextSpan(
-                children: [
-                  TextSpan(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
                       text: data.userLevel,
                       style: TextStyle(
                         fontSize: 16.w,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).primaryColor,
                         fontFamily: AppFontFamily.dinPro,
-                      )),
-                  TextSpan(
+                      ),
+                    ),
+                    TextSpan(
                       text: ' 级用户${data.username}',
                       style: TextStyle(
                         fontSize: 14.w,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).textTheme.bodyLarge?.color,
                         fontFamily: AppFontFamily.dinPro,
-                      )),
-                  TextSpan(
+                      ),
+                    ),
+                    TextSpan(
                       text: '   (过去 100 天内):',
                       style: TextStyle(
                         fontSize: 11.w,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).textTheme.bodyLarge?.color,
                         fontFamily: AppFontFamily.dinPro,
-                      )),
-                ],
-              )),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
             _buildHeader(context),
-            ...data.trustLevelStats.entries
-                .toList()
-                .asMap()
-                .entries
-                .map((entry) => _buildStatRow(
-                      context,
-                      entry.value.key,
-                      entry.value.value.current,
-                      entry.value.value.required,
-                      entry.value.value.isMet,
-                      entry.key % 2 == 1,
-                    )),
+            ...data.trustLevelStats.entries.toList().asMap().entries.map(
+              (entry) => _buildStatRow(
+                context,
+                entry.value.key,
+                entry.value.value.current,
+                entry.value.value.required,
+                entry.value.value.isMet,
+                entry.key % 2 == 1,
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(16.0).w,
               child: Row(
@@ -656,7 +680,7 @@ class ConnectDataWidget extends StatelessWidget with ToastMixin {
                         showSuccess('拷贝成功');
                       },
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -727,8 +751,14 @@ class ConnectDataWidget extends StatelessWidget with ToastMixin {
     );
   }
 
-  Widget _buildStatRow(BuildContext context, String title, String current,
-      String required, bool isMet, bool isOdd) {
+  Widget _buildStatRow(
+    BuildContext context,
+    String title,
+    String current,
+    String required,
+    bool isMet,
+    bool isOdd,
+  ) {
     //l.e('title: $title, current: $current, required: $required, isMet: $isMet, isOdd: $isOdd');
 
     return Container(
@@ -794,10 +824,7 @@ class ConnectDataWidget extends StatelessWidget with ToastMixin {
 class PopularColorsWidget extends StatelessWidget {
   final ConnectData data;
 
-  const PopularColorsWidget({
-    super.key,
-    required this.data,
-  });
+  const PopularColorsWidget({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -863,7 +890,11 @@ class PopularColorsWidget extends StatelessWidget {
   }
 
   Widget _buildColorBar(
-      String current, String required, String statName, Color color) {
+    String current,
+    String required,
+    String statName,
+    Color color,
+  ) {
     double currentValue = 0;
     double requiredValue = 0;
 

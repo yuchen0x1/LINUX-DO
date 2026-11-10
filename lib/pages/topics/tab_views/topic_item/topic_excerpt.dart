@@ -8,11 +8,8 @@ class TopicExcerpt extends StatelessWidget {
   final String excerpt;
   final ListDensity? density;
 
-  const TopicExcerpt({
-    Key? key,
-    required this.excerpt,
-    this.density,
-  }) : super(key: key);
+  const TopicExcerpt({Key? key, required this.excerpt, this.density})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +17,14 @@ class TopicExcerpt extends StatelessWidget {
     final fontSize = density == ListDensity.compact
         ? 10.0
         : density == ListDensity.normal
-            ? 13.0
-            : 14.0;
+        ? 13.0
+        : 14.0;
 
     final topPadding = density == ListDensity.compact
         ? 4.0
         : density == ListDensity.normal
-            ? 8.0
-            : 12.0;
+        ? 8.0
+        : 12.0;
 
     return Padding(
       padding: EdgeInsets.only(top: topPadding).w,

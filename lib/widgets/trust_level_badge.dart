@@ -42,24 +42,11 @@ class TrustLevelHelper {
   static List<String> getPrivileges(int level) {
     switch (level) {
       case 0:
-        return [
-          '正常浏览社区公开帖子',
-          '允许回复受信任等级开放的话题',
-          '每日受发帖/回复频率保护',
-        ];
+        return ['正常浏览社区公开帖子', '允许回复受信任等级开放的话题', '每日受发帖/回复频率保护'];
       case 1:
-        return [
-          '免除新用户大部分频率限制',
-          '允许上传个人附件与图片',
-          '启用站内私信与互动功能',
-          '开放专属幼苗分区阅读权限',
-        ];
+        return ['免除新用户大部分频率限制', '允许上传个人附件与图片', '启用站内私信与互动功能', '开放专属幼苗分区阅读权限'];
       case 2:
-        return [
-          '每日点赞与投票限额翻倍',
-          '可使用每日邀请链接邀请新朋友',
-          '解锁更高级别的帖子编辑和历史版本查看',
-        ];
+        return ['每日点赞与投票限额翻倍', '可使用每日邀请链接邀请新朋友', '解锁更高级别的帖子编辑和历史版本查看'];
       case 3:
         return [
           '尊贵【佬友】专属金标认证',
@@ -111,10 +98,7 @@ class TrustLevelBadge extends StatelessWidget {
           Container(
             width: 5.w,
             height: 5.w,
-            decoration: BoxDecoration(
-              color: color,
-              shape: BoxShape.circle,
-            ),
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
           ),
           4.hGap,
           Text(

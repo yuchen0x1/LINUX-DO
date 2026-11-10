@@ -7,37 +7,44 @@ part of 'search_result.dart';
 // **************************************************************************
 
 SearchResult _$SearchResultFromJson(Map<String, dynamic> json) => SearchResult(
-      posts: (json['posts'] as List<dynamic>?)
-              ?.map((e) => SearchPost.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
-      topics: (json['topics'] as List<dynamic>?)
-              ?.map((e) => Topic.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
-      users: json['users'] as List<dynamic>? ?? [],
-      categories: json['categories'] as List<dynamic>? ?? [],
-      tags: json['tags'] as List<dynamic>? ?? [],
-      groups: json['groups'] as List<dynamic>? ?? [],
-      groupedSearchResult: GroupedSearchResult.fromJson(
-          json['grouped_search_result'] as Map<String, dynamic>),
-      userIds: (json['user_ids'] as List<dynamic>?)
-              ?.map((e) => (e as num).toInt())
-              .toList() ??
-          [],
-      categoryIds: (json['category_ids'] as List<dynamic>?)
-              ?.map((e) => (e as num).toInt())
-              .toList() ??
-          [],
-      tagIds: (json['tag_ids'] as List<dynamic>?)
-              ?.map((e) => (e as num).toInt())
-              .toList() ??
-          [],
-      groupIds: (json['group_ids'] as List<dynamic>?)
-              ?.map((e) => (e as num).toInt())
-              .toList() ??
-          [],
-    );
+  posts:
+      (json['posts'] as List<dynamic>?)
+          ?.map((e) => SearchPost.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      [],
+  topics:
+      (json['topics'] as List<dynamic>?)
+          ?.map((e) => Topic.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      [],
+  users: json['users'] as List<dynamic>? ?? [],
+  categories: json['categories'] as List<dynamic>? ?? [],
+  tags: json['tags'] as List<dynamic>? ?? [],
+  groups: json['groups'] as List<dynamic>? ?? [],
+  groupedSearchResult: GroupedSearchResult.fromJson(
+    json['grouped_search_result'] as Map<String, dynamic>,
+  ),
+  userIds:
+      (json['user_ids'] as List<dynamic>?)
+          ?.map((e) => (e as num).toInt())
+          .toList() ??
+      [],
+  categoryIds:
+      (json['category_ids'] as List<dynamic>?)
+          ?.map((e) => (e as num).toInt())
+          .toList() ??
+      [],
+  tagIds:
+      (json['tag_ids'] as List<dynamic>?)
+          ?.map((e) => (e as num).toInt())
+          .toList() ??
+      [],
+  groupIds:
+      (json['group_ids'] as List<dynamic>?)
+          ?.map((e) => (e as num).toInt())
+          .toList() ??
+      [],
+);
 
 Map<String, dynamic> _$SearchResultToJson(SearchResult instance) =>
     <String, dynamic>{
@@ -55,16 +62,16 @@ Map<String, dynamic> _$SearchResultToJson(SearchResult instance) =>
     };
 
 SearchPost _$SearchPostFromJson(Map<String, dynamic> json) => SearchPost(
-      id: (json['id'] as num).toInt(),
-      name: json['name'] as String?,
-      username: json['username'] as String?,
-      avatarTemplate: json['avatar_template'] as String?,
-      createdAt: json['created_at'] as String?,
-      likeCount: (json['like_count'] as num).toInt(),
-      blurb: json['blurb'] as String?,
-      postNumber: (json['post_number'] as num).toInt(),
-      topicId: (json['topic_id'] as num).toInt(),
-    );
+  id: (json['id'] as num).toInt(),
+  name: json['name'] as String?,
+  username: json['username'] as String?,
+  avatarTemplate: json['avatar_template'] as String?,
+  createdAt: json['created_at'] as String?,
+  likeCount: (json['like_count'] as num).toInt(),
+  blurb: json['blurb'] as String?,
+  postNumber: (json['post_number'] as num).toInt(),
+  topicId: (json['topic_id'] as num).toInt(),
+);
 
 Map<String, dynamic> _$SearchPostToJson(SearchPost instance) =>
     <String, dynamic>{
@@ -96,16 +103,16 @@ GroupedSearchResult _$GroupedSearchResultFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$GroupedSearchResultToJson(
-        GroupedSearchResult instance) =>
-    <String, dynamic>{
-      'more_posts': instance.morePosts,
-      'more_users': instance.moreUsers,
-      'more_categories': instance.moreCategories,
-      'term': instance.term,
-      'search_log_id': instance.searchLogId,
-      'more_full_page_results': instance.moreFullPageResults,
-      'can_create_topic': instance.canCreateTopic,
-      'error': instance.error,
-      'extra': instance.extra,
-      'post_ids': instance.postIds,
-    };
+  GroupedSearchResult instance,
+) => <String, dynamic>{
+  'more_posts': instance.morePosts,
+  'more_users': instance.moreUsers,
+  'more_categories': instance.moreCategories,
+  'term': instance.term,
+  'search_log_id': instance.searchLogId,
+  'more_full_page_results': instance.moreFullPageResults,
+  'can_create_topic': instance.canCreateTopic,
+  'error': instance.error,
+  'extra': instance.extra,
+  'post_ids': instance.postIds,
+};

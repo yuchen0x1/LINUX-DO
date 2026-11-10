@@ -7,26 +7,27 @@ part of 'notification.dart';
 // **************************************************************************
 
 NotificationResponse _$NotificationResponseFromJson(
-        Map<String, dynamic> json) =>
-    NotificationResponse(
-      notifications: (json['notifications'] as List<dynamic>?)
-              ?.map((e) => NotificationItem.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
-      totalRowsNotifications:
-          (json['total_rows_notifications'] as num?)?.toInt() ?? 0,
-      seenNotificationId: (json['seen_notification_id'] as num?)?.toInt() ?? 0,
-      loadMoreNotifications: json['load_more_notifications'] as String? ?? '',
-    );
+  Map<String, dynamic> json,
+) => NotificationResponse(
+  notifications:
+      (json['notifications'] as List<dynamic>?)
+          ?.map((e) => NotificationItem.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      [],
+  totalRowsNotifications:
+      (json['total_rows_notifications'] as num?)?.toInt() ?? 0,
+  seenNotificationId: (json['seen_notification_id'] as num?)?.toInt() ?? 0,
+  loadMoreNotifications: json['load_more_notifications'] as String? ?? '',
+);
 
 Map<String, dynamic> _$NotificationResponseToJson(
-        NotificationResponse instance) =>
-    <String, dynamic>{
-      'notifications': instance.notifications,
-      'total_rows_notifications': instance.totalRowsNotifications,
-      'seen_notification_id': instance.seenNotificationId,
-      'load_more_notifications': instance.loadMoreNotifications,
-    };
+  NotificationResponse instance,
+) => <String, dynamic>{
+  'notifications': instance.notifications,
+  'total_rows_notifications': instance.totalRowsNotifications,
+  'seen_notification_id': instance.seenNotificationId,
+  'load_more_notifications': instance.loadMoreNotifications,
+};
 
 NotificationItem _$NotificationItemFromJson(Map<String, dynamic> json) =>
     NotificationItem(

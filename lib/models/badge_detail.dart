@@ -31,11 +31,7 @@ class BadgeType {
   @JsonKey(name: 'sort_order')
   final int sortOrder;
 
-  BadgeType({
-    required this.id,
-    required this.name,
-    required this.sortOrder,
-  });
+  BadgeType({required this.id, required this.name, required this.sortOrder});
 
   factory BadgeType.fromJson(Map<String, dynamic> json) =>
       _$BadgeTypeFromJson(json);
@@ -149,7 +145,7 @@ class BadgeDetail {
     '#FF00FF',
     '#00FFFF',
     '#FFFFFF',
-    '#000000'
+    '#000000',
   ];
 
   factory BadgeDetail.fromJson(Map<String, dynamic> json) =>

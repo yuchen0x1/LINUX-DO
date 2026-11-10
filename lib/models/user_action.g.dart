@@ -14,40 +14,38 @@ UserActionResponse _$UserActionResponseFromJson(Map<String, dynamic> json) =>
     );
 
 Map<String, dynamic> _$UserActionResponseToJson(UserActionResponse instance) =>
-    <String, dynamic>{
-      'user_actions': instance.userActions,
-    };
+    <String, dynamic>{'user_actions': instance.userActions};
 
 UserAction _$UserActionFromJson(Map<String, dynamic> json) => UserAction(
-      excerpt: json['excerpt'] as String? ?? '',
-      actionType: (json['action_type'] as num?)?.toInt() ?? 0,
-      createdAt: json['created_at'] as String? ?? '',
-      avatarTemplate: json['avatar_template'] as String? ?? '',
-      actingAvatarTemplate: json['acting_avatar_template'] as String? ?? '',
-      slug: json['slug'] as String? ?? '',
-      topicId: (json['topic_id'] as num?)?.toInt(),
-      targetUserId: (json['target_user_id'] as num?)?.toInt(),
-      targetName: json['target_name'] as String? ?? '',
-      targetUsername: json['target_username'] as String? ?? '',
-      postNumber: (json['post_number'] as num?)?.toInt(),
-      postId: (json['post_id'] as num?)?.toInt(),
-      replyToPostNumber: (json['reply_to_post_number'] as num?)?.toInt(),
-      username: json['username'] as String? ?? '',
-      name: json['name'] as String? ?? '',
-      userId: (json['user_id'] as num?)?.toInt() ?? 0,
-      actingUsername: json['acting_username'] as String? ?? '',
-      actingName: json['acting_name'] as String? ?? '',
-      actingUserId: (json['acting_user_id'] as num?)?.toInt() ?? 0,
-      title: json['title'] as String? ?? '',
-      deleted: json['deleted'] as bool? ?? false,
-      hidden: json['hidden'] as bool? ?? false,
-      postType: (json['post_type'] as num?)?.toInt(),
-      actionCode: json['action_code'] as String?,
-      categoryId: (json['category_id'] as num?)?.toInt(),
-      closed: json['closed'] as bool? ?? false,
-      archived: json['archived'] as bool? ?? false,
-      hidePresence: json['hide_presence'] as bool? ?? false,
-    );
+  excerpt: json['excerpt'] as String? ?? '',
+  actionType: (json['action_type'] as num?)?.toInt() ?? 0,
+  createdAt: json['created_at'] as String? ?? '',
+  avatarTemplate: json['avatar_template'] as String? ?? '',
+  actingAvatarTemplate: json['acting_avatar_template'] as String? ?? '',
+  slug: json['slug'] as String? ?? '',
+  topicId: (json['topic_id'] as num?)?.toInt(),
+  targetUserId: (json['target_user_id'] as num?)?.toInt(),
+  targetName: json['target_name'] as String? ?? '',
+  targetUsername: json['target_username'] as String? ?? '',
+  postNumber: (json['post_number'] as num?)?.toInt(),
+  postId: (json['post_id'] as num?)?.toInt(),
+  replyToPostNumber: (json['reply_to_post_number'] as num?)?.toInt(),
+  username: json['username'] as String? ?? '',
+  name: json['name'] as String? ?? '',
+  userId: (json['user_id'] as num?)?.toInt() ?? 0,
+  actingUsername: json['acting_username'] as String? ?? '',
+  actingName: json['acting_name'] as String? ?? '',
+  actingUserId: (json['acting_user_id'] as num?)?.toInt() ?? 0,
+  title: json['title'] as String? ?? '',
+  deleted: json['deleted'] as bool? ?? false,
+  hidden: json['hidden'] as bool? ?? false,
+  postType: (json['post_type'] as num?)?.toInt(),
+  actionCode: json['action_code'] as String?,
+  categoryId: (json['category_id'] as num?)?.toInt(),
+  closed: json['closed'] as bool? ?? false,
+  archived: json['archived'] as bool? ?? false,
+  hidePresence: json['hide_presence'] as bool? ?? false,
+);
 
 Map<String, dynamic> _$UserActionToJson(UserAction instance) =>
     <String, dynamic>{

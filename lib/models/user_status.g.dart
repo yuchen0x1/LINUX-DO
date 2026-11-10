@@ -7,11 +7,11 @@ part of 'user_status.dart';
 // **************************************************************************
 
 UserStatus _$UserStatusFromJson(Map<String, dynamic> json) => UserStatus(
-      description: json['description'] as String?,
-      emoji: json['emoji'] as String?,
-      endsAt: json['ends_at'] as String?,
-      messageBusLastId: (json['message_bus_last_id'] as num?)?.toInt(),
-    );
+  description: json['description'] as String?,
+  emoji: json['emoji'] as String?,
+  endsAt: json['ends_at'] as String?,
+  messageBusLastId: (json['message_bus_last_id'] as num?)?.toInt(),
+);
 
 Map<String, dynamic> _$UserStatusToJson(UserStatus instance) =>
     <String, dynamic>{

@@ -210,10 +210,7 @@ class CategoryModerator {
   @JsonKey(name: 'moderator_ids')
   final List<int> moderatorIds;
 
-  CategoryModerator({
-    required this.categoryId,
-    required this.moderatorIds,
-  });
+  CategoryModerator({required this.categoryId, required this.moderatorIds});
 
   factory CategoryModerator.fromJson(Map<String, dynamic> json) =>
       _$CategoryModeratorFromJson(json);

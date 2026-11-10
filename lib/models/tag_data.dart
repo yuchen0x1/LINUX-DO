@@ -8,10 +8,7 @@ class TagResponse {
   @JsonKey(name: 'required_tag_group')
   final RequiredTagGroup? requiredTagGroup;
 
-  TagResponse({
-    required this.results,
-    this.requiredTagGroup,
-  });
+  TagResponse({required this.results, this.requiredTagGroup});
 
   factory TagResponse.fromJson(Map<String, dynamic> json) =>
       _$TagResponseFromJson(json);
@@ -51,10 +48,7 @@ class RequiredTagGroup {
   @JsonKey(name: 'min_count')
   final int minCount;
 
-  RequiredTagGroup({
-    required this.name,
-    required this.minCount,
-  });
+  RequiredTagGroup({required this.name, required this.minCount});
 
   factory RequiredTagGroup.fromJson(Map<String, dynamic> json) =>
       _$RequiredTagGroupFromJson(json);

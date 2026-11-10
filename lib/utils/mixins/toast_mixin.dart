@@ -4,12 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
-enum SnackbarType {
-  info,
-  success,
-  error,
-  warning,
-}
+enum SnackbarType { info, success, error, warning }
 
 mixin ToastMixin {
   /// 显示toast提示
@@ -33,26 +28,17 @@ mixin ToastMixin {
 
   /// 显示成功toast
   void showSuccess(String message) {
-    showToast(
-      message,
-      backgroundColor: Colors.green,
-    );
+    showToast(message, backgroundColor: Colors.green);
   }
 
   /// 显示错误toast
   void showError(String message) {
-    showToast(
-      message,
-      backgroundColor: Colors.red,
-    );
+    showToast(message, backgroundColor: Colors.red);
   }
 
   /// 显示警告toast
   void showWarning(String message) {
-    showToast(
-      message,
-      backgroundColor: Colors.orange,
-    );
+    showToast(message, backgroundColor: Colors.orange);
   }
 
   // 显示Snackbar
@@ -90,12 +76,7 @@ mixin ToastMixin {
       borderRadius: 4.w,
       margin: EdgeInsets.all(14.w),
       icon: Icon(iconData, color: Colors.white),
-      boxShadows: [
-        BoxShadow(
-          color: Colors.black26,
-          blurRadius: 4.w,
-        ),
-      ],
+      boxShadows: [BoxShadow(color: Colors.black26, blurRadius: 4.w)],
     );
   }
 }

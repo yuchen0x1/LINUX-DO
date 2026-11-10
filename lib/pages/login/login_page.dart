@@ -22,7 +22,10 @@ class LoginPage extends GetView<LoginController> {
 
   /// 显示协议对话框
   Future<void> showAgreementDialog(
-      BuildContext context, String title, String htmlAsset) async {
+    BuildContext context,
+    String title,
+    String htmlAsset,
+  ) async {
     try {
       final htmlContent = await rootBundle.loadString(htmlAsset);
       Get.dialog(
@@ -44,8 +47,9 @@ class LoginPage extends GetView<LoginController> {
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w500,
-                        color:
-                            Theme.of(Get.context!).textTheme.titleLarge?.color,
+                        color: Theme.of(
+                          Get.context!,
+                        ).textTheme.titleLarge?.color,
                       ),
                     ),
                     IconButton(
@@ -62,10 +66,9 @@ class LoginPage extends GetView<LoginController> {
                       style: {
                         "body": Style(
                           padding: HtmlPaddings.zero,
-                          color: Theme.of(Get.context!)
-                              .textTheme
-                              .bodyMedium
-                              ?.color,
+                          color: Theme.of(
+                            Get.context!,
+                          ).textTheme.bodyMedium?.color,
                         ),
                         "p": Style(
                           margin: Margins.only(bottom: 4.w),
@@ -112,15 +115,14 @@ class LoginPage extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Obx(
-      () => Material(
-        child: controller.isChecking.value
-            ? const Center(
-                child: DisSquareLoading(),
-              )
-            : _buildContent(context),
+      body: Obx(
+        () => Material(
+          child: controller.isChecking.value
+              ? const Center(child: DisSquareLoading())
+              : _buildContent(context),
+        ),
       ),
-    ));
+    );
   }
 
   Widget _buildContent(BuildContext context) {
@@ -146,28 +148,34 @@ class LoginPage extends GetView<LoginController> {
             ),
             child: IntrinsicHeight(
               child: Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: AppSizes.speceMedium20),
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppSizes.speceMedium20,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(height: MediaQuery.of(context).size.height * .18),
-                    Text.rich(TextSpan(
+                    Text.rich(
+                      TextSpan(
                         text: AppConst.login.greetingPhrase,
                         style: TextStyle(
-                            fontSize: AppSizes.fontLarge,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.white),
+                          fontSize: AppSizes.fontLarge,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.white,
+                        ),
                         children: [
                           TextSpan(
                             text: ' ${AppConst.siteName}',
                             style: TextStyle(
-                                fontSize: AppSizes.fontEnormousb,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: AppFontFamily.dinPro,
-                                color: AppColors.white),
-                          )
-                        ])),
+                              fontSize: AppSizes.fontEnormousb,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: AppFontFamily.dinPro,
+                              color: AppColors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     SizedBox(height: MediaQuery.of(context).size.height * .18),
 
                     Container(
@@ -394,38 +402,39 @@ class LoginPage extends GetView<LoginController> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Obx(() => GestureDetector(
-                                    onTap: () => controller
-                                            .isAgreementChecked.value =
-                                        !controller.isAgreementChecked.value,
-                                    child: Container(
-                                      width: 16.w,
-                                      height: 16.w,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: controller
-                                                  .isAgreementChecked.value
-                                              ? theme.primaryColor
-                                              : theme.hintColor
-                                                  .withValues(alpha: 0.3),
-                                          width: 1.5,
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(3.w),
+                              Obx(
+                                () => GestureDetector(
+                                  onTap: () =>
+                                      controller.isAgreementChecked.value =
+                                          !controller.isAgreementChecked.value,
+                                  child: Container(
+                                    width: 16.w,
+                                    height: 16.w,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
                                         color:
                                             controller.isAgreementChecked.value
-                                                ? theme.primaryColor
-                                                : Colors.transparent,
+                                            ? theme.primaryColor
+                                            : theme.hintColor.withValues(
+                                                alpha: 0.3,
+                                              ),
+                                        width: 1.5,
                                       ),
-                                      child: controller.isAgreementChecked.value
-                                          ? Icon(
-                                              CupertinoIcons.checkmark,
-                                              size: 12.w,
-                                              color: Colors.white,
-                                            )
-                                          : null,
+                                      borderRadius: BorderRadius.circular(3.w),
+                                      color: controller.isAgreementChecked.value
+                                          ? theme.primaryColor
+                                          : Colors.transparent,
                                     ),
-                                  )),
+                                    child: controller.isAgreementChecked.value
+                                        ? Icon(
+                                            CupertinoIcons.checkmark,
+                                            size: 12.w,
+                                            color: Colors.white,
+                                          )
+                                        : null,
+                                  ),
+                                ),
+                              ),
                               4.hGap,
                               Flexible(
                                 child: Text.rich(
@@ -444,10 +453,10 @@ class LoginPage extends GetView<LoginController> {
                                         ),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () => showAgreementDialog(
-                                                context,
-                                                AppConst.login.serviceAgreement,
-                                                AppConst.terms,
-                                              ),
+                                            context,
+                                            AppConst.login.serviceAgreement,
+                                            AppConst.terms,
+                                          ),
                                       ),
                                       TextSpan(text: ' ${AppConst.login.and} '),
                                       TextSpan(
@@ -458,10 +467,10 @@ class LoginPage extends GetView<LoginController> {
                                         ),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () => showAgreementDialog(
-                                                context,
-                                                AppConst.login.privacyPolicy,
-                                                AppConst.privacy,
-                                              ),
+                                            context,
+                                            AppConst.login.privacyPolicy,
+                                            AppConst.privacy,
+                                          ),
                                       ),
                                     ],
                                   ),

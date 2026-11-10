@@ -39,8 +39,9 @@ class _TopicTabViewState extends State<TopicTabView>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final savedSimplified =
-        StorageManager.getBool(AppConst.identifier.simplified);
+    final savedSimplified = StorageManager.getBool(
+      AppConst.identifier.simplified,
+    );
     return Obx(() {
       final content = DisSmartRefresher(
         controller: controller.refreshController,
@@ -53,40 +54,38 @@ class _TopicTabViewState extends State<TopicTabView>
           slivers: [
             SliverPadding(
               padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).padding.bottom),
+                bottom: MediaQuery.of(context).padding.bottom,
+              ),
               sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    final topic = controller.topics[index];
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  final topic = controller.topics[index];
 
-                    if (savedSimplified == null || savedSimplified == false) {
-                      return TopicItem(
-                        topic: topic,
-                        avatarUrl: controller.getLatestPosterAvatar(topic),
-                        nickName: controller.getNickName(topic),
-                        username: controller.getUserName(topic),
-                        avatarUrls: controller.getAvatarUrls(topic),
-                        avatarActions: AvatarActions.openCard,
-                        onTap: () {
-                          controller.toTopicDetail(topic.id);
-                        },
-                        onDoNotDisturb: (topic) {
-                          controller.doNotDisturb(topic.id);
-                        },
-                      );
-                    }
-
-                    return SimplifiedItem(
+                  if (savedSimplified == null || savedSimplified == false) {
+                    return TopicItem(
                       topic: topic,
                       avatarUrl: controller.getLatestPosterAvatar(topic),
-                      username: controller.getUserName(topic),
                       nickName: controller.getNickName(topic),
+                      username: controller.getUserName(topic),
+                      avatarUrls: controller.getAvatarUrls(topic),
                       avatarActions: AvatarActions.openCard,
-                      toPersonalPage: true,
+                      onTap: () {
+                        controller.toTopicDetail(topic.id);
+                      },
+                      onDoNotDisturb: (topic) {
+                        controller.doNotDisturb(topic.id);
+                      },
                     );
-                  },
-                  childCount: controller.topics.length,
-                ),
+                  }
+
+                  return SimplifiedItem(
+                    topic: topic,
+                    avatarUrl: controller.getLatestPosterAvatar(topic),
+                    username: controller.getUserName(topic),
+                    nickName: controller.getNickName(topic),
+                    avatarActions: AvatarActions.openCard,
+                    toPersonalPage: true,
+                  );
+                }, childCount: controller.topics.length),
               ),
             ),
           ],

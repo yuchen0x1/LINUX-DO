@@ -36,10 +36,12 @@ class FollowPage extends GetView<FollowController> {
               initialIndex: currentIndex,
               containerColor: Theme.of(context).cardColor,
               slidersGradients: [
-                LinearGradient(colors: [
-                  Theme.of(context).primaryColor,
-                  Theme.of(context).primaryColor.withValues(alpha: 0.6)
-                ])
+                LinearGradient(
+                  colors: [
+                    Theme.of(context).primaryColor,
+                    Theme.of(context).primaryColor.withValues(alpha: 0.6),
+                  ],
+                ),
               ],
               onSelect: (index) => controller.switchTab(index),
               children: [
@@ -77,16 +79,18 @@ class FollowPage extends GetView<FollowController> {
 
   // 构建标签文本
   Widget _buildTabText(BuildContext context, String text, int index) {
-    return Obx(() => Text(
-          text,
-          style: TextStyle(
-            fontSize: 13.sp,
-            color: controller.selectedIndex.value == index
-                ? Colors.white
-                : Theme.of(context).primaryColor,
-            fontWeight: FontWeight.w600,
-          ),
-        ));
+    return Obx(
+      () => Text(
+        text,
+        style: TextStyle(
+          fontSize: 13.sp,
+          color: controller.selectedIndex.value == index
+              ? Colors.white
+              : Theme.of(context).primaryColor,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
   }
 
   // 构建用户帖子页面
@@ -145,8 +149,9 @@ class FollowPage extends GetView<FollowController> {
     final color = c != null
         ? Color(int.parse(c)).withValues(alpha: 0.6)
         : Theme.of(context).primaryColor.withValues(alpha: 0.6);
-    final textColor =
-        tc != null ? Color(int.parse(tc)) : Theme.of(context).primaryColor;
+    final textColor = tc != null
+        ? Color(int.parse(tc))
+        : Theme.of(context).primaryColor;
 
     return GestureDetector(
       onTap: () {
@@ -178,8 +183,10 @@ class FollowPage extends GetView<FollowController> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 16.w,
+                  vertical: 8.w,
+                ),
                 leading: AvatarWidget(
                   avatarUrl: avatarUrl,
                   username: username,
@@ -199,10 +206,9 @@ class FollowPage extends GetView<FollowController> {
                               fontSize: 15.sp,
                               color: post.isWebMaster()
                                   ? Theme.of(context).primaryColor
-                                  : Theme.of(context)
-                                      .textTheme
-                                      .titleMedium
-                                      ?.color,
+                                  : Theme.of(
+                                      context,
+                                    ).textTheme.titleMedium?.color,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFontFamily.dinPro,
                             ),
@@ -214,8 +220,9 @@ class FollowPage extends GetView<FollowController> {
                             style: TextStyle(
                               fontSize: 12.sp,
                               fontFamily: AppFontFamily.dinPro,
-                              color:
-                                  Theme.of(context).textTheme.bodySmall?.color,
+                              color: Theme.of(
+                                context,
+                              ).textTheme.bodySmall?.color,
                             ),
                           ),
                         ],
@@ -251,10 +258,7 @@ class FollowPage extends GetView<FollowController> {
                       8.vGap,
                       // 帖子内容
                       if (post.excerpt.isNotEmpty)
-                        HtmlWidget(
-                          html: post.excerpt,
-                          fontSize: 11,
-                        )
+                        HtmlWidget(html: post.excerpt, fontSize: 11),
                     ],
                   ),
                 ),
@@ -271,11 +275,13 @@ class FollowPage extends GetView<FollowController> {
                     if (category != null)
                       Container(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 8.w, vertical: 4.w),
+                          horizontal: 8.w,
+                          vertical: 4.w,
+                        ),
                         decoration: BoxDecoration(
-                          color: Theme.of(context)
-                              .primaryColor
-                              .withValues(alpha: 0.1),
+                          color: Theme.of(
+                            context,
+                          ).primaryColor.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(4.w),
                         ),
                         child: Row(
@@ -290,7 +296,7 @@ class FollowPage extends GetView<FollowController> {
                                   fit: BoxFit.contain,
                                 ),
                               ),
-                              10.hGap
+                              10.hGap,
                             ],
                             Text(
                               category.name,
@@ -309,28 +315,34 @@ class FollowPage extends GetView<FollowController> {
                     if (slug != null)
                       Container(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 6.w, vertical: 3.h),
+                          horizontal: 6.w,
+                          vertical: 3.h,
+                        ),
                         decoration: BoxDecoration(
                           color: color,
                           borderRadius: BorderRadius.circular(3).w,
                         ),
-                        child: Text(slug,
-                            style: TextStyle(
-                              fontSize: 8.w,
-                              fontFamily: AppFontFamily.dinPro,
-                              color: textColor,
-                            )),
+                        child: Text(
+                          slug,
+                          style: TextStyle(
+                            fontSize: 8.w,
+                            fontFamily: AppFontFamily.dinPro,
+                            color: textColor,
+                          ),
+                        ),
                       ),
 
                     4.hGap,
 
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.w),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 6.w,
+                        vertical: 3.w,
+                      ),
                       decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .primaryColor
-                            .withValues(alpha: 0.1),
+                        color: Theme.of(
+                          context,
+                        ).primaryColor.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(3.w),
                       ),
                       child: Row(
@@ -444,8 +456,11 @@ class FollowPage extends GetView<FollowController> {
   }
 
   // 构建关注/关注者用户卡片
-  Widget _buildFollowUserCard(BuildContext context, Follow user,
-      {required bool isFollowing}) {
+  Widget _buildFollowUserCard(
+    BuildContext context,
+    Follow user, {
+    required bool isFollowing,
+  }) {
     final avatarUrl = user.avatarUrl;
     final username = user.username ?? '用户';
     final displayName = user.name == null || user.name!.isEmpty
@@ -455,19 +470,14 @@ class FollowPage extends GetView<FollowController> {
     return Card(
       margin: const EdgeInsets.only(bottom: 8).w,
       elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4).w,
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4).w),
       clipBehavior: Clip.antiAlias,
       child: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Theme.of(context).cardColor,
-              Theme.of(context).cardColor,
-            ],
+            colors: [Theme.of(context).cardColor, Theme.of(context).cardColor],
           ),
           borderRadius: BorderRadius.circular(4).w,
           border: Border.all(
@@ -520,10 +530,9 @@ class FollowPage extends GetView<FollowController> {
                                     style: TextStyle(
                                       fontSize: 12.sp,
                                       fontFamily: AppFontFamily.dinPro,
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.color,
+                                      color: Theme.of(
+                                        context,
+                                      ).textTheme.bodySmall?.color,
                                     ),
                                   ),
                                 ],

@@ -51,14 +51,18 @@ abstract class ApiService {
 
   /// 获取首页话题
   @GET("{path}.json")
-  Future<TopicListResponse> getTopics(@Path('path') String path,
-      [@Query("page") int? page = 0]);
+  Future<TopicListResponse> getTopics(
+    @Path('path') String path, [
+    @Query("page") int? page = 0,
+  ]);
 
   /// 设置某个话题免打扰
   @POST("t/{id}/notifications")
   @MultiPart()
-  Future<dynamic> setTopicMute(@Path("id") String id,
-      @Part(name: "notification_level") int notificationLevel);
+  Future<dynamic> setTopicMute(
+    @Path("id") String id,
+    @Part(name: "notification_level") int notificationLevel,
+  );
 
   /// 获取帖子详情 - 首次加载和分页
   @GET("t/{id}{page}.json")
@@ -95,22 +99,23 @@ abstract class ApiService {
   @POST("topics/timings")
   @MultiPart()
   Future<void> updateTopicTiming(
-      @Part(name: "topic_id") String topicId,
-      @Part(name: "topic_time") String topicTime,
-      @Part(name: "timings") Map<String, String> timingsMap,
-      {@Header("discourse-background") String background = "true",
-      @Header("discourse-logged-in") String loggedIn = "true",
-      @Header("discourse-present") String present = "true",
-      @Header("x-silence-logger") String silence = "true",
-      @Header("Accept") String accept = "application/json, text/plain, */*",
-      @Header("Accept-Language")
-      String acceptLanguage = "zh-CN,zh;q=0.9,en;q=0.8",
-      @Header("X-Requested-With") String requestedWith = "XMLHttpRequest",
-      @Header("sec-ch-ua")
-      String secChUa =
-          "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\"",
-      @Header("sec-ch-ua-mobile") String secChUaMobile = "?0",
-      @Header("sec-ch-ua-platform") String secChUaPlatform = "\"macOS\""});
+    @Part(name: "topic_id") String topicId,
+    @Part(name: "topic_time") String topicTime,
+    @Part(name: "timings") Map<String, String> timingsMap, {
+    @Header("discourse-background") String background = "true",
+    @Header("discourse-logged-in") String loggedIn = "true",
+    @Header("discourse-present") String present = "true",
+    @Header("x-silence-logger") String silence = "true",
+    @Header("Accept") String accept = "application/json, text/plain, */*",
+    @Header("Accept-Language")
+    String acceptLanguage = "zh-CN,zh;q=0.9,en;q=0.8",
+    @Header("X-Requested-With") String requestedWith = "XMLHttpRequest",
+    @Header("sec-ch-ua")
+    String secChUa =
+        "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\"",
+    @Header("sec-ch-ua-mobile") String secChUaMobile = "?0",
+    @Header("sec-ch-ua-platform") String secChUaPlatform = "\"macOS\"",
+  });
 
   /// 用户信息
   @GET('u/{current}.json')
@@ -119,7 +124,9 @@ abstract class ApiService {
   /// 提交更新用户信息
   @PUT('u/{current}.json')
   Future<SuccessResponse<CurrentUser>> updateUser(
-      @Path("current") String current, @Body() UserRequest userRequest);
+    @Path("current") String current,
+    @Body() UserRequest userRequest,
+  );
 
   /// 更新头像
   @PUT('u/{current}/preferences/avatar/pick')
@@ -141,19 +148,22 @@ abstract class ApiService {
   //关联话题
   @GET('u/{username}/feature-topic')
   Future<SuccessResponse<dynamic>> relatedTopics(
-      @Path('username') String username,
-      {@Query('topic_id') int? topicId});
+    @Path('username') String username, {
+    @Query('topic_id') int? topicId,
+  });
 
   /// 清除关联话题
   @PUT('u/{username}/clear-featured-topic')
   Future<SuccessResponse<dynamic>> clearRelatedTopics(
-      @Path('username') String username);
+    @Path('username') String username,
+  );
 
   /// 提交更新用户资料
   @PUT('u/{current}.json')
   Future<SuccessResponse<CurrentUser>> updateUserPreferences(
-      @Path('current') String current,
-      @Body() UserPreferencesRequest userPreferencesRequest);
+    @Path('current') String current,
+    @Body() UserPreferencesRequest userPreferencesRequest,
+  );
 
   /// 查询用户卡片数据
   @GET('u/{username}/card.json')
@@ -164,18 +174,22 @@ abstract class ApiService {
 
   /// 操作用户认可
   @PUT('category-experts/endorse/{username}.json')
-  Future<dynamic> endorseUserCategory(@Path('username') String username,
-      @Field('categoryIds') List<int> categoryIds);
+  Future<dynamic> endorseUserCategory(
+    @Path('username') String username,
+    @Field('categoryIds') List<int> categoryIds,
+  );
 
   /// 关注用户
   @PUT('follow/{username}.json')
   Future<SuccessResponse<dynamic>> followUser(
-      @Path('username') String username);
+    @Path('username') String username,
+  );
 
   /// 取消关注用户
   @DELETE('follow/{username}.json')
   Future<SuccessResponse<dynamic>> unfollowUser(
-      @Path('username') String username);
+    @Path('username') String username,
+  );
 
   /// 查询用户分类信息
   @GET('category-experts/endorsable-categories/{username}.json')
@@ -222,9 +236,7 @@ abstract class ApiService {
 
   /// 获取回复草稿
   @GET('drafts/topic_{topic_id}.json')
-  Future<void> getTopicDraft(
-    @Path('topic_id') String topicId,
-  );
+  Future<void> getTopicDraft(@Path('topic_id') String topicId);
 
   /// 获取编辑器信息
   @GET('composer_messages')
@@ -254,12 +266,13 @@ abstract class ApiService {
   @POST('posts.json')
   @FormUrlEncoded()
   Future<PostResponse> replyPost(
-      @Field('topic_id') String topicId,
-      @Field('raw') String content,
-      @Field('nested_post') bool nestedPost,
-      @Field('archetype') String archetype,
-      @Field('category') String category,
-      {@Field('reply_to_post_number') int? replyToPostNumber});
+    @Field('topic_id') String topicId,
+    @Field('raw') String content,
+    @Field('nested_post') bool nestedPost,
+    @Field('archetype') String archetype,
+    @Field('category') String category, {
+    @Field('reply_to_post_number') int? replyToPostNumber,
+  });
 
   /// 点赞帖子
   @PUT('discourse-reactions/posts/{post_id}/custom-reactions/heart/toggle.json')
@@ -267,8 +280,10 @@ abstract class ApiService {
 
   /// 删除帖子
   @DELETE('posts/{post_id}')
-  Future<void> deletePost(@Path('post_id') String postId,
-      {@Query('context') String? context});
+  Future<void> deletePost(
+    @Path('post_id') String postId, {
+    @Query('context') String? context,
+  });
 
   /// 获取删除的帖子
   @GET('posts/{post_id}')
@@ -383,8 +398,9 @@ abstract class ApiService {
   /// 更新自定义状态
   @PUT('user-status.json')
   Future<SuccessResponse<dynamic>> updateUserStatus(
-      @Field('description') String description,
-      {@Field('emoji') String emoji = 'speech_balloon'});
+    @Field('description') String description, {
+    @Field('emoji') String emoji = 'speech_balloon',
+  });
 
   /// 删除自定义状态
   @DELETE('user-status.json')
@@ -480,7 +496,9 @@ abstract class ApiService {
   /// 撤销认证令牌
   @POST('u/{username}/preferences/revoke-auth-token')
   Future<SuccessResponse<dynamic>> revokeAuthToken(
-      @Path('username') String username, @Field('token_id') int id);
+    @Path('username') String username,
+    @Field('token_id') int id,
+  );
 
   /// 撤销所有认证令牌
   @DELETE('user-auth-tokens')
@@ -494,13 +512,16 @@ abstract class ApiService {
 
   /// 请求数据导出
   @POST('export_csv/export_entity.json')
-  Future<SuccessResponse<dynamic>> requestDataExport(
-      {@Field('entity') String entity = 'user_archive'});
+  Future<SuccessResponse<dynamic>> requestDataExport({
+    @Field('entity') String entity = 'user_archive',
+  });
 
   /// 更新政策接受状态
   @PUT('policy/{action}')
   Future<SuccessResponse<dynamic>> updatePolicyAccepted(
-      @Path('action') String action, @Field('post_id') String postId);
+    @Path('action') String action,
+    @Field('post_id') String postId,
+  );
 
   /// 获取用户关注者列表
   @GET('u/{username}/follow/following')
@@ -528,25 +549,32 @@ abstract class ApiService {
   /// 删除话题
   @DELETE('t/{topic_id}.json')
   Future<SuccessResponse<dynamic>> deleteTopic(
-      @Path('topic_id') String topicId);
+    @Path('topic_id') String topicId,
+  );
 
   /// 查询回复信息
   @GET('posts/{id}/replies')
-  Future<PostRepliesResponse> getPostReplies(@Path('id') String id,
-      {@Query('after') int? after = 1});
+  Future<PostRepliesResponse> getPostReplies(
+    @Path('id') String id, {
+    @Query('after') int? after = 1,
+  });
 
   /// 查询帖子链接行
   @GET('posts/by_number/{topic_id}/{post_number}')
   Future<Post> getPostLinkRow(
-      @Path('topic_id') String topicId, @Path('post_number') String postNumber);
+    @Path('topic_id') String topicId,
+    @Path('post_number') String postNumber,
+  );
 
   /// 提交投票
   @PUT('polls/vote')
-  Future<PollVote> submitVote(@Field('poll_name') String pollName,
-      @Field('options[]') List<String> options,
-      {@Field('post_id') int? postId,
-      @Header("content-type")
-      String contentType = "application/x-www-form-urlencoded"});
+  Future<PollVote> submitVote(
+    @Field('poll_name') String pollName,
+    @Field('options[]') List<String> options, {
+    @Field('post_id') int? postId,
+    @Header("content-type")
+    String contentType = "application/x-www-form-urlencoded",
+  });
 
   /// 获取投票者列表
   @GET('polls/voters.json')

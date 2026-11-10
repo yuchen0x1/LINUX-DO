@@ -27,9 +27,7 @@ class TopicTabController extends BaseController
   final isRefreshing = false.obs;
   final isLoadingMore = false.obs;
 
-  TopicTabController({
-    required this.path,
-  }) {
+  TopicTabController({required this.path}) {
     refreshController = RefreshController();
   }
 
@@ -130,8 +128,9 @@ class TopicTabController extends BaseController
 
       // 去重：过滤掉已经存在的话题
       final existingIds = topics.map((topic) => topic.id).toSet();
-      final uniqueNewTopics =
-          newTopics.where((topic) => !existingIds.contains(topic.id)).toList();
+      final uniqueNewTopics = newTopics
+          .where((topic) => !existingIds.contains(topic.id))
+          .toList();
 
       // 只添加不重复的话题
       topics.addAll(uniqueNewTopics);
@@ -196,22 +195,25 @@ class TopicTabController extends BaseController
 
       if (isSuccess) {
         showSnackbar(
-            title: AppConst.commonTip,
-            message: AppConst.posts.disturbSuccess,
-            type: SnackbarType.success);
+          title: AppConst.commonTip,
+          message: AppConst.posts.disturbSuccess,
+          type: SnackbarType.success,
+        );
       } else {
         l.e('设置免打扰失败: 响应数据异常 $response');
         showSnackbar(
-            title: AppConst.commonTip,
-            message: AppConst.posts.error,
-            type: SnackbarType.error);
+          title: AppConst.commonTip,
+          message: AppConst.posts.error,
+          type: SnackbarType.error,
+        );
       }
     } catch (e, stackTrace) {
       l.e('设置免打扰失败: $e\n$stackTrace');
       showSnackbar(
-          title: AppConst.commonTip,
-          message: AppConst.posts.error,
-          type: SnackbarType.error);
+        title: AppConst.commonTip,
+        message: AppConst.posts.error,
+        type: SnackbarType.error,
+      );
     }
   }
 

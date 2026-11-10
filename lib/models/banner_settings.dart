@@ -8,11 +8,7 @@ class BannerSettings {
   final String? localPath; // 本地图片路径
   final bool useDefault; // 是否使用默认图片
 
-  BannerSettings({
-    this.networkUrl,
-    this.localPath,
-    this.useDefault = true,
-  });
+  BannerSettings({this.networkUrl, this.localPath, this.useDefault = true});
 
   factory BannerSettings.fromJson(Map<String, dynamic> json) =>
       _$BannerSettingsFromJson(json);

@@ -6,10 +6,7 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
   final Widget child;
   final double height;
 
-  StickyTabBarDelegate({
-    required this.child,
-    required this.height,
-  });
+  StickyTabBarDelegate({required this.child, required this.height});
 
   @override
   double get minExtent => height;
@@ -22,10 +19,10 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-      color: AppColors.transparent,
-      child: child,
-    );
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return Container(color: AppColors.transparent, child: child);
   }
 }

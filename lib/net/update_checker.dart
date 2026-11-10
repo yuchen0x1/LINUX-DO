@@ -146,10 +146,7 @@ class UpdateChecker {
 
   static List<int> _parse(String v) {
     final core = v.split('+').first.split('-').first;
-    return core
-        .split('.')
-        .map((e) => int.tryParse(e.trim()) ?? 0)
-        .toList();
+    return core.split('.').map((e) => int.tryParse(e.trim()) ?? 0).toList();
   }
 
   /// 下载链接是否来自可信域名

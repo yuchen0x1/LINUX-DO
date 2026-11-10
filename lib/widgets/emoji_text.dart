@@ -28,7 +28,10 @@ class EmojiText extends StatelessWidget {
       text: TextSpan(
         style: style ?? defaultTextStyle,
         children: parseTextWithEmojis(
-            text, style?.fontSize ?? defaultTextStyle.fontSize, context),
+          text,
+          style?.fontSize ?? defaultTextStyle.fontSize,
+          context,
+        ),
       ),
       textAlign: textAlign ?? TextAlign.start,
       textDirection: textDirection,

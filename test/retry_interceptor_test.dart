@@ -92,20 +92,20 @@ void main() {
         (_) => _json(429, headers: {'retry-after': '0'}),
         (_) => _json(200),
       ]);
-      final response = await _dioWith(adapter)
-          .post<dynamic>('/posts.json', data: {'raw': 'hi'});
+      final response = await _dioWith(
+        adapter,
+      ).post<dynamic>('/posts.json', data: {'raw': 'hi'});
 
       expect(response.statusCode, 200);
       expect(adapter.calls, 2);
     });
 
     test('POST 收到网关 HTML 错误页时不重试，避免重复发帖', () async {
-      final adapter = _RecordingAdapter([
-        (_) => _html(200),
-      ]);
+      final adapter = _RecordingAdapter([(_) => _html(200)]);
 
-      final response = await _dioWith(adapter)
-          .post<dynamic>('/posts.json', data: {'raw': 'hi'});
+      final response = await _dioWith(
+        adapter,
+      ).post<dynamic>('/posts.json', data: {'raw': 'hi'});
 
       // 放行给业务层处理，不擅自重发
       expect(response.statusCode, 200);
@@ -128,8 +128,9 @@ void main() {
         },
       ]);
 
-      final response = await _dioWith(adapter)
-          .post<dynamic>('/posts.json', data: {'raw': 'hi'});
+      final response = await _dioWith(
+        adapter,
+      ).post<dynamic>('/posts.json', data: {'raw': 'hi'});
 
       expect(response.statusCode, 200);
       expect(adapter.calls, 2);

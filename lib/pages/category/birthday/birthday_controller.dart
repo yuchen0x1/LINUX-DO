@@ -33,10 +33,7 @@ class BirthdayController extends BaseController
       Get.put(BrithdayTabController(filter), tag: filter.value);
     }
 
-    tabController = TabController(
-      length: Filter.values.length,
-      vsync: this,
-    );
+    tabController = TabController(length: Filter.values.length, vsync: this);
 
     // 监听tab切换
     tabController.addListener(() {

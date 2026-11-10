@@ -65,11 +65,9 @@ class ConnectController extends BaseController {
     try {
       await CookieManager.instance().deleteAllCookies();
 
-      final mainCookies = await NetClient.getInstance()
-          .cookieJar
+      final mainCookies = await NetClient.getInstance().cookieJar
           .loadForRequest(Uri.parse('https://linux.do/'));
-      final connectCookies = await NetClient.getInstance()
-          .cookieJar
+      final connectCookies = await NetClient.getInstance().cookieJar
           .loadForRequest(Uri.parse('https://connect.linux.do/'));
 
       final allCookies = [...mainCookies, ...connectCookies];
@@ -101,8 +99,9 @@ class ConnectController extends BaseController {
 
       // 解析用户名和级别
       final titleText = document.querySelector('h1')?.text ?? '';
-      final userMatch =
-          RegExp(r'你好，(.*?) \((.*?)\) (\d+)级用户').firstMatch(titleText);
+      final userMatch = RegExp(
+        r'你好，(.*?) \((.*?)\) (\d+)级用户',
+      ).firstMatch(titleText);
       final username = userMatch?.group(1) ?? '';
       final userLevel = userMatch?.group(3) ?? '';
 
@@ -130,7 +129,7 @@ class ConnectController extends BaseController {
 
       final meetsTrustRequirements =
           document.querySelector('p.text-green-500')?.text.contains('符合信任级别') ??
-              false;
+          false;
 
       // 更新数据
       connectData.value = ConnectData(

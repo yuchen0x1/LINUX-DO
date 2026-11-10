@@ -151,22 +151,25 @@ class MyBookmarksController extends BaseController
 
       if (isSuccess) {
         showSnackbar(
-            title: AppConst.commonTip,
-            message: AppConst.posts.disturbSuccess,
-            type: SnackbarType.success);
+          title: AppConst.commonTip,
+          message: AppConst.posts.disturbSuccess,
+          type: SnackbarType.success,
+        );
       } else {
         l.e('设置免打扰失败: 响应数据异常 $response');
         showSnackbar(
-            title: AppConst.commonTip,
-            message: AppConst.posts.error,
-            type: SnackbarType.error);
+          title: AppConst.commonTip,
+          message: AppConst.posts.error,
+          type: SnackbarType.error,
+        );
       }
     } catch (e, stackTrace) {
       l.e('设置免打扰失败: $e\n$stackTrace');
       showSnackbar(
-          title: AppConst.commonTip,
-          message: AppConst.posts.error,
-          type: SnackbarType.error);
+        title: AppConst.commonTip,
+        message: AppConst.posts.error,
+        type: SnackbarType.error,
+      );
     }
   }
 

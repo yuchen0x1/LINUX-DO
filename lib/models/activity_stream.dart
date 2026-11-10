@@ -66,10 +66,7 @@ class ActivityTopic {
   final int id;
   final String title;
 
-  ActivityTopic({
-    required this.id,
-    required this.title,
-  });
+  ActivityTopic({required this.id, required this.title});
 
   factory ActivityTopic.fromJson(Map<String, dynamic> json) =>
       _$ActivityTopicFromJson(json);

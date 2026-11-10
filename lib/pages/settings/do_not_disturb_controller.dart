@@ -10,14 +10,7 @@ class DoNotDisturbController extends BaseController {
   final selectedUser = ''.obs;
 
   // 持续时间选项
-  final durations = [
-    '30分钟',
-    '1小时',
-    '4小时',
-    '8小时',
-    '24小时',
-    '永久',
-  ];
+  final durations = ['30分钟', '1小时', '4小时', '8小时', '24小时', '永久'];
 
   // 选择的持续时间
   final selectedDuration = ''.obs;

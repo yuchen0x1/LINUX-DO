@@ -137,8 +137,9 @@ class NetworkSettingsPage extends GetView<NetworkSettingsController> {
                         ? SizedBox(
                             width: 14.w,
                             height: 14.w,
-                            child:
-                                const CircularProgressIndicator(strokeWidth: 2),
+                            child: const CircularProgressIndicator(
+                              strokeWidth: 2,
+                            ),
                           )
                         : const Icon(CupertinoIcons.speedometer, size: 16),
                     label: Text(controller.isTesting.value ? '测速中...' : '测试延迟'),
@@ -190,7 +191,9 @@ class NetworkSettingsPage extends GetView<NetworkSettingsController> {
                           trailing: server.pingMs != null
                               ? Container(
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 8.w, vertical: 4.w),
+                                    horizontal: 8.w,
+                                    vertical: 4.w,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: (server.pingMs! < 0)
                                         ? Colors.red.withValues(alpha: 0.1)

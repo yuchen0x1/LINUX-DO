@@ -14,10 +14,7 @@ class BirthdayPage extends GetView<BirthdayController> {
       appBar: AppBar(
         title: Text(
           AppConst.birthday.title,
-          style: TextStyle(
-            fontSize: 16.w,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 16.w, fontWeight: FontWeight.bold),
         ),
         bottom: TabBar(
           controller: controller.tabController,

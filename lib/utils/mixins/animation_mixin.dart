@@ -7,17 +7,15 @@ mixin AnimationMixin {
     required TickerProvider vsync,
     Duration duration = const Duration(seconds: 2),
   }) {
-    return AnimationController(
-      vsync: vsync,
-      duration: duration,
-    )..repeat();
+    return AnimationController(vsync: vsync, duration: duration)..repeat();
   }
 
   // 创建旋转动画
   Animation<double> createRotationAnimation(AnimationController controller) {
-    return Tween<double>(begin: 0, end: 2 * math.pi).animate(
-      CurvedAnimation(parent: controller, curve: Curves.linear),
-    );
+    return Tween<double>(
+      begin: 0,
+      end: 2 * math.pi,
+    ).animate(CurvedAnimation(parent: controller, curve: Curves.linear));
   }
 
   // 创建缩放动画
@@ -26,9 +24,10 @@ mixin AnimationMixin {
     double begin = 0.8,
     double end = 1.2,
   }) {
-    return Tween<double>(begin: begin, end: end).animate(
-      CurvedAnimation(parent: controller, curve: Curves.easeInOut),
-    );
+    return Tween<double>(
+      begin: begin,
+      end: end,
+    ).animate(CurvedAnimation(parent: controller, curve: Curves.easeInOut));
   }
 
   // 创建弹跳动画
@@ -37,14 +36,18 @@ mixin AnimationMixin {
     double begin = 0,
     double end = -6,
   }) {
-    return Tween<double>(begin: begin, end: end).animate(
-      CurvedAnimation(parent: controller, curve: Curves.easeInOut),
-    );
+    return Tween<double>(
+      begin: begin,
+      end: end,
+    ).animate(CurvedAnimation(parent: controller, curve: Curves.easeInOut));
   }
 
   // 计算错峰动画的偏移
-  double calculatePhaseOffset(double controllerValue, int index,
-      {double phaseStep = 0.15}) {
+  double calculatePhaseOffset(
+    double controllerValue,
+    int index, {
+    double phaseStep = 0.15,
+  }) {
     return (controllerValue + index * phaseStep) % 1.0;
   }
 

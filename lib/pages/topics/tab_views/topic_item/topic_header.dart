@@ -24,8 +24,8 @@ class TopicHeader extends StatelessWidget {
     final fontSize = density == ListDensity.compact
         ? 12.0
         : density == ListDensity.normal
-            ? 14.0
-            : 16.0;
+        ? 14.0
+        : 16.0;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -41,10 +41,7 @@ class TopicHeader extends StatelessWidget {
             ),
             child: Text(
               '置顶',
-              style: TextStyle(
-                fontSize: 10.w,
-                color: AppColors.white,
-              ),
+              style: TextStyle(fontSize: 10.w, color: AppColors.white),
             ),
           ),
 

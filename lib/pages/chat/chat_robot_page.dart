@@ -35,7 +35,7 @@ class ChatRobotPage extends GetView<ChatRobotController> with Concatenated {
     'anthropic_claude-3.5',
     'deepseek_deepseek-r1',
     'deepseek_deepseek-ch',
-    'google_gemini-2.0-fl'
+    'google_gemini-2.0-fl',
   ];
 
   @override
@@ -70,60 +70,63 @@ class ChatRobotPage extends GetView<ChatRobotController> with Concatenated {
                   width: 1.w,
                 ),
               ),
-              child: Obx(() => DropdownButton<String>(
-                    value: controller.targetRecipients.value,
-                    icon: Icon(
-                      Icons.arrow_drop_down,
-                      color: Theme.of(context).primaryColor,
-                      size: 20.w,
-                    ),
-                    underline: const SizedBox(),
-                    style: TextStyle(
-                      fontSize: 12.w,
-                      color: Theme.of(context).textTheme.bodyMedium?.color,
-                      fontFamily: AppFontFamily.dinPro,
-                    ),
-                    dropdownColor: Theme.of(context).cardColor,
-                    borderRadius: BorderRadius.circular(12).w,
-                    menuMaxHeight: 200.w,
-                    onChanged: (String? newValue) {
-                      if (newValue != null) {
-                        controller.targetRecipients.value = newValue;
-                      }
-                    },
-                    items: modelTypes
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 8).w,
-                          child: Text(
-                            value,
-                            style: TextStyle(
-                              fontSize: 11.w,
-                              fontFamily: AppFontFamily.dinPro,
-                            ),
+              child: Obx(
+                () => DropdownButton<String>(
+                  value: controller.targetRecipients.value,
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    color: Theme.of(context).primaryColor,
+                    size: 20.w,
+                  ),
+                  underline: const SizedBox(),
+                  style: TextStyle(
+                    fontSize: 12.w,
+                    color: Theme.of(context).textTheme.bodyMedium?.color,
+                    fontFamily: AppFontFamily.dinPro,
+                  ),
+                  dropdownColor: Theme.of(context).cardColor,
+                  borderRadius: BorderRadius.circular(12).w,
+                  menuMaxHeight: 200.w,
+                  onChanged: (String? newValue) {
+                    if (newValue != null) {
+                      controller.targetRecipients.value = newValue;
+                    }
+                  },
+                  items: modelTypes.map<DropdownMenuItem<String>>((
+                    String value,
+                  ) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 8).w,
+                        child: Text(
+                          value,
+                          style: TextStyle(
+                            fontSize: 11.w,
+                            fontFamily: AppFontFamily.dinPro,
                           ),
                         ),
-                      );
-                    }).toList(),
-                  )),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
             ),
           ],
         ),
         body: Column(
           children: [
             // 聊天消息区域
-            Expanded(
-              child: Obx(() => _buildMessagesArea(context)),
-            ),
+            Expanded(child: Obx(() => _buildMessagesArea(context))),
 
             // 思考状态指示器
             Obx(() {
               if (controller.isThinking.value) {
                 return Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8).w,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ).w,
                   alignment: Alignment.centerLeft,
                   child: Row(
                     children: [
@@ -212,38 +215,37 @@ class ChatRobotPage extends GetView<ChatRobotController> with Concatenated {
 
   // 构建单个消息项
   Widget _buildMessageItem(
-      BuildContext context, dynamic message, bool isRobot) {
+    BuildContext context,
+    dynamic message,
+    bool isRobot,
+  ) {
     final messageText = message.text as String;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8).w,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment:
-            isRobot ? MainAxisAlignment.start : MainAxisAlignment.end,
+        mainAxisAlignment: isRobot
+            ? MainAxisAlignment.start
+            : MainAxisAlignment.end,
         children: [
           if (isRobot) _buildRobotAvatar(context),
           if (isRobot) 8.hGap,
           Flexible(
             child: Container(
-              constraints: BoxConstraints(
-                maxWidth: 0.75.sw,
-              ),
+              constraints: BoxConstraints(maxWidth: 0.75.sw),
               padding: const EdgeInsets.all(12).w,
               decoration: BoxDecoration(
                 color: isRobot
                     ? Theme.of(context).cardColor
                     : Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.circular(16).w.copyWith(
-                      bottomLeft: isRobot ? const Radius.circular(0) : null,
-                      bottomRight: !isRobot ? const Radius.circular(0) : null,
-                    ),
+                  bottomLeft: isRobot ? const Radius.circular(0) : null,
+                  bottomRight: !isRobot ? const Radius.circular(0) : null,
+                ),
               ),
               child: isRobot
-                  ? HtmlWidget(
-                      html: messageText,
-                      fontSize: 13,
-                    )
+                  ? HtmlWidget(html: messageText, fontSize: 13)
                   : EmojiText(
                       messageText,
                       style: TextStyle(
@@ -266,16 +268,10 @@ class ChatRobotPage extends GetView<ChatRobotController> with Concatenated {
     return Container(
       width: 36.w,
       height: 36.w,
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-      ),
+      decoration: const BoxDecoration(shape: BoxShape.circle),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(19.w),
-        child: Image.asset(
-          AppImages.robot,
-          width: 24.w,
-          height: 24.w,
-        ),
+        child: Image.asset(AppImages.robot, width: 24.w, height: 24.w),
       ),
     );
   }
@@ -320,9 +316,7 @@ class ChatRobotPage extends GetView<ChatRobotController> with Concatenated {
                   decoration: BoxDecoration(
                     color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(24.w),
-                    border: Border.all(
-                      color: Theme.of(context).cardColor,
-                    ),
+                    border: Border.all(color: Theme.of(context).cardColor),
                   ),
                   child: Row(
                     children: [
@@ -353,8 +347,9 @@ class ChatRobotPage extends GetView<ChatRobotController> with Concatenated {
                             maxLines: 1,
                             hintText: '输入问题...',
                             hintStyle: TextStyle(
-                                color: Theme.of(context).hintColor,
-                                fontFamily: AppFontFamily.dinPro),
+                              color: Theme.of(context).hintColor,
+                              fontFamily: AppFontFamily.dinPro,
+                            ),
                             onSubmitted: (text) async {
                               if (text.isNotEmpty) {
                                 await controller.sendMessage(text);
@@ -450,16 +445,13 @@ class ChatRobotPage extends GetView<ChatRobotController> with Concatenated {
                         Theme.of(context).primaryColor.withValues(alpha: 0.7),
                       ],
                     ),
-                    borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(20)),
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
                   ),
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: Colors.white,
-                        size: 20.w,
-                      ),
+                      Icon(Icons.info_outline, color: Colors.white, size: 20.w),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
@@ -498,7 +490,9 @@ class ChatRobotPage extends GetView<ChatRobotController> with Concatenated {
                           type: ButtonType.outline,
                           onPressed: () async {
                             await StorageManager.setData(
-                                AppConst.identifier.chatHintDontShow, true);
+                              AppConst.identifier.chatHintDontShow,
+                              true,
+                            );
                             Get.back(result: false);
                           },
                         ),
@@ -525,8 +519,10 @@ class ChatRobotPage extends GetView<ChatRobotController> with Concatenated {
         const end = Offset.zero;
         const curve = Curves.easeOutQuint;
 
-        var tween =
-            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var tween = Tween(
+          begin: begin,
+          end: end,
+        ).chain(CurveTween(curve: curve));
         var offsetAnimation = animation.drive(tween);
 
         final scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
@@ -542,10 +538,7 @@ class ChatRobotPage extends GetView<ChatRobotController> with Concatenated {
           opacity: fadeAnimation,
           child: ScaleTransition(
             scale: scaleAnimation,
-            child: SlideTransition(
-              position: offsetAnimation,
-              child: child,
-            ),
+            child: SlideTransition(position: offsetAnimation, child: child),
           ),
         );
       },

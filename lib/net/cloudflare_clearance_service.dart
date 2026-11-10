@@ -63,8 +63,9 @@ class CloudflareClearanceService {
       poll = Timer.periodic(const Duration(seconds: 2), (t) async {
         if (harvested) return;
         try {
-          final cookies = await CookieManager.instance()
-              .getCookies(url: WebUri(HttpConfig.baseUrl));
+          final cookies = await CookieManager.instance().getCookies(
+            url: WebUri(HttpConfig.baseUrl),
+          );
           final cf = cookies.where((e) => e.name == 'cf_clearance').toList();
           if (cf.isNotEmpty) {
             harvested = true;
@@ -79,15 +80,19 @@ class CloudflareClearanceService {
             await jar.saveFromResponse(
               uri,
               cf
-                  .map((e) => io.Cookie(e.name, e.value)
-                    ..domain = HttpConfig.domain
-                    ..path = '/'
-                    ..secure = true
-                    ..httpOnly = true)
+                  .map(
+                    (e) => io.Cookie(e.name, e.value)
+                      ..domain = HttpConfig.domain
+                      ..path = '/'
+                      ..secure = true
+                      ..httpOnly = true,
+                  )
                   .toList(),
             );
             await StorageManager.setData(
-                AppConst.identifier.cfClearance, cf.first.value);
+              AppConst.identifier.cfClearance,
+              cf.first.value,
+            );
             finish(completer, true);
           }
         } catch (e) {
@@ -100,8 +105,9 @@ class CloudflareClearanceService {
       Get.dialog(
         Dialog(
           backgroundColor: Colors.white,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
           child: SizedBox(
             width: 320.w,
             height: 430.w,
@@ -120,8 +126,10 @@ class CloudflareClearanceService {
                       Expanded(
                         child: Text(
                           '正在通过 Cloudflare 验证，请稍候…',
-                          style:
-                              TextStyle(fontSize: 13.sp, color: Colors.black87),
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            color: Colors.black87,
+                          ),
                         ),
                       ),
                     ],
@@ -129,8 +137,9 @@ class CloudflareClearanceService {
                 ),
                 Expanded(
                   child: InAppWebView(
-                    initialUrlRequest:
-                        URLRequest(url: WebUri(HttpConfig.baseUrl)),
+                    initialUrlRequest: URLRequest(
+                      url: WebUri(HttpConfig.baseUrl),
+                    ),
                     initialSettings: InAppWebViewSettings(
                       javaScriptEnabled: true,
                       domStorageEnabled: true,
@@ -143,7 +152,8 @@ class CloudflareClearanceService {
                       blockNetworkImage: true,
                     ),
                     onLoadStop: (controller, url) async {
-                      await controller.evaluateJavascript(source: '''
+                      await controller.evaluateJavascript(
+                        source: '''
                         function autoClickTurnstile() {
                           const buttons = document.querySelectorAll('button, input[type=submit], input[type=checkbox]');
                           for (const el of buttons) {
@@ -154,7 +164,8 @@ class CloudflareClearanceService {
                           }
                         }
                         setInterval(autoClickTurnstile, 1500);
-                      ''');
+                      ''',
+                      );
                     },
                   ),
                 ),

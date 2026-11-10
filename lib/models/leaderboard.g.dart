@@ -9,31 +9,29 @@ part of 'leaderboard.dart';
 LeaderboardResponse _$LeaderboardResponseFromJson(Map<String, dynamic> json) =>
     LeaderboardResponse(
       personal: PersonalRank.fromJson(json['personal'] as Map<String, dynamic>),
-      leaderboard:
-          LeaderboardInfo.fromJson(json['leaderboard'] as Map<String, dynamic>),
+      leaderboard: LeaderboardInfo.fromJson(
+        json['leaderboard'] as Map<String, dynamic>,
+      ),
       users: (json['users'] as List<dynamic>)
           .map((e) => LeaderboardUser.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$LeaderboardResponseToJson(
-        LeaderboardResponse instance) =>
-    <String, dynamic>{
-      'personal': instance.personal,
-      'leaderboard': instance.leaderboard,
-      'users': instance.users,
-    };
+  LeaderboardResponse instance,
+) => <String, dynamic>{
+  'personal': instance.personal,
+  'leaderboard': instance.leaderboard,
+  'users': instance.users,
+};
 
 PersonalRank _$PersonalRankFromJson(Map<String, dynamic> json) => PersonalRank(
-      user: LeaderboardUser.fromJson(json['user'] as Map<String, dynamic>),
-      position: (json['position'] as num).toInt(),
-    );
+  user: LeaderboardUser.fromJson(json['user'] as Map<String, dynamic>),
+  position: (json['position'] as num).toInt(),
+);
 
 Map<String, dynamic> _$PersonalRankToJson(PersonalRank instance) =>
-    <String, dynamic>{
-      'user': instance.user,
-      'position': instance.position,
-    };
+    <String, dynamic>{'user': instance.user, 'position': instance.position};
 
 LeaderboardInfo _$LeaderboardInfoFromJson(Map<String, dynamic> json) =>
     LeaderboardInfo(

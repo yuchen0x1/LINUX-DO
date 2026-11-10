@@ -32,7 +32,8 @@ class MessageController extends BaseController with Concatenated {
           // 查找最后发帖用户的头像
           if (message.posters?.isNotEmpty == true) {
             final lastPostUser = users.firstWhereOrNull(
-                (user) => user.id == message.posters?[0].userId);
+              (user) => user.id == message.posters?[0].userId,
+            );
             if (lastPostUser != null) {
               if (lastPostUser.avatarTemplate.startsWith('http://') ||
                   lastPostUser.avatarTemplate.startsWith('https://')) {
@@ -41,7 +42,9 @@ class MessageController extends BaseController with Concatenated {
                 message.avatarUrl =
                     '${HttpConfig.baseUrl}${lastPostUser.avatarTemplate.replaceFirst('{size}', '70')}';
               }
-              l.d('lastPostUserId: ${message.posters?[0].userId}, found user: ${lastPostUser.username}');
+              l.d(
+                'lastPostUserId: ${message.posters?[0].userId}, found user: ${lastPostUser.username}',
+              );
             }
           }
         } catch (e) {

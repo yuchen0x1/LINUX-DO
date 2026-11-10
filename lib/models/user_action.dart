@@ -9,9 +9,7 @@ class UserActionResponse {
   @JsonKey(name: 'user_actions')
   final List<UserAction> userActions;
 
-  UserActionResponse({
-    required this.userActions,
-  });
+  UserActionResponse({required this.userActions});
 
   factory UserActionResponse.fromJson(Map<String, dynamic> json) =>
       _$UserActionResponseFromJson(json);

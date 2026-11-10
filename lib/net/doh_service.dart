@@ -72,23 +72,20 @@ class DohService {
 
   /// 测速所有 DoH 节点
   Future<void> pingAll() async {
-    final dio = Dio(BaseOptions(
-      connectTimeout: const Duration(milliseconds: 3500),
-      receiveTimeout: const Duration(milliseconds: 3500),
-    ));
+    final dio = Dio(
+      BaseOptions(
+        connectTimeout: const Duration(milliseconds: 3500),
+        receiveTimeout: const Duration(milliseconds: 3500),
+      ),
+    );
 
     for (var server in servers) {
       final sw = Stopwatch()..start();
       try {
         final resp = await dio.get(
           server.url,
-          queryParameters: {
-            'name': 'linux.do',
-            'type': 'A',
-          },
-          options: Options(headers: {
-            'Accept': 'application/dns-json',
-          }),
+          queryParameters: {'name': 'linux.do', 'type': 'A'},
+          options: Options(headers: {'Accept': 'application/dns-json'}),
         );
         sw.stop();
         if (resp.statusCode == 200) {
@@ -112,20 +109,17 @@ class DohService {
 
     try {
       final server = currentServer;
-      final dio = Dio(BaseOptions(
-        connectTimeout: const Duration(milliseconds: 4000),
-        receiveTimeout: const Duration(milliseconds: 4000),
-      ));
+      final dio = Dio(
+        BaseOptions(
+          connectTimeout: const Duration(milliseconds: 4000),
+          receiveTimeout: const Duration(milliseconds: 4000),
+        ),
+      );
 
       final resp = await dio.get(
         server.url,
-        queryParameters: {
-          'name': domain,
-          'type': 'A',
-        },
-        options: Options(headers: {
-          'Accept': 'application/dns-json',
-        }),
+        queryParameters: {'name': domain, 'type': 'A'},
+        options: Options(headers: {'Accept': 'application/dns-json'}),
       );
 
       if (resp.statusCode == 200 && resp.data != null) {

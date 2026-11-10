@@ -69,7 +69,7 @@ class CategoryItem extends StatelessWidget {
           level: 3,
           context: context,
         ),
-        8.vGap
+        8.vGap,
       ],
     );
   }

@@ -36,9 +36,11 @@ class MoreMenu extends StatelessWidget with ToastMixin, Concatenated {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(CupertinoIcons.globe,
-                    size: 16.w,
-                    color: Theme.of(context).textTheme.bodyLarge?.color),
+                Icon(
+                  CupertinoIcons.globe,
+                  size: 16.w,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                ),
                 2.hGap,
                 Text(
                   '浏览器打开',
@@ -52,46 +54,52 @@ class MoreMenu extends StatelessWidget with ToastMixin, Concatenated {
           ),
           8.vGap,
           GestureDetector(
-              onTap: () => _showCategoryDialog(context),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(CupertinoIcons.star_circle,
-                      size: 16.w,
-                      color: Theme.of(context).textTheme.bodyLarge?.color),
-                  2.hGap,
-                  Text(
-                    '本地收藏',
-                    style: TextStyle(
-                      fontSize: 14.w,
-                      color: Theme.of(context).textTheme.bodyMedium?.color,
-                    ),
+            onTap: () => _showCategoryDialog(context),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  CupertinoIcons.star_circle,
+                  size: 16.w,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                ),
+                2.hGap,
+                Text(
+                  '本地收藏',
+                  style: TextStyle(
+                    fontSize: 14.w,
+                    color: Theme.of(context).textTheme.bodyMedium?.color,
                   ),
-                ],
-              )),
+                ),
+              ],
+            ),
+          ),
           8.vGap,
           GestureDetector(
-              onTap: () => _showShareDialog(context),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(CupertinoIcons.share,
-                      size: 16.w,
-                      color: Theme.of(context).textTheme.bodyLarge?.color),
-                  2.hGap,
-                  Text(
-                    '分享',
-                    style: TextStyle(
-                      fontSize: 14.w,
-                      color: Theme.of(context).textTheme.bodyMedium?.color,
-                    ),
+            onTap: () => _showShareDialog(context),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  CupertinoIcons.share,
+                  size: 16.w,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                ),
+                2.hGap,
+                Text(
+                  '分享',
+                  style: TextStyle(
+                    fontSize: 14.w,
+                    color: Theme.of(context).textTheme.bodyMedium?.color,
                   ),
-                ],
-              )),
+                ),
+              ],
+            ),
+          ),
           8.vGap,
           Obx(() {
             final isOnlyAuthor = controller.onlyAuthor.value;
@@ -149,9 +157,7 @@ class MoreMenu extends StatelessWidget with ToastMixin, Concatenated {
             ),
           ],
         ),
-        constraints: BoxConstraints(
-          maxHeight: Get.height * 0.7,
-        ),
+        constraints: BoxConstraints(maxHeight: Get.height * 0.7),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -187,15 +193,21 @@ class MoreMenu extends StatelessWidget with ToastMixin, Concatenated {
             Flexible(
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 16).w,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ).w,
                 child: Wrap(
                   spacing: 12.w,
                   runSpacing: 16.w,
                   children: AppConst.bookmarkCategories.map((category) {
                     final hue = (category.hashCode % 12) * 30.0;
-                    final color =
-                        HSLColor.fromAHSL(1.0, hue, 0.6, 0.8).toColor();
+                    final color = HSLColor.fromAHSL(
+                      1.0,
+                      hue,
+                      0.6,
+                      0.8,
+                    ).toColor();
                     final iconData = _getCategoryIcon(category);
 
                     return Material(
@@ -203,8 +215,9 @@ class MoreMenu extends StatelessWidget with ToastMixin, Concatenated {
                       child: InkWell(
                         onTap: () async {
                           Get.back(result: category);
-                          bool isSuccess =
-                              await controller.bookmarkTopic(category);
+                          bool isSuccess = await controller.bookmarkTopic(
+                            category,
+                          );
                           if (isSuccess) {
                             showSuccess('收藏成功');
                           }
@@ -224,11 +237,7 @@ class MoreMenu extends StatelessWidget with ToastMixin, Concatenated {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(
-                                iconData,
-                                size: 28.w,
-                                color: color,
-                              ),
+                              Icon(iconData, size: 28.w, color: color),
                               8.vGap,
                               Text(
                                 category,
@@ -236,10 +245,9 @@ class MoreMenu extends StatelessWidget with ToastMixin, Concatenated {
                                 style: TextStyle(
                                   fontSize: 12.w,
                                   fontWeight: FontWeight.w500,
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge
-                                      ?.color,
+                                  color: Theme.of(
+                                    context,
+                                  ).textTheme.bodyLarge?.color,
                                 ),
                               ),
                             ],
@@ -262,7 +270,7 @@ class MoreMenu extends StatelessWidget with ToastMixin, Concatenated {
                 onPressed: () => Get.back(),
               ),
             ),
-            12.vGap
+            12.vGap,
           ],
         ),
       ),
@@ -363,8 +371,12 @@ class MoreMenu extends StatelessWidget with ToastMixin, Concatenated {
                 child: DisButton(
                   text: '分享',
                   type: ButtonType.primary,
-                  onPressed: () => controller.shareController
-                      .share(title, description, url, box),
+                  onPressed: () => controller.shareController.share(
+                    title,
+                    description,
+                    url,
+                    box,
+                  ),
                 ),
               ),
             ),
@@ -394,7 +406,11 @@ class MoreMenu extends StatelessWidget with ToastMixin, Concatenated {
 
   // 分享卡片
   Widget _buildShareCard(
-      BuildContext context, String title, String description, String url) {
+    BuildContext context,
+    String title,
+    String description,
+    String url,
+  ) {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
@@ -431,8 +447,9 @@ class MoreMenu extends StatelessWidget with ToastMixin, Concatenated {
                   width: 50.w,
                   height: 50.w,
                   decoration: BoxDecoration(
-                    color:
-                        Theme.of(context).primaryColor.withValues(alpha: 0.2),
+                    color: Theme.of(
+                      context,
+                    ).primaryColor.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(8).w,
                   ),
                   child: Center(
@@ -451,11 +468,11 @@ class MoreMenu extends StatelessWidget with ToastMixin, Concatenated {
                       Text(
                         title,
                         style: TextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.bold,
-                            color:
-                                Theme.of(context).textTheme.titleMedium?.color,
-                            fontFamily: AppFontFamily.dinPro),
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).textTheme.titleMedium?.color,
+                          fontFamily: AppFontFamily.dinPro,
+                        ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -463,9 +480,10 @@ class MoreMenu extends StatelessWidget with ToastMixin, Concatenated {
                       Text(
                         description,
                         style: TextStyle(
-                            fontSize: 10.sp,
-                            color: Theme.of(context).textTheme.bodySmall?.color,
-                            fontFamily: AppFontFamily.dinPro),
+                          fontSize: 10.sp,
+                          color: Theme.of(context).textTheme.bodySmall?.color,
+                          fontFamily: AppFontFamily.dinPro,
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),

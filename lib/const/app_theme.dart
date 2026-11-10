@@ -24,9 +24,7 @@ class AppTheme {
       ),
 
       // 图标主题
-      iconTheme: IconThemeData(
-        color: AppColors.light.icon,
-      ),
+      iconTheme: IconThemeData(color: AppColors.light.icon),
 
       // AppBar主题
       appBarTheme: AppBarTheme(
@@ -34,18 +32,14 @@ class AppTheme {
         foregroundColor: AppColors.light.text,
         elevation: 0,
         centerTitle: true,
-        iconTheme: IconThemeData(
-          color: AppColors.light.icon,
-        ),
+        iconTheme: IconThemeData(color: AppColors.light.icon),
       ),
 
       // 卡片主题
       cardTheme: CardThemeData(
         color: AppColors.light.card,
         elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
 
       // 输入框主题
@@ -152,9 +146,7 @@ class AppTheme {
       scaffoldBackgroundColor: Colors.black,
       canvasColor: Colors.black,
       cardColor: Colors.black,
-      appBarTheme: theme.appBarTheme.copyWith(
-        backgroundColor: Colors.black,
-      ),
+      appBarTheme: theme.appBarTheme.copyWith(backgroundColor: Colors.black),
       cardTheme: theme.cardTheme.copyWith(color: Colors.black),
       dialogTheme: theme.dialogTheme.copyWith(backgroundColor: Colors.black),
       bottomNavigationBarTheme: theme.bottomNavigationBarTheme.copyWith(
@@ -219,9 +211,7 @@ class AppTheme {
       ),
 
       // 图标主题
-      iconTheme: IconThemeData(
-        color: AppColors.dark.icon,
-      ),
+      iconTheme: IconThemeData(color: AppColors.dark.icon),
 
       // AppBar主题
       appBarTheme: AppBarTheme(
@@ -229,18 +219,14 @@ class AppTheme {
         foregroundColor: AppColors.dark.text,
         elevation: 0,
         centerTitle: true,
-        iconTheme: IconThemeData(
-          color: AppColors.dark.icon,
-        ),
+        iconTheme: IconThemeData(color: AppColors.dark.icon),
       ),
 
       // 卡片主题
       cardTheme: CardThemeData(
         color: AppColors.dark.card,
         elevation: 0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
 
       // 输入框主题

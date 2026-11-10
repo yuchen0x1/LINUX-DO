@@ -82,8 +82,10 @@ class FileUtil {
 
     int size = 0;
     try {
-      await for (var entity
-          in cacheDir.list(recursive: true, followLinks: false)) {
+      await for (var entity in cacheDir.list(
+        recursive: true,
+        followLinks: false,
+      )) {
         if (entity is File) {
           size += await entity.length();
         }

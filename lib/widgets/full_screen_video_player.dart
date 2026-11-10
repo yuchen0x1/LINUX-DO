@@ -11,7 +11,7 @@ class FullScreenVideoPlayer extends StatefulWidget {
   final String videoUrl;
 
   const FullScreenVideoPlayer({Key? key, required this.videoUrl})
-      : super(key: key);
+    : super(key: key);
 
   @override
   State<FullScreenVideoPlayer> createState() => _FullScreenVideoPlayerState();
@@ -67,9 +67,7 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
     _hideControlsTimer?.cancel();
     _controller.dispose();
     // 恢复为竖屏
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     super.dispose();
   }
 
@@ -94,9 +92,7 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
                       aspectRatio: _controller.value.aspectRatio,
                       child: VideoPlayer(_controller),
                     )
-                  : const Center(
-                      child: DisSquareLoading(),
-                    ),
+                  : const Center(child: DisSquareLoading()),
             ),
             if (_showControls)
               Container(
@@ -113,10 +109,7 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
                       ),
                       title: Text(
                         '视频播放',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.sp,
-                        ),
+                        style: TextStyle(color: Colors.white, fontSize: 16.sp),
                       ),
                     ),
                     Padding(
@@ -146,9 +139,10 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
                           Text(
                             _formatDuration(_controller.value.position),
                             style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14.sp,
-                                fontFamily: AppFontFamily.dinPro),
+                              color: Colors.white,
+                              fontSize: 14.sp,
+                              fontFamily: AppFontFamily.dinPro,
+                            ),
                           ),
                           Expanded(
                             child: Slider(
@@ -160,21 +154,23 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
                               onChanged: (value) {
                                 setState(() {
                                   _controller.seekTo(
-                                      Duration(milliseconds: value.toInt()));
+                                    Duration(milliseconds: value.toInt()),
+                                  );
                                 });
                               },
                               activeColor: Theme.of(context).primaryColor,
-                              inactiveColor: Theme.of(context)
-                                  .primaryColor
-                                  .withValues(alpha: 0.3),
+                              inactiveColor: Theme.of(
+                                context,
+                              ).primaryColor.withValues(alpha: 0.3),
                             ),
                           ),
                           Text(
                             _formatDuration(_controller.value.duration),
                             style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14.sp,
-                                fontFamily: AppFontFamily.dinPro),
+                              color: Colors.white,
+                              fontSize: 14.sp,
+                              fontFamily: AppFontFamily.dinPro,
+                            ),
                           ),
                         ],
                       ),

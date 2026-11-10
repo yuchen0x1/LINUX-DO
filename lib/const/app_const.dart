@@ -61,7 +61,7 @@ class AppConst {
     '读书成诗',
     '前沿快讯',
     '搞七捻三',
-    '深海幽域'
+    '深海幽域',
   ];
 
   /// 抽屉菜单
@@ -446,37 +446,33 @@ class _Posts {
   String get likeCount => '点赞数';
   // 举报相关
   List<Map<String, String>> get reasons => [
-        {
-          'title': '偏离话题',
-          'desc': '此帖子与标题和第一个帖子定义的当前讨论无关，可能应该移到其他地方。',
-          'value': 'off_topic'
-        },
-        {
-          'title': '不当言论',
-          'desc': '这个帖子包含的内容会被一个有理性的人认为具有冒犯性、侮辱性、属于仇恨行为或违反我们的社区准则。',
-          'value': 'off_topic'
-        },
-        {
-          'title': '垃圾信息',
-          'desc': '此帖子是广告或者蓄意破坏讨论。帖子没有价值或者与当前话题无关。',
-          'value': 'inappropriate'
-        },
-        {
-          'title': '违规推广',
-          'desc': '我确认：此帖子系用户未遵守社区推广规则，进行违规推广。',
-          'value': 'spam'
-        },
-        {
-          'title': '非法',
-          'desc': '此帖子需要工作人员注意，因为我认为其中包含非法内容。',
-          'value': 'notify_moderators'
-        },
-        {
-          'title': '其他内容',
-          'desc': '由于上面未列出的另一个原因，此帖子需要管理人员注意。',
-          'value': 'notify_moderators'
-        },
-      ];
+    {
+      'title': '偏离话题',
+      'desc': '此帖子与标题和第一个帖子定义的当前讨论无关，可能应该移到其他地方。',
+      'value': 'off_topic',
+    },
+    {
+      'title': '不当言论',
+      'desc': '这个帖子包含的内容会被一个有理性的人认为具有冒犯性、侮辱性、属于仇恨行为或违反我们的社区准则。',
+      'value': 'off_topic',
+    },
+    {
+      'title': '垃圾信息',
+      'desc': '此帖子是广告或者蓄意破坏讨论。帖子没有价值或者与当前话题无关。',
+      'value': 'inappropriate',
+    },
+    {'title': '违规推广', 'desc': '我确认：此帖子系用户未遵守社区推广规则，进行违规推广。', 'value': 'spam'},
+    {
+      'title': '非法',
+      'desc': '此帖子需要工作人员注意，因为我认为其中包含非法内容。',
+      'value': 'notify_moderators',
+    },
+    {
+      'title': '其他内容',
+      'desc': '由于上面未列出的另一个原因，此帖子需要管理人员注意。',
+      'value': 'notify_moderators',
+    },
+  ];
 
   String get reportTitle => '举报内容';
   String get reportButton => '举报帖子';

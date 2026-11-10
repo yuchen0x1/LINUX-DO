@@ -12,11 +12,8 @@ import '../topic_detail_controller.dart';
 
 /// 帖子底部组件
 class PostFooter extends StatelessWidget {
-  const PostFooter({
-    required this.post,
-    required this.controller,
-    Key? key,
-  }) : super(key: key);
+  const PostFooter({required this.post, required this.controller, Key? key})
+    : super(key: key);
 
   final Post post;
   final TopicDetailController controller;
@@ -26,8 +23,9 @@ class PostFooter extends StatelessWidget {
         ? Text(
             '尊贵的游客,该功能需要登录 🤨',
             style: TextStyle(
-                color: Theme.of(context).textTheme.bodyMedium?.color,
-                fontSize: 10.w),
+              color: Theme.of(context).textTheme.bodyMedium?.color,
+              fontSize: 10.w,
+            ),
           )
         : Row(
             children: [
@@ -49,14 +47,13 @@ class PostFooter extends StatelessWidget {
                 _DeleteButton(post: post, controller: controller),
 
               //ExpandMenu(controller: controller, post: post),
-
               const Spacer(),
 
               _ReplyButton(post: post, controller: controller),
 
               post.isForumMaster(controller.topic.value?.userId ?? 0)
                   ? 10.hGap
-                  : const SizedBox.shrink()
+                  : const SizedBox.shrink(),
             ],
           );
   }
@@ -73,8 +70,11 @@ class _ReportButton extends StatelessWidget {
       onTap: () => showReportDialog(post),
       child: Row(
         children: [
-          Icon(CupertinoIcons.exclamationmark_triangle,
-              size: 14.w, color: Theme.of(context).hintColor),
+          Icon(
+            CupertinoIcons.exclamationmark_triangle,
+            size: 14.w,
+            color: Theme.of(context).hintColor,
+          ),
         ],
       ),
     );
@@ -93,9 +93,7 @@ class _ReportButton extends StatelessWidget {
         ),
         child: Container(
           width: 0.8.sw,
-          constraints: BoxConstraints(
-            maxHeight: 0.7.sh,
-          ),
+          constraints: BoxConstraints(maxHeight: 0.7.sh),
           padding: const EdgeInsets.all(20).w,
           decoration: BoxDecoration(
             color: Theme.of(Get.context!).cardColor,
@@ -150,12 +148,13 @@ class _ReportButton extends StatelessWidget {
                                         ? Get.theme.primaryColor
                                         : Colors.white,
                                     borderRadius: const BorderRadius.all(
-                                            Radius.circular(8))
-                                        .w,
+                                      Radius.circular(8),
+                                    ).w,
                                     boxShadow: [
                                       BoxShadow(
-                                        color:
-                                            Colors.black.withValues(alpha: 0.1),
+                                        color: Colors.black.withValues(
+                                          alpha: 0.1,
+                                        ),
                                         blurRadius: 10,
                                       ),
                                     ],
@@ -194,7 +193,8 @@ class _ReportButton extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16.w),
                     ),
                     child: Obx(() {
-                      final isOther = selectedIndex.value ==
+                      final isOther =
+                          selectedIndex.value ==
                           AppConst.posts.reasons.length - 1;
                       if (isOther) {
                         return TextField(
@@ -244,17 +244,18 @@ class _ReportButton extends StatelessWidget {
                 SizedBox(
                   width: 0.65.sw,
                   child: DisButton(
-                      text: AppConst.posts.reportButton,
-                      onPressed: () {
-                        final reason =
-                            AppConst.posts.reasons[selectedIndex.value];
-                        final value = reason['value']!;
-                        final isOther = selectedIndex.value ==
-                            AppConst.posts.reasons.length - 1;
-                        final desc =
-                            isOther ? customDesc.value : reason['desc']!;
-                        controller.reportPost(post, value, desc);
-                      }),
+                    text: AppConst.posts.reportButton,
+                    onPressed: () {
+                      final reason =
+                          AppConst.posts.reasons[selectedIndex.value];
+                      final value = reason['value']!;
+                      final isOther =
+                          selectedIndex.value ==
+                          AppConst.posts.reasons.length - 1;
+                      final desc = isOther ? customDesc.value : reason['desc']!;
+                      controller.reportPost(post, value, desc);
+                    },
+                  ),
                 ),
               ],
             ),
@@ -267,11 +268,8 @@ class _ReportButton extends StatelessWidget {
 
 /// 点赞按钮组件
 class _LikeButton extends StatelessWidget {
-  const _LikeButton({
-    required this.post,
-    required this.controller,
-    Key? key,
-  }) : super(key: key);
+  const _LikeButton({required this.post, required this.controller, Key? key})
+    : super(key: key);
 
   final Post post;
   final TopicDetailController controller;
@@ -281,24 +279,28 @@ class _LikeButton extends StatelessWidget {
       onTap: () => controller.toggleLike(post),
       child: Row(
         children: [
-          Obx(() => Icon(
-                controller.likedPosts[post.postNumber] == true
-                    ? CupertinoIcons.heart_fill
-                    : CupertinoIcons.heart,
-                size: 14.w,
-                color: controller.likedPosts[post.postNumber] == true
-                    ? Theme.of(context).primaryColor
-                    : Theme.of(context).hintColor,
-              )),
+          Obx(
+            () => Icon(
+              controller.likedPosts[post.postNumber] == true
+                  ? CupertinoIcons.heart_fill
+                  : CupertinoIcons.heart,
+              size: 14.w,
+              color: controller.likedPosts[post.postNumber] == true
+                  ? Theme.of(context).primaryColor
+                  : Theme.of(context).hintColor,
+            ),
+          ),
           4.hGap,
-          Obx(() => Text(
-                '${controller.postScores[post.postNumber] ?? 0}',
-                style: TextStyle(
-                  fontSize: 12.w,
-                  fontFamily: AppFontFamily.dinPro,
-                  color: Theme.of(context).hintColor,
-                ),
-              )),
+          Obx(
+            () => Text(
+              '${controller.postScores[post.postNumber] ?? 0}',
+              style: TextStyle(
+                fontSize: 12.w,
+                fontFamily: AppFontFamily.dinPro,
+                color: Theme.of(context).hintColor,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -308,11 +310,8 @@ class _LikeButton extends StatelessWidget {
 /// 回复按钮组件
 class _ReplyButton extends StatelessWidget {
   final TopicDetailController controller;
-  const _ReplyButton({
-    required this.post,
-    required this.controller,
-    Key? key,
-  }) : super(key: key);
+  const _ReplyButton({required this.post, required this.controller, Key? key})
+    : super(key: key);
 
   final Post post;
 
@@ -320,8 +319,11 @@ class _ReplyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => {
-        controller.startReply(post.postNumber, post.cooked,
-            post.name?.isEmpty ?? true ? post.username : post.name)
+        controller.startReply(
+          post.postNumber,
+          post.cooked,
+          post.name?.isEmpty ?? true ? post.username : post.name,
+        ),
       },
       child: Row(
         children: [
@@ -356,8 +358,11 @@ class _CopyButton extends StatelessWidget {
       onTap: () => controller.copyPost(post),
       child: Row(
         children: [
-          Icon(CupertinoIcons.square_on_square,
-              size: 14.w, color: Theme.of(context).hintColor),
+          Icon(
+            CupertinoIcons.square_on_square,
+            size: 14.w,
+            color: Theme.of(context).hintColor,
+          ),
         ],
       ),
     );
@@ -376,14 +381,17 @@ class _BookmarkButton extends StatelessWidget {
       onTap: () => controller.toggleBookmark(post),
       child: Row(
         children: [
-          Obx(() => Icon(
+          Obx(
+            () => Icon(
               controller.bookmarkedPosts[post.postNumber ?? -1] ?? false
                   ? CupertinoIcons.bookmark_fill
                   : CupertinoIcons.bookmark,
               size: 14.w,
               color: controller.bookmarkedPosts[post.postNumber ?? -1] ?? false
                   ? Theme.of(context).primaryColor
-                  : Theme.of(context).hintColor)),
+                  : Theme.of(context).hintColor,
+            ),
+          ),
         ],
       ),
     );
@@ -402,8 +410,11 @@ class _DeleteButton extends StatelessWidget {
       onTap: () => controller.deletePost(post),
       child: Row(
         children: [
-          Icon(CupertinoIcons.trash,
-              size: 14.w, color: Theme.of(context).hintColor),
+          Icon(
+            CupertinoIcons.trash,
+            size: 14.w,
+            color: Theme.of(context).hintColor,
+          ),
         ],
       ),
     );

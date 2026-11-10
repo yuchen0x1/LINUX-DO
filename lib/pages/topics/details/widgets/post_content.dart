@@ -26,22 +26,23 @@ class PostContent extends StatelessWidget {
     }
 
     return RepaintBoundary(
-        child: Stack(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(2).w,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // if (isReply)
-              //   _ReplyQuote(post: node.post),
-              _PostBody(post: post, isReply: isReply, controller: controller),
-            ],
+      child: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(2).w,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // if (isReply)
+                //   _ReplyQuote(post: node.post),
+                _PostBody(post: post, isReply: isReply, controller: controller),
+              ],
+            ),
           ),
-        ),
-      ],
-    ));
+        ],
+      ),
+    );
   }
 }
 

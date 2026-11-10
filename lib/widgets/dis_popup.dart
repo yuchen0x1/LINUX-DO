@@ -111,7 +111,8 @@ class _PopupContent extends StatelessWidget {
             bottom: arrowDirection == _ArrowDirection.top ? 0 : null,
           ),
           constraints: const BoxConstraints(minWidth: 50),
-          decoration: contentDecoration ??
+          decoration:
+              contentDecoration ??
               BoxDecoration(
                 color: backgroundColor ?? Colors.white,
                 borderRadius: BorderRadius.circular(contentRadius ?? 10),
@@ -155,14 +156,32 @@ class _TrianglePainter extends CustomPainter {
     paint.color = color;
 
     path.lineTo(size.width * 0.66, size.height * 0.86);
-    path.cubicTo(size.width * 0.58, size.height * 1.05, size.width * 0.42,
-        size.height * 1.05, size.width * 0.34, size.height * 0.86);
+    path.cubicTo(
+      size.width * 0.58,
+      size.height * 1.05,
+      size.width * 0.42,
+      size.height * 1.05,
+      size.width * 0.34,
+      size.height * 0.86,
+    );
     path.cubicTo(size.width * 0.34, size.height * 0.86, 0, 0, 0, 0);
     path.cubicTo(0, 0, size.width, 0, size.width, 0);
-    path.cubicTo(size.width, 0, size.width * 0.66, size.height * 0.86,
-        size.width * 0.66, size.height * 0.86);
-    path.cubicTo(size.width * 0.66, size.height * 0.86, size.width * 0.66,
-        size.height * 0.86, size.width * 0.66, size.height * 0.86);
+    path.cubicTo(
+      size.width,
+      0,
+      size.width * 0.66,
+      size.height * 0.86,
+      size.width * 0.66,
+      size.height * 0.86,
+    );
+    path.cubicTo(
+      size.width * 0.66,
+      size.height * 0.86,
+      size.width * 0.66,
+      size.height * 0.86,
+      size.width * 0.66,
+      size.height * 0.86,
+    );
     canvas.drawPath(path, paint);
   }
 
@@ -218,10 +237,10 @@ class _PopupRoute extends PopupRoute<void> {
     this.contentRadius,
     this.contentDecoration,
   }) : super(
-          settings: settings,
-          filter: filter,
-          traversalEdgeBehavior: traversalEdgeBehavior,
-        );
+         settings: settings,
+         filter: filter,
+         traversalEdgeBehavior: traversalEdgeBehavior,
+       );
 
   @override
   Color? get barrierColor => barriersColor ?? Colors.black.withOpacity(0.1);
@@ -383,9 +402,8 @@ class _PopupRoute extends PopupRoute<void> {
 }
 
 abstract class Screen {
-  static MediaQueryData get mediaQuery => MediaQueryData.fromView(
-        PlatformDispatcher.instance.views.first,
-      );
+  static MediaQueryData get mediaQuery =>
+      MediaQueryData.fromView(PlatformDispatcher.instance.views.first);
 
   static double get width => mediaQuery.size.width;
 

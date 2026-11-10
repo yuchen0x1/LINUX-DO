@@ -10,7 +10,11 @@ class ShareController extends BaseController {
   }
 
   Future<void> share(
-      String title, String description, String url, RenderBox? box) async {
+    String title,
+    String description,
+    String url,
+    RenderBox? box,
+  ) async {
     await Share.share(url, subject: title);
   }
 }

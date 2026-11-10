@@ -16,9 +16,7 @@ class WebPostReadPage extends GetView<WebPostReadController> {
           style: TextStyle(fontSize: 16, fontFamily: AppFontFamily.dinPro),
         ),
       ),
-      body: CloudflareTimingsService(
-        onCookiesLoaded: () {},
-      ),
+      body: CloudflareTimingsService(onCookiesLoaded: () {}),
     );
   }
 }

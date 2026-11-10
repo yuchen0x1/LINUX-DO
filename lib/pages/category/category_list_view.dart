@@ -23,25 +23,24 @@ class CategoryListView extends GetView<CategoryListController> {
           slivers: [
             SliverPadding(
               padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).padding.bottom),
+                bottom: MediaQuery.of(context).padding.bottom,
+              ),
               sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    final topic = controller.topics[index];
-                    return TopicItem(
-                        topic: topic,
-                        avatarUrl: controller.getLatestPosterAvatar(topic),
-                        nickName: controller.getNickName(topic),
-                        username: controller.getUserName(topic),
-                        avatarUrls: controller.getAvatarUrls(topic),
-                        onTap: () => controller.toTopicDetail(topic.id),
-                        onDoNotDisturb: (topic) =>
-                            controller.doNotDisturb(topic.id),
-                        onDelete: (topic) => controller.deleteTopic(topic.id),
-                        avatarActions: AvatarActions.openCard);
-                  },
-                  childCount: controller.topics.length,
-                ),
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  final topic = controller.topics[index];
+                  return TopicItem(
+                    topic: topic,
+                    avatarUrl: controller.getLatestPosterAvatar(topic),
+                    nickName: controller.getNickName(topic),
+                    username: controller.getUserName(topic),
+                    avatarUrls: controller.getAvatarUrls(topic),
+                    onTap: () => controller.toTopicDetail(topic.id),
+                    onDoNotDisturb: (topic) =>
+                        controller.doNotDisturb(topic.id),
+                    onDelete: (topic) => controller.deleteTopic(topic.id),
+                    avatarActions: AvatarActions.openCard,
+                  );
+                }, childCount: controller.topics.length),
               ),
             ),
           ],

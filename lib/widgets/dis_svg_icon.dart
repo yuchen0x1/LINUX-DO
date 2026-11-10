@@ -60,12 +60,11 @@ class DisSvgIcon extends StatelessWidget {
     return SizedBox(width: calculatedSize, height: calculatedSize);
   }
 
-  factory DisSvgIcon.fromString(String svgContent,
-      {double? size, Color? color}) {
-    return DisSvgIcon(
-      svgContent: svgContent,
-      size: size,
-      color: color,
-    );
+  factory DisSvgIcon.fromString(
+    String svgContent, {
+    double? size,
+    Color? color,
+  }) {
+    return DisSvgIcon(svgContent: svgContent, size: size, color: color);
   }
 }

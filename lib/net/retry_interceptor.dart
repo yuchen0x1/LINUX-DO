@@ -207,7 +207,8 @@ class RetryInterceptor extends Interceptor {
       if (attempt >= maxRetries) {
         l.e('达到最大重试次数 ($maxRetries)');
         if (currentResponse?.statusCode == 429) {
-          final retryAfter = int.tryParse(
+          final retryAfter =
+              int.tryParse(
                 currentResponse?.headers.value('Retry-After') ?? '60',
               ) ??
               60;

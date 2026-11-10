@@ -57,11 +57,12 @@ class BrithdayTabController extends BaseController
       hasError.value = false;
 
       final response = await _apiService.getBirthdays(
-          filter == Filter.month ? null : filter.value,
-          birthdays.length >= totalRows && filter != Filter.month
-              ? null
-              : currentPage,
-          filter == Filter.month ? DateTime.now().month : null);
+        filter == Filter.month ? null : filter.value,
+        birthdays.length >= totalRows && filter != Filter.month
+            ? null
+            : currentPage,
+        filter == Filter.month ? DateTime.now().month : null,
+      );
 
       if (isRefresh) {
         birthdays.clear();

@@ -22,41 +22,37 @@ class GroupPage extends GetView<GroupController> with ToastMixin {
       appBar: AppBar(
         title: Text(
           AppConst.group.title,
-          style: TextStyle(
-            fontSize: 16.w,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 16.w, fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(
-              Icons.search,
-              size: 24.w,
-            ),
+            icon: Icon(Icons.search, size: 24.w),
           ),
         ],
       ),
-      body: Obx(() => StateView(
-            state: _getViewState(),
-            onRetry: controller.fetchGroups,
-            child: DisSmartRefresher(
-              enablePullDown: true,
-              enablePullUp: false,
-              onRefresh: controller.onRefresh,
-              onLoading: controller.loadMore,
-              controller: controller.refreshController,
-              child: ListView.separated(
-                padding: EdgeInsets.all(16.w),
-                itemCount: controller.groups.length,
-                separatorBuilder: (context, index) => 12.vGap,
-                itemBuilder: (context, index) {
-                  final group = controller.groups[index];
-                  return _buildGroupCard(context, group);
-                },
-              ),
+      body: Obx(
+        () => StateView(
+          state: _getViewState(),
+          onRetry: controller.fetchGroups,
+          child: DisSmartRefresher(
+            enablePullDown: true,
+            enablePullUp: false,
+            onRefresh: controller.onRefresh,
+            onLoading: controller.loadMore,
+            controller: controller.refreshController,
+            child: ListView.separated(
+              padding: EdgeInsets.all(16.w),
+              itemCount: controller.groups.length,
+              separatorBuilder: (context, index) => 12.vGap,
+              itemBuilder: (context, index) {
+                final group = controller.groups[index];
+                return _buildGroupCard(context, group);
+              },
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 
@@ -148,12 +144,17 @@ class GroupPage extends GetView<GroupController> with ToastMixin {
                               borderRadius: BorderRadius.circular(4.w),
                             ),
                             padding: EdgeInsets.symmetric(
-                                horizontal: 4.w, vertical: 2.w),
+                              horizontal: 4.w,
+                              vertical: 2.w,
+                            ),
                             child: Text(
                               group.automatic == true ? '自动' : '',
                               style: TextStyle(
-                                  fontSize: 8.w, color: AppColors.white),
-                            ))
+                                fontSize: 8.w,
+                                color: AppColors.white,
+                              ),
+                            ),
+                          )
                         : const SizedBox.shrink(),
                     const Spacer(),
                     Icon(
@@ -194,10 +195,12 @@ class GroupPage extends GetView<GroupController> with ToastMixin {
           ? controller.leaveGroup(group.id)
           : controller.joinGroup(group.id),
       style: TextButton.styleFrom(
-        backgroundColor:
-            isJoined ? Colors.transparent : Theme.of(context).primaryColor,
-        foregroundColor:
-            isJoined ? Theme.of(context).primaryColor : Colors.white,
+        backgroundColor: isJoined
+            ? Colors.transparent
+            : Theme.of(context).primaryColor,
+        foregroundColor: isJoined
+            ? Theme.of(context).primaryColor
+            : Colors.white,
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.w),
@@ -208,10 +211,7 @@ class GroupPage extends GetView<GroupController> with ToastMixin {
       ),
       child: Text(
         isJoined ? AppConst.group.leave : AppConst.group.join,
-        style: TextStyle(
-          fontSize: 14.w,
-          fontWeight: FontWeight.bold,
-        ),
+        style: TextStyle(fontSize: 14.w, fontWeight: FontWeight.bold),
       ),
     );
   }

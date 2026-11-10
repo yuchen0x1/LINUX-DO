@@ -47,8 +47,9 @@ class BannerPickerController extends BaseController {
 
   Future<void> pickImage() async {
     try {
-      final XFile? image =
-          await _imagePicker.pickImage(source: ImageSource.gallery);
+      final XFile? image = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+      );
       if (image != null) {
         localImagePath.value = image.path;
         useDefault.value = false;
@@ -111,8 +112,9 @@ class BannerPickerDialog extends GetView<BannerPickerController> {
             Stack(
               children: [
                 ClipRRect(
-                  borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(12.w)),
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(12.w),
+                  ),
                   child: Container(
                     height: 110.w,
                     width: double.infinity,
@@ -122,9 +124,9 @@ class BannerPickerDialog extends GetView<BannerPickerController> {
                         end: Alignment.bottomCenter,
                         colors: [
                           Theme.of(context).primaryColor.withValues(alpha: 0.1),
-                          Theme.of(context)
-                              .primaryColor
-                              .withValues(alpha: 0.05),
+                          Theme.of(
+                            context,
+                          ).primaryColor.withValues(alpha: 0.05),
                         ],
                       ),
                     ),
@@ -140,8 +142,9 @@ class BannerPickerDialog extends GetView<BannerPickerController> {
                     icon: Container(
                       padding: EdgeInsets.all(4.w),
                       decoration: BoxDecoration(
-                        color:
-                            Theme.of(context).cardColor.withValues(alpha: 0.3),
+                        color: Theme.of(
+                          context,
+                        ).cardColor.withValues(alpha: 0.3),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
@@ -173,42 +176,47 @@ class BannerPickerDialog extends GetView<BannerPickerController> {
                   // 选项卡
                   Container(
                     decoration: BoxDecoration(
-                      color:
-                          Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                      color: Theme.of(
+                        context,
+                      ).primaryColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(6.w),
                     ),
-                    child: Obx(() => Row(
-                          children: [
-                            _buildOptionButton(
-                              context,
-                              icon: CupertinoIcons.globe,
-                              label: '网络图片',
-                              isSelected: controller.networkUrl.isNotEmpty &&
-                                  !controller.useDefault.value &&
-                                  controller.localImagePath.isEmpty,
-                              onTap: _showUrlInputDialog,
-                            ),
-                            _buildOptionButton(
-                              context,
-                              icon: CupertinoIcons.paintbrush_fill,
-                              label: '本地图片',
-                              isSelected:
-                                  controller.localImagePath.isNotEmpty &&
-                                      !controller.useDefault.value &&
-                                      controller.networkUrl.isEmpty,
-                              onTap: controller.pickImage,
-                            ),
-                            _buildOptionButton(
-                              context,
-                              icon: CupertinoIcons.sparkles,
-                              label: '默认图片',
-                              isSelected: controller.useDefault.value &&
-                                  controller.networkUrl.isEmpty &&
-                                  controller.localImagePath.isEmpty,
-                              onTap: () => controller.setUseDefault(true),
-                            ),
-                          ],
-                        )),
+                    child: Obx(
+                      () => Row(
+                        children: [
+                          _buildOptionButton(
+                            context,
+                            icon: CupertinoIcons.globe,
+                            label: '网络图片',
+                            isSelected:
+                                controller.networkUrl.isNotEmpty &&
+                                !controller.useDefault.value &&
+                                controller.localImagePath.isEmpty,
+                            onTap: _showUrlInputDialog,
+                          ),
+                          _buildOptionButton(
+                            context,
+                            icon: CupertinoIcons.paintbrush_fill,
+                            label: '本地图片',
+                            isSelected:
+                                controller.localImagePath.isNotEmpty &&
+                                !controller.useDefault.value &&
+                                controller.networkUrl.isEmpty,
+                            onTap: controller.pickImage,
+                          ),
+                          _buildOptionButton(
+                            context,
+                            icon: CupertinoIcons.sparkles,
+                            label: '默认图片',
+                            isSelected:
+                                controller.useDefault.value &&
+                                controller.networkUrl.isEmpty &&
+                                controller.localImagePath.isEmpty,
+                            onTap: () => controller.setUseDefault(true),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                   16.vGap,
                   // 当前选择提示
@@ -234,10 +242,11 @@ class BannerPickerDialog extends GetView<BannerPickerController> {
                   SizedBox(
                     width: double.infinity,
                     child: DisButton(
-                        text: AppConst.confirm,
-                        type: ButtonType.primary,
-                        onPressed: () =>
-                            Get.back(result: controller.getSettings())),
+                      text: AppConst.confirm,
+                      type: ButtonType.primary,
+                      onPressed: () =>
+                          Get.back(result: controller.getSettings()),
+                    ),
                   ),
                 ],
               ),
@@ -267,10 +276,7 @@ class BannerPickerDialog extends GetView<BannerPickerController> {
                       Theme.of(context).primaryColor,
                       Theme.of(context).primaryColor.withValues(alpha: 0.6),
                     ]
-                  : [
-                      Colors.transparent,
-                      Colors.transparent,
-                    ],
+                  : [Colors.transparent, Colors.transparent],
             ),
             borderRadius: BorderRadius.circular(6.w),
           ),
@@ -306,9 +312,7 @@ class BannerPickerDialog extends GetView<BannerPickerController> {
     final result = await Get.dialog<String>(
       Dialog(
         backgroundColor: Theme.of(Get.context!).cardColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.w),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.w)),
         child: Container(
           width: 0.8.sw,
           padding: EdgeInsets.all(24.w),
@@ -339,9 +343,7 @@ class BannerPickerDialog extends GetView<BannerPickerController> {
                     onPressed: () => Get.back(),
                     child: Text(
                       AppConst.cancel,
-                      style: TextStyle(
-                        color: Theme.of(Get.context!).hintColor,
-                      ),
+                      style: TextStyle(color: Theme.of(Get.context!).hintColor),
                     ),
                   ),
                   16.hGap,
@@ -350,9 +352,8 @@ class BannerPickerDialog extends GetView<BannerPickerController> {
                     child: DisButton(
                       text: AppConst.confirm,
                       type: ButtonType.primary,
-                      onPressed: () => Get.back(
-                        result: controller.networkUrl.value,
-                      ),
+                      onPressed: () =>
+                          Get.back(result: controller.networkUrl.value),
                     ),
                   ),
                 ],
@@ -404,10 +405,7 @@ class BannerPickerDialog extends GetView<BannerPickerController> {
           fit: BoxFit.cover,
         );
       } else if (controller.useDefault.value) {
-        image = Image.asset(
-          AppImages.getBanner(context),
-          fit: BoxFit.cover,
-        );
+        image = Image.asset(AppImages.getBanner(context), fit: BoxFit.cover);
       } else {
         image = Center(
           child: Column(

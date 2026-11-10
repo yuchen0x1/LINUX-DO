@@ -245,10 +245,8 @@ class ChatDetailController extends BaseController {
         return false;
       });
       if (index != -1) {
-        final updatedMessage =
-            (chatMessages[index] as types.TextMessage).copyWith(
-          status: types.Status.error,
-        );
+        final updatedMessage = (chatMessages[index] as types.TextMessage)
+            .copyWith(status: types.Status.error);
         chatMessages[index] = updatedMessage;
       }
     }
@@ -293,10 +291,7 @@ class ChatDetailController extends BaseController {
   Future<void> markMessageAsRead(int messageId) async {
     try {
       // 调用标记已读API
-      await apiService.markChannelAsRead(
-        channel.id,
-        messageId,
-      );
+      await apiService.markChannelAsRead(channel.id, messageId);
     } catch (e, s) {
       l.e('标记消息已读失败: $e $s');
     }

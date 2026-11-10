@@ -148,10 +148,7 @@ class ProfileController extends BaseController with Concatenated {
   // 更新在线状态
   void updatePresence(bool hidePresence) async {
     try {
-      final response = await _apiService.updatePresence(
-        userName,
-        hidePresence,
-      );
+      final response = await _apiService.updatePresence(userName, hidePresence);
       Get.find<GlobalController>().userInfo = response;
       showSuccess(AppConst.updateSuccess);
     } catch (e) {

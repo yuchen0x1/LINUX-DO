@@ -54,10 +54,7 @@ class StartupPage extends GetView<StartupController> {
                     Text(
                       page.description,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: page.textColor,
-                        fontSize: 16.sp,
-                      ),
+                      style: TextStyle(color: page.textColor, fontSize: 16.sp),
                     ),
                   ],
                 ),
@@ -112,7 +109,8 @@ class StartupPage extends GetView<StartupController> {
                               ? '进入应用'
                               : '下一步',
                           style: TextStyle(
-                            color: controller.guidePages[controller.currentPage]
+                            color: controller
+                                .guidePages[controller.currentPage]
                                 .backgroundColor,
                             fontSize: 18.sp,
                             fontWeight: FontWeight.bold,

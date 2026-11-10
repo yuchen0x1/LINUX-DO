@@ -16,17 +16,19 @@ class MessagePage extends GetView<MessageController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => StateView(
-          state: controller.getViewState(),
-          child: ListView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.w),
-            itemCount: controller.messages.length,
-            itemBuilder: (context, index) {
-              final message = controller.messages[index];
-              return _MessageCard(message: message);
-            },
-          ),
-        ));
+    return Obx(
+      () => StateView(
+        state: controller.getViewState(),
+        child: ListView.builder(
+          padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 8.w),
+          itemCount: controller.messages.length,
+          itemBuilder: (context, index) {
+            final message = controller.messages[index];
+            return _MessageCard(message: message);
+          },
+        ),
+      ),
+    );
   }
 }
 
@@ -122,10 +124,13 @@ class _MessageCard extends StatelessWidget {
                           if (message.closed == true)
                             Container(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: 8.w, vertical: 2.w),
+                                horizontal: 8.w,
+                                vertical: 2.w,
+                              ),
                               decoration: BoxDecoration(
-                                color: theme.colorScheme.error
-                                    .withValues(alpha: 0.1),
+                                color: theme.colorScheme.error.withValues(
+                                  alpha: 0.1,
+                                ),
                                 borderRadius: BorderRadius.circular(4.w),
                               ),
                               child: Text(

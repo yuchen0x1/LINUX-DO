@@ -69,7 +69,7 @@ const badgeNames = [
   "第一个赞",
   "阅读准则",
   "不错的回复",
-  "基本用户"
+  "基本用户",
 ];
 
 class BadgeIconHelper {
