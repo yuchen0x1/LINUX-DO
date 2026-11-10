@@ -444,8 +444,9 @@ class TopicDetailController extends BaseController
       }
 
       // 计算第一个已加载的帖子在stream中的位置
-      final firstLoadedPostIndex =
-          currentStream.indexOf(currentPosts.first.id ?? 0);
+      final firstLoadedPostIndex = currentStream.indexOf(
+        currentPosts.first.id ?? 0,
+      );
 
       if (firstLoadedPostIndex <= 0) {
         l.d('没有更早的帖子了');
@@ -502,8 +503,9 @@ class TopicDetailController extends BaseController
         Future.microtask(() {
           final updatedPosts = topic.value?.postStream?.posts ?? [];
           // 找到原来那条帖子下标
-          final newIndex =
-              updatedPosts.indexWhere((p) => p.id == targetPost?.id);
+          final newIndex = updatedPosts.indexWhere(
+            (p) => p.id == targetPost?.id,
+          );
 
           if (newIndex >= 0) {
             final scrollIndex = newIndex + 1;
@@ -567,9 +569,12 @@ class TopicDetailController extends BaseController
 
       /// 设置公约初始状态
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        htmlController.isPolicyAccepted.value =
-            posts[0].policyAccepted ?? false;
-        htmlController.postId.value = topic.value?.postStream?.stream?[0] ?? 0;
+        // 主题可能没有任何帖子（如全部被删除/权限受限），此处必须防空
+        if (posts.isNotEmpty) {
+          htmlController.isPolicyAccepted.value =
+              posts[0].policyAccepted ?? false;
+        }
+        htmlController.postId.value = stream.isNotEmpty ? stream[0] : 0;
       });
 
       // 根据stream和当前加载的posts判断是否还有更多
@@ -719,8 +724,9 @@ class TopicDetailController extends BaseController
       for (final node in replyTree) {
         final isAuthorPost =
             node.post.userId != null && node.post.userId == authorId;
-        final authorReplies =
-            node.children.where((c) => c.post.userId == authorId).toList();
+        final authorReplies = node.children
+            .where((c) => c.post.userId == authorId)
+            .toList();
         if (isAuthorPost || authorReplies.isNotEmpty) {
           filtered.add(PostNode(node.post, authorReplies));
         }
@@ -876,8 +882,9 @@ class TopicDetailController extends BaseController
       // 滚动到新回复
       if (response.post.postNumber != null) {
         final posts = topic.value?.postStream?.posts ?? [];
-        final index =
-            posts.indexWhere((p) => p.postNumber == response.post.postNumber);
+        final index = posts.indexWhere(
+          (p) => p.postNumber == response.post.postNumber,
+        );
         if (index != -1) {
           itemScrollController.scrollTo(
             index: index + 1,
@@ -888,9 +895,10 @@ class TopicDetailController extends BaseController
     } catch (e, s) {
       l.e('发送回复失败: $e -  \n$s');
       showSnackbar(
-          title: AppConst.commonTip,
-          message: AppConst.posts.replyFailed,
-          type: SnackbarType.error);
+        title: AppConst.commonTip,
+        message: AppConst.posts.replyFailed,
+        type: SnackbarType.error,
+      );
     } finally {
       isSending.value = false;
     }
@@ -932,8 +940,9 @@ class TopicDetailController extends BaseController
       if (!_isPostLoaded(postNumber)) {
         await fetchTopicDetail(postNumber: postNumber);
       }
-      final index =
-          replyTree.indexWhere((node) => node.post.postNumber == postNumber);
+      final index = replyTree.indexWhere(
+        (node) => node.post.postNumber == postNumber,
+      );
       if (index != -1) {
         // 保存当前阅读位置
         StorageManager.setData(_topicPostKey, postNumber);
@@ -952,8 +961,11 @@ class TopicDetailController extends BaseController
   }
 
   void copyPost(Post post) {
-    Clipboard.setData(ClipboardData(
-        text: '${HttpConfig.baseUrl}${post.postUrl ?? ''}?u=$userName'));
+    Clipboard.setData(
+      ClipboardData(
+        text: '${HttpConfig.baseUrl}${post.postUrl ?? ''}?u=$userName',
+      ),
+    );
     showSuccess(AppConst.posts.copySuccess);
   }
 
@@ -1016,7 +1028,8 @@ class TopicDetailController extends BaseController
         final cursorPosition = contentController.selection.baseOffset;
 
         if (cursorPosition >= 0) {
-          final newContent = currentContent.substring(0, cursorPosition) +
+          final newContent =
+              currentContent.substring(0, cursorPosition) +
               imageMarkdown +
               currentContent.substring(cursorPosition);
           contentController.text = newContent;
@@ -1053,8 +1066,9 @@ class TopicDetailController extends BaseController
   // 生成短文件名
   String _generateShortFileName(String originalFileName) {
     final extension = originalFileName.split('.').last;
-    final timestamp =
-        DateTime.now().millisecondsSinceEpoch.toString().substring(8);
+    final timestamp = DateTime.now().millisecondsSinceEpoch
+        .toString()
+        .substring(8);
     final random = (1000 + Random().nextInt(9000)).toString();
     return 'img_${timestamp}_$random.$extension';
   }
@@ -1074,9 +1088,7 @@ class TopicDetailController extends BaseController
       if (originalBookmarked) {
         await apiService.deleteBookmark(post.bookmarkId.toString());
       } else {
-        await apiService.addBookmark(
-          bookmarkableId: post.id,
-        );
+        await apiService.addBookmark(bookmarkableId: post.id);
       }
 
       // l.d('书签状态更新成功: ${post.id} - ${post.bookmarked}');
@@ -1089,8 +1101,9 @@ class TopicDetailController extends BaseController
   }
 
   bool _isPostLoaded(int postNumber) {
-    return topic.value?.postStream?.posts
-            ?.any((p) => p.postNumber == postNumber) ==
+    return topic.value?.postStream?.posts?.any(
+          (p) => p.postNumber == postNumber,
+        ) ==
         true;
   }
 
@@ -1110,8 +1123,10 @@ class TopicDetailController extends BaseController
   /// 删除帖子
   void deletePost(Post post) async {
     try {
-      await apiService.deletePost(post.id.toString(),
-          context: '/t/${topic.value?.id}/${post.postNumber}');
+      await apiService.deletePost(
+        post.id.toString(),
+        context: '/t/${topic.value?.id}/${post.postNumber}',
+      );
       showSuccess(AppConst.posts.deleteSuccess);
 
       /// 更新改帖子内容
@@ -1130,8 +1145,11 @@ class TopicDetailController extends BaseController
   }
 
   Future<void> editPost(Post post) async {
-    startReply(post.postNumber, post.cooked,
-        post.name?.isEmpty ?? true ? post.username : post.name);
+    startReply(
+      post.postNumber,
+      post.cooked,
+      post.name?.isEmpty ?? true ? post.username : post.name,
+    );
 
     /// 先去掉所有的html标签
     final regex = RegExp(r'<[^>]*>');
@@ -1146,10 +1164,7 @@ class TopicDetailController extends BaseController
         topicId: topic.value?.id.toString() ?? '',
         originalText: text,
       );
-      await apiService.updateTopic(
-        post.id.toString(),
-        request,
-      );
+      await apiService.updateTopic(post.id.toString(), request);
 
       /// 只更新这个帖子
       post.cooked = contentController.text;
@@ -1204,33 +1219,34 @@ class TopicDetailController extends BaseController
                 ),
               ),
               12.vGap,
-              ...items.map((e) => Padding(
-                    padding: EdgeInsets.symmetric(vertical: 6.w),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          e.$1,
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            color: Theme.of(Get.context!)
-                                .textTheme
-                                .bodyMedium
-                                ?.color,
-                          ),
+              ...items.map(
+                (e) => Padding(
+                  padding: EdgeInsets.symmetric(vertical: 6.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        e.$1,
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          color: Theme.of(
+                            Get.context!,
+                          ).textTheme.bodyMedium?.color,
                         ),
-                        Text(
-                          e.$2,
-                          style: TextStyle(
-                            fontSize: 13.sp,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: AppFontFamily.dinPro,
-                            color: Theme.of(Get.context!).primaryColor,
-                          ),
+                      ),
+                      Text(
+                        e.$2,
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: AppFontFamily.dinPro,
+                          color: Theme.of(Get.context!).primaryColor,
                         ),
-                      ],
-                    ),
-                  )),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               16.vGap,
               DisButton(
                 text: AppConst.confirm,
