@@ -4,7 +4,7 @@
 # Android 15 起 64 位设备开始使用 16KB 内存页，ELF 的 LOAD 对齐小于 0x4000 会
 # 导致 dlopen 失败、应用启动即崩溃。Google Play 对 64 位 ABI 有此要求。
 #
-# 注意：32 位 ABI（armeabi-v7a）**不适用** 16KB 页要求，对其只告警不失败，
+# 注意：32 位 ABI（armeabi-v7a / x86）**不适用** 16KB 页要求，对其只告警不失败，
 # 否则会产生假警报。
 #
 # 用法：scripts/check_16k_alignment.sh <apk> [readelf]
@@ -41,7 +41,7 @@ MIN_ALIGN=16384
 TMPDIR="$(mktemp -d)"
 trap 'rm -rf "$TMPDIR"' EXIT
 
-unzip -q -o "$APK" 'lib/arm64-v8a/*.so' 'lib/armeabi-v7a/*.so' -d "$TMPDIR" 2>/dev/null || true
+unzip -q -o "$APK" 'lib/*/*.so' -d "$TMPDIR" 2>/dev/null || true
 
 if ! find "$TMPDIR" -name '*.so' -print -quit | grep -q .; then
   echo "APK 内没有 native 库，无需检查" >&2
@@ -60,13 +60,16 @@ while IFS= read -r so; do
 
   rel="${so#"$TMPDIR"/}"
   if (( min < MIN_ALIGN )); then
-    # 仅 64 位 ABI 会因未对齐而加载失败；32 位只提示
-    if [[ "$rel" == lib/arm64-v8a/* ]]; then
-      printf 'FAIL  %-44s LOAD align=%s (< 16384)\n' "$rel" "$(printf '0x%x' "$min")"
-      fail=1
-    else
-      printf 'WARN  %-44s LOAD align=%s（32 位 ABI，不受 16KB 页要求约束）\n' "$rel" "$(printf '0x%x' "$min")"
-    fi
+    # 只有 64 位 ABI 会因未对齐而加载失败；32 位只提示
+    case "$rel" in
+      lib/arm64-v8a/*|lib/x86_64/*)
+        printf 'FAIL  %-44s LOAD align=%s (< 16384)\n' "$rel" "$(printf '0x%x' "$min")"
+        fail=1
+        ;;
+      *)
+        printf 'WARN  %-44s LOAD align=%s（32 位 ABI，不受 16KB 页要求约束）\n' "$rel" "$(printf '0x%x' "$min")"
+        ;;
+    esac
   else
     printf 'OK    %-44s LOAD align=%s\n' "$rel" "$(printf '0x%x' "$min")"
   fi

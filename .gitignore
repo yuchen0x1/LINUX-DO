@@ -63,3 +63,6 @@ ui.xml
 final_list.png
 final_list2.png
 guest_try2.png
+
+# 本地打包产物（发布用，不入库）
+/dist/
