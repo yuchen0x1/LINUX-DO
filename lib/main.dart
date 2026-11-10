@@ -11,10 +11,14 @@ import 'package:linux_do/const/app_theme.dart';
 import 'package:linux_do/controller/global_controller.dart';
 import 'package:linux_do/routes/app_pages.dart';
 import 'package:linux_do/app.dart';
+import 'package:linux_do/utils/crash_reporter.dart';
 import 'package:linux_do/utils/storage_manager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // 尽早挂载全局异常处理，后续初始化出错也能被记录
+  CrashReporter.install();
 
   // 强制竖屏
   await SystemChrome.setPreferredOrientations([
@@ -52,11 +56,8 @@ class MyApp extends StatelessWidget {
   final Size designSize;
   final String initialRoute;
 
-  const MyApp({
-    Key? key,
-    required this.designSize,
-    required this.initialRoute,
-  }) : super(key: key);
+  const MyApp({Key? key, required this.designSize, required this.initialRoute})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +73,9 @@ class MyApp extends StatelessWidget {
 
           /// 国际化配置
           localizationsDelegates: GlobalMaterialLocalizations.delegates,
-          supportedLocales:
-              AppConst.supportedLanguages.map((e) => Locale(e)).toList(),
+          supportedLocales: AppConst.supportedLanguages
+              .map((e) => Locale(e))
+              .toList(),
 
           // 主题配置
           theme: AppTheme.lightTheme,
@@ -90,11 +92,7 @@ class MyApp extends StatelessWidget {
           // 错误页面
           unknownRoute: GetPage(
             name: '/notfound',
-            page: () => const Scaffold(
-              body: Center(
-                child: Text('页面不存在'),
-              ),
-            ),
+            page: () => const Scaffold(body: Center(child: Text('页面不存在'))),
           ),
 
           // 全局设置
@@ -118,25 +116,26 @@ class MyApp extends StatelessWidget {
                   primary: themeColor,
                 );
               }
-              result = Theme(
-                data: themeData,
-                child: child!,
-              );
+              result = Theme(data: themeData, child: child!);
             }
 
             // 根据主题设置系统UI样式
             if (Platform.isAndroid) {
-              SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-                statusBarColor: Colors.transparent,
-                statusBarIconBrightness:
-                    isDark ? Brightness.light : Brightness.dark,
-                systemNavigationBarColor: isDark
-                    ? (isAmoled ? Colors.black : const Color(0xFF121212))
-                    : Colors.white,
-                systemNavigationBarIconBrightness:
-                    isDark ? Brightness.light : Brightness.dark,
-                systemNavigationBarDividerColor: Colors.transparent,
-              ));
+              SystemChrome.setSystemUIOverlayStyle(
+                SystemUiOverlayStyle(
+                  statusBarColor: Colors.transparent,
+                  statusBarIconBrightness: isDark
+                      ? Brightness.light
+                      : Brightness.dark,
+                  systemNavigationBarColor: isDark
+                      ? (isAmoled ? Colors.black : const Color(0xFF121212))
+                      : Colors.white,
+                  systemNavigationBarIconBrightness: isDark
+                      ? Brightness.light
+                      : Brightness.dark,
+                  systemNavigationBarDividerColor: Colors.transparent,
+                ),
+              );
             }
 
             return GestureDetector(

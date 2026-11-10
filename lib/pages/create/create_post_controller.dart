@@ -1,25 +1,27 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
+
+import 'package:crypto/crypto.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:convert';
-import '../../const/app_const.dart';
-import '../../controller/base_controller.dart';
-import '../../controller/global_controller.dart';
-import '../../net/api_service.dart';
-import '../../models/category_data.dart';
-import '../../models/tag_data.dart';
-import '../../models/image_size.dart';
-import '../../models/upload_image_response.dart';
-import '../../utils/storage_manager.dart';
-import 'dart:io';
-import 'package:crypto/crypto.dart';
-import 'package:dio/dio.dart' as dio;
-import 'dart:math';
 import 'package:linux_do/net/http_config.dart';
 import 'package:linux_do/utils/log.dart';
 
+import '../../const/app_const.dart';
+import '../../controller/base_controller.dart';
+import '../../controller/global_controller.dart';
+import '../../models/category_data.dart';
+import '../../models/image_size.dart';
+import '../../models/tag_data.dart';
+import '../../models/upload_image_response.dart';
+import '../../net/api_service.dart';
+import '../../utils/storage_manager.dart';
 import 'preview_post_controller.dart';
 import 'preview_post_page.dart';
 
@@ -65,6 +67,9 @@ class CreatePostController extends BaseController {
 
   final isShowKeyboard = false.obs;
 
+  /// 自动保存草稿的防抖计时器
+  Timer? _autoSaveTimer;
+
   @override
   void onInit() {
     super.onInit();
@@ -72,6 +77,10 @@ class CreatePostController extends BaseController {
     _applyInitialArguments();
     // 初始化时加载所有分类的统计数据
     loadAllCategoryStats();
+
+    // 输入停顿 3 秒后自动落盘，避免用户直接返回导致内容丢失
+    titleController.addListener(_scheduleAutoSave);
+    contentController.addListener(_scheduleAutoSave);
 
     KeyboardVisibilityController().onChange.listen((bool visible) {
       if (visible) {
@@ -112,6 +121,12 @@ class CreatePostController extends BaseController {
 
   @override
   void onClose() {
+    _autoSaveTimer?.cancel();
+    titleController.removeListener(_scheduleAutoSave);
+    contentController.removeListener(_scheduleAutoSave);
+    // 离开页面时立刻落盘一次，保证「直接返回」也不丢内容
+    unawaited(_persistDraft(silent: true));
+
     titleController.dispose();
     contentController.dispose();
     searchController.dispose();
@@ -430,8 +445,24 @@ class CreatePostController extends BaseController {
 
   static const _draftKey = 'create_post_draft';
 
-  /// 将当前编辑内容保存为本地草稿
-  Future<bool> saveDraft() async {
+  /// 输入停顿后触发自动保存。重复调用会重置计时。
+  void _scheduleAutoSave() {
+    _autoSaveTimer?.cancel();
+    _autoSaveTimer = Timer(const Duration(seconds: 3), () {
+      unawaited(_persistDraft(silent: true));
+    });
+  }
+
+  /// 把当前编辑内容写入本地草稿。
+  ///
+  /// [silent] 为 true 时不弹提示（自动保存用），false 时给出成功/失败反馈。
+  /// 标题和正文都为空时直接跳过，避免把空草稿覆盖掉已有内容。
+  Future<bool> _persistDraft({required bool silent}) async {
+    if (titleController.text.trim().isEmpty &&
+        contentController.text.trim().isEmpty) {
+      return false;
+    }
+
     final data = <String, dynamic>{
       'title': titleController.text,
       'content': contentController.text,
@@ -453,21 +484,36 @@ class CreatePostController extends BaseController {
     };
     try {
       await StorageManager.setData(_draftKey, data);
-      showToast(AppConst.createPost.draftSuccess);
+      if (!silent) showToast(AppConst.createPost.draftSuccess);
       return true;
     } catch (e) {
-      showToast(AppConst.createPost.draftFailed);
+      if (!silent) showToast(AppConst.createPost.draftFailed);
+      l.w('保存草稿失败: $e');
       return false;
     }
   }
 
+  /// 将当前编辑内容保存为本地草稿（手动触发，带提示）
+  Future<bool> saveDraft() => _persistDraft(silent: false);
+
   /// 判断是否存在未保存的草稿
   bool hasDraft() => StorageManager.getString(_draftKey) != null;
 
-  /// 加载草稿并填充编辑界面
+  /// 加载草稿并填充编辑界面。
+  ///
+  /// 只在编辑区为空时恢复：分类列表是异步加载的，如果用户在加载完成前已经开始
+  /// 输入，直接覆盖会把刚敲的内容冲掉。
   void restoreDraft() {
     final jsonString = StorageManager.getString(_draftKey);
     if (jsonString == null) return;
+
+    final hasUserInput =
+        titleController.text.trim().isNotEmpty ||
+        contentController.text.trim().isNotEmpty;
+    if (hasUserInput) {
+      l.d('编辑区已有内容，跳过草稿恢复');
+      return;
+    }
     try {
       final data = jsonDecode(jsonString) as Map<String, dynamic>;
       titleController.text = data['title'] as String? ?? '';
