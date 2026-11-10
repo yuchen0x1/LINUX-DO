@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:dio/dio.dart';
 import 'dart:io';
 import 'package:linux_do/controller/base_controller.dart';
-import 'package:linux_do/models/app_version.dart';
 import 'package:linux_do/net/api_service.dart';
-import 'package:linux_do/net/http_config.dart';
+import 'package:linux_do/net/deep_link_service.dart';
+import 'package:linux_do/net/update_checker.dart';
 import 'package:linux_do/utils/emoji_manager.dart';
 import 'package:linux_do/utils/log.dart';
 import 'package:linux_do/controller/global_controller.dart';
 import 'package:linux_do/widgets/dis_app_update.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../routes/app_pages.dart';
 import '../topics/topics_controller.dart';
@@ -54,6 +52,10 @@ class HomeController extends BaseController {
     initEmoji();
     checkAppVersion();
     Get.find<GlobalController>().fetchUserInfo();
+
+    // 首页就绪后再接管深链，避免冷启动时路由表尚未准备好
+    DeepLinkService().start();
+    DeepLinkService().markConsumerReady();
   }
 
   @override
@@ -82,35 +84,18 @@ class HomeController extends BaseController {
 
   void checkAppVersion() async {
     try {
-      final dio = Dio(BaseOptions(
-        connectTimeout: const Duration(seconds: 30),
-        receiveTimeout: const Duration(seconds: 30),
-      ));
+      final appVersion = await UpdateChecker.check();
+      if (appVersion?.hasUpdate != true) return;
 
-      PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      String currentVersion = packageInfo.version;
-      int currentVersionCode = int.parse(packageInfo.buildNumber);
+      // 只对可信域名的下载链接展示更新弹窗，避免把用户导向任意地址
+      final url = appVersion!.downloadUrl;
+      if (url != null && !UpdateChecker.isTrustedDownload(url)) {
+        l.w('忽略非可信域名的更新地址: $url');
+        return;
+      }
 
-      final response = await dio.get(
-        '${HttpConfig.otherUrl}/api/version/check/${Platform.isAndroid ? 'Android' : 'iOS'}',
-        queryParameters: {
-          'current_version': currentVersion,
-          'current_version_code': currentVersionCode,
-        },
-      );
-
-      if (response.statusCode == 200) {
-        if (response.data['has_update'] == false) return;
-
-        final appVersion = AppVersion.fromJson(response.data);
-
-        if (appVersion.hasUpdate == true) {
-          if (Platform.isAndroid) {
-            DisAppUpdate.showUpdateDialog(appVersion);
-          } else if (Platform.isIOS) {
-            DisAppUpdate.showUpdateDialog(appVersion);
-          }
-        }
+      if (Platform.isAndroid || Platform.isIOS) {
+        DisAppUpdate.showUpdateDialog(appVersion);
       }
     } catch (e, s) {
       l.e('检查更新失败: $e\n$s');

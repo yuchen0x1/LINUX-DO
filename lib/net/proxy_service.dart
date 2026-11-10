@@ -5,6 +5,7 @@ import 'package:dio/io.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 import 'cronet_adapter.dart';
+import 'doh_service.dart';
 import '../utils/log.dart';
 import '../utils/storage_manager.dart';
 
@@ -58,6 +59,9 @@ class ProxyService {
   /// - 启用代理：Dart HttpClient + findProxy（可精确路由到 Clash 等本地端口，
   ///   但 TLS 指纹会被 Cloudflare 挑战，需配合过盾 Cookie）
   /// - 未启用代理：Cronet（Chromium 网络栈），浏览器级 TLS 指纹，天然过盾
+  ///
+  /// DoH 只作用于 Dart HttpClient 这条路径：Cronet 自带 DNS 解析，无法注入
+  /// 自定义 resolver。
   void applyToDio(Dio dio) {
     try {
       if (hasValidRule) {
@@ -66,6 +70,7 @@ class ProxyService {
           createHttpClient: () {
             final client = HttpClient();
             client.findProxy = (uri) => rule;
+            _applyDoh(client);
             return client;
           },
         );
@@ -77,6 +82,26 @@ class ProxyService {
     } catch (e) {
       l.e('应用 Dio 适配器失败: $e');
     }
+  }
+
+  /// 把域名解析交给 DoH（仅当用户在设置里启用）。
+  ///
+  /// DNS 查询走 HTTPS，避免本地 DNS 被污染；TLS 连接仍由 HttpClient 建立，
+  /// 指纹不变。解析失败时返回 null，由 HttpClient 回退系统 DNS。
+  void _applyDoh(HttpClient client) {
+    final doh = DohService();
+    if (!doh.isEnabled) return;
+
+    client.connectionFactory = (uri, proxyHost, proxyPort) async {
+      final addresses = await doh.resolve(uri.host);
+      if (addresses.isEmpty) {
+        // 抛出让 HttpClient 走默认解析路径（connectionFactory 不允许返回 null）
+        throw const SocketException('DoH 未解析到地址');
+      }
+      final port =
+          uri.hasPort ? uri.port : (uri.scheme == 'https' ? 443 : 80);
+      return Socket.startConnect(InternetAddress(addresses.first), port);
+    };
   }
 
   /// 将代理应用到全部 WebView（Android ProxyController，作用于之后创建的 WebView）

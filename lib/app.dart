@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'net/message_bus_service.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:linux_do/utils/log.dart';
 
@@ -48,6 +50,18 @@ class App {
     // Tag的颜色
     Tag.init();
 
+    // 前后台切换时启停实时推送（后台持续长轮询会明显耗电）
+    WidgetsBinding.instance.addObserver(_LifecycleBridge());
+
     L.setDebug(kDebugMode);
+  }
+}
+
+/// 把 App 生命周期转发给 MessageBusService。
+/// 单独抽类而不是让 App 实现 Observer，保持 App 只做一次性初始化。
+class _LifecycleBridge with WidgetsBindingObserver {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    MessageBusService().handleLifecycle(state);
   }
 }

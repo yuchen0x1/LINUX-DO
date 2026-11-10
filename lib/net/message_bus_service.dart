@@ -1,10 +1,14 @@
 import 'dart:async';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart' show AppLifecycleState;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import '../utils/log.dart';
-import '../utils/storage_manager.dart';
+import 'package:get/get.dart';
+
 import '../const/app_const.dart';
 import '../controller/global_controller.dart';
+import '../utils/log.dart';
+import '../utils/storage_manager.dart';
 import 'http_client.dart';
 import 'http_config.dart';
 
@@ -21,6 +25,8 @@ class MessageBusService {
   String _clientId = '';
   final Map<String, int> _channels = {};
   Timer? _pollTimer;
+  int _consecutiveFailures = 0;
+  bool _pausedByLifecycle = false;
 
   Future<void> init() async {
     if (_isInitialized) return;
@@ -28,7 +34,10 @@ class MessageBusService {
     const androidSettings =
         AndroidInitializationSettings('@mipmap/launcher_icon');
     const initSettings = InitializationSettings(android: androidSettings);
-    await _notificationsPlugin.initialize(initSettings);
+    await _notificationsPlugin.initialize(
+      initSettings,
+      onDidReceiveNotificationResponse: _onNotificationTap,
+    );
 
     // Android 13+ 需要运行时授权，否则通知会被系统静默丢弃
     await _ensureNotificationPermission();
@@ -135,11 +144,15 @@ class MessageBusService {
   Future<void> _poll() async {
     if (!_isRunning) return;
 
+    var gotMessages = false;
     try {
       final dio = NetClient.getInstance().dio;
+      // 长轮询：服务端在有新消息或超时后才返回。30s 略小于 receiveTimeout，
+      // 让「无消息」成为常态而不是靠客户端高频建连。
       final response = await dio.post(
         '${HttpConfig.baseUrl}message-bus/$_clientId/poll',
         data: _channels,
+        queryParameters: {'timeout': 25},
         options: Options(
           sendTimeout: const Duration(seconds: 35),
           receiveTimeout: const Duration(seconds: 35),
@@ -150,28 +163,87 @@ class MessageBusService {
         ),
       );
 
-      if (response.statusCode == 200 && response.data != null) {
-        final messages = response.data is List ? response.data as List : [];
-        for (var msg in messages) {
-          if (msg is Map) {
-            final channel = msg['channel'] as String?;
-            final messageId = msg['message_id'] as int?;
-            final data = msg['data'];
+      if (response.statusCode == 200 && response.data is List) {
+        final messages = response.data as List;
+        gotMessages = messages.isNotEmpty;
+        for (final msg in messages) {
+          if (msg is! Map) continue;
+          final channel = msg['channel'] as String?;
+          final messageId = msg['message_id'];
+          final data = msg['data'];
 
-            if (channel != null && messageId != null) {
-              _channels[channel] = messageId;
-            }
-
-            _handleIncomingMessage(channel, data);
+          if (channel != null && messageId is int) {
+            _channels[channel] = messageId;
           }
+          _handleIncomingMessage(channel, data);
         }
       }
+      _consecutiveFailures = 0;
     } catch (e) {
-      // 容错重试
+      _consecutiveFailures++;
+      l.d('MessageBus 轮询失败 ($_consecutiveFailures): $e');
     }
 
-    if (_isRunning) {
-      _pollTimer = Timer(const Duration(seconds: 3), _poll);
+    if (!_isRunning) return;
+
+    if (gotMessages) {
+      // 有消息时立刻继续拉，避免积压
+      _schedulePoll(Duration.zero);
+    } else if (_consecutiveFailures > 0) {
+      // 失败退避：2s → 4s → 8s … 上限 60s，避免断网时疯狂重连
+      final backoff = Duration(
+        seconds: (1 << _consecutiveFailures).clamp(2, 60),
+      );
+      _schedulePoll(backoff);
+    } else {
+      // 长轮询正常返回（服务端超时）后立即续拉
+      _schedulePoll(Duration.zero);
+    }
+  }
+
+  void _schedulePoll(Duration delay) {
+    _pollTimer?.cancel();
+    if (!_isRunning) return;
+    _pollTimer = Timer(delay, _poll);
+  }
+
+  /// 点击通知：payload 存 topicId，直接打开对应帖子
+  void _onNotificationTap(NotificationResponse response) {
+    final payload = response.payload;
+    if (payload == null || payload.isEmpty) return;
+    final topicId = int.tryParse(payload);
+    if (topicId == null) return;
+
+    // 避免在网络层直接依赖路由表：这里用延迟 import 的值字面量
+    try {
+      Get.toNamed('/topic/detail', arguments: topicId);
+    } catch (e) {
+      l.e('通知点击跳转失败: $e');
+    }
+  }
+
+  /// 应用退到后台时暂停轮询，回到前台恢复。返回是否发生了状态切换。
+  bool handleLifecycle(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        if (_isRunning && _pausedByLifecycle) {
+          _pausedByLifecycle = false;
+          _schedulePoll(Duration.zero);
+          return true;
+        }
+        return false;
+      case AppLifecycleState.paused:
+      case AppLifecycleState.detached:
+      case AppLifecycleState.hidden:
+        if (_isRunning && !_pausedByLifecycle) {
+          _pausedByLifecycle = true;
+          _pollTimer?.cancel();
+          _pollTimer = null;
+          return true;
+        }
+        return false;
+      case AppLifecycleState.inactive:
+        return false;
     }
   }
 
@@ -179,10 +251,12 @@ class MessageBusService {
     if (channel == null) return;
 
     if (channel.startsWith('/notification/')) {
+      final parsed = _parseNotification(data);
       _showNotification(
-        id: 1001,
-        title: 'LINUX DO 社区互动提醒',
-        body: '有人回复了你的话题或提到了你，快去看看吧！',
+        id: parsed.topicId ?? 1001,
+        title: parsed.title,
+        body: parsed.body,
+        topicId: parsed.topicId,
       );
     } else if (channel.startsWith('/unread/')) {
       _showNotification(
@@ -193,10 +267,68 @@ class MessageBusService {
     }
   }
 
+  /// 解析 Discourse 通知 payload，尽量给出「谁 + 在哪个帖子里 + 做了什么」。
+  /// 字段缺失时退化为通用文案，不抛异常。
+  _ParsedNotification _parseNotification(dynamic data) {
+    if (data is! Map) {
+      return const _ParsedNotification(title: 'LINUX DO 社区互动提醒', body: '你有一条新提醒');
+    }
+
+    final username = (data['username'] ?? data['display_username'] ?? '有人')
+        .toString();
+    final title = (data['topic_title'] ?? data['title'] ?? '').toString();
+    final excerpt = (data['excerpt'] ?? data['post_excerpt'] ?? '').toString();
+    final topicIdRaw = data['topic_id'];
+    final topicId = topicIdRaw is int
+        ? topicIdRaw
+        : int.tryParse(topicIdRaw?.toString() ?? '');
+
+    final String action;
+    switch (data['notification_type']) {
+      case 1:
+        action = '提到了你';
+        break;
+      case 2:
+        action = '回复了你的帖子';
+        break;
+      case 3:
+        action = '引用了你';
+        break;
+      case 5:
+        action = '赞了你的帖子';
+        break;
+      case 9:
+        action = '关注了你';
+        break;
+      case 12:
+        action = '邀请你参与';
+        break;
+      default:
+        action = '与你互动';
+    }
+
+    final body = excerpt.isNotEmpty
+        ? excerpt
+        : (title.isNotEmpty ? title : '点击查看详情');
+
+    return _ParsedNotification(
+      title: '$username $action',
+      body: _truncate(body, 120),
+      topicId: topicId,
+    );
+  }
+
+  static String _truncate(String s, int max) {
+    final flat = s.replaceAll(RegExp(r'\s+'), ' ').trim();
+    if (flat.length <= max) return flat;
+    return '${flat.substring(0, max)}…';
+  }
+
   Future<void> _showNotification({
     required int id,
     required String title,
     required String body,
+    int? topicId,
   }) async {
     const androidDetails = AndroidNotificationDetails(
       'linux_do_community',
@@ -207,6 +339,26 @@ class MessageBusService {
       showWhen: true,
     );
     const notificationDetails = NotificationDetails(android: androidDetails);
-    await _notificationsPlugin.show(id, title, body, notificationDetails);
+
+    await _notificationsPlugin.show(
+      id,
+      title,
+      body,
+      notificationDetails,
+      payload: topicId?.toString(),
+    );
   }
+}
+
+/// 已解析的通知内容
+class _ParsedNotification {
+  final String title;
+  final String body;
+  final int? topicId;
+
+  const _ParsedNotification({
+    required this.title,
+    required this.body,
+    this.topicId,
+  });
 }

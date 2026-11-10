@@ -8,6 +8,7 @@ import 'package:linux_do/const/app_spacing.dart';
 import 'package:linux_do/const/app_theme.dart';
 import 'package:linux_do/models/app_version.dart';
 import 'package:linux_do/net/http_config.dart';
+import 'package:linux_do/net/update_checker.dart';
 import 'package:linux_do/utils/log.dart';
 import 'package:linux_do/widgets/dis_button.dart';
 import 'package:linux_do/widgets/glowing_text_wweep.dart';
@@ -195,13 +196,21 @@ class DisAppUpdate {
                       type: ButtonType.primary,
                       onPressed: () {
                         Get.back();
-                        if (appVersion.downloadUrl != null) {
-                          final url =
-                              '${HttpConfig.otherUrl}${appVersion.downloadUrl}';
-                          l.d('下载地址: $url');
-                          launchUrl(Uri.parse(url),
-                              mode: LaunchMode.externalApplication);
+                        final raw = appVersion.downloadUrl;
+                        if (raw == null || raw.isEmpty) return;
+
+                        // GitHub 源给绝对地址；旧自建接口给相对路径
+                        final url = raw.startsWith('http')
+                            ? raw
+                            : '${HttpConfig.otherUrl}$raw';
+
+                        if (!UpdateChecker.isTrustedDownload(url)) {
+                          l.w('拒绝打开非可信下载地址: $url');
+                          return;
                         }
+                        l.d('下载地址: $url');
+                        launchUrl(Uri.parse(url),
+                            mode: LaunchMode.externalApplication);
                       },
                     )),
                   ],

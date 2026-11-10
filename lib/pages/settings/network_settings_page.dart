@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:linux_do/const/app_spacing.dart';
 import '../../net/doh_service.dart';
+import '../../net/http_client.dart';
 import '../../net/proxy_service.dart';
+import '../../utils/log.dart';
 import '../../widgets/dis_switch.dart';
 import '../../widgets/proxy_settings_dialog.dart';
 
@@ -24,11 +26,22 @@ class NetworkSettingsController extends GetxController {
   void toggleDoh(bool value) {
     isDohEnabled.value = value;
     dohService.isEnabled = value;
+    _rebuildNetworkClient();
   }
 
   void selectServer(String id) {
     currentServerId.value = id;
     dohService.currentServerId = id;
+    _rebuildNetworkClient();
+  }
+
+  /// DoH 是在 HttpClient 创建时注入的，改配置后必须重建 Dio 适配器才生效。
+  void _rebuildNetworkClient() {
+    try {
+      NetClient.getInstance().applyProxy();
+    } catch (e) {
+      l.e('应用 DoH 配置失败: $e');
+    }
   }
 
   Future<void> testSpeed() async {
