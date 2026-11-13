@@ -102,7 +102,9 @@ jobs:
           path: build/app/outputs/flutter-apk/*-release.apk
           retention-days: 7
 
-      - name: 上传符号表
+      # 公开仓库仅上传编译验证用 APK；发布包的符号由发布者单独保留。
+      - name: 上传符号表（仅私有仓库）
+        if: github.event.repository.private
         uses: actions/upload-artifact@v4
         with:
           name: obfuscation-symbols
