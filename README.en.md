@@ -40,6 +40,10 @@ flutter test --no-pub
 flutter build apk --release --split-per-abi
 ```
 
+On Windows, the current Dart AOT compiler can fail with non-ASCII project paths.
+Build through an unused temporary ASCII drive alias for the same directory and remove only that alias afterwards;
+see the guarded PowerShell example in [the development guide](README.md). Do not replace an existing drive mapping.
+
 Release signing reads `android/keystore/key.properties`. Without complete signing configuration,
 the current Gradle setup produces an unsigned package; that is not evidence of a distributable build.
 Never commit keystores, passwords, local environment files, APKs, caches or local archives.

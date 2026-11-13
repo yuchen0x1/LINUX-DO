@@ -91,6 +91,22 @@ bash scripts/check_16k_alignment.sh build/app/outputs/flutter-apk/app-arm64-v8a-
 ```
 
 Windows 使用已安装的 Python 命令替换 `python3`，并在支持 bash 的终端运行对齐检查。
+Windows 路径含中文时，当前 Dart AOT 编译器可能无法读取 `app.dill`；可将同一目录临时映射到一个空闲 ASCII 盘符后构建。无需复制源码，结束后只撤销盘符映射：
+
+```powershell
+# S: 仅为示例；已占用时停止，不覆盖已有映射。
+if (Get-PSDrive S -ErrorAction SilentlyContinue) { throw '请改用空闲盘符' }
+subst S: "$PWD"
+if ($LASTEXITCODE -ne 0) { throw '盘符映射失败' }
+Push-Location S:\
+try {
+  flutter build apk --release --split-per-abi --obfuscate --split-debug-info=dist/dart-symbols
+} finally {
+  Pop-Location
+  subst S: /D
+}
+```
+
 CI 只产出 APK/符号等 artifacts，不自动创建 Release；发布需要独立显式操作。
 本机验证与远程 CI 结果分开记录，详见清理说明。
 
