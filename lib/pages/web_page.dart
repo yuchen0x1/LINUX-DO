@@ -58,14 +58,30 @@ class _WebPageState extends State<WebPage> with ToastMixin {
   String? _error;
   late final CookieJar _cookieJar;
   String _userAgent = '';
+  bool _proxyReady = false;
+  final Map<String, int> _recoveredUrls = {};
+  final Map<String, String> _loadNodes = {};
 
   @override
   void initState() {
     super.initState();
     // WebView 也要走同样的代理线路（登录授权页需可达 linux.do）
-    ProxyService().applyToWebView();
+    _prepareProxy();
     _initCookieJar();
     _initUserAgent();
+  }
+
+  Future<void> _prepareProxy() async {
+    try {
+      await ProxyService().applyToWebView();
+      if (mounted) setState(() => _proxyReady = true);
+    } catch (_) {
+      if (mounted)
+        setState(() {
+          _error = '无法应用代理，请检查网络线路设置';
+          isLoading = false;
+        });
+    }
   }
 
   @override
@@ -279,59 +295,63 @@ class _WebPageState extends State<WebPage> with ToastMixin {
       ),
       body: Stack(
         children: [
-          InAppWebView(
-            initialUrlRequest: URLRequest(
-              url: WebUri(widget.initialUrl ?? HttpConfig.baseUrl),
-            ),
-            initialSettings: InAppWebViewSettings(
-              javaScriptEnabled: true,
-              useOnDownloadStart: true,
-              userAgent: _userAgent,
-              cacheEnabled: true,
-              clearCache: false,
-              allowFileAccess: true,
-              allowFileAccessFromFileURLs: true,
-              allowUniversalAccessFromFileURLs: true,
-              useShouldOverrideUrlLoading: true,
-              mediaPlaybackRequiresUserGesture: false,
-              supportMultipleWindows: true,
-              incognito: false,
-              javaScriptCanOpenWindowsAutomatically: true,
-              mixedContentMode: MixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
-              resourceCustomSchemes: ['cloudflare-challenge'],
-              useWideViewPort: true,
-              loadWithOverviewMode: true,
-              domStorageEnabled: true,
-              databaseEnabled: true,
-              applicationNameForUserAgent: 'Version/8.0.2 Safari/605.1.15',
-              preferredContentMode: UserPreferredContentMode.RECOMMENDED,
-              useShouldInterceptAjaxRequest: false,
-              thirdPartyCookiesEnabled: true,
-              allowContentAccess: true,
-              safeBrowsingEnabled: false,
-              disableContextMenu: false,
-              useOnLoadResource: true,
-              geolocationEnabled: false,
-              transparentBackground: true,
-              verticalScrollBarEnabled: true,
-              horizontalScrollBarEnabled: true,
-            ),
-            onWebViewCreated: (controller) {
-              _controller = controller;
-            },
-            onLoadStart: (controller, url) {
-              setState(() {
-                isLoading = true;
-                _error = null;
-              });
-            },
-            onLoadStop: (controller, url) async {
-              setState(() => isLoading = false);
-              await _checkAndSaveCookies();
+          if (_proxyReady)
+            InAppWebView(
+              initialUrlRequest: URLRequest(
+                url: WebUri(widget.initialUrl ?? HttpConfig.baseUrl),
+              ),
+              initialSettings: InAppWebViewSettings(
+                javaScriptEnabled: true,
+                useOnDownloadStart: true,
+                userAgent: _userAgent,
+                cacheEnabled: true,
+                clearCache: false,
+                allowFileAccess: true,
+                allowFileAccessFromFileURLs: true,
+                allowUniversalAccessFromFileURLs: true,
+                useShouldOverrideUrlLoading: true,
+                mediaPlaybackRequiresUserGesture: false,
+                supportMultipleWindows: true,
+                incognito: false,
+                javaScriptCanOpenWindowsAutomatically: true,
+                mixedContentMode: MixedContentMode.MIXED_CONTENT_ALWAYS_ALLOW,
+                resourceCustomSchemes: ['cloudflare-challenge'],
+                useWideViewPort: true,
+                loadWithOverviewMode: true,
+                domStorageEnabled: true,
+                databaseEnabled: true,
+                applicationNameForUserAgent: 'Version/8.0.2 Safari/605.1.15',
+                preferredContentMode: UserPreferredContentMode.RECOMMENDED,
+                useShouldInterceptAjaxRequest: false,
+                thirdPartyCookiesEnabled: true,
+                allowContentAccess: true,
+                safeBrowsingEnabled: false,
+                disableContextMenu: false,
+                useOnLoadResource: true,
+                geolocationEnabled: false,
+                transparentBackground: true,
+                verticalScrollBarEnabled: true,
+                horizontalScrollBarEnabled: true,
+              ),
+              onWebViewCreated: (controller) {
+                _controller = controller;
+              },
+              onLoadStart: (controller, url) {
+                if (url != null)
+                  _loadNodes[url.toString()] =
+                      ProxyService().selectedNodeId ?? '';
+                setState(() {
+                  isLoading = true;
+                  _error = null;
+                });
+              },
+              onLoadStop: (controller, url) async {
+                setState(() => isLoading = false);
+                await _checkAndSaveCookies();
 
-              // 注入辅助脚本
-              await controller.evaluateJavascript(
-                source: '''
+                // 注入辅助脚本
+                await controller.evaluateJavascript(
+                  source: '''
                 // 自动点击验证按钮
                 function autoClickTurnstile() {
                   const buttons = document.querySelectorAll('button, input[type="submit"]');
@@ -344,80 +364,99 @@ class _WebPageState extends State<WebPage> with ToastMixin {
                 }
                 setInterval(autoClickTurnstile, 1000);
               ''',
-              );
-            },
-            // ignore: deprecated_member_use
-            onLoadError: (controller, url, code, message) {
-              setState(() {
-                _error = message;
-                isLoading = false;
-              });
-            },
-            shouldOverrideUrlLoading: (controller, navigationAction) async {
-              final uri = navigationAction.request.url!;
-
-              // 拦截官方 User API Key 授权回跳
-              if (uri.scheme == 'linuxdo' && uri.host == 'auth') {
-                final payload = uri.queryParameters['payload'];
-                if (payload != null && payload.isNotEmpty) {
-                  try {
-                    final decrypted = UserApiKeyAuthService().decryptPayload(
-                      payload,
+                );
+              },
+              onReceivedError: (controller, request, error) async {
+                if (request.isForMainFrame != true || !mounted) return;
+                final proxy = ProxyService();
+                final url = request.url.toString();
+                final mayRetry =
+                    request.method?.toUpperCase() == 'GET' &&
+                    {'http', 'https'}.contains(request.url.scheme) &&
+                    proxy.isEnabled &&
+                    proxy.isSubscription &&
+                    (_recoveredUrls[url] ?? 0) < proxy.nodeCount;
+                if (mayRetry) {
+                  _recoveredUrls[url] = (_recoveredUrls[url] ?? 0) + 1;
+                  if (await proxy.recover(failedNodeId: _loadNodes[url]) &&
+                      mounted) {
+                    await controller.loadUrl(
+                      urlRequest: URLRequest(url: request.url),
                     );
-                    final data = decrypted.startsWith('{')
-                        ? decrypted
-                        : '{"key":"$decrypted"}';
-                    final Map<String, dynamic> decoded = jsonDecode(data);
-                    final key = decoded['key'] as String?;
-                    if (key != null && key.isNotEmpty) {
-                      await UserApiKeyAuthService().saveApiKey(key);
-                      await StorageManager.setData(
-                        AppConst.identifier.isLogin,
-                        true,
-                      );
-                      Get.find<GlobalController>().setIsLogin(true);
-                      showSuccess('官方 API Key 授权成功');
-                      Get.back(result: true);
-                      return NavigationActionPolicy.CANCEL;
-                    }
-                  } catch (e) {
-                    l.e('User API Key 授权回跳处理失败: $e');
+                    return;
                   }
                 }
-                showError('API Key 授权失败');
+                if (!mounted) return;
+                setState(() {
+                  _error = proxy.errorMessage ?? error.description;
+                  isLoading = false;
+                });
+              },
+              shouldOverrideUrlLoading: (controller, navigationAction) async {
+                final uri = navigationAction.request.url!;
+
+                // 拦截官方 User API Key 授权回跳
+                if (uri.scheme == 'linuxdo' && uri.host == 'auth') {
+                  final payload = uri.queryParameters['payload'];
+                  if (payload != null && payload.isNotEmpty) {
+                    try {
+                      final decrypted = UserApiKeyAuthService().decryptPayload(
+                        payload,
+                      );
+                      final data = decrypted.startsWith('{')
+                          ? decrypted
+                          : '{"key":"$decrypted"}';
+                      final Map<String, dynamic> decoded = jsonDecode(data);
+                      final key = decoded['key'] as String?;
+                      if (key != null && key.isNotEmpty) {
+                        await UserApiKeyAuthService().saveApiKey(key);
+                        await StorageManager.setData(
+                          AppConst.identifier.isLogin,
+                          true,
+                        );
+                        Get.find<GlobalController>().setIsLogin(true);
+                        showSuccess('官方 API Key 授权成功');
+                        Get.back(result: true);
+                        return NavigationActionPolicy.CANCEL;
+                      }
+                    } catch (e) {
+                      l.e('User API Key 授权回跳处理失败: $e');
+                    }
+                  }
+                  showError('API Key 授权失败');
+                  return NavigationActionPolicy.CANCEL;
+                }
+
+                if (['about', 'data', 'javascript'].contains(uri.scheme)) {
+                  return NavigationActionPolicy.ALLOW;
+                }
+
+                final allowedDomains = [
+                  HttpConfig.domain,
+                  'challenges.cloudflare.com',
+                  'js.stripe.com',
+                  'cloudflareinsights.com',
+                  'stripe.network',
+                  'stripe.com',
+                  'turnstile.com',
+                  'cloudflare.com',
+                  'hcaptcha.com',
+                  'gstatic.com',
+                  'google.com',
+                  'recaptcha.net',
+                ];
+
+                bool isAllowed = allowedDomains.any(
+                  (domain) => uri.host.endsWith(domain),
+                );
+
+                if (isAllowed) {
+                  return NavigationActionPolicy.ALLOW;
+                }
+
                 return NavigationActionPolicy.CANCEL;
-              }
-
-              if (['about', 'data', 'javascript'].contains(uri.scheme)) {
-                return NavigationActionPolicy.ALLOW;
-              }
-
-              final allowedDomains = [
-                HttpConfig.domain,
-                'challenges.cloudflare.com',
-                'js.stripe.com',
-                'cloudflareinsights.com',
-                'stripe.network',
-                'stripe.com',
-                'turnstile.com',
-                'cloudflare.com',
-                'hcaptcha.com',
-                'gstatic.com',
-                'google.com',
-                'recaptcha.net',
-              ];
-
-              bool isAllowed = allowedDomains.any(
-                (domain) => uri.host.endsWith(domain),
-              );
-
-              if (isAllowed) {
-                return NavigationActionPolicy.ALLOW;
-              }
-
-              return NavigationActionPolicy.CANCEL;
-            },
-          ),
+              },
+            ),
           if (isLoading) const Center(child: DisSquareLoading()),
           if (_error != null)
             Center(
@@ -432,10 +471,19 @@ class _WebPageState extends State<WebPage> with ToastMixin {
                     ),
                   ),
                   8.vGap,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Text(_error!, textAlign: TextAlign.center),
+                  ),
                   TextButton(
                     onPressed: () {
                       setState(() => _error = null);
-                      _controller?.reload();
+                      if (!_proxyReady) {
+                        _prepareProxy();
+                      } else {
+                        _recoveredUrls.clear();
+                        _controller?.reload();
+                      }
                     },
                     child: const StateViewError(),
                   ),

@@ -1,0 +1,11 @@
+{
+  "version": "1.19.34",
+  "repository": "https://github.com/MetaCubeX/mihomo",
+  "commit": "0455d0d28c4526937380505153e65a843d8612e8",
+  "license": "GPL-3.0",
+  "artifacts": {
+    "arm64-v8a": {"arch": "arm64-v8", "sha256": "48a71fc6a68e2909587176e0ab7185d8f2fac298fa96ccdacf30ea86ab2359b5"},
+    "armeabi-v7a": {"arch": "armv7", "sha256": "a4959825f5af98f5a60c7b6ab0d23e766d647d17795315e3ac57b5b5bed918e7"},
+    "x86_64": {"arch": "amd64", "sha256": "99ce9a0226e12c718e749436d7ae0f35300b6e19f757edd09994efd1eab5d2ff"}
+  }
+}

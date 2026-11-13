@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:linux_do/const/app_colors.dart';
 import 'package:linux_do/const/app_const.dart';
 import 'package:linux_do/const/app_theme.dart';
-import 'package:linux_do/controller/global_controller.dart';
 import 'package:linux_do/routes/app_pages.dart';
 import 'package:linux_do/app.dart';
 import 'package:linux_do/utils/crash_reporter.dart';
@@ -29,35 +28,14 @@ void main() async {
   // 初始化App
   await App.instance.initial();
 
-  // 确定初始路由
-  final initialRoute = await _determineInitialRoute();
-
   Size size = Platform.isMacOS ? const Size(1024, 768) : const Size(375, 812);
 
-  runApp(MyApp(designSize: size, initialRoute: initialRoute));
-}
-
-Future<String> _determineInitialRoute() async {
-  // 检查是否首次启动
-  final hasLaunched =
-      StorageManager.getBool(AppConst.identifier.isFirst) ?? false;
-  if (!hasLaunched) {
-    return Routes.STARTUP;
-  }
-
-  // 检查登录状态
-  final hasLogin = await Get.find<GlobalController>().checkLoginStatus();
-  final isAnonymousMode =
-      StorageManager.getBool(AppConst.identifier.isAnonymousMode) ?? false;
-  return isAnonymousMode || hasLogin ? Routes.HOME : Routes.LOGIN;
+  runApp(MyApp(designSize: size));
 }
 
 class MyApp extends StatelessWidget {
   final Size designSize;
-  final String initialRoute;
-
-  const MyApp({Key? key, required this.designSize, required this.initialRoute})
-    : super(key: key);
+  const MyApp({super.key, required this.designSize});
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +61,7 @@ class MyApp extends StatelessWidget {
           themeMode: _getSavedThemeMode(),
 
           // 路由配置
-          initialRoute: initialRoute, // 使用动态初始路由
+          initialRoute: AppPages.INITIAL,
           getPages: AppPages.routes,
 
           // 默认转场动画

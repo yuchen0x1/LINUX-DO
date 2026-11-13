@@ -5,16 +5,16 @@ Historical iOS, macOS, Windows and Web projects are no longer part of the active
 
 ## Latest update
 
-### v1.1.1 · 2026-11-13
+### v1.1.2 · 2026-11-13
 
-- Maintain Android only and remove obsolete platform/build files from the source tree.
-- Complete historical release notes and correct version/feature attribution.
-- Align the build environment with the SDK required by existing dependencies.
-- Add repository upload checks and keep release diagnostics separate from APKs.
-- Track the HTML selector compatibility patch so clean environments can compile.
+- Replace the four-page first-run guide with a short animated LINUX DO logo.
+- Continue automatically to login, or home for an existing session or guest mode.
+- Avoid a network probe when no login credentials exist and respect reduced-motion settings.
+- Click “Import nodes” to connect automatically. Failed connections move to another node until one works; exhaustion reports a node error. Supports Clash / Mihomo YAML subscriptions for API traffic and Android WebViews.
+- Preserve manual settings as an advanced option and encrypt subscription credentials locally. The bundled standalone core retains its GPL-3.0 license; see [source and component details](docs/SUBSCRIPTION_PROXY.md).
 
 See the [complete release history](docs/releases/release-notes.md).
-The current source version is `1.1.1+13`; this is an Android maintenance release.
+The current source version is `1.1.2+21`.
 
 ## Download
 

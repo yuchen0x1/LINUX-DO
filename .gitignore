@@ -69,6 +69,7 @@ guest_try2.png
 
 # Android 项目本地缓存、调试导出与历史记录
 /android/build/
+/android/app/build/
 /android/.kotlin/
 /.local-archive/
 /.autonomous-upgrade/

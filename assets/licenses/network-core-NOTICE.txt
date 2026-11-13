@@ -1,0 +1,14 @@
+LINUX DO Android includes the unmodified mihomo 1.19.34 standalone executable.
+Copyright: MetaCubeX/mihomo contributors and upstream contributors.
+License: GNU GPL version 3; see mihomo-GPL-3.0.txt.
+Source: https://github.com/MetaCubeX/mihomo
+Exact commit: 0455d0d28c4526937380505153e65a843d8612e8
+Source archive: https://github.com/MetaCubeX/mihomo/archive/0455d0d28c4526937380505153e65a843d8612e8.tar.gz
+Original binaries: https://github.com/MetaCubeX/mihomo/releases/tag/v1.19.34
+
+The core runs as a separate process through its standard configuration and
+loopback HTTP interfaces. No user subscription or node credential is bundled.
+Application source retains its existing MIT license. The core and dependencies
+retain their respective licenses; the application license does not replace
+them. Redistributors must retain the core's corresponding source access and
+license notices when distributing this executable.

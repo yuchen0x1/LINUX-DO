@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 
 import '../utils/log.dart';
 import 'cloudflare_clearance_service.dart';
+import 'proxy_failover_interceptor.dart';
 
 /// 限流重试耗尽（429）
 class RateLimitExhaustedException extends DioException {
@@ -65,6 +66,9 @@ class RetryInterceptor extends Interceptor {
 
   /// 连接未建立 —— 请求一定没有到达服务端，任何方法重试都安全
   bool _neverReachedServer(DioException err) {
+    if (err.requestOptions.extra[ProxyFailoverInterceptor.noWriteReplayKey] ==
+        true)
+      return false;
     switch (err.type) {
       case DioExceptionType.connectionError:
       case DioExceptionType.connectionTimeout:
@@ -266,6 +270,10 @@ class RetryInterceptor extends Interceptor {
     DioException err,
     ErrorInterceptorHandler handler,
   ) async {
+    if (err.requestOptions.extra[ProxyFailoverInterceptor.retriedKey] == true &&
+        ProxyFailoverInterceptor.isRouteFailure(err)) {
+      return handler.next(err);
+    }
     final token = Object();
     if (_isForeignRetry(err.requestOptions, token)) {
       return handler.next(err);

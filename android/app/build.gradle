@@ -26,6 +26,14 @@ android {
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
+    sourceSets.main.jniLibs.srcDir layout.buildDirectory.dir('network-core/jniLibs')
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+            keepDebugSymbols += ['**/liblinuxdo_proxy.so']
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -77,5 +85,15 @@ flutter {
 }
 
 dependencies {
+    testImplementation 'junit:junit:4.13.2'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
 }
+
+def prepareNetworkCore = tasks.register('prepareNetworkCore', Exec) {
+    workingDir rootProject.projectDir.parentFile
+    commandLine(System.getProperty('os.name').toLowerCase().contains('windows') ? 'python' : 'python3', 'scripts/prepare_network_core.py')
+    inputs.file rootProject.file('network-core.lock.json')
+    inputs.file rootProject.file('../scripts/prepare_network_core.py')
+    outputs.dir layout.buildDirectory.dir('network-core/jniLibs')
+}
+tasks.named('preBuild').configure { dependsOn prepareNetworkCore }

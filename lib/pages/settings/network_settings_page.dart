@@ -236,17 +236,20 @@ class NetworkSettingsPage extends GetView<NetworkSettingsController> {
                   color: Theme.of(context).primaryColor,
                 ),
                 title: Text(
-                  'HTTP 代理（网络线路）',
+                  '订阅与自动选线',
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                subtitle: Text(
-                  ProxyService().hasValidRule
-                      ? '已启用 ${ProxyService().host}:${ProxyService().port}'
-                      : '国内直连不通时，指向手机代理 App 的本地端口',
-                  style: TextStyle(fontSize: 12.sp),
+                subtitle: AnimatedBuilder(
+                  animation: ProxyService(),
+                  builder: (context, _) => Text(
+                    ProxyService().isEnabled
+                        ? ProxyService().statusLabel
+                        : '导入订阅，自动选择可用节点',
+                    style: TextStyle(fontSize: 12.sp),
+                  ),
                 ),
                 trailing: const Icon(CupertinoIcons.chevron_right, size: 16),
               ),

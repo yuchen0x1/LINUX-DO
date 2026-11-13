@@ -8,7 +8,7 @@ import io.flutter.plugin.common.MethodChannel
 /**
  * 宿主 Activity。
  *
- * 只做一件额外的事：把外部 App「分享文本」进来的内容转交给 Flutter。
+ * 转发外部分享文本，并注册应用内代理核心的 Flutter 通道。
  * app_links 只处理 VIEW 类型的深链，ACTION_SEND 不在其覆盖范围内，
  * 所以这里用一个极薄的 MethodChannel 承接，避免再引入一个只为传一段文本的
  * 第三方依赖。
@@ -22,6 +22,7 @@ class MainActivity : FlutterActivity() {
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        NetworkCore.attach(applicationContext, flutterEngine.dartExecutor.binaryMessenger)
         channel = MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
             CHANNEL_NAME,

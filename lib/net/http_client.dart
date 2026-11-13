@@ -12,6 +12,7 @@ import 'api_response.dart';
 import 'http_config.dart';
 import 'user_api_key_auth_service.dart';
 import 'proxy_service.dart';
+import 'proxy_failover_interceptor.dart';
 import '../controller/global_controller.dart';
 import '../const/app_const.dart';
 import '../utils/storage_manager.dart';
@@ -322,6 +323,17 @@ class NetClient {
     );
 
     // 最后添加重试拦截器，确保它能捕获到其他拦截器的错误（全链仅此一次）
+    _dio.interceptors.add(
+      ProxyFailoverInterceptor(
+        dio: _dio,
+        enabled: () =>
+            ProxyService().isEnabled && ProxyService().isSubscription,
+        recover: () => ProxyService().recover(),
+        currentNode: () => ProxyService().selectedNodeId,
+        recoverFrom: (node) => ProxyService().recover(failedNodeId: node),
+        maxAttempts: () => ProxyService().nodeCount,
+      ),
+    );
     _dio.interceptors.add(RetryInterceptor(dio: _dio));
   }
 
@@ -675,14 +687,14 @@ class NetClient {
 
       bool hasCsrfToken = csrfToken != null && csrfToken.isNotEmpty;
 
+      // 未登录时无需访问网络探测 CF；首次启动和离线打开可直接进入登录页。
+      if (!hasCsrfToken || !hasForumSession || !hasToken) return false;
+
       // 检查网站是否使用了 Cloudflare
       final needsCfVerification = await _checkCloudflareEnabled();
 
       // 根据是否需要 CF 验证来判断 cookies 是否有效
-      return hasCsrfToken &&
-          hasForumSession &&
-          hasToken &&
-          (!needsCfVerification || (needsCfVerification && hasCfClearance));
+      return !needsCfVerification || hasCfClearance;
     } catch (e) {
       l.e('检查 cookies 失败: $e');
       return false;

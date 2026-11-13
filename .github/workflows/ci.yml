@@ -86,6 +86,11 @@ jobs:
         with:
           ndk-version: r28
 
+      - name: Android 原生单元测试
+        # 覆盖 JSON -> YAML 路径/凭据转义；复用已完成的 Flutter AOT 构建。
+        working-directory: android
+        run: ./gradlew :app:testReleaseUnitTest -x compileFlutterBuildRelease --console=plain
+
       - name: 校验 native 库 16KB 页对齐
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}

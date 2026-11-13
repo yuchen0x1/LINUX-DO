@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 
 import 'net/message_bus_service.dart';
+import 'net/proxy_service.dart';
 
 import 'package:get_storage/get_storage.dart';
 import 'package:linux_do/utils/log.dart';
@@ -31,6 +34,13 @@ class App {
 
   /// 初始化App
   Future<void> initial() async {
+    LicenseRegistry.addLicense(() async* {
+      yield LicenseEntryWithLineBreaks(
+        ['mihomo 1.19.34 (standalone proxy core)'],
+        '${await rootBundle.loadString('assets/licenses/network-core-NOTICE.txt')}\n\n'
+        '${await rootBundle.loadString('assets/licenses/mihomo-GPL-3.0.txt')}',
+      );
+    });
     // 初始化SharedPreferences
     await StorageManager.init();
 
@@ -45,6 +55,14 @@ class App {
 
     // 初始化屏幕适配
     await ScreenUtil.ensureScreenSize();
+
+    // Restore the app-only route before any API or login WebView requests.
+    ProxyService().onAllNodesFailed = (message) {
+      if (Get.context != null) {
+        Get.snackbar('节点异常', message, snackPosition: SnackPosition.BOTTOM);
+      }
+    };
+    await ProxyService().initialize();
 
     // 初始化HTTP客户端
     await NetClient.getInstance().init();
