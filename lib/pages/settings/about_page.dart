@@ -15,6 +15,7 @@ import 'package:linux_do/widgets/dis_button.dart';
 import 'package:linux_do/widgets/dis_loading.dart';
 import 'package:linux_do/widgets/dis_refresh.dart';
 import 'package:linux_do/widgets/html/html_widget.dart';
+
 import 'about_controller.dart';
 
 class AboutPage extends GetView<AboutController> with ToastMixin {
@@ -123,9 +124,8 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Theme.of(
-                      context,
-                    ).shadowColor.withValues(alpha: 0.05),
+                    color: Theme.of(context).shadowColor
+                        .withValues(alpha: 0.05),
                     blurRadius: 10,
                     offset: const Offset(0, 2),
                   ),
@@ -841,9 +841,8 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
                 Container(
                   padding: EdgeInsets.all(8.w),
                   decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).primaryColor.withValues(alpha: 0.1),
+                    color: Theme.of(context).primaryColor
+                        .withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8.w),
                   ),
                   child: Icon(
@@ -871,9 +870,8 @@ class AboutPage extends GetView<AboutController> with ToastMixin {
                         style: TextStyle(
                           fontSize: 10.w,
                           height: 1.5,
-                          color: Theme.of(
-                            context,
-                          ).primaryColor.withValues(alpha: 0.8),
+                          color: Theme.of(context).primaryColor
+                              .withValues(alpha: 0.8),
                         ),
                       ),
                     ],

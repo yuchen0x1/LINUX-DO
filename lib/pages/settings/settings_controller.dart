@@ -207,9 +207,10 @@ class SettingsController extends BaseController {
                                     p,
                                     style: TextStyle(
                                       fontSize: 13.sp,
-                                      color: Theme.of(
-                                        Get.context!,
-                                      ).textTheme.bodyMedium?.color,
+                                      color: Theme.of(Get.context!)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.color,
                                     ),
                                   ),
                                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
+
 import '../../controller/base_controller.dart';
 
 class WebViewController extends BaseController {

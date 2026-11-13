@@ -58,9 +58,8 @@ $code
                         vertical: 4.w,
                       ),
                       decoration: BoxDecoration(
-                        color: Theme.of(
-                          context,
-                        ).primaryColor.withValues(alpha: 0.1),
+                        color: Theme.of(context).primaryColor
+                            .withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(4.w),
                       ),
                       child: Text(
@@ -111,9 +110,8 @@ $code
                         backgroundColor: Colors.transparent,
                       ),
                       codeblockDecoration: BoxDecoration(
-                        color: Theme.of(
-                          context,
-                        ).primaryColor.withValues(alpha: 0.1),
+                        color: Theme.of(context).primaryColor
+                            .withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8.w),
                       ),
                       codeblockPadding: EdgeInsets.all(12.w),
@@ -124,9 +122,8 @@ $code
                         color: Theme.of(context).textTheme.bodyMedium?.color,
                       ),
                       blockquoteDecoration: BoxDecoration(
-                        color: Theme.of(
-                          context,
-                        ).primaryColor.withValues(alpha: 0.1),
+                        color: Theme.of(context).primaryColor
+                            .withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(8.w),
                       ),
                       blockquotePadding: EdgeInsets.all(12.w),

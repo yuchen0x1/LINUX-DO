@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
+
 import '../../../../const/app_const.dart';
 import '../../../../controller/base_controller.dart';
 import '../../../../models/topic_model.dart';
+
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../../net/api_service.dart';

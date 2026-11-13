@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -124,9 +125,8 @@ class BannerPickerDialog extends GetView<BannerPickerController> {
                         end: Alignment.bottomCenter,
                         colors: [
                           Theme.of(context).primaryColor.withValues(alpha: 0.1),
-                          Theme.of(
-                            context,
-                          ).primaryColor.withValues(alpha: 0.05),
+                          Theme.of(context).primaryColor
+                              .withValues(alpha: 0.05),
                         ],
                       ),
                     ),
@@ -142,9 +142,8 @@ class BannerPickerDialog extends GetView<BannerPickerController> {
                     icon: Container(
                       padding: EdgeInsets.all(4.w),
                       decoration: BoxDecoration(
-                        color: Theme.of(
-                          context,
-                        ).cardColor.withValues(alpha: 0.3),
+                        color: Theme.of(context).cardColor
+                            .withValues(alpha: 0.3),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
@@ -176,9 +175,8 @@ class BannerPickerDialog extends GetView<BannerPickerController> {
                   // 选项卡
                   Container(
                     decoration: BoxDecoration(
-                      color: Theme.of(
-                        context,
-                      ).primaryColor.withValues(alpha: 0.1),
+                      color: Theme.of(context).primaryColor
+                          .withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(6.w),
                     ),
                     child: Obx(

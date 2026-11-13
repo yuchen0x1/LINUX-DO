@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:linux_do/const/app_spacing.dart';
 import 'package:linux_do/const/app_theme.dart';
 import 'package:linux_do/widgets/dis_refresh.dart';
+
 import '../../../const/app_colors.dart';
 import '../../../const/app_const.dart';
 import '../../../const/app_images.dart';
@@ -499,9 +500,8 @@ class LeaderboardPage extends GetView<LeaderboardController> {
                 '我 (${me?.user.displayName ?? ''})',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(color: AppColors.white),
+                style: Theme.of(context).textTheme.titleMedium
+                    ?.copyWith(color: AppColors.white),
               ),
               Text(
                 me?.user.formattedScore ?? '',

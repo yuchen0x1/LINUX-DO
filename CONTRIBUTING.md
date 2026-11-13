@@ -4,8 +4,8 @@
 
 | 组件 | 版本 | 说明 |
 |---|---|---|
-| Flutter | 3.35.7 及以上 | CI 固定 3.35.7；本地更高版本亦可 |
-| Dart | 3.9.0 及以上 | 见 `pubspec.yaml` 的 `environment.sdk` |
+| Flutter | 3.47.1 及以上 | CI 固定 3.47.1；本地更高版本亦可 |
+| Dart | 3.13.0 及以上 | 见 `pubspec.yaml` 的 `environment.sdk` |
 | JDK | 17 | AGP 8.11.x 要求 |
 | Android SDK | compileSdk 36 / targetSdk 35 / minSdk 24 | |
 | Gradle | 8.14.x | 更高版本可编译，但会提示升级 |
@@ -39,8 +39,12 @@
 
 ## 提交前必须通过的检查
 
+本分支只维护 Android；旧平台、历史记录和备份已隔离到被忽略的 `.local-archive/`。
+完整版本记录以 [更新日志](docs/releases/release-notes.md) 为准，提交前还需检查 [上传边界](docs/REPOSITORY_HYGIENE.md)。
+
 ```bash
-dart format --set-exit-if-changed .
+python3 scripts/check_repository_hygiene.py
+dart format --output=none --set-exit-if-changed lib test
 flutter analyze --no-pub          # 必须 0 error / 0 warning
 flutter test                      # 全部通过
 ```

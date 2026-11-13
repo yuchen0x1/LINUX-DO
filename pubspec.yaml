@@ -16,20 +16,20 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.1.0+12
+version: 1.1.1+13
 license: MIT
 repository: https://github.com/R-lz/LINUX-DO
 
 environment:
-  # 与 CI 固定的 Flutter 3.35.7 对齐；下限过宽会让旧 SDK 解析出不同依赖版本。
-  sdk: '>=3.9.0 <4.0.0'
+  # 锁定依赖要求 Dart 3.13+；CI 与本地发布工具链固定为 Flutter 3.47.1。
+  sdk: '>=3.13.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
-    sdk: flutter 
-  
+    sdk: flutter
+
   lazy_load_indexed_stack: ^1.2.1
   # 321 处 CupertinoIcons 用到该字体资源，不能移除
   cupertino_icons: ^1.0.2
@@ -45,7 +45,7 @@ dependencies:
   # User API Key 与 RSA 私钥必须放系统密钥库，不能明文落盘
   flutter_secure_storage: ^9.2.4
   fluttertoast: ^8.2.4
-  permission_handler: 12.0.1 
+  permission_handler: 12.0.1
   device_info_plus: ^9.1.1
   package_info_plus: ^8.3.0
   flutter_slidable: ^3.0.1

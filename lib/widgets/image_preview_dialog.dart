@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:linux_do/widgets/dis_loading.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart';
@@ -11,8 +12,10 @@ import 'package:linux_do/const/app_spacing.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../utils/log.dart';
 import '../utils/mixins/toast_mixin.dart';
+
 import 'package:permission_handler/permission_handler.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -179,9 +182,8 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.w),
                     ),
-                    backgroundColor: Theme.of(
-                      context,
-                    ).primaryColor.withValues(alpha: 0.1),
+                    backgroundColor: Theme.of(context).primaryColor
+                        .withValues(alpha: 0.1),
                   ),
                   child: Text(
                     '取消',
@@ -282,9 +284,8 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
                 width: 60.w,
                 height: 60.w,
                 decoration: BoxDecoration(
-                  color: Theme.of(
-                    Get.context!,
-                  ).primaryColor.withValues(alpha: 0.1),
+                  color: Theme.of(Get.context!).primaryColor
+                      .withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -324,9 +325,8 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.w),
                           ),
-                          backgroundColor: Theme.of(
-                            Get.context!,
-                          ).primaryColor.withValues(alpha: 0.1),
+                          backgroundColor: Theme.of(Get.context!).primaryColor
+                              .withValues(alpha: 0.1),
                         ),
                         child: Text(
                           '取消',

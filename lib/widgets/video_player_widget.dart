@@ -149,12 +149,10 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                             allowScrubbing: true,
                             colors: VideoProgressColors(
                               playedColor: Theme.of(context).primaryColor,
-                              bufferedColor: Theme.of(
-                                context,
-                              ).primaryColor.withValues(alpha: 0.3),
-                              backgroundColor: Theme.of(
-                                context,
-                              ).primaryColor.withValues(alpha: 0.1),
+                              bufferedColor: Theme.of(context).primaryColor
+                                  .withValues(alpha: 0.3),
+                              backgroundColor: Theme.of(context).primaryColor
+                                  .withValues(alpha: 0.1),
                             ),
                             padding: EdgeInsets.symmetric(
                               vertical: 8.w,

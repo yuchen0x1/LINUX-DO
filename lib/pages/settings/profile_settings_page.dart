@@ -7,6 +7,7 @@ import 'package:linux_do/const/app_spacing.dart';
 import 'package:linux_do/widgets/dis_button.dart';
 import 'package:linux_do/widgets/dis_loading.dart';
 import 'package:linux_do/widgets/dis_text_field.dart';
+
 import 'profile_settings_controller.dart';
 
 class ProfileSettingsPage extends GetView<ProfileSettingsController> {
@@ -427,9 +428,10 @@ class ProfileSettingsPage extends GetView<ProfileSettingsController> {
                                 timezone,
                                 style: TextStyle(
                                   fontSize: 14.w,
-                                  color: Theme.of(
-                                    context,
-                                  ).textTheme.bodyMedium?.color,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.color,
                                 ),
                               ),
                             ),

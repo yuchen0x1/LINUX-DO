@@ -8,6 +8,7 @@ import 'package:linux_do/widgets/avatar_widget.dart';
 import 'package:linux_do/widgets/dis_button.dart';
 import 'package:linux_do/widgets/dis_emoji_picker.dart';
 import 'package:linux_do/widgets/dis_text_field.dart';
+
 import '../../const/app_const.dart';
 import '../../const/app_colors.dart';
 import '../../const/app_theme.dart';
@@ -110,9 +111,8 @@ class CreatePostPage extends GetView<CreatePostController> {
                       fillColor: AppColors.transparent,
                       hintStyle: TextStyle(
                         fontSize: 14.w,
-                        color: Theme.of(
-                          context,
-                        ).textTheme.bodyMedium?.color?.withValues(alpha: .3),
+                        color: Theme.of(context).textTheme.bodyMedium?.color
+                            ?.withValues(alpha: .3),
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -152,9 +152,8 @@ class CreatePostPage extends GetView<CreatePostController> {
                       fillColor: AppColors.transparent,
                       hintStyle: TextStyle(
                         fontSize: 13.w,
-                        color: Theme.of(
-                          context,
-                        ).textTheme.bodyMedium?.color?.withValues(alpha: .3),
+                        color: Theme.of(context).textTheme.bodyMedium?.color
+                            ?.withValues(alpha: .3),
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -431,9 +430,10 @@ class CreatePostPage extends GetView<CreatePostController> {
                                 child: Icon(
                                   CupertinoIcons.xmark,
                                   size: 10.w,
-                                  color: Theme.of(
-                                    context,
-                                  ).textTheme.bodyMedium?.color,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.color,
                                 ),
                               ),
                             ],
@@ -542,9 +542,10 @@ class CreatePostPage extends GetView<CreatePostController> {
                                       child: Icon(
                                         CupertinoIcons.xmark,
                                         size: 10.w,
-                                        color: Theme.of(
-                                          context,
-                                        ).textTheme.bodyMedium?.color,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.color,
                                       ),
                                     ),
                                   ],
@@ -624,9 +625,10 @@ class CreatePostPage extends GetView<CreatePostController> {
                                 'x (${tag.count})',
                                 style: TextStyle(
                                   fontSize: 10.w,
-                                  color: Theme.of(
-                                    context,
-                                  ).textTheme.bodyMedium?.color,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.color,
                                   fontFamily: AppFontFamily.dinPro,
                                 ),
                               ),

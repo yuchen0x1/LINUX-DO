@@ -12,7 +12,9 @@ import 'package:linux_do/widgets/cached_image.dart';
 import 'package:linux_do/widgets/dis_emoji_picker.dart';
 import 'package:linux_do/widgets/emoji_text.dart';
 import 'package:linux_do/widgets/glowing_text_wweep.dart';
+
 import 'dart:ui';
+
 import '../../const/app_const.dart';
 import '../../controller/global_controller.dart';
 import '../../models/user.dart';
@@ -22,6 +24,7 @@ import '../../widgets/switch.dart';
 import '../../widgets/trust_level_badge.dart';
 import 'profile_controller.dart';
 import '../../widgets/dis_loading.dart';
+
 import 'package:slide_switcher/slide_switcher.dart';
 
 class ProfilePage extends GetView<ProfileController> with ToastMixin {
@@ -81,9 +84,8 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                   });
 
                   return Container(
-                    color: Theme.of(
-                      context,
-                    ).primaryColor.withValues(alpha: progress),
+                    color: Theme.of(context).primaryColor
+                        .withValues(alpha: progress),
                     child: FlexibleSpaceBar(
                       background: Stack(
                         fit: StackFit.expand,
@@ -250,9 +252,8 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                     borderRadius: BorderRadius.circular(12.w),
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(
-                          context,
-                        ).shadowColor.withValues(alpha: 0.05),
+                        color: Theme.of(context).shadowColor
+                            .withValues(alpha: 0.05),
                         blurRadius: 10,
                         offset: const Offset(0, 2),
                       ),
@@ -510,9 +511,8 @@ class ProfilePage extends GetView<ProfileController> with ToastMixin {
                         ? Container(
                             padding: EdgeInsets.all(4.w),
                             decoration: BoxDecoration(
-                              color: Theme.of(
-                                Get.context!,
-                              ).primaryColor.withValues(alpha: .2),
+                              color: Theme.of(Get.context!).primaryColor
+                                  .withValues(alpha: .2),
                               borderRadius: BorderRadius.circular(4.w),
                             ),
                             child: EmojiText(controller.emojiStatus.value),

@@ -9,6 +9,7 @@ import 'package:linux_do/routes/app_pages.dart';
 import 'package:linux_do/utils/log.dart';
 import 'package:linux_do/utils/mixins/concatenated.dart';
 import 'package:linux_do/utils/tag.dart';
+
 import '../../controller/base_controller.dart';
 
 class FollowController extends BaseController with Concatenated {

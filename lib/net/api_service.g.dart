@@ -267,8 +267,7 @@ class _ApiService implements ApiService {
     String accept = "application/json, text/plain, */*",
     String acceptLanguage = "zh-CN,zh;q=0.9,en;q=0.8",
     String requestedWith = "XMLHttpRequest",
-    String secChUa =
-        "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\"",
+    String secChUa = "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\"",
     String secChUaMobile = "?0",
     String secChUaPlatform = "\"macOS\"",
   }) async {

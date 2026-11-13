@@ -114,15 +114,13 @@ void main() {
     });
 
     test('缺省字段不抛异常（服务端裁剪过 payload 的场景）', () {
-      final minimal =
-          jsonDecode('''
+      final minimal = jsonDecode('''
       {
         "topic_list": {
           "topics": [{"id": 1, "title": "最小主题"}]
         }
       }
-      ''')
-              as Map<String, dynamic>;
+      ''') as Map<String, dynamic>;
 
       final response = TopicListResponse.fromJson(minimal);
       final topic = response.topicList!.topics.first;
@@ -137,28 +135,24 @@ void main() {
 
   group('findUserById 契约', () {
     test('命中时返回对应用户', () {
-      final json =
-          jsonDecode('''
+      final json = jsonDecode('''
       {
         "users": [{"id": 7, "username": "seven"}],
         "topic_list": {"topics": []}
       }
-      ''')
-              as Map<String, dynamic>;
+      ''') as Map<String, dynamic>;
       final response = TopicListResponse.fromJson(json);
 
       expect(response.findUserById(7)?.username, 'seven');
     });
 
     test('未命中时返回空占位而不抛异常', () {
-      final json =
-          jsonDecode('''
+      final json = jsonDecode('''
       {
         "users": [{"id": 7, "username": "seven"}],
         "topic_list": {"topics": []}
       }
-      ''')
-              as Map<String, dynamic>;
+      ''') as Map<String, dynamic>;
       final response = TopicListResponse.fromJson(json);
 
       final missing = response.findUserById(999);

@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
+
 import 'package:pointycastle/export.dart';
+
 import '../utils/log.dart';
 import '../utils/secure_store.dart';
 

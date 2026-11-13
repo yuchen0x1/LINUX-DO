@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:linux_do/net/http_config.dart';
+
 import 'category_data.dart';
 
 part 'about.g.dart';

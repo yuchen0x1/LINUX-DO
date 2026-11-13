@@ -53,9 +53,8 @@ class PageHeader extends StatelessWidget {
                           color: color.backgroundColor,
                           width: 0.5,
                         ),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(4),
-                        ).w,
+                        borderRadius: const BorderRadius.all(Radius.circular(4))
+                            .w,
                       ),
                       child: Text(
                         tag,

@@ -1,264 +1,115 @@
-# LINUX DO 🐧
+# LINUX DO Android
 
-<p align="center">
-  <picture>
-    <source 
-      srcset="assets/images/dark/logo.webp" 
-      media="(prefers-color-scheme: dark)"
-    />
-    <img 
-      src="assets/images/light/logo.webp" 
-      width="200" 
-      alt="LINUX DO Logo"
-    />
-  </picture>
-</p>
+使用 Flutter 开发的 LINUX DO 社区安卓客户端。本分支仅维护 Android；历史上游中的其他平台模板和构建流程已移出当前工作树，不代表现有产品版本。
 
----
+## 最新更新
 
-<div align="center">
+### v1.1.1 · 2026-11-13
 
-[![Flutter](https://img.shields.io/badge/Flutter-3.27.2-blue.svg)](https://flutter.dev)
-[![Dart](https://img.shields.io/badge/Dart-3.6.1-red.svg)](https://dart.dev)
-[![App Version](https://img.shields.io/badge/dynamic/yaml?url=https://raw.githubusercontent.com/R-lz/LINUX-DO/main/pubspec.yaml&query=$.version&label=Version&color=orange)]()
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![EN](https://img.shields.io/badge/English-README-blue.svg)](README.en.md)
+- 统一 Android 维护范围，清理旧平台入口与无用工程文件。
+- 补齐历代版本说明，修正历史功能与版本号记录。
+- 修复依赖 SDK 与构建环境不一致的问题，补齐发布构建配置。
+- 新增上传边界检查；发布包启用混淆，保留独立诊断材料。
 
-</div>
+完整更新记录见 [更新日志](docs/releases/release-notes.md)，目录整理见 [仓库清理说明](docs/REPOSITORY_HYGIENE.md)。
 
+## 下载与安装
 
-## 🌟 这是什么？
+前往 [GitHub Releases](https://github.com/yuchen0x1/LINUX-DO/releases) 获取 APK：
 
-使用Flutter开发的LINUX DO客户端,支持 `Android` `IOS`.
-
-
-## 📦 项目结构
-
-```
-lib/
-├── 🏛 const/          
-├── 🧠 controller/      
-├── 🗃 models/         
-├── 🌐 net/          
-├── 📱 pages/        
-├── 🗺 routes/       
-├── ⚙️ utils/         
-└── 🎨 widgets/       
-```
-
-## 🚀 启程指南
-
-### 环境准备
-
-```yaml
-必要条件:
-  - Flutter: ">=3.0.0 <4.0.0"
-  - Dart: ">=3.0.0 <4.0.0"
-  - 开发工具: Android Studio / VS Code
-  - iOS: Xcode 13.0+（用于iOS开发）
-  - Android: Android SDK（用于Android开发）
-```
-
-    安装flutter
-```bash
-# 检查安装结果
-flutter --version
-
-# 检查环境
-flutter doctor -v
-```
-
-### 🎯 开发环境配置
-
-#### 1. 项目获取
-```bash
-# 克隆项目
-git clone https://github.com/R-lz/LINUX-DO.git
-cd LINUX-DO
-
-# 安装依赖
-flutter pub get
-```
-
-#### 2. 代码生成
-```bash
-# 生成路由、JSON序列化等代码
-flutter pub run build_runner build --delete-conflicting-outputs
-```
-
-#### 3. 平台特定配置
-
-<details>
-<summary>iOS 配置</summary>
-</br>
-
-    确保系统中安装了xcode,cocoapods
-
-```bash
-# 进入 iOS 目录
-cd ios
-
-pod cache clean --all
-rm -rf Pods Podfile.lock
-
-pod install --repo-update
-
-cd ..
-```
-</details>
-
----
-
-
-<details>
-<summary>Android 配置</summary>
-</br>
-
-    确保你的系统中已安装JDK，并配置了环境变量（JAVA_HOME 和 PATH）
-
-#### 生成签名文件
-```bash
-mkdir -p keystore
-```
-
-```bash
-keytool -genkey -v -keystore keystore/linux-do.jks -alias mykey -keyalg RSA -keysize 2048 -validity 10000
-```
-
-继续交互式
-``` bash
-Enter keystore password:  [输入 Keystore 密码]
-Re-enter new password:   [再次输入确认密码]
-What is your first and last name? 
-... ...
-```
-创建key.properties
-```bash
-touch keystore/key.properties
-
-cat > keystore/key.properties << EOF
-storePassword=<你的Keystore密码>
-keyPassword=<你的密钥密码>
-keyAlias=mykey
-storeFile=../keystore/linux-do.jks
-EOF
-```
-
-</details>
-
-
-### 🚀 启动项目
-
-#### iOS
-```bash
-# 开发版本
-flutter run -d ios
-
-# 发布版本
-flutter build ios --release
-```
-
-#### Android
-```bash
-# 开发版本
-flutter run -d android
-
-# 安卓打包
-flutter build apk --release --split-per-abi
-```
-
-
-<details>
-<summary>使用Github Actions编译打包</summary>
-
-#### Android:
-    配置 KEYSTORE_BASE64 | KEY_PROPERTIES
-
-```bash
-# 生成base64
-base64 -i release.jks
-```
-配置步骤:
-- 打开仓库Settings
-- 点击 `Secrets and variables` -> `New repository secret`
-- 添加两个Secret
-- 添加 Key: `KEYSTORE_BASE64` Value:<生成的base64>
-- 添加KEY_PROPERTIES 复制整个`key.properties`文本内容
-- 转到Actions运行`build_android`
-
-
-#### IOS:
-    ios为未签名的IPA,直接运行`build_ios`
-    
-</details>
-
-
----
-
-
-## 🤝 参与贡献
-
-每一个想法都值得被倾听，每一行代码都应该被尊重。
-
-- 发现任何问题或功能上的建议,请通过Issues反馈
-- 欢迎提交PR
-- 感谢你对项目的贡献！
-
-
-如果这个项目有帮助到你，请献上你的 Star ⭐️
-你的认可，是我们前进的动力。
-
-## 🛠 本地开发
-
-### 环境要求
-
-| 组件 | 版本 |
+| 架构 | 选择建议 |
 |---|---|
-| Flutter | 3.35.7（stable） |
-| Dart | 3.9+ |
-| JDK | 17 |
-| Android compileSdk | 36 |
-| Android targetSdk | 35 |
+| arm64-v8a | 大多数现代 Android 手机 |
+| armeabi-v7a | 较旧的 32 位 Android 设备 |
+| x86_64 | Android 模拟器或 x86 Android 设备；不是 Windows 版本 |
 
-CI 固定同一套版本（`.github/workflows/ci.yml`），本地请保持一致，避免依赖解析差异。
-`pubspec.lock` 已入库，修改依赖后请一并提交锁文件。
+当前源码版本为 `1.1.1+13`。构建号是基数，按架构拆包后的 APK versionCode 带架构前缀。
+实际兼容性以安装包和设备为准，不能仅根据构建成功推断真机全部功能可用。
+
+## 已实现的主要能力
+
+- 话题列表、分类、搜索、帖子详情、发帖和回复。
+- 用户资料、社区互动、私信、通知和书签等页面。
+- Cookie / User API Key 登录、网络代理、Cronet 与 DoH 设置。
+- 图片/媒体内容显示、分享入站、深链、草稿保存和主题设置。
+- 本地崩溃记录，默认不上传日志。
+
+以上描述依据当前源码；本项目不宣称离线阅读、完整多平台支持、静默升级或所有账号/网络场景都已验证。
+系统密钥库不可用时凭据存储存在降级路径，请参阅源码和具体安全评估，不将“优先系统密钥库”宣传为无条件加密。
+
+## 本地开发
+
+| 组件 | 要求 |
+|---|---|
+| Flutter | CI 固定 3.47.1 stable |
+| Dart | >=3.13.0 <4.0.0 |
+| JDK | 17 或符合当前 Android 工具链要求的版本 |
+| Android SDK | 当前发布 APK 使用 compileSdk 36、targetSdk 35、minSdk 24 |
+| Gradle | 8.14.3 |
+| NDK | 16KB 对齐检查需要 llvm-readelf；CI 使用 r28 |
+
+以 `pubspec.yaml`、`pubspec.lock` 与 Android 构建配置为准。依赖锁文件属于应用构建输入，必须入库。
+
+```bash
+git clone https://github.com/yuchen0x1/LINUX-DO.git
+cd LINUX-DO
+flutter pub get
+flutter devices
+flutter run -d <Android设备ID>
+```
+
+模型/接口定义变动后，按需要重新生成代码：
+
+```bash
+dart run build_runner build --delete-conflicting-outputs
+```
 
 ### 签名配置
 
-签名口令**不入库**。release 构建前创建 `android/keystore/key.properties`：
+release 签名从 `android/keystore/key.properties` 读取。密钥、口令、备份均只保存在本地，禁止提交。
+以下仅为模板；`storeFile` 相对于 Android 工程根目录：
 
 ```properties
-storePassword=<你的口令>
-keyPassword=<你的口令>
 storeFile=app/release-key.jks
-keyAlias=linuxdo
+storePassword=<本地口令>
+keyAlias=<本地别名>
+keyPassword=<本地口令>
 ```
 
-该文件与 `*.jks` 均被 `.gitignore` 排除。缺少此文件时 release 构建会跳过签名并打印警告。
+缺少配置或字段时当前 Gradle 会警告并产出未签名包；未签名包不能当作已验证的安装/发布包。
+保留原签名密钥，覆盖安装取决于相同证书和合适的 versionCode，不能仅根据版本名称保证。
 
-### 16KB 页对齐校验
-
-Android 15 起的新硬件使用 16KB 内存页。若 APK 内 native 库的 ELF `LOAD` 段未按 16KB
-对齐（`p_align < 0x4000`），应用会启动即崩溃；Google Play 也已要求新提交支持 16KB。
-
-构建后执行：
+### 构建与检查
 
 ```bash
+python3 scripts/check_repository_hygiene.py
+dart format --output=none --set-exit-if-changed lib test
+flutter analyze --no-pub --no-fatal-infos
+flutter test --no-pub
+flutter build apk --release --split-per-abi
 bash scripts/check_16k_alignment.sh build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
 ```
 
-脚本逐个检查 `.so` 并输出 `OK` / `FAIL`。CI 的 `build-android` job 会自动运行，存在未对齐
-库时构建失败。常见来源是 MLKit（`mobile_scanner`）、CameraX 与 `jni`；遇到 `FAIL` 优先升级
-对应插件。
+Windows 使用已安装的 Python 命令替换 `python3`，并在支持 bash 的终端运行对齐检查。
+CI 只产出 APK/符号等 artifacts，不自动创建 Release；发布需要独立显式操作。
+本机验证与远程 CI 结果分开记录，详见清理说明。
 
-### 代码规范
+## 目录与上传边界
 
-```bash
-dart format lib test          # 格式化
-flutter analyze --no-pub      # 静态分析（CI 要求 0 warning / 0 error）
-flutter test --no-pub         # 单元测试
-```
+| 路径 | 作用 | Git 跟踪 |
+|---|---|---|
+| `lib/`、`assets/`、`android/` | 当前应用源码、运行资源和 Android 工程 | 是 |
+| `test/`、`scripts/`、`docs/` | 回归检查、开发脚本与文档 | 是 |
+| `pubspec.yaml`、`pubspec.lock` | 依赖声明与可复现版本 | 是 |
+| `build/`、`.dart_tool/`、`android/.gradle/` | 可再生成的构建/工具缓存 | 否 |
+| `dist/` | 本地 APK 与发布诊断文件 | 否 |
+| `.local-archive/` | 隔离的旧平台、历史记录、备份与缓存 | 否 |
+| 签名文件、`key.properties`、真实 `.env` | 本地凭据和配置 | 否 |
 
-## 📜 开源协议
+不要把 `dist/` 或 `.local-archive/` 加入 `pubspec.yaml` 的 assets 列表。
+当前开发流程和约定见 [贡献指南](CONTRIBUTING.md)；英文说明见 [README.en.md](README.en.md)。
 
-本项目采用MIT许可证 - 请参阅[LICENSE](LICENSE)文件以获取详细信息。
+## 来源与许可证
+
+本项目基于 [R-lz/LINUX-DO](https://github.com/R-lz/LINUX-DO) 的历史继续维护。
+采用 MIT 许可证，保留 [LICENSE](LICENSE) 中的版权与许可声明。

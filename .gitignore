@@ -66,3 +66,28 @@ guest_try2.png
 
 # 本地打包产物（发布用，不入库）
 /dist/
+
+# Android 项目本地缓存、调试导出与历史记录
+/android/build/
+/android/.kotlin/
+/.local-archive/
+/.autonomous-upgrade/
+/1.2.1
+*.apk
+*.aab
+*.ipa
+*.jks
+*.keystore
+*.p12
+*.pfx
+**/key.properties
+.env
+.env.*
+!.env.example
+
+# 本分支仅维护 Android；不提交其他平台的模板或构建产物
+/ios/
+/macos/
+/windows/
+/web/
+/linux/

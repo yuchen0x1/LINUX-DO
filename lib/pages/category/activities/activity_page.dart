@@ -7,6 +7,7 @@ import 'package:linux_do/const/app_spacing.dart';
 import 'package:linux_do/const/app_theme.dart';
 import 'package:linux_do/models/activity_stream.dart';
 import 'package:linux_do/widgets/state_view.dart';
+
 import 'activity_controller.dart';
 
 class ActivityPage extends GetView<EventController> {

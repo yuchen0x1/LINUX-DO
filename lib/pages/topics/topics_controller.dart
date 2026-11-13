@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:linux_do/const/app_images.dart';
 import 'package:linux_do/controller/global_controller.dart';
+
 import '../../routes/app_pages.dart';
 import '../../models/search_result.dart';
 import '../../controller/base_controller.dart';
@@ -14,8 +15,10 @@ import 'tab_views/topic_tab_controller.dart';
 import 'tab_views/topic_tab_view.dart';
 import '../../net/api_service.dart';
 import '../../utils/log.dart';
+
 import 'package:linux_do/models/banner_settings.dart';
 import 'package:linux_do/utils/storage_manager.dart';
+
 import 'dart:io';
 
 class TopicsController extends BaseController

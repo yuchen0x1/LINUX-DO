@@ -9,6 +9,7 @@ import 'package:linux_do/widgets/cached_image.dart';
 import 'package:linux_do/widgets/dis_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:linux_do/widgets/dis_loading.dart';
+
 import 'edit_profile_controller.dart';
 
 class EditProfilePage extends GetView<EditProfileController> {
@@ -56,9 +57,8 @@ class EditProfilePage extends GetView<EditProfileController> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: Theme.of(
-                              context,
-                            ).primaryColor.withValues(alpha: .6),
+                            color: Theme.of(context).primaryColor
+                                .withValues(alpha: .6),
                             width: 4.w,
                           ),
                         ),
@@ -74,9 +74,8 @@ class EditProfilePage extends GetView<EditProfileController> {
                                     placeholder: Icon(
                                       CupertinoIcons.person_fill,
                                       size: 40.w,
-                                      color: Theme.of(
-                                        context,
-                                      ).hintColor.withValues(alpha: .2),
+                                      color: Theme.of(context).hintColor
+                                          .withValues(alpha: .2),
                                     ),
                                   ),
                           ),
@@ -92,17 +91,15 @@ class EditProfilePage extends GetView<EditProfileController> {
                           gradient: LinearGradient(
                             colors: [
                               Theme.of(context).primaryColor,
-                              Theme.of(
-                                context,
-                              ).primaryColor.withValues(alpha: .5),
+                              Theme.of(context).primaryColor
+                                  .withValues(alpha: .5),
                             ],
                           ),
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: Theme.of(
-                                context,
-                              ).shadowColor.withValues(alpha: .1),
+                              color: Theme.of(context).shadowColor
+                                  .withValues(alpha: .1),
                               blurRadius: 10,
                               offset: const Offset(0, 2),
                             ),
@@ -374,9 +371,8 @@ class EditProfilePage extends GetView<EditProfileController> {
                 disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.w),
                   borderSide: BorderSide(
-                    color: Theme.of(
-                      context,
-                    ).dividerColor.withValues(alpha: .05),
+                    color: Theme.of(context).dividerColor
+                        .withValues(alpha: .05),
                   ),
                 ),
                 isDense: true,

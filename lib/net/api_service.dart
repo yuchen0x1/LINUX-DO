@@ -7,7 +7,9 @@ import 'package:linux_do/models/poll_vote.dart';
 import 'package:linux_do/models/request/update_post.dart';
 import 'package:linux_do/net/success_response.dart';
 import 'package:retrofit/retrofit.dart';
+
 import 'dart:convert';
+
 import '../models/about.dart';
 import '../models/activity_stream.dart';
 import '../models/birthday.dart';
@@ -110,9 +112,7 @@ abstract class ApiService {
     @Header("Accept-Language")
     String acceptLanguage = "zh-CN,zh;q=0.9,en;q=0.8",
     @Header("X-Requested-With") String requestedWith = "XMLHttpRequest",
-    @Header("sec-ch-ua")
-    String secChUa =
-        "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\"",
+    @Header("sec-ch-ua") String secChUa = "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\"",
     @Header("sec-ch-ua-mobile") String secChUaMobile = "?0",
     @Header("sec-ch-ua-platform") String secChUaPlatform = "\"macOS\"",
   });

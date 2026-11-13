@@ -4,15 +4,19 @@ import 'package:linux_do/const/app_images.dart';
 import 'package:linux_do/controller/base_controller.dart';
 import 'package:linux_do/net/http_config.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 import '../../controller/global_controller.dart';
 import '../../models/chat_detail_message.dart';
 import '../../models/chat_message.dart';
 import '../../net/api_service.dart';
 import '../../utils/log.dart';
+
 import 'dart:async';
+
 import 'package:linux_do/models/user.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:uuid/uuid.dart';
+
 import 'chat_list_controller.dart';
 
 class ChatDetailController extends BaseController {

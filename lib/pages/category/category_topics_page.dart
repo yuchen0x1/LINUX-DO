@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:slide_switcher/slide_switcher.dart';
+
 import '../../const/app_colors.dart';
 import '../../const/app_const.dart';
 import '../../widgets/drawer_menu.dart';
@@ -68,9 +69,8 @@ class CategoryTopicsPage extends GetView<CategoryTopicsController> {
                     containerColor: Theme.of(context).cardColor,
                     containerBoxShadow: [
                       BoxShadow(
-                        color: Theme.of(
-                          context,
-                        ).shadowColor.withValues(alpha: 0.05),
+                        color: Theme.of(context).shadowColor
+                            .withValues(alpha: 0.05),
                         blurRadius: 10,
                       ),
                     ],

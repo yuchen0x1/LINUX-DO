@@ -13,6 +13,7 @@ import 'package:linux_do/widgets/dis_button.dart';
 import 'package:linux_do/widgets/dis_refresh.dart';
 import 'package:linux_do/widgets/state_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 import 'bookmark_controller.dart';
 
 class BookmarkPage extends GetView<BookmarkController> {
@@ -75,9 +76,11 @@ class BookmarkPage extends GetView<BookmarkController> {
                   controller: controller.tabController,
                   indicatorSize: TabBarIndicatorSize.label,
                   labelColor: Colors.white,
-                  unselectedLabelColor: Theme.of(
-                    context,
-                  ).textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
+                  unselectedLabelColor: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.color
+                      ?.withValues(alpha: 0.7),
                   indicator: const BoxDecoration(),
                   dividerColor: Colors.transparent,
                   labelStyle: TextStyle(
@@ -138,9 +141,8 @@ class BookmarkPage extends GetView<BookmarkController> {
                               : null,
                           border: !isSelected
                               ? Border.all(
-                                  color: Theme.of(
-                                    context,
-                                  ).dividerColor.withValues(alpha: 0.5),
+                                  color: Theme.of(context).dividerColor
+                                      .withValues(alpha: 0.5),
                                   width: 1,
                                 )
                               : null,
@@ -300,9 +302,10 @@ class BookmarkPage extends GetView<BookmarkController> {
                                 fontSize: 14.w,
                                 fontWeight: FontWeight.w600,
                                 fontFamily: AppFontFamily.dinPro,
-                                color: Theme.of(
-                                  context,
-                                ).textTheme.titleMedium?.color,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.color,
                               ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
@@ -313,9 +316,10 @@ class BookmarkPage extends GetView<BookmarkController> {
                                 Icon(
                                   CupertinoIcons.clock,
                                   size: 12.w,
-                                  color: Theme.of(
-                                    context,
-                                  ).textTheme.bodySmall?.color,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.color,
                                 ),
                                 4.hGap,
                                 Text(
@@ -323,9 +327,10 @@ class BookmarkPage extends GetView<BookmarkController> {
                                   style: TextStyle(
                                     fontSize: 10.w,
                                     fontFamily: AppFontFamily.dinPro,
-                                    color: Theme.of(
-                                      context,
-                                    ).textTheme.bodySmall?.color,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.color,
                                   ),
                                 ),
 
@@ -370,9 +375,8 @@ class BookmarkPage extends GetView<BookmarkController> {
                             vertical: 4,
                           ).w,
                           decoration: BoxDecoration(
-                            color: Theme.of(
-                              context,
-                            ).dividerColor.withValues(alpha: 0.1),
+                            color: Theme.of(context).dividerColor
+                                .withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(12).w,
                           ),
                           child: Text(
@@ -380,9 +384,10 @@ class BookmarkPage extends GetView<BookmarkController> {
                             style: TextStyle(
                               fontSize: 9.w,
                               fontFamily: AppFontFamily.dinPro,
-                              color: Theme.of(
-                                context,
-                              ).textTheme.bodySmall?.color,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.color,
                             ),
                           ),
                         );
@@ -466,9 +471,8 @@ class BookmarkPage extends GetView<BookmarkController> {
                   ).w,
                   child: Divider(
                     height: 1.h,
-                    color: Theme.of(
-                      context,
-                    ).dividerColor.withValues(alpha: 0.1),
+                    color: Theme.of(context).dividerColor
+                        .withValues(alpha: 0.1),
                   ),
                 ),
 

@@ -6,12 +6,14 @@ import 'package:linux_do/const/app_colors.dart';
 import 'package:linux_do/const/app_spacing.dart';
 import 'package:linux_do/models/banner_settings.dart';
 import 'package:linux_do/widgets/dis_loading.dart';
+
 import '../../const/app_const.dart';
 import '../../const/app_images.dart';
 import '../../routes/app_pages.dart';
 import '../../utils/tag.dart';
 import 'topics_controller.dart';
 import '../../utils/storage_manager.dart';
+
 import 'package:linux_do/pages/topics/widgets/banner_picker_dialog.dart';
 
 class TopicsPage extends StatefulWidget {
@@ -147,9 +149,8 @@ class _TopicsPageState extends State<TopicsPage>
                       color: Theme.of(context).cardColor,
                       border: Border(
                         top: BorderSide(
-                          color: Theme.of(
-                            context,
-                          ).dividerColor.withValues(alpha: .1),
+                          color: Theme.of(context).dividerColor
+                              .withValues(alpha: .1),
                           width: 0.5,
                         ),
                       ),
@@ -418,9 +419,8 @@ class TopicSearchDelegate extends SearchDelegate<String> {
                           borderRadius: BorderRadius.circular(16.w),
                           boxShadow: [
                             BoxShadow(
-                              color: Theme.of(
-                                context,
-                              ).shadowColor.withValues(alpha: 0.1),
+                              color: Theme.of(context).shadowColor
+                                  .withValues(alpha: 0.1),
                               blurRadius: 8,
                               offset: const Offset(0, 4),
                             ),
@@ -433,9 +433,8 @@ class TopicSearchDelegate extends SearchDelegate<String> {
                               width: 40.w,
                               height: 40.w,
                               decoration: BoxDecoration(
-                                color: Theme.of(
-                                  context,
-                                ).primaryColor.withValues(alpha: 0.1),
+                                color: Theme.of(context).primaryColor
+                                    .withValues(alpha: 0.1),
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
@@ -450,9 +449,10 @@ class TopicSearchDelegate extends SearchDelegate<String> {
                               style: TextStyle(
                                 fontSize: 16.w,
                                 fontWeight: FontWeight.w600,
-                                color: Theme.of(
-                                  context,
-                                ).textTheme.titleLarge?.color,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge
+                                    ?.color,
                               ),
                             ),
                             12.vGap,
@@ -477,9 +477,8 @@ class TopicSearchDelegate extends SearchDelegate<String> {
                                     child: Container(
                                       height: 40.w,
                                       decoration: BoxDecoration(
-                                        color: Theme.of(
-                                          context,
-                                        ).primaryColor.withValues(alpha: 0.1),
+                                        color: Theme.of(context).primaryColor
+                                            .withValues(alpha: 0.1),
                                         borderRadius: BorderRadius.circular(
                                           20.w,
                                         ),
@@ -533,9 +532,8 @@ class TopicSearchDelegate extends SearchDelegate<String> {
                         ),
                       ),
                     ),
-                    barrierColor: Theme.of(
-                      context,
-                    ).shadowColor.withValues(alpha: 0.4),
+                    barrierColor: Theme.of(context).shadowColor
+                        .withValues(alpha: 0.4),
                   );
                 },
               ),
@@ -667,9 +665,8 @@ class TopicSearchDelegate extends SearchDelegate<String> {
               },
               borderRadius: BorderRadius.circular(4.w),
               splashColor: Theme.of(context).primaryColor.withValues(alpha: .1),
-              highlightColor: Theme.of(
-                context,
-              ).primaryColor.withValues(alpha: .05),
+              highlightColor: Theme.of(context).primaryColor
+                  .withValues(alpha: .05),
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 3.w, horizontal: 12.w),
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.w),
@@ -761,9 +758,8 @@ class TopicSearchDelegate extends SearchDelegate<String> {
           style: baseStyle.copyWith(
             color: Theme.of(context).primaryColor,
             fontWeight: FontWeight.bold,
-            backgroundColor: Theme.of(
-              context,
-            ).primaryColor.withValues(alpha: 0.16),
+            backgroundColor: Theme.of(context).primaryColor
+                .withValues(alpha: 0.16),
           ),
         ),
       );

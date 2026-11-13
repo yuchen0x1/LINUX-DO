@@ -144,9 +144,10 @@ class SimplifiedItem extends StatelessWidget with Concatenated {
                                   fontSize: 16.w,
                                   fontWeight: FontWeight.w500,
                                   fontFamily: AppFontFamily.dinPro,
-                                  color: Theme.of(
-                                    context,
-                                  ).textTheme.titleMedium?.color,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium
+                                      ?.color,
                                 ),
                               ),
                             ),

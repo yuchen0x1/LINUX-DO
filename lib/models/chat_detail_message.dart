@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+
 import '../utils/expand/datetime_expand.dart';
 
 part 'chat_detail_message.g.dart';

@@ -15,6 +15,7 @@ import 'package:linux_do/widgets/dis_emoji_picker.dart';
 import 'package:linux_do/widgets/emoji_text.dart';
 import 'package:linux_do/widgets/owner_banner.dart';
 import 'package:linux_do/widgets/state_view.dart';
+
 import '../../../const/app_const.dart';
 import '../../../const/app_spacing.dart';
 import '../../../const/app_theme.dart';
@@ -22,7 +23,9 @@ import '../../../widgets/cached_image.dart';
 import '../../../widgets/dis_loading.dart';
 import 'topic_detail_controller.dart';
 import '../../../models/topic_detail.dart';
+
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
 import 'widgets/page_heder.dart';
 import 'widgets/post_content.dart';
 import 'widgets/post_header.dart';
@@ -274,9 +277,8 @@ class TopicDetailPage extends GetView<TopicDetailController> with ToastMixin {
                         vertical: 4,
                       ).w,
                       decoration: BoxDecoration(
-                        color: Theme.of(
-                          context,
-                        ).primaryColor.withValues(alpha: 0.1),
+                        color: Theme.of(context).primaryColor
+                            .withValues(alpha: 0.1),
                         borderRadius: BorderRadius.only(
                           topRight: const Radius.circular(12).w,
                           bottomLeft: const Radius.circular(12).w,

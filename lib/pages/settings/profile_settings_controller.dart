@@ -6,9 +6,12 @@ import 'package:linux_do/net/api_service.dart';
 import 'package:linux_do/utils/log.dart';
 import 'package:linux_do/utils/mixins/concatenated.dart';
 import 'package:image_picker/image_picker.dart';
+
 import 'dart:io';
+
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
+
 import '../../models/badge_detail.dart';
 
 class ProfileSettingsController extends BaseController with Concatenated {

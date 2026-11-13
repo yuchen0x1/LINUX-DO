@@ -7,6 +7,7 @@ import 'package:linux_do/const/app_spacing.dart';
 import 'package:linux_do/widgets/dis_button.dart';
 import 'package:linux_do/widgets/dis_loading.dart';
 import 'package:linux_do/widgets/dis_text_field.dart';
+
 import '../../widgets/dis_switch.dart';
 import 'do_not_disturb_controller.dart';
 
@@ -146,9 +147,8 @@ class DoNotDisturbPage extends GetView<DoNotDisturbController> {
       child: ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
         leading: CircleAvatar(
-          backgroundColor: Theme.of(
-            context,
-          ).primaryColor.withValues(alpha: 0.1),
+          backgroundColor: Theme.of(context).primaryColor
+              .withValues(alpha: 0.1),
           child: Text(
             username[0].toUpperCase(),
             style: TextStyle(
@@ -247,9 +247,10 @@ class DoNotDisturbPage extends GetView<DoNotDisturbController> {
                           duration,
                           style: TextStyle(
                             fontSize: 14.w,
-                            color: Theme.of(
-                              context,
-                            ).textTheme.bodyMedium?.color,
+                            color: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.color,
                           ),
                         ),
                       );

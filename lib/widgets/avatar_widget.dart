@@ -158,9 +158,10 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                             child: Text(
                               '尊贵的游客,该功能需要登录 🤨',
                               style: TextStyle(
-                                color: Theme.of(
-                                  context,
-                                ).textTheme.bodyMedium?.color,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.color,
                                 fontSize: 10.w,
                               ),
                             ),
@@ -819,9 +820,8 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                     end: Alignment.centerRight,
                     colors: [
                       Theme.of(Get.context!).primaryColor,
-                      Theme.of(
-                        Get.context!,
-                      ).primaryColor.withValues(alpha: 0.6),
+                      Theme.of(Get.context!).primaryColor
+                          .withValues(alpha: 0.6),
                     ],
                   ),
                   borderRadius: BorderRadius.circular(4.w),
@@ -877,9 +877,8 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            Theme.of(
-                              Get.context!,
-                            ).cardColor.withValues(alpha: 0),
+                            Theme.of(Get.context!).cardColor
+                                .withValues(alpha: 0),
                             Theme.of(Get.context!).cardColor,
                           ],
                         ),
@@ -915,9 +914,10 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                               ? FontWeight.w500
                               : FontWeight.w600,
                           color: user?.id != 1
-                              ? Theme.of(
-                                  Get.context!,
-                                ).textTheme.titleMedium?.color
+                              ? Theme.of(Get.context!)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.color
                               : Theme.of(Get.context!).primaryColor,
                         ),
                       ),
@@ -925,9 +925,10 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                         user?.userTitle ?? '',
                         style: TextStyle(
                           fontSize: 10.w,
-                          color: Theme.of(
-                            Get.context!,
-                          ).textTheme.bodySmall?.color,
+                          color: Theme.of(Get.context!)
+                              .textTheme
+                              .bodySmall
+                              ?.color,
                         ),
                       ),
                     ],
@@ -959,9 +960,10 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                           AppConst.posts.officialWarning,
                           style: TextStyle(
                             fontSize: 10.w,
-                            color: Theme.of(
-                              Get.context!,
-                            ).textTheme.bodyMedium?.color,
+                            color: Theme.of(Get.context!)
+                                .textTheme
+                                .bodyMedium
+                                ?.color,
                           ),
                         ),
                       ],
@@ -973,9 +975,8 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                   color: Theme.of(Get.context!).cardColor,
                   borderRadius: BorderRadius.circular(8.w),
                   border: Border.all(
-                    color: Theme.of(
-                      Get.context!,
-                    ).primaryColor.withValues(alpha: 0.3),
+                    color: Theme.of(Get.context!).primaryColor
+                        .withValues(alpha: 0.3),
                   ),
                 ),
                 child: TextField(
@@ -1001,9 +1002,8 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                   color: Theme.of(Get.context!).cardColor,
                   borderRadius: BorderRadius.circular(8.w),
                   border: Border.all(
-                    color: Theme.of(
-                      Get.context!,
-                    ).primaryColor.withValues(alpha: 0.3),
+                    color: Theme.of(Get.context!).primaryColor
+                        .withValues(alpha: 0.3),
                   ),
                 ),
                 child: TextField(
@@ -1034,9 +1034,8 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                             color: Theme.of(Get.context!).cardColor,
                             borderRadius: BorderRadius.circular(4.w),
                             border: Border.all(
-                              color: Theme.of(
-                                Get.context!,
-                              ).dividerColor.withValues(alpha: 0.1),
+                              color: Theme.of(Get.context!).dividerColor
+                                  .withValues(alpha: 0.1),
                             ),
                           ),
                           child: Row(
@@ -1046,9 +1045,10 @@ class UserInfoCard extends GetView<UserInfoCardController> {
                                   image.originalFilename,
                                   style: TextStyle(
                                     fontSize: 10.w,
-                                    color: Theme.of(
-                                      Get.context!,
-                                    ).textTheme.bodyMedium?.color,
+                                    color: Theme.of(Get.context!)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.color,
                                   ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,

@@ -159,9 +159,8 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
                                 });
                               },
                               activeColor: Theme.of(context).primaryColor,
-                              inactiveColor: Theme.of(
-                                context,
-                              ).primaryColor.withValues(alpha: 0.3),
+                              inactiveColor: Theme.of(context).primaryColor
+                                  .withValues(alpha: 0.3),
                             ),
                           ),
                           Text(

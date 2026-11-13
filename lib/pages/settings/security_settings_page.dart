@@ -11,6 +11,7 @@ import 'package:linux_do/utils/expand/datetime_expand.dart';
 import 'package:linux_do/widgets/dis_button.dart';
 import 'package:linux_do/widgets/dis_loading.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'security_settings_controller.dart';
 
 class SecuritySettingsPage extends GetView<SecuritySettingsController> {
@@ -91,9 +92,8 @@ class SecuritySettingsPage extends GetView<SecuritySettingsController> {
                   width: 40.w,
                   height: 40.w,
                   decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).primaryColor.withValues(alpha: 0.1),
+                    color: Theme.of(context).primaryColor
+                        .withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8.w),
                   ),
                   child: FaIcon(
@@ -115,12 +115,14 @@ class SecuritySettingsPage extends GetView<SecuritySettingsController> {
                               fontSize: 14.w,
                               fontWeight: FontWeight.w500,
                               color: device.isActive ?? false
-                                  ? Theme.of(
-                                      context,
-                                    ).textTheme.titleMedium?.color
-                                  : Theme.of(
-                                      context,
-                                    ).textTheme.bodySmall?.color,
+                                  ? Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.color
+                                  : Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.color,
                               fontFamily: AppFontFamily.dinPro,
                             ),
                           ),
@@ -133,9 +135,8 @@ class SecuritySettingsPage extends GetView<SecuritySettingsController> {
                             decoration: BoxDecoration(
                               color: device.isActive ?? false
                                   ? AppColors.success.withValues(alpha: 0.1)
-                                  : Theme.of(
-                                      context,
-                                    ).disabledColor.withValues(alpha: 0.1),
+                                  : Theme.of(context).disabledColor
+                                        .withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(4.w),
                             ),
                             child: Text(
@@ -296,9 +297,8 @@ class SecuritySettingsPage extends GetView<SecuritySettingsController> {
                 width: 50.w,
                 height: 50.w,
                 decoration: BoxDecoration(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.error.withValues(alpha: 0.1),
+                  color: Theme.of(context).colorScheme.error
+                      .withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(

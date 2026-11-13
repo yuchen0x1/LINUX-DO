@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:linux_do/widgets/emoji_text.dart';
 import 'package:linux_do/widgets/html/html_widget.dart';
+
 import '../../const/app_const.dart';
 import '../../const/app_spacing.dart';
 import '../../utils/tag.dart';
@@ -69,9 +70,8 @@ class PreviewPostPage extends GetView<PreviewPostController> {
                               vertical: 4.w,
                             ),
                             decoration: BoxDecoration(
-                              color: Theme.of(
-                                context,
-                              ).primaryColor.withValues(alpha: 0.1),
+                              color: Theme.of(context).primaryColor
+                                  .withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(4.w),
                             ),
                             child: Row(
@@ -144,9 +144,10 @@ class PreviewPostPage extends GetView<PreviewPostController> {
                           AppConst.createPost.previewEmpty,
                           style: TextStyle(
                             fontSize: 14.w,
-                            color: Theme.of(
-                              context,
-                            ).textTheme.bodyMedium?.color,
+                            color: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.color,
                           ),
                         ),
                       )

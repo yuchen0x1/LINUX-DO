@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:lazy_load_indexed_stack/lazy_load_indexed_stack.dart';
+
 import '../chat/chat_list_page.dart';
 import '../topics/topics_page.dart';
 import '../category/category_topics_page.dart';
@@ -52,12 +53,12 @@ class HomePage extends GetView<HomeController> {
             physics: const NeverScrollableScrollPhysics(),
             child: SalomonBottomBar(
               duration: const Duration(milliseconds: 200),
-              selectedItemColor: Theme.of(
-                context,
-              ).bottomNavigationBarTheme.selectedItemColor,
-              unselectedItemColor: Theme.of(
-                context,
-              ).bottomNavigationBarTheme.unselectedItemColor,
+              selectedItemColor: Theme.of(context)
+                  .bottomNavigationBarTheme
+                  .selectedItemColor,
+              unselectedItemColor: Theme.of(context)
+                  .bottomNavigationBarTheme
+                  .unselectedItemColor,
               backgroundColor: Colors.transparent,
               currentIndex: controller.currentTab.value,
               onTap: (index) {
@@ -90,17 +91,15 @@ class HomePage extends GetView<HomeController> {
                       gradient: LinearGradient(
                         colors: [
                           Theme.of(context).primaryColor,
-                          Theme.of(
-                            context,
-                          ).primaryColor.withValues(alpha: 0.75),
+                          Theme.of(context).primaryColor
+                              .withValues(alpha: 0.75),
                         ],
                       ),
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: Theme.of(
-                            context,
-                          ).primaryColor.withValues(alpha: 0.4),
+                          color: Theme.of(context).primaryColor
+                              .withValues(alpha: 0.4),
                           blurRadius: 8,
                           offset: const Offset(0, 3),
                         ),

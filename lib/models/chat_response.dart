@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+
 import 'chat_message.dart';
 
 part 'chat_response.g.dart';

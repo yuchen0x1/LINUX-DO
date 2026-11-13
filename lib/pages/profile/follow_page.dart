@@ -16,6 +16,7 @@ import 'package:linux_do/widgets/html/html_widget.dart';
 import 'package:linux_do/widgets/state_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:slide_switcher/slide_switcher.dart';
+
 import 'follow_controller.dart';
 
 class FollowPage extends GetView<FollowController> {
@@ -206,9 +207,10 @@ class FollowPage extends GetView<FollowController> {
                               fontSize: 15.sp,
                               color: post.isWebMaster()
                                   ? Theme.of(context).primaryColor
-                                  : Theme.of(
-                                      context,
-                                    ).textTheme.titleMedium?.color,
+                                  : Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.color,
                               fontWeight: FontWeight.bold,
                               fontFamily: AppFontFamily.dinPro,
                             ),
@@ -220,9 +222,10 @@ class FollowPage extends GetView<FollowController> {
                             style: TextStyle(
                               fontSize: 12.sp,
                               fontFamily: AppFontFamily.dinPro,
-                              color: Theme.of(
-                                context,
-                              ).textTheme.bodySmall?.color,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.color,
                             ),
                           ),
                         ],
@@ -279,9 +282,8 @@ class FollowPage extends GetView<FollowController> {
                           vertical: 4.w,
                         ),
                         decoration: BoxDecoration(
-                          color: Theme.of(
-                            context,
-                          ).primaryColor.withValues(alpha: 0.1),
+                          color: Theme.of(context).primaryColor
+                              .withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(4.w),
                         ),
                         child: Row(
@@ -340,9 +342,8 @@ class FollowPage extends GetView<FollowController> {
                         vertical: 3.w,
                       ),
                       decoration: BoxDecoration(
-                        color: Theme.of(
-                          context,
-                        ).primaryColor.withValues(alpha: 0.1),
+                        color: Theme.of(context).primaryColor
+                            .withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(3.w),
                       ),
                       child: Row(
@@ -530,9 +531,10 @@ class FollowPage extends GetView<FollowController> {
                                     style: TextStyle(
                                       fontSize: 12.sp,
                                       fontFamily: AppFontFamily.dinPro,
-                                      color: Theme.of(
-                                        context,
-                                      ).textTheme.bodySmall?.color,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.color,
                                     ),
                                   ),
                                 ],

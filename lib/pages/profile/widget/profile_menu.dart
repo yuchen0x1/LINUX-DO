@@ -154,9 +154,8 @@ class ProfileMenu extends StatelessWidget with ToastMixin {
                               ? LinearGradient(
                                   colors: [
                                     Theme.of(context).primaryColor,
-                                    Theme.of(
-                                      context,
-                                    ).primaryColor.withValues(alpha: 0.6),
+                                    Theme.of(context).primaryColor
+                                        .withValues(alpha: 0.6),
                                   ],
                                 )
                               : LinearGradient(

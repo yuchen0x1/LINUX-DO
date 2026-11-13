@@ -8,6 +8,7 @@ import 'package:linux_do/const/app_images.dart';
 import 'package:linux_do/const/app_theme.dart';
 import 'package:linux_do/widgets/cached_image.dart';
 import 'package:linux_do/widgets/dis_loading.dart';
+
 import 'chat_detail_controller.dart';
 
 final defaultBorder = OutlineInputBorder(
@@ -117,9 +118,8 @@ class ChatDetailPage extends GetView<ChatDetailController> {
                       vertical: 8.w,
                     ),
                     decoration: BoxDecoration(
-                      color: Theme.of(
-                        context,
-                      ).primaryColor.withValues(alpha: .8),
+                      color: Theme.of(context).primaryColor
+                          .withValues(alpha: .8),
                       borderRadius: BorderRadius.circular(20.w),
                     ),
                     child: Row(

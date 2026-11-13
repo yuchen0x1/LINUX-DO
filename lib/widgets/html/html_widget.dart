@@ -25,10 +25,13 @@ import 'package:linux_do/widgets/dis_button.dart';
 import 'package:linux_do/widgets/dis_loading.dart';
 import 'package:linux_do/widgets/expandable.dart';
 import 'package:linux_do/widgets/video_player_widget.dart';
+
 import 'dart:ui';
+
 import '../cached_image.dart';
 import '../image_preview_dialog.dart';
 import '../code_preview_dialog.dart';
+
 import 'package:cached_network_image/cached_network_image.dart';
 
 // 自定义PageStorageBucket，用于防止滚动位置恢复错误
@@ -109,17 +112,15 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
             ),
             // 代码块样式
             "pre": Style(
-              backgroundColor: Theme.of(
-                context,
-              ).primaryColor.withValues(alpha: 0.1),
+              backgroundColor: Theme.of(context).primaryColor
+                  .withValues(alpha: 0.1),
               padding: HtmlPaddings.all(12.w),
               margin: Margins.symmetric(vertical: 8.h),
               fontFamily: AppFontFamily.dinPro,
             ),
             "code": Style(
-              backgroundColor: Theme.of(
-                context,
-              ).primaryColor.withValues(alpha: 0),
+              backgroundColor: Theme.of(context).primaryColor
+                  .withValues(alpha: 0),
               padding: HtmlPaddings.symmetric(horizontal: 4.w, vertical: 2.h),
               fontFamily: AppFontFamily.dinPro,
               fontSize: FontSize(13.sp),
@@ -135,9 +136,8 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                   width: 4.w,
                 ),
               ),
-              backgroundColor: Theme.of(
-                context,
-              ).primaryColor.withValues(alpha: 0.05),
+              backgroundColor: Theme.of(context).primaryColor
+                  .withValues(alpha: 0.05),
             ),
             // 标题样式
             "h1": Style(
@@ -1187,9 +1187,8 @@ class HtmlWidget extends GetView<HtmlController> with ToastMixin {
                         vertical: 4.w,
                       ),
                       decoration: BoxDecoration(
-                        color: Theme.of(
-                          context,
-                        ).primaryColor.withValues(alpha: 0.1),
+                        color: Theme.of(context).primaryColor
+                            .withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(4.w),
                       ),
                       child: Text(

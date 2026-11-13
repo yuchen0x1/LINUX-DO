@@ -297,9 +297,10 @@ class FlipCardState extends State<FlipCard>
                             '${userinfo?.name}',
                             maxLines: 1,
                             style: TextStyle(
-                              color: Theme.of(
-                                context,
-                              ).textTheme.bodyMedium?.color,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.color,
                               fontSize: 13,
                               fontFamily: AppFontFamily.dinPro,
                               overflow: TextOverflow.ellipsis,
@@ -329,9 +330,10 @@ class FlipCardState extends State<FlipCard>
                               ),
                               maxLines: 1,
                               style: TextStyle(
-                                color: Theme.of(
-                                  context,
-                                ).textTheme.bodyMedium?.color,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.color,
                                 fontSize: 13,
                                 fontFamily: AppFontFamily.dinPro,
                                 overflow: TextOverflow.ellipsis,
@@ -374,9 +376,10 @@ class FlipCardState extends State<FlipCard>
                                 '无',
                             maxLines: 1,
                             style: TextStyle(
-                              color: Theme.of(
-                                context,
-                              ).textTheme.bodyMedium?.color,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.color,
                               fontSize: 13,
                               fontFamily: AppFontFamily.dinPro,
                               overflow: TextOverflow.ellipsis,
@@ -392,9 +395,8 @@ class FlipCardState extends State<FlipCard>
                     child: Text(
                       AppConst.sloganEn,
                       style: TextStyle(
-                        color: Theme.of(
-                          context,
-                        ).primaryColor.withValues(alpha: .6),
+                        color: Theme.of(context).primaryColor
+                            .withValues(alpha: .6),
                         fontFamily: AppFontFamily.dinPro,
                         fontSize: 10.w,
                       ),

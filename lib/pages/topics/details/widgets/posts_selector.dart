@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../../const/app_theme.dart';
 import '../topic_detail_controller.dart';
 
@@ -217,9 +218,8 @@ class _PostsSelectorState extends State<PostsSelector>
                     height: _handleHeight,
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(16),
-                      ).w,
+                      borderRadius: const BorderRadius.all(Radius.circular(16))
+                          .w,
                     ),
                     child: Center(
                       child: Text(

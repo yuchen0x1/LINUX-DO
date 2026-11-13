@@ -6,10 +6,12 @@ import 'package:linux_do/models/badge_detail.dart';
 import 'package:linux_do/widgets/cached_image.dart';
 import 'package:linux_do/widgets/state_view.dart';
 import 'package:slide_switcher/slide_switcher.dart';
+
 import '../../../const/app_colors.dart';
 import '../../../widgets/badge_widget.dart';
 import '../../../widgets/html/html_widget.dart';
 import 'badge_controller.dart';
+
 import 'package:linux_do/utils/badge.dart';
 
 class BadgePage extends GetView<BadgeController> {
@@ -71,9 +73,10 @@ class BadgePage extends GetView<BadgeController> {
                                       fontSize: 10.sp,
                                       color: controller.selectedIndex.value == 0
                                           ? Theme.of(context).primaryColor
-                                          : Theme.of(
-                                              context,
-                                            ).textTheme.bodyMedium?.color,
+                                          : Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium
+                                                ?.color,
                                     ),
                                   ),
                                   Text(
@@ -82,9 +85,10 @@ class BadgePage extends GetView<BadgeController> {
                                       fontSize: 10.sp,
                                       color: controller.selectedIndex.value == 1
                                           ? Theme.of(context).primaryColor
-                                          : Theme.of(
-                                              context,
-                                            ).textTheme.bodyMedium?.color,
+                                          : Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium
+                                                ?.color,
                                     ),
                                   ),
                                 ],
@@ -113,9 +117,8 @@ class BadgePage extends GetView<BadgeController> {
                       borderRadius: BorderRadius.circular(12.w),
                       boxShadow: [
                         BoxShadow(
-                          color: Theme.of(
-                            context,
-                          ).shadowColor.withValues(alpha: 0.05),
+                          color: Theme.of(context).shadowColor
+                              .withValues(alpha: 0.05),
                           blurRadius: 10,
                           offset: const Offset(0, 2),
                         ),

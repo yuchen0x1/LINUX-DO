@@ -8,7 +8,7 @@ class AppImages {
 
   // 图片名称
   static const String _logoName = 'logo.webp';
-  // 大图统一使用 WebP（体积约为原 PNG 的 5%），原图保留在 assets/design/source/
+  // 大图统一使用 WebP；旧 PNG 原图可从 v1.1.0 的 Git 历史恢复。
   static const String _bannerName = 'search-banner.webp';
   static const String _inputAccount = 'input-account.png';
   static const String _inputPassword = 'input-password.png';

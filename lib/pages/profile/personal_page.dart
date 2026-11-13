@@ -1,4 +1,5 @@
 import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -66,9 +67,8 @@ class PersonalPage extends GetView<PersonalController> {
                   });
 
                   return Container(
-                    color: Theme.of(
-                      context,
-                    ).primaryColor.withValues(alpha: progress),
+                    color: Theme.of(context).primaryColor
+                        .withValues(alpha: progress),
                     child: FlexibleSpaceBar(
                       background: Stack(
                         fit: StackFit.expand,
@@ -128,9 +128,8 @@ class PersonalPage extends GetView<PersonalController> {
                                   topRight: const Radius.circular(100).w,
                                 ),
                                 border: Border.all(
-                                  color: Theme.of(
-                                    context,
-                                  ).cardColor.withValues(alpha: 0.0),
+                                  color: Theme.of(context).cardColor
+                                      .withValues(alpha: 0.0),
                                   width: .4.w,
                                 ),
                               ),
@@ -180,9 +179,8 @@ class PersonalPage extends GetView<PersonalController> {
                     opacity: showAvatar ? 1.0 : 0.0,
                     child: showAvatar
                         ? Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 1,
-                            ).w,
+                            padding: const EdgeInsets.symmetric(horizontal: 1)
+                                .w,
                             child: Row(
                               children: [
                                 IconButton(
@@ -249,9 +247,8 @@ class PersonalPage extends GetView<PersonalController> {
                     borderRadius: BorderRadius.circular(12.w),
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(
-                          context,
-                        ).shadowColor.withValues(alpha: 0.05),
+                        color: Theme.of(context).shadowColor
+                            .withValues(alpha: 0.05),
                         blurRadius: 10,
                         offset: const Offset(0, 2),
                       ),

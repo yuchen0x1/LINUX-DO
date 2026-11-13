@@ -99,9 +99,8 @@ class ConnectController extends BaseController {
 
       // 解析用户名和级别
       final titleText = document.querySelector('h1')?.text ?? '';
-      final userMatch = RegExp(
-        r'你好，(.*?) \((.*?)\) (\d+)级用户',
-      ).firstMatch(titleText);
+      final userMatch = RegExp(r'你好，(.*?) \((.*?)\) (\d+)级用户')
+          .firstMatch(titleText);
       final username = userMatch?.group(1) ?? '';
       final userLevel = userMatch?.group(3) ?? '';
 

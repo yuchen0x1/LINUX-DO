@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -61,9 +62,8 @@ class ReplayList extends StatelessWidget {
                         gradient: LinearGradient(
                           colors: [
                             Theme.of(context).primaryColor,
-                            Theme.of(
-                              context,
-                            ).primaryColor.withValues(alpha: 0.6),
+                            Theme.of(context).primaryColor
+                                .withValues(alpha: 0.6),
                           ],
                         ),
                       ),

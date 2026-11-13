@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+
 import '../../controller/base_controller.dart';
 import '../../models/category_data.dart';
 import '../../routes/app_pages.dart';

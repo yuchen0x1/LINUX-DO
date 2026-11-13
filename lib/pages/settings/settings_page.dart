@@ -6,6 +6,7 @@ import 'package:linux_do/const/app_colors.dart';
 import 'package:linux_do/const/app_const.dart';
 import 'package:linux_do/const/app_spacing.dart';
 import 'package:linux_do/controller/global_controller.dart';
+
 import '../../widgets/dis_switch.dart';
 import '../../widgets/dis_button.dart';
 import 'settings_controller.dart';
@@ -459,9 +460,8 @@ class SettingsPage extends GetView<SettingsController> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14.sp,
-                  color: Theme.of(
-                    context,
-                  ).textTheme.bodyMedium?.color?.withValues(alpha: 0.8),
+                  color: Theme.of(context).textTheme.bodyMedium?.color
+                      ?.withValues(alpha: 0.8),
                   height: 1.4,
                 ),
               ),

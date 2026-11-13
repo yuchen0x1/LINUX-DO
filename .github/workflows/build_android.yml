@@ -37,31 +37,34 @@ jobs:
   build:
     name: 构建Android APK
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: 检出代码
         uses: actions/checkout@v3
-      
+
+      - name: 仓库上传边界检查
+        run: python3 scripts/check_repository_hygiene.py
+
       - name: 设置Java环境
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: '17'
           cache: gradle
-      
+
       - name: 设置Flutter环境
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.35.7'
+          flutter-version: '3.47.1'
           channel: 'stable'
           cache: true
-      
+
       - name: 获取Flutter依赖
         run: flutter pub get
-      
+
       - name: 创建Keystore目录
         run: mkdir -p android/keystore
-        
+
       - name: 设置Keystore
         if: ${{ inputs.build_type == 'release' }}
         env:
@@ -75,7 +78,7 @@ jobs:
           else
             echo "未设置签名密钥，将构建未签名APK"
           fi
-      
+
       - name: 构建APK
         run: |
           if [ -n "${{ inputs.build_number }}" ]; then
@@ -90,7 +93,7 @@ jobs:
               flutter build apk --debug
             fi
           fi
-      
+
       - name: 校验 native 库 16KB 页对齐
         run: |
           for apk in build/app/outputs/flutter-apk/*-release.apk; do
@@ -108,7 +111,7 @@ jobs:
             build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
             build/app/outputs/flutter-apk/app-x86_64-release.apk
           retention-days: 7
-      
+
       # - name: 上传Debug APK
       #   if: ${{ inputs.build_type == 'debug' }}
       #   uses: actions/upload-artifact@v3
@@ -116,7 +119,7 @@ jobs:
       #     name: linux-do-debug-apk
       #     path: build/app/outputs/flutter-apk/app-debug.apk
       #     retention-days: 7
-      
+
       # - name: 生成发布说明
       #   run: |
       #     echo "# Linux DO APK构建" > release_notes.md
@@ -126,10 +129,10 @@ jobs:
       #     echo "- **构建版本号**: ${{ inputs.build_number || '默认' }}" >> release_notes.md
       #     echo "- **构建日期**: $(date)" >> release_notes.md
       #     echo "- **提交SHA**: $(git rev-parse --short HEAD)" >> release_notes.md
-      
+
       # - name: 上传发布说明
       #   uses: actions/upload-artifact@v3
       #   with:
       #     name: release-notes
       #     path: release_notes.md
-      #     retention-days: 7 
+      #     retention-days: 7

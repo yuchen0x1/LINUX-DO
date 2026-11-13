@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  FLUTTER_VERSION: '3.35.7'
+  FLUTTER_VERSION: '3.47.1'
 
 jobs:
   analyze-and-test:
@@ -23,6 +23,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: 仓库上传边界检查
+        run: python3 scripts/check_repository_hygiene.py
 
       - uses: actions/setup-java@v4
         with:

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:linux_do/const/app_spacing.dart';
 import 'package:linux_do/const/app_theme.dart';
 import 'package:linux_do/widgets/state_view.dart';
+
 import 'summary_controller.dart';
 
 class SummaryPage extends GetView<SummaryController> {

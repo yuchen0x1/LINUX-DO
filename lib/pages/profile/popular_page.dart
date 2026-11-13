@@ -247,9 +247,10 @@ class PopularPage extends GetView<PopularController> {
                             style: TextStyle(
                               fontSize: 11.sp,
                               fontFamily: AppFontFamily.dinPro,
-                              color: Theme.of(
-                                context,
-                              ).textTheme.bodySmall?.color,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.color,
                             ),
                           ),
                         ),
@@ -260,9 +261,10 @@ class PopularPage extends GetView<PopularController> {
                             Icon(
                               CupertinoIcons.heart_circle,
                               size: 14.w,
-                              color: Theme.of(
-                                context,
-                              ).textTheme.bodyMedium?.color,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.color,
                             ),
                             4.hGap,
                             Text(
@@ -270,9 +272,10 @@ class PopularPage extends GetView<PopularController> {
                               style: TextStyle(
                                 fontSize: 12.sp,
                                 fontFamily: AppFontFamily.dinPro,
-                                color: Theme.of(
-                                  context,
-                                ).textTheme.bodyMedium?.color,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.color,
                               ),
                             ),
                           ],
@@ -286,9 +289,10 @@ class PopularPage extends GetView<PopularController> {
                             Icon(
                               CupertinoIcons.chat_bubble_text,
                               size: 14.w,
-                              color: Theme.of(
-                                context,
-                              ).textTheme.bodyMedium?.color,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.color,
                             ),
                             4.hGap,
                             Text(
@@ -296,9 +300,10 @@ class PopularPage extends GetView<PopularController> {
                               style: TextStyle(
                                 fontSize: 12.sp,
                                 fontFamily: AppFontFamily.dinPro,
-                                color: Theme.of(
-                                  context,
-                                ).textTheme.bodyMedium?.color,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.color,
                               ),
                             ),
                           ],
@@ -400,9 +405,8 @@ class PopularPage extends GetView<PopularController> {
                   Icon(
                     CupertinoIcons.link,
                     size: 14.w,
-                    color: Theme.of(
-                      context,
-                    ).textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
+                    color: Theme.of(context).textTheme.bodyMedium?.color
+                        ?.withValues(alpha: 0.7),
                   ),
                   6.hGap,
                   Text(
@@ -410,9 +414,8 @@ class PopularPage extends GetView<PopularController> {
                     style: TextStyle(
                       fontSize: 10.sp,
                       fontFamily: AppFontFamily.dinPro,
-                      color: Theme.of(
-                        context,
-                      ).textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
+                      color: Theme.of(context).textTheme.bodyMedium?.color
+                          ?.withValues(alpha: 0.7),
                     ),
                   ),
                   const Spacer(),
@@ -422,9 +425,8 @@ class PopularPage extends GetView<PopularController> {
                       vertical: 3,
                     ).w,
                     decoration: BoxDecoration(
-                      color: Theme.of(
-                        context,
-                      ).primaryColor.withValues(alpha: 0.1),
+                      color: Theme.of(context).primaryColor
+                          .withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12).w,
                     ),
                     child: Row(

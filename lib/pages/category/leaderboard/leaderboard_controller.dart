@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
 import '../../../controller/base_controller.dart';
 import '../../../const/app_const.dart';
 import '../../../models/leaderboard.dart';

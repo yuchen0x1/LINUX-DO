@@ -161,9 +161,8 @@ class _QRScannerPageState extends State<QRScannerPage>
                   borderRadius: BorderRadius.circular(12.w),
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(
-                        context,
-                      ).shadowColor.withValues(alpha: 0.1),
+                      color: Theme.of(context).shadowColor
+                          .withValues(alpha: 0.1),
                       blurRadius: 12.w,
                       offset: Offset(0, 4.w),
                     ),
@@ -212,9 +211,8 @@ class _QRScannerPageState extends State<QRScannerPage>
                   borderRadius: BorderRadius.circular(12.w),
                   boxShadow: [
                     BoxShadow(
-                      color: Theme.of(
-                        context,
-                      ).shadowColor.withValues(alpha: 0.1),
+                      color: Theme.of(context).shadowColor
+                          .withValues(alpha: 0.1),
                       blurRadius: 12.w,
                       offset: Offset(0, 4.w),
                     ),
@@ -291,9 +289,8 @@ class _QRScannerPageState extends State<QRScannerPage>
                           borderRadius: BorderRadius.circular(12.w),
                           boxShadow: [
                             BoxShadow(
-                              color: Theme.of(
-                                context,
-                              ).shadowColor.withValues(alpha: 0.1),
+                              color: Theme.of(context).shadowColor
+                                  .withValues(alpha: 0.1),
                               blurRadius: 12.w,
                               offset: Offset(0, 4.w),
                             ),

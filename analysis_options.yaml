@@ -9,6 +9,8 @@
 # packages, and plugins designed to encourage good coding practices.
 analyzer:
   exclude:
+    # 本地隔离的旧平台/构建备份，不属于当前 Android 源码。
+    - .local-archive/**
     - build/**
     - android/**
     - ios/**
@@ -19,6 +21,7 @@ analyzer:
     # 也不应手改（下次 build_runner 会覆盖）。
     - "**/*.g.dart"
     - "**/*.freezed.dart"
+    - linux/**
 include: package:flutter_lints/flutter.yaml
 
 linter:

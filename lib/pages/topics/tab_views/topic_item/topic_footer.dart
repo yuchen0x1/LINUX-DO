@@ -79,9 +79,8 @@ class TopicFooter extends StatelessWidget {
               Icon(
                 CupertinoIcons.eye,
                 size: fontSize.w + 3,
-                color: Theme.of(
-                  context,
-                ).textTheme.bodySmall?.color?.withValues(alpha: 0.5),
+                color: Theme.of(context).textTheme.bodySmall?.color
+                    ?.withValues(alpha: 0.5),
               ),
               SizedBox(width: 4.w),
               Text(
@@ -89,9 +88,8 @@ class TopicFooter extends StatelessWidget {
                 style: TextStyle(
                   fontSize: fontSize.w + 3,
                   fontFamily: AppFontFamily.dinPro,
-                  color: Theme.of(
-                    context,
-                  ).textTheme.bodySmall?.color?.withValues(alpha: 0.5),
+                  color: Theme.of(context).textTheme.bodySmall?.color
+                      ?.withValues(alpha: 0.5),
                 ),
               ),
             ],
@@ -107,9 +105,8 @@ class TopicFooter extends StatelessWidget {
               Icon(
                 CupertinoIcons.arrowshape_turn_up_left_2_fill,
                 size: fontSize.w + 3,
-                color: Theme.of(
-                  context,
-                ).textTheme.bodySmall?.color?.withValues(alpha: 0.5),
+                color: Theme.of(context).textTheme.bodySmall?.color
+                    ?.withValues(alpha: 0.5),
               ),
               SizedBox(width: 4.w),
               Text(
@@ -117,9 +114,8 @@ class TopicFooter extends StatelessWidget {
                 style: TextStyle(
                   fontSize: fontSize.w + 3,
                   fontFamily: AppFontFamily.dinPro,
-                  color: Theme.of(
-                    context,
-                  ).textTheme.bodySmall?.color?.withValues(alpha: 0.5),
+                  color: Theme.of(context).textTheme.bodySmall?.color
+                      ?.withValues(alpha: 0.5),
                 ),
               ),
             ],

@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+
 import '../net/http_config.dart';
 import '../utils/expand/datetime_expand.dart';
 

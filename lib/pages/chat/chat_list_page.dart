@@ -6,6 +6,7 @@ import 'package:linux_do/const/app_spacing.dart';
 import 'package:linux_do/const/app_theme.dart';
 import 'package:linux_do/widgets/avatar_widget.dart';
 import 'package:linux_do/widgets/dis_refresh.dart';
+
 import '../../const/app_const.dart';
 import '../../const/app_images.dart';
 import '../../models/chat_message.dart';
@@ -182,9 +183,10 @@ class ChatPage extends GetView<ChatListController> {
                                   fontFamily: AppFontFamily.dinPro,
                                   color: isRobot
                                       ? Theme.of(context).primaryColor
-                                      : Theme.of(
-                                          context,
-                                        ).textTheme.bodyLarge?.color,
+                                      : Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge
+                                            ?.color,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -218,9 +220,8 @@ class ChatPage extends GetView<ChatListController> {
                             fontSize: 11.w,
                             fontFamily: AppFontFamily.dinPro,
                             color: isRobot
-                                ? Theme.of(
-                                    context,
-                                  ).primaryColor.withValues(alpha: .8)
+                                ? Theme.of(context).primaryColor
+                                      .withValues(alpha: .8)
                                 : Theme.of(context).textTheme.bodyMedium?.color,
                           ),
                           maxLines: 1,
@@ -237,9 +238,8 @@ class ChatPage extends GetView<ChatListController> {
                             vertical: 2.w,
                           ),
                           decoration: BoxDecoration(
-                            color: Theme.of(
-                              context,
-                            ).primaryColor.withValues(alpha: .8),
+                            color: Theme.of(context).primaryColor
+                                .withValues(alpha: .8),
                             borderRadius: BorderRadius.circular(100.w),
                           ),
                           child: Text(

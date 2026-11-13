@@ -1,8 +1,11 @@
 import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart' show Locale;
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+
 import '../models/emoji_model.dart';
+
 import 'package:flutter/foundation.dart';
 
 class EmojiLoader {

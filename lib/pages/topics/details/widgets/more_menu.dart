@@ -245,9 +245,10 @@ class MoreMenu extends StatelessWidget with ToastMixin, Concatenated {
                                 style: TextStyle(
                                   fontSize: 12.w,
                                   fontWeight: FontWeight.w500,
-                                  color: Theme.of(
-                                    context,
-                                  ).textTheme.bodyLarge?.color,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge
+                                      ?.color,
                                 ),
                               ),
                             ],
@@ -447,9 +448,8 @@ class MoreMenu extends StatelessWidget with ToastMixin, Concatenated {
                   width: 50.w,
                   height: 50.w,
                   decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).primaryColor.withValues(alpha: 0.2),
+                    color: Theme.of(context).primaryColor
+                        .withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(8).w,
                   ),
                   child: Center(

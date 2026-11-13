@@ -7,12 +7,14 @@ import 'package:linux_do/const/app_sizes.dart';
 import 'package:linux_do/const/app_theme.dart';
 import 'package:linux_do/utils/mixins/toast_mixin.dart';
 import 'package:linux_do/widgets/dis_loading.dart';
+
 import '../../const/app_spacing.dart';
 import '../../const/app_images.dart';
 import '../../const/app_const.dart';
 import '../../widgets/dis_button.dart';
 import '../../widgets/proxy_settings_dialog.dart';
 import 'login_controller.dart';
+
 import 'package:flutter/services.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -47,9 +49,10 @@ class LoginPage extends GetView<LoginController> {
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w500,
-                        color: Theme.of(
-                          Get.context!,
-                        ).textTheme.titleLarge?.color,
+                        color: Theme.of(Get.context!)
+                            .textTheme
+                            .titleLarge
+                            ?.color,
                       ),
                     ),
                     IconButton(
@@ -66,9 +69,10 @@ class LoginPage extends GetView<LoginController> {
                       style: {
                         "body": Style(
                           padding: HtmlPaddings.zero,
-                          color: Theme.of(
-                            Get.context!,
-                          ).textTheme.bodyMedium?.color,
+                          color: Theme.of(Get.context!)
+                              .textTheme
+                              .bodyMedium
+                              ?.color,
                         ),
                         "p": Style(
                           margin: Margins.only(bottom: 4.w),

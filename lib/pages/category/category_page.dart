@@ -7,6 +7,7 @@ import 'package:linux_do/const/app_spacing.dart';
 import 'package:linux_do/const/app_theme.dart';
 import 'package:linux_do/models/category.dart';
 import 'package:linux_do/widgets/cached_image.dart';
+
 import 'category_list_view.dart';
 
 class CategoryPage extends StatelessWidget {
@@ -79,9 +80,10 @@ class CategoryPage extends StatelessWidget {
                             style: TextStyle(
                               fontSize: AppSizes.fontTiny,
                               fontFamily: AppFontFamily.dinPro,
-                              color: Theme.of(
-                                context,
-                              ).textTheme.bodyMedium?.color,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.color,
                             ),
                           )
                         : const SizedBox.shrink(),

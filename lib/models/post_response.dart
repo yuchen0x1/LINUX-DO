@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+
 import 'topic_detail.dart';
 
 part 'post_response.g.dart';

@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:linux_do/net/http_config.dart';
+
 import 'chat_detail_message.dart';
 
 part 'chat_message.g.dart';

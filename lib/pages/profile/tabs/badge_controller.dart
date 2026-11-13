@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:linux_do/net/api_service.dart';
 import 'package:linux_do/utils/mixins/concatenated.dart';
+
 import '../../../controller/base_controller.dart';
 import '../../../models/badge_detail.dart';
 

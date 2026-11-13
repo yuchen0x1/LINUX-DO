@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../controller/base_controller.dart';
 
 abstract class BasePage<T extends BaseController> extends GetView<T> {

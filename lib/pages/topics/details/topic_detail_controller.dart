@@ -19,6 +19,7 @@ import 'package:linux_do/utils/mixins/concatenated.dart';
 import 'package:linux_do/widgets/browser_tips_sheet.dart';
 import 'package:linux_do/widgets/html/html_widget.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
 import '../../../controller/global_controller.dart';
 import '../../../models/request/update_post.dart';
 import '../../../models/topic_detail.dart';
@@ -28,12 +29,16 @@ import '../../../utils/log.dart';
 import '../../../utils/mixins/toast_mixin.dart';
 import '../../../utils/storage_manager.dart';
 import '../../../routes/app_pages.dart';
+
 import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart' as d;
+
 import 'dart:math';
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
+
 import '../../../models/bookmark_item.dart';
 import '../../../utils/bookmark_service.dart';
 
@@ -1229,9 +1234,10 @@ class TopicDetailController extends BaseController
                         e.$1,
                         style: TextStyle(
                           fontSize: 13.sp,
-                          color: Theme.of(
-                            Get.context!,
-                          ).textTheme.bodyMedium?.color,
+                          color: Theme.of(Get.context!)
+                              .textTheme
+                              .bodyMedium
+                              ?.color,
                         ),
                       ),
                       Text(

@@ -474,8 +474,11 @@ class Expandable extends StatelessWidget {
   }
 }
 
-typedef ExpandableBuilder =
-    Widget Function(BuildContext context, Widget collapsed, Widget expanded);
+typedef ExpandableBuilder = Widget Function(
+  BuildContext context,
+  Widget collapsed,
+  Widget expanded,
+);
 
 /// Determines the placement of the expand/collapse icon in [ExpandablePanel]
 enum ExpandablePanelIconPlacement {

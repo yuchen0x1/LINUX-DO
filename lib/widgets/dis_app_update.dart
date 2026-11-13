@@ -44,9 +44,8 @@ class DisAppUpdate {
                         end: Alignment.bottomRight,
                         colors: [
                           Theme.of(Get.context!).primaryColor,
-                          Theme.of(
-                            Get.context!,
-                          ).primaryColor.withValues(alpha: 0.6),
+                          Theme.of(Get.context!).primaryColor
+                              .withValues(alpha: 0.6),
                         ],
                       ),
                       borderRadius: BorderRadius.circular(16).w,
@@ -143,9 +142,10 @@ class DisAppUpdate {
                               width: 6.w,
                               height: 6.w,
                               decoration: BoxDecoration(
-                                color: Theme.of(
-                                  Get.context!,
-                                ).textTheme.titleSmall?.color,
+                                color: Theme.of(Get.context!)
+                                    .textTheme
+                                    .titleSmall
+                                    ?.color,
                                 shape: BoxShape.circle,
                               ),
                             ),
@@ -156,9 +156,10 @@ class DisAppUpdate {
                                 style: TextStyle(
                                   fontSize: 12.w,
                                   height: 1.5,
-                                  color: Theme.of(
-                                    Get.context!,
-                                  ).textTheme.bodyMedium?.color,
+                                  color: Theme.of(Get.context!)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.color,
                                 ),
                               ),
                             ),
