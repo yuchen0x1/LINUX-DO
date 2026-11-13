@@ -51,12 +51,13 @@ dependencies:
   flutter_slidable: ^3.0.1
   pull_to_refresh: ^2.0.0
   shimmer: ^3.0.0
-  flutter_html: ^3.0.0-beta.2
+  # 实际使用下方固定在仓库内的兼容补丁，同时满足 table 扩展的包来源约束。
+  flutter_html: 3.0.0
   # flutter_html_table 自身依赖 flutter_layout_grid，无需在此直接声明
   flutter_html_table: ^3.0.0-beta.2
   path_provider: ^2.1.5
   mime: ^2.1.0
-  html: ^0.15.7
+  html: 0.15.7
   flutter_inappwebview: ^6.1.5
   slide_switcher: ^1.1.2
   dropdown_search: ^6.0.2
@@ -93,6 +94,10 @@ dependencies:
   cronet_http: 1.10.1
   http: ^1.6.0
   app_links: ^7.2.2
+
+dependency_overrides:
+  flutter_html:
+    path: third_party/flutter_html
 
 dev_dependencies:
   flutter_test:

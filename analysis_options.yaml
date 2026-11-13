@@ -11,6 +11,8 @@ analyzer:
   exclude:
     # 本地隔离的旧平台/构建备份，不属于当前 Android 源码。
     - .local-archive/**
+    # 冻结的第三方依赖保留上游风格；兼容补丁由编译与选择器回归验证。
+    - third_party/**
     - build/**
     - android/**
     - ios/**

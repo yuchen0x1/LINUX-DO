@@ -11,6 +11,7 @@ Historical iOS, macOS, Windows and Web projects are no longer part of the active
 - Complete historical release notes and correct version/feature attribution.
 - Align the build environment with the SDK required by existing dependencies.
 - Add repository upload checks and keep release diagnostics separate from APKs.
+- Track the HTML selector compatibility patch so clean environments can compile.
 
 See the [complete release history](docs/releases/release-notes.md).
 The current source version is `1.1.1+13`; this is an Android maintenance release.
