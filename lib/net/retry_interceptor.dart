@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 
 import '../utils/log.dart';
+import 'api_response_interceptor.dart';
 import 'cloudflare_clearance_service.dart';
 import 'proxy_failover_interceptor.dart';
 
@@ -45,6 +46,7 @@ class RetryInterceptor extends Interceptor {
   final int maxRetries;
   final Duration initialDelay;
   final Duration maxDelay;
+  final Future<bool> Function(String? rejectedClearance) _requestClearance;
   final Random _random = Random();
 
   static const String _nestedKey = 'retryNested';
@@ -59,7 +61,13 @@ class RetryInterceptor extends Interceptor {
     this.maxRetries = 3,
     this.initialDelay = const Duration(seconds: 1),
     this.maxDelay = const Duration(seconds: 5),
-  });
+    Future<bool> Function(String? rejectedClearance)? requestClearance,
+  }) : _requestClearance = requestClearance ?? _openClearance;
+
+  static Future<bool> _openClearance(String? rejectedClearance) =>
+      CloudflareClearanceService.ensureClearance(
+        rejectedClearance: rejectedClearance,
+      );
 
   bool _isIdempotent(String method) =>
       _idempotentMethods.contains(method.toUpperCase());
@@ -100,7 +108,8 @@ class RetryInterceptor extends Interceptor {
     // 非预期 HTML（挑战页变体）：仅幂等方法重试。写操作直接放行，
     // 避免把「已成功的写入 + 网关返回错页」误判成失败并重复提交。
     final contentType = response.headers.value('content-type') ?? '';
-    if (contentType.toLowerCase().contains('text/html')) {
+    if (options.responseType == ResponseType.json &&
+        contentType.toLowerCase().contains('text/html')) {
       return _isIdempotent(options.method);
     }
 
@@ -123,9 +132,15 @@ class RetryInterceptor extends Interceptor {
   Future<void> _ensureCfClearanceOnce(RequestOptions options) async {
     if (options.extra['cfTried'] == true) return;
     options.extra['cfTried'] = true;
-    l.d('检测到 Cloudflare 挑战，启动无头过盾...');
+    l.d('检测到 Cloudflare 挑战，打开网页验证...');
     try {
-      await CloudflareClearanceService.ensureClearance();
+      final cookie = options.headers.entries
+          .where((entry) => entry.key.toLowerCase() == 'cookie')
+          .map((entry) => entry.value.toString())
+          .join('; ');
+      final match = RegExp(r'(?:^|;\s*)cf_clearance=([^;]*)')
+          .firstMatch(cookie);
+      await _requestClearance(match?.group(1));
     } catch (e) {
       l.e('CF 过盾流程异常: $e');
     }
@@ -204,16 +219,17 @@ class RetryInterceptor extends Interceptor {
             : _RetryOutcome.error(currentError!);
       }
 
-      if (CloudflareClearanceService.isChallenge(currentResponse)) {
+      final lastResponse = currentResponse ?? currentError?.response;
+      if (CloudflareClearanceService.isChallenge(lastResponse)) {
         await _ensureCfClearanceOnce(options);
       }
 
       if (attempt >= maxRetries) {
         l.e('达到最大重试次数 ($maxRetries)');
-        if (currentResponse?.statusCode == 429) {
+        if (lastResponse?.statusCode == 429) {
           final retryAfter =
               int.tryParse(
-                currentResponse?.headers.value('Retry-After') ?? '60',
+                lastResponse?.headers.value('Retry-After') ?? '60',
               ) ??
               60;
           return _RetryOutcome.error(
@@ -228,7 +244,7 @@ class RetryInterceptor extends Interceptor {
             : _RetryOutcome.error(currentError!);
       }
 
-      final delay = _resolveDelay(currentResponse, attempt);
+      final delay = _resolveDelay(lastResponse, attempt);
       l.d('重试请求 (${attempt + 1}/$maxRetries)，等待 ${delay.inMilliseconds}ms');
       await Future<void>.delayed(delay);
 
@@ -283,6 +299,11 @@ class RetryInterceptor extends Interceptor {
     if (outcome.error != null) {
       return handler.next(outcome.error!);
     }
+    // onError 的 resolve 会直接完成请求，跳过后续 onResponse 校验。
+    final responseError = ApiResponseInterceptor.responseError(
+      outcome.response!,
+    );
+    if (responseError != null) return handler.next(responseError);
     return handler.resolve(outcome.response!);
   }
 }

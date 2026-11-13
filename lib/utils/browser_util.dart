@@ -6,10 +6,20 @@ import 'dart:io' show Platform;
 
 import 'package:get/get.dart';
 
+import '../net/proxy_service.dart';
+import '../routes/app_pages.dart';
 import 'log.dart';
 
 class BrowserUtil {
   static Future<void> openUrlWithOptions({required String url}) async {
+    final uri = Uri.tryParse(url);
+    // Custom Tabs 属于系统浏览器，无法继承本应用的代理配置。
+    if (ProxyService().isEnabled &&
+        uri != null &&
+        (uri.scheme == 'https' || uri.scheme == 'http')) {
+      Get.toNamed(Routes.WEBVIEW, arguments: url);
+      return;
+    }
     if (Platform.isAndroid) {
       try {
         final systemBarColor = Theme.of(Get.context!).colorScheme.surface;

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -71,7 +72,9 @@ void main() {
   late FakeCore core;
   late MemoryStore store;
   late ProxyService service;
+  late HttpOverrides? previousGlobal;
   setUp(() async {
+    previousGlobal = Zone.root.run(() => HttpOverrides.current);
     await StorageManager.clear();
     core = FakeCore();
     store = MemoryStore();
@@ -84,6 +87,95 @@ void main() {
   });
   tearDown(() {
     service.dispose();
+    HttpOverrides.global = previousGlobal;
+  });
+
+  test(
+    'default image clients follow saved manual settings and disabling',
+    () async {
+      final origin = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
+      final proxy = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
+      var originRequests = 0;
+      var proxyRequests = 0;
+      origin.listen((request) async {
+        originRequests++;
+        request.response.write('direct-image');
+        await request.response.close();
+      });
+      proxy.listen((request) async {
+        proxyRequests++;
+        request.response.write('proxied-image');
+        await request.response.close();
+      });
+      HttpOverrides.global = _LoopbackHttpOverrides();
+      await service.initialize();
+      final client = Zone.root.run(HttpClient.new);
+      final uri = Uri.parse('http://127.0.0.1:${origin.port}/image.png');
+      Future<String> readImage() async {
+        final request = await client.getUrl(uri);
+        final response = await request.close();
+        return utf8.decoder.bind(response).join();
+      }
+
+      try {
+        expect(await readImage(), 'direct-image');
+        await service.save(
+          enabled: true,
+          host: '127.0.0.1',
+          port: '${proxy.port}',
+        );
+        expect(await readImage(), 'proxied-image');
+        await service.disable();
+        expect(await readImage(), 'direct-image');
+        expect(originRequests, 2);
+        expect(proxyRequests, 1);
+      } finally {
+        client.close(force: true);
+        await origin.close(force: true);
+        await proxy.close(force: true);
+      }
+    },
+  );
+
+  test('default image traffic never falls back direct when subscription startup fails', () async {
+    final origin = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
+    final unavailableProxy = await ServerSocket.bind(
+      InternetAddress.loopbackIPv4,
+      0,
+    );
+    final unavailablePort = unavailableProxy.port;
+    await unavailableProxy.close();
+    var originRequests = 0;
+    origin.listen((request) async {
+      originRequests++;
+      request.response.write('must-not-be-reached');
+      await request.response.close();
+    });
+    core.port = unavailablePort;
+    core.rejectStart = true;
+    store.value = jsonEncode({
+      'url': 'https://example.invalid/sub',
+      'text': fixture,
+    });
+    await StorageManager.setData(ProxyService.keyEnabled, true);
+    await StorageManager.setData(ProxyService.keyMode, 'subscription');
+    HttpOverrides.global = _LoopbackHttpOverrides();
+    await service.initialize();
+    expect(service.isConnected, false);
+    expect(service.errorMessage, isNotNull);
+    expect(service.hasValidRule, true);
+    final client = Zone.root.run(HttpClient.new)
+      ..connectionTimeout = const Duration(seconds: 1);
+    try {
+      await expectLater(
+        client.getUrl(Uri.parse('http://127.0.0.1:${origin.port}/image.png')),
+        throwsA(isA<SocketException>()),
+      );
+      expect(originRequests, 0);
+    } finally {
+      client.close(force: true);
+      await origin.close(force: true);
+    }
   });
 
   test(

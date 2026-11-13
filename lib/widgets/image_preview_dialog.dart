@@ -14,6 +14,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/log.dart';
+import '../net/media_client.dart';
 import '../utils/mixins/toast_mixin.dart';
 
 import 'package:permission_handler/permission_handler.dart';
@@ -241,12 +242,12 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
       if (status.isGranted || (Platform.isIOS && status.isLimited)) {
         l.d('Permission is granted or limited, proceeding to save');
         try {
-          final response = await Dio().get(
+          final response = await MediaClient.dio.get<List<int>>(
             imageUrl,
             options: Options(responseType: ResponseType.bytes),
           );
           final result = await ImageGallerySaver.saveImage(
-            Uint8List.fromList(response.data),
+            Uint8List.fromList(response.data!),
             quality: 100,
           );
           l.d('Save result: $result');
@@ -397,7 +398,7 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
           }
 
           // 下载图片
-          final response = await Dio().get(
+          final response = await MediaClient.dio.get<List<int>>(
             imageUrl,
             options: Options(responseType: ResponseType.bytes),
           );
@@ -411,7 +412,7 @@ class ImagePreviewDialog extends StatelessWidget with ToastMixin {
 
           // 保存文件
           final file = File('$selectedDirectory/$fileName');
-          await file.writeAsBytes(response.data);
+          await file.writeAsBytes(response.data!);
 
           // 显示成功信息
           if (Platform.isIOS) {

@@ -10,6 +10,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart'
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'cronet_adapter.dart';
+import 'proxy_http_overrides.dart';
 import 'proxy_subscription.dart';
 import 'subscription_proxy_core.dart';
 import '../utils/storage_manager.dart';
@@ -125,6 +126,11 @@ class ProxyService extends ChangeNotifier {
   }
 
   Future<void> initialize() async {
+    // Image.network and cached_network_image keep long-lived Dart clients.
+    // Resolve the route for each request so later settings changes also apply.
+    ProxyHttpOverrides.install(
+      findProxy: (_) => hasValidRule ? dioRule : 'DIRECT',
+    );
     try {
       final record = await _store.read();
       if (record != null) {

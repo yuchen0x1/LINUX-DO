@@ -9,6 +9,7 @@ import 'package:linux_do/utils/device_util.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'api_response.dart';
+import 'api_response_interceptor.dart';
 import 'http_config.dart';
 import 'user_api_key_auth_service.dart';
 import 'proxy_service.dart';
@@ -335,6 +336,7 @@ class NetClient {
       ),
     );
     _dio.interceptors.add(RetryInterceptor(dio: _dio));
+    _dio.interceptors.add(ApiResponseInterceptor());
   }
 
   Future<void> _handleCookies(Response response) async {
@@ -455,7 +457,10 @@ class NetClient {
             message = HttpConfig.notFoundMessage;
             break;
           default:
-            message = error.response?.data?['error'] ?? HttpConfig.errorMessage;
+            final data = error.response?.data;
+            message = data is Map && data['error'] is String
+                ? data['error'] as String
+                : error.message ?? HttpConfig.errorMessage;
         }
         break;
       default:

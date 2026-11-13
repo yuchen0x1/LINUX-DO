@@ -26,40 +26,68 @@ class WebViewPage extends GetView<WebViewController> {
           }),
         ),
       ),
-      body: Stack(
-        children: [
-          Obx(
-            () => InAppWebView(
-              initialUrlRequest: controller.isHtml.value
-                  ? null
-                  : URLRequest(url: WebUri(controller.content.value)),
-              initialData: controller.isHtml.value
-                  ? InAppWebViewInitialData(data: controller.content.value)
-                  : null,
-              initialSettings: InAppWebViewSettings(
-                useShouldOverrideUrlLoading: true,
-                mediaPlaybackRequiresUserGesture: false,
-                useOnLoadResource: true,
-                javaScriptEnabled: true,
-                supportZoom: true,
-                allowsInlineMediaPlayback: true,
-                disableContextMenu: false,
-              ),
-              onWebViewCreated: controller.onWebViewCreated,
-              onLoadStart: controller.onLoadStart,
-              onProgressChanged: controller.onProgressChanged,
-              onLoadStop: controller.onLoadStop,
-              onTitleChanged: controller.onTitleChanged,
-              shouldOverrideUrlLoading: controller.shouldOverrideUrlLoading,
+      body: SafeArea(
+        top: false,
+        child: Stack(
+          children: [
+            Obx(
+              () => !controller.proxyReady.value
+                  ? const SizedBox.shrink()
+                  : InAppWebView(
+                      initialUrlRequest: controller.isHtml.value
+                          ? null
+                          : URLRequest(url: WebUri(controller.content.value)),
+                      initialData: controller.isHtml.value
+                          ? InAppWebViewInitialData(
+                              data: controller.content.value,
+                            )
+                          : null,
+                      initialSettings: InAppWebViewSettings(
+                        useShouldOverrideUrlLoading: true,
+                        mediaPlaybackRequiresUserGesture: false,
+                        useOnLoadResource: true,
+                        javaScriptEnabled: true,
+                        supportZoom: true,
+                        allowsInlineMediaPlayback: true,
+                        disableContextMenu: false,
+                      ),
+                      onWebViewCreated: controller.onWebViewCreated,
+                      onLoadStart: controller.onLoadStart,
+                      onProgressChanged: controller.onProgressChanged,
+                      onLoadStop: controller.onLoadStop,
+                      onTitleChanged: controller.onTitleChanged,
+                      onReceivedError: controller.onReceivedError,
+                      onReceivedHttpError: controller.onReceivedHttpError,
+                      shouldOverrideUrlLoading:
+                          controller.shouldOverrideUrlLoading,
+                    ),
             ),
-          ),
-          Obx(() {
-            if (controller.loadingProgress < 0.5) {
-              return Center(child: DisRefreshLoading());
-            }
-            return const SizedBox();
-          }),
-        ],
+            Obx(() {
+              if (controller.hasError.value) {
+                return ColoredBox(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(controller.errorMessage.value),
+                        const SizedBox(height: 12),
+                        TextButton(
+                          onPressed: controller.retry,
+                          child: const Text('重试'),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+              if (controller.loadingProgress < 0.5) {
+                return Center(child: DisRefreshLoading());
+              }
+              return const SizedBox();
+            }),
+          ],
+        ),
       ),
     );
   }
