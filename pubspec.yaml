@@ -87,7 +87,7 @@ dependencies:
     git:
       url: https://github.com/R-lz/emoji_picker_flutter.git
       ref: eef3d77b37701d45628f66702557a037d433eab0
-  image_gallery_saver: ^2.0.3
+  image_gallery_saver: 2.0.3
   cached_network_image: ^3.3.1
   pointycastle: 3.9.1
   flutter_local_notifications: 19.5.0
@@ -98,6 +98,8 @@ dependencies:
 dependency_overrides:
   flutter_html:
     path: third_party/flutter_html
+  image_gallery_saver:
+    path: third_party/image_gallery_saver
 
 dev_dependencies:
   flutter_test:
