@@ -30,12 +30,24 @@ void main() async {
 
   Size size = Platform.isMacOS ? const Size(1024, 768) : const Size(375, 812);
 
-  runApp(MyApp(designSize: size));
+  runApp(MyApp(designSize: size, initialLocale: resolveAppLocale()));
+}
+
+Locale resolveAppLocale() {
+  final saved = StorageManager.getString(AppConst.identifier.language);
+  if (saved == 'zh') return const Locale('zh');
+  if (saved == 'en') return const Locale('en');
+  for (final candidate in WidgetsBinding.instance.platformDispatcher.locales) {
+    if (candidate.languageCode == 'en') return const Locale('en');
+    if (candidate.languageCode == 'zh') return const Locale('zh');
+  }
+  return const Locale('zh');
 }
 
 class MyApp extends StatelessWidget {
   final Size designSize;
-  const MyApp({super.key, required this.designSize});
+  final Locale initialLocale;
+  const MyApp({super.key, required this.designSize, this.initialLocale = const Locale('zh')});
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +59,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return GetMaterialApp(
           title: AppConst.siteName,
+          locale: initialLocale,
           debugShowCheckedModeBanner: false,
 
           /// 国际化配置

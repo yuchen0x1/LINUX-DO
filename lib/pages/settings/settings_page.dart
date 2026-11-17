@@ -128,6 +128,11 @@ class SettingsPage extends GetView<SettingsController> {
           ]),
           16.vGap,
           _buildSection(context, AppConst.settings.appearance, [
+            _buildLocaleDropdown(
+              context,
+              const Color(0xFF00ACC1),
+              CupertinoIcons.globe,
+            ),
             _buildThemeDropdown(
               context,
               const Color(0xFFFFB300),
@@ -280,6 +285,45 @@ class SettingsPage extends GetView<SettingsController> {
                 underline: const SizedBox(),
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLocaleDropdown(
+    BuildContext context,
+    Color? iconColor,
+    IconData icon,
+  ) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      child: Row(
+        children: [
+          Container(
+            width: 30.w,
+            height: 30.w,
+            decoration: BoxDecoration(
+              color: (iconColor ?? Theme.of(context).primaryColor).withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(4.w),
+            ),
+            child: Icon(icon, size: 20.w, color: iconColor ?? Theme.of(context).primaryColor),
+          ),
+          12.hGap,
+          Expanded(
+            child: Obx(() => DropdownButton<String>(
+              value: controller.selectedLocale,
+              dropdownColor: Theme.of(context).cardColor,
+              items: const [
+                DropdownMenuItem(value: 'auto', child: Text('自动（跟随系统）')),
+                DropdownMenuItem(value: 'zh', child: Text('简体中文')),
+                DropdownMenuItem(value: 'en', child: Text('English')),
+              ],
+              onChanged: controller.setLocale,
+              isExpanded: true,
+              borderRadius: BorderRadius.circular(12.w),
+              underline: const SizedBox(),
+            )),
           ),
         ],
       ),

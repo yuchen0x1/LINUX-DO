@@ -32,6 +32,11 @@ class SettingsController extends BaseController {
   final browserTips = false.obs;
   final isAnimatedEmojiEnabled = true.obs;
   final isPushEnabled = false.obs;
+  final locale = 'auto'.obs;
+
+  List<String> get localeOptions => const ['auto', 'zh', 'en'];
+
+  String get selectedLocale => locale.value;
 
   List<String> get themeModeOptions => [
     AppConst.settings.themeSystem,
@@ -76,6 +81,23 @@ class SettingsController extends BaseController {
     final savedPush =
         StorageManager.getBool('push_notification_enabled') ?? false;
     isPushEnabled.value = savedPush;
+    final savedLocale = StorageManager.getString(AppConst.identifier.language);
+    locale.value = localeOptions.contains(savedLocale) ? savedLocale! : 'auto';
+  }
+
+  void setLocale(String? value) {
+    if (value == null || !localeOptions.contains(value)) return;
+    locale.value = value;
+    StorageManager.setData(AppConst.identifier.language, value);
+    Get.updateLocale(value == 'auto' ? _systemLocale() : value == 'en' ? const Locale('en') : const Locale('zh'));
+  }
+
+  Locale _systemLocale() {
+    for (final candidate in WidgetsBinding.instance.platformDispatcher.locales) {
+      if (candidate.languageCode == 'en') return const Locale('en');
+      if (candidate.languageCode == 'zh') return const Locale('zh');
+    }
+    return const Locale('zh');
   }
 
   ThemeMode _parseThemeMode(String? value) {
