@@ -4,15 +4,20 @@
 
 ## 最新更新
 
+<!-- github-release:start -->
+
+**[v1.1.4](https://github.com/yuchen0x1/LINUX-DO/releases/tag/v1.1.4)** · 2026-11-16
+
+v1.1.4 是 Android 客户端维护版本，基于提交 8cba0bbe59288dcbcfa11ee6c78f4a4f5792693f。本版将 Android 源码版本更新为 1.1.4+23 并递增 versionCode，保留 v1.1.3 已发布的相关修复；不新增产品功能。
+
+[全部发行记录](https://github.com/yuchen0x1/LINUX-DO/releases)
+
+<!-- github-release:end -->
+
 ### 未发布 · 2026-11-17
 
 - 设置中可选择自动跟随系统、简体中文或 English；自动检测失败时保留中文默认。
 - 语言选择会保存到本机，帖子、用户资料和其他社区内容不做机械翻译。
-
-### v1.1.4 · 2026-11-16
-
-- 发布 Android 维护版本 1.1.4+23，保留 v1.1.3 的网络代理、应用内网页入口、验证页错误提示和底部导航修复。
-- 本次仅递增版本与构建号；三种 ABI APK 以本次 CI 构建产物和 Release 校验结果为准。
 
 完整更新记录见 [更新日志](docs/releases/release-notes.md)，目录整理见 [仓库清理说明](docs/REPOSITORY_HYGIENE.md)。
 ## 下载与安装
@@ -25,7 +30,7 @@
 | armeabi-v7a | 较旧的 32 位 Android 设备 |
 | x86_64 | Android 模拟器或 x86 Android 设备；不是 Windows 版本 |
 
-当前源码版本为 `1.1.4+23`。构建号是基数，按架构拆包后的 APK versionCode 带架构前缀。
+当前源码版本见 [pubspec.yaml](pubspec.yaml) 的 `version` 字段。构建号是基数，按架构拆包后的 APK versionCode 带架构前缀。
 实际兼容性以安装包和设备为准，不能仅根据构建成功推断真机全部功能可用。
 
 ## 已实现的主要能力
