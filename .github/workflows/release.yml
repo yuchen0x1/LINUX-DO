@@ -36,7 +36,7 @@ jobs:
           mkdir -p android/keystore
           printf '%s' "$KEYSTORE_BASE64" | base64 --decode > android/keystore/linux-do.jks
           printf '%s' "$KEY_PROPERTIES" > android/keystore/key.properties
-      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
+      - uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
         with:
           distribution: zulu
           java-version: '17'
