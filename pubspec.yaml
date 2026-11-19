@@ -89,7 +89,7 @@ dependencies:
       ref: eef3d77b37701d45628f66702557a037d433eab0
   image_gallery_saver: 2.0.3
   cached_network_image: ^3.3.1
-  pointycastle: 3.9.1
+  pointycastle: 4.0.0
   flutter_local_notifications: 19.5.0
   cronet_http: 1.10.1
   http: ^1.6.0
