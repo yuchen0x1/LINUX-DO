@@ -27,7 +27,7 @@ jobs:
       - name: 仓库上传边界检查
         run: python3 scripts/check_repository_hygiene.py
 
-      - uses: actions/setup-java@v6
+      - uses: actions/setup-java@v6.3.0
         with:
           distribution: zulu
           java-version: '17'
@@ -60,7 +60,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: actions/setup-java@v6
+      - uses: actions/setup-java@v6.3.0
         with:
           distribution: zulu
           java-version: '17'
