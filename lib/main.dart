@@ -19,12 +19,6 @@ void main() async {
   // 尽早挂载全局异常处理，后续初始化出错也能被记录
   CrashReporter.install();
 
-  // 强制竖屏
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
-
   // 初始化App
   await App.instance.initial();
 
@@ -47,13 +41,20 @@ Locale resolveAppLocale() {
 class MyApp extends StatelessWidget {
   final Size designSize;
   final Locale initialLocale;
-  const MyApp({super.key, required this.designSize, this.initialLocale = const Locale('zh')});
+  const MyApp({
+    super.key,
+    required this.designSize,
+    this.initialLocale = const Locale('zh'),
+  });
 
   @override
   Widget build(BuildContext context) {
     // 初始化屏幕适配
     return ScreenUtilInit(
       designSize: designSize,
+      // Wide windows use logical pixels rather than enlarging every phone control.
+      enableScaleWH: () =>
+          MediaQueryData.fromView(View.of(context)).size.width < 600,
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {

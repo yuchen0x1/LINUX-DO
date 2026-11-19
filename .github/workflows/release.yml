@@ -1,0 +1,83 @@
+name: Release Android
+on:
+  push:
+    tags: ['v[0-9]*.[0-9]*.[0-9]*']
+permissions:
+  contents: read
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: release
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate tag, branch, notes and signing prerequisites
+        env:
+          TAG: ${{ github.ref_name }}
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEY_PROPERTIES: ${{ secrets.KEY_PROPERTIES }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/release_tools.py version --tag "$TAG"
+          git merge-base --is-ancestor HEAD origin/main
+          test -n "$KEYSTORE_BASE64" && test -n "$KEY_PROPERTIES" || { echo 'Existing release signing secrets are required'; exit 1; }
+          python3 scripts/check_repository_hygiene.py
+          if gh api "repos/$GITHUB_REPOSITORY/releases/tags/$TAG" >/dev/null 2>&1; then
+            echo 'Release already exists; refusing to overwrite'; exit 1
+          fi
+          mkdir -p android/keystore
+          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > android/keystore/linux-do.jks
+          printf '%s' "$KEY_PROPERTIES" > android/keystore/key.properties
+      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
+        with:
+          distribution: zulu
+          java-version: '17'
+          cache: gradle
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with:
+          flutter-version: '3.47.1'
+          channel: stable
+          cache: true
+      - name: Quality gates and build
+        run: |
+          flutter pub get --enforce-lockfile
+          dart format --output=none --set-exit-if-changed lib test
+          flutter analyze --no-pub --no-fatal-infos
+          flutter test --no-pub --reporter compact
+          python3 -m unittest discover -s scripts/tests -v
+          flutter build apk --release --split-per-abi --obfuscate --split-debug-info=build/symbols
+          cd android
+          ./gradlew :app:testReleaseUnitTest -x compileFlutterBuildRelease --console=plain
+      - uses: nttld/setup-ndk@ed92fe6cadad69be94a966a7ee3271275e62f779 # v1
+        id: ndk
+        with:
+          ndk-version: r28
+      - name: Verify and prepare signed assets
+        env:
+          TAG: ${{ github.ref_name }}
+          ANDROID_NDK_HOME: ${{ steps.ndk.outputs.ndk-path }}
+        run: |
+          for apk in build/app/outputs/flutter-apk/*-release.apk; do
+            bash scripts/check_16k_alignment.sh "$apk"
+          done
+          signer=$(find "$ANDROID_HOME/build-tools" -name apksigner | sort -V | tail -1)
+          python3 scripts/release_tools.py package --tag "$TAG" --apksigner "$signer"
+      - name: Publish and verify release
+        env:
+          TAG: ${{ github.ref_name }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$TAG" --verify-tag --draft --title "LINUX DO $TAG" --notes-file "dist/release/release-notes-$TAG.md" dist/release/*
+          gh release edit "$TAG" --draft=false --latest
+          python3 scripts/check_release_health.py
+      - name: Remove signing material
+        if: always()
+        run: rm -f android/keystore/linux-do.jks android/keystore/key.properties

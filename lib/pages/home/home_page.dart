@@ -8,39 +8,47 @@ import '../category/category_topics_page.dart';
 import '../profile/profile_page.dart';
 import 'home_controller.dart';
 import 'widgets/home_bottom_bar.dart';
+import '../../widgets/adaptive_home_scaffold.dart';
 
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Obx(
-        () => LazyLoadIndexedStack(
-          index: controller.currentTab.value,
-          children: const [
-            TopicsPage(),
-            CategoryTopicsPage(),
-            SizedBox(), // 占位
-            ChatPage(),
-            ProfilePage(),
-          ],
+    return Obx(
+      () => AdaptiveHomeScaffold(
+        currentIndex: controller.currentTab.value,
+        unreadCount: controller.badgeCount[3]?.toString(),
+        onDestinationSelected: _selectTab,
+        body: Obx(
+          () => LazyLoadIndexedStack(
+            index: controller.currentTab.value,
+            children: const [
+              TopicsPage(),
+              CategoryTopicsPage(),
+              SizedBox(), // 占位
+              ChatPage(),
+              ProfilePage(),
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: Obx(
-        () => HomeBottomBar(
-          isVisible: controller.topicsController.isBottomBarVisible.value,
-          currentIndex: controller.currentTab.value,
-          unreadCount: controller.badgeCount[3]?.toString(),
-          onTap: (index) {
-            if (index == controller.currentTab.value && index == 0) {
-              controller.topicsController.currentTabController.onRefresh();
-            } else {
-              controller.switchTab(index);
-            }
-          },
+        bottomBar: Obx(
+          () => HomeBottomBar(
+            isVisible: controller.topicsController.isBottomBarVisible.value,
+            currentIndex: controller.currentTab.value,
+            unreadCount: controller.badgeCount[3]?.toString(),
+            onTap: _selectTab,
+          ),
         ),
       ),
     );
+  }
+
+  void _selectTab(int index) {
+    if (index == controller.currentTab.value && index == 0) {
+      controller.topicsController.currentTabController.onRefresh();
+    } else {
+      controller.switchTab(index);
+    }
   }
 }

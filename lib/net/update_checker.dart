@@ -1,158 +1,195 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../models/app_version.dart';
-import 'http_config.dart';
-import '../utils/log.dart';
+import '../utils/storage_manager.dart';
 
-/// 应用更新检查。
-///
-/// 主源为 GitHub Releases（仓库公开、无需自建服务），失败时回退到旧的自建
-/// 接口 `HttpConfig.otherUrl`。两者都不可用则静默跳过——更新提示属于锦上添花，
-/// 不应该在启动时打扰用户或阻塞任何流程。
-///
-/// 注意：这里只负责「发现有新版本并给出下载地址」，不做静默安装。
-/// 安装交给系统（下载后用 url_launcher 打开），因此必须保证下载地址来自可信域名。
+class ReleaseUpdate extends AppVersion {
+  ReleaseUpdate({
+    required String version,
+    required String url,
+    required this.sha256,
+    required this.size,
+    required this.currentVersion,
+    required this.releaseUrl,
+    this.publishedAt,
+    String? notes,
+  }) : super(
+         hasUpdate: true,
+         latestVersion: version,
+         downloadUrl: url,
+         releaseNotes: notes,
+         isForceUpdate: false,
+       );
+  final String sha256;
+  final int size;
+  final String currentVersion;
+  final String releaseUrl;
+  final DateTime? publishedAt;
+}
+
+class UpdatePreferences {
+  static const frequencyKey = 'update.interval_hours';
+  static const lastCheckKey = 'update.last_check';
+  static const deferredVersionKey = 'update.deferred_version';
+  static const deferredUntilKey = 'update.deferred_until';
+  static int get intervalHours =>
+      StorageManager.getInt(frequencyKey, defaultValue: 24)!;
+  static bool shouldCheck(DateTime now) {
+    if (intervalHours == 0) return false;
+    final last = StorageManager.getInt(lastCheckKey);
+    return last == null ||
+        now.millisecondsSinceEpoch - last >=
+            Duration(hours: intervalHours).inMilliseconds;
+  }
+
+  static bool isDeferred(String version, DateTime now) =>
+      StorageManager.getString(deferredVersionKey) == version &&
+      (StorageManager.getInt(deferredUntilKey) ?? 0) >
+          now.millisecondsSinceEpoch;
+  static Future<void> defer(String version, {DateTime? now}) async {
+    await StorageManager.setData(deferredVersionKey, version);
+    await StorageManager.setData(
+      deferredUntilKey,
+      (now ?? DateTime.now())
+          .add(const Duration(days: 7))
+          .millisecondsSinceEpoch,
+    );
+  }
+}
+
+/// Discovery uses public GitHub metadata only, without forum credentials.
 class UpdateChecker {
-  static const String owner = 'yuchen0x1';
-  static const String repo = 'LINUX-DO';
-
-  static const String _githubApi =
+  static const owner = 'yuchen0x1';
+  static const repo = 'LINUX-DO';
+  static const releasesUrl = 'https://github.com/$owner/$repo/releases';
+  static const githubApi =
       'https://api.github.com/repos/$owner/$repo/releases/latest';
-
-  /// 允许的下载域名：只有这些域名下的链接才会被交给系统浏览器打开
-  static const Set<String> trustedDownloadHosts = {
-    'github.com',
-    'objects.githubusercontent.com',
-    'github-releases.githubusercontent.com',
-    'raw.githubusercontent.com',
-  };
-
-  /// 检查更新。返回 null 表示「无更新 / 检查失败」。
-  static Future<AppVersion?> check() async {
+  static Future<ReleaseUpdate?> check({bool automatic = true}) async {
+    await StorageManager.init();
+    final now = DateTime.now();
+    if (automatic && !UpdatePreferences.shouldCheck(now)) return null;
     final info = await PackageInfo.fromPlatform();
-    final currentVersion = info.version;
-
-    final fromGithub = await _checkGithub(currentVersion);
-    if (fromGithub != null) return fromGithub;
-
-    return _checkLegacy(currentVersion, info.buildNumber);
-  }
-
-  /// GitHub Releases：/releases/latest 只返回最新正式版，天然排除 draft/prerelease。
-  static Future<AppVersion?> _checkGithub(String currentVersion) async {
+    final device = await DeviceInfoPlugin().androidInfo;
+    final dio = Dio(
+      BaseOptions(
+        connectTimeout: const Duration(seconds: 10),
+        receiveTimeout: const Duration(seconds: 15),
+        followRedirects: false,
+        headers: {'Accept': 'application/vnd.github+json'},
+      ),
+    );
     try {
-      final dio = Dio(
-        BaseOptions(
-          connectTimeout: const Duration(seconds: 10),
-          receiveTimeout: const Duration(seconds: 10),
-          headers: {'Accept': 'application/vnd.github+json'},
-        ),
+      final response = await dio.get<Map<String, dynamic>>(githubApi);
+      final update = parseRelease(
+        response.data!,
+        currentVersion: info.version,
+        supportedAbis: device.supportedAbis,
       );
-
-      final resp = await dio.get<dynamic>(_githubApi);
-      if (resp.statusCode != 200 || resp.data is! Map) return null;
-
-      final data = resp.data as Map<String, dynamic>;
-      final tag = (data['tag_name'] as String? ?? '').trim();
-      if (tag.isEmpty) return null;
-
-      final latest = tag.startsWith('v') ? tag.substring(1) : tag;
-      if (!isNewer(latest, currentVersion)) return null;
-
-      // 优先挑 arm64/universal 的 apk 资产
-      final apkUrl = _pickApk(data['assets']);
-      if (apkUrl == null) {
-        l.w('GitHub Release $tag 没有可用的 APK 资产');
+      await StorageManager.setData(
+        UpdatePreferences.lastCheckKey,
+        now.millisecondsSinceEpoch,
+      );
+      if (automatic &&
+          update != null &&
+          UpdatePreferences.isDeferred(update.latestVersion!, now))
         return null;
-      }
-
-      return AppVersion(
-        hasUpdate: true,
-        latestVersion: latest,
-        downloadUrl: apkUrl,
-        releaseNotes: data['body'] as String?,
-        isForceUpdate: false,
-      );
-    } catch (e) {
-      l.d('GitHub 更新检查失败: $e');
-      return null;
+      return update;
+    } finally {
+      dio.close(force: true);
     }
   }
 
-  static String? _pickApk(dynamic assets) {
+  static ReleaseUpdate? parseRelease(
+    Map<String, dynamic> data, {
+    required String currentVersion,
+    required List<String> supportedAbis,
+  }) {
+    if (data['draft'] != false || data['prerelease'] != false) return null;
+    final tag = data['tag_name'];
+    if (tag is! String || !RegExp(r'^v?\d+\.\d+\.\d+$').hasMatch(tag))
+      return null;
+    final latest = tag.replaceFirst(RegExp('^v'), '');
+    if (!isNewer(latest, currentVersion)) return null;
+    final assets = data['assets'];
     if (assets is! List) return null;
-
-    String? fallback;
-    for (final asset in assets) {
-      if (asset is! Map) continue;
-      final name = (asset['name'] as String? ?? '').toLowerCase();
-      final url = asset['browser_download_url'] as String?;
-      if (url == null || !name.endsWith('.apk')) continue;
-
-      if (name.contains('arm64') || name.contains('universal')) return url;
-      fallback ??= url;
+    for (final abi in [...supportedAbis, 'universal']) {
+      if (!['arm64-v8a', 'armeabi-v7a', 'x86_64', 'universal'].contains(abi))
+        continue;
+      for (final asset in assets) {
+        if (asset is! Map) continue;
+        final name = asset['name'];
+        final url = asset['browser_download_url'];
+        final digest = asset['digest'];
+        final size = asset['size'];
+        if (name is! String ||
+            !RegExp('(?:^|[_-])${RegExp.escape(abi)}\\.apk\$').hasMatch(name) ||
+            url is! String ||
+            !isTrustedDownload(url) ||
+            Uri.parse(url).pathSegments[4] != tag ||
+            digest is! String ||
+            !RegExp(r'^sha256:[a-fA-F0-9]{64}$').hasMatch(digest) ||
+            size is! int ||
+            size <= 0 ||
+            size > 150 * 1024 * 1024)
+          continue;
+        return ReleaseUpdate(
+          version: latest,
+          url: url,
+          sha256: digest.substring(7).toLowerCase(),
+          size: size,
+          currentVersion: currentVersion,
+          releaseUrl: '$releasesUrl/tag/${Uri.encodeComponent(tag)}',
+          publishedAt: DateTime.tryParse(data['published_at'] as String? ?? ''),
+          notes: data['body'] is String ? data['body'] as String : null,
+        );
+      }
     }
-    return fallback;
+    return null;
   }
 
-  /// 回退到自建接口（接口已失效时静默返回 null）
-  static Future<AppVersion?> _checkLegacy(
-    String currentVersion,
-    String buildNumber,
-  ) async {
-    try {
-      final dio = Dio(
-        BaseOptions(
-          connectTimeout: const Duration(seconds: 8),
-          receiveTimeout: const Duration(seconds: 8),
-        ),
-      );
-      final code = int.tryParse(buildNumber) ?? 0;
-
-      const base = HttpConfig.otherUrl;
-      if (base.isEmpty) return null;
-
-      final resp = await dio.get<dynamic>(
-        '$base/api/version/check/Android',
-        queryParameters: {
-          'current_version': currentVersion,
-          'current_version_code': code,
-        },
-      );
-      if (resp.statusCode != 200 || resp.data is! Map) return null;
-
-      final map = resp.data as Map<String, dynamic>;
-      if (map['has_update'] == false) return null;
-      return AppVersion.fromJson(map);
-    } catch (e) {
-      l.d('自建更新接口不可用: $e');
-      return null;
-    }
-  }
-
-  /// 语义化版本比较：a 是否比 b 新
   static bool isNewer(String a, String b) {
-    final pa = _parse(a);
-    final pb = _parse(b);
-    final len = pa.length > pb.length ? pa.length : pb.length;
-    for (var i = 0; i < len; i++) {
-      final x = i < pa.length ? pa[i] : 0;
-      final y = i < pb.length ? pb[i] : 0;
+    List<int>? parse(String value) {
+      if (!RegExp(r'^\d+(?:\.\d+){0,2}(?:[+-][a-zA-Z0-9.+-]+)?$')
+          .hasMatch(value))
+        return null;
+      return value
+          .split(RegExp('[+-]'))
+          .first
+          .split('.')
+          .map(int.parse)
+          .toList();
+    }
+
+    final left = parse(a);
+    final right = parse(b);
+    if (left == null || right == null) return false;
+    for (var i = 0; i < 3; i++) {
+      final x = i < left.length ? left[i] : 0;
+      final y = i < right.length ? right[i] : 0;
       if (x != y) return x > y;
     }
     return false;
   }
 
-  static List<int> _parse(String v) {
-    final core = v.split('+').first.split('-').first;
-    return core.split('.').map((e) => int.tryParse(e.trim()) ?? 0).toList();
-  }
-
-  /// 下载链接是否来自可信域名
   static bool isTrustedDownload(String url) {
     final uri = Uri.tryParse(url);
-    if (uri == null || !uri.isScheme('https')) return false;
-    return trustedDownloadHosts.contains(uri.host);
+    if (uri == null ||
+        uri.scheme != 'https' ||
+        uri.host != 'github.com' ||
+        uri.userInfo.isNotEmpty ||
+        uri.port != 443 ||
+        uri.hasQuery ||
+        uri.hasFragment)
+      return false;
+    final parts = uri.pathSegments;
+    return parts.length == 6 &&
+        parts[0] == owner &&
+        parts[1] == repo &&
+        parts[2] == 'releases' &&
+        parts[3] == 'download' &&
+        RegExp(r'^v?\d+\.\d+\.\d+$').hasMatch(parts[4]) &&
+        parts[5].endsWith('.apk');
   }
 }

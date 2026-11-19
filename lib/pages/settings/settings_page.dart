@@ -194,6 +194,31 @@ class SettingsPage extends GetView<SettingsController> {
           ]),
           16.vGap,
           _buildSection(context, AppConst.settings.helpAndSupport, [
+            Obx(
+              () => ListTile(
+                leading: const Icon(Icons.system_update),
+                title: Text(
+                  controller.isCheckingUpdate.value ? '正在检查更新…' : '检查更新',
+                ),
+                onTap: controller.isCheckingUpdate.value
+                    ? null
+                    : controller.checkForUpdates,
+              ),
+            ),
+            Obx(
+              () => ListTile(
+                title: const Text('自动检查更新'),
+                trailing: DropdownButton<int>(
+                  value: controller.updateInterval.value,
+                  items: const [
+                    DropdownMenuItem(value: 24, child: Text('每天')),
+                    DropdownMenuItem(value: 168, child: Text('每周')),
+                    DropdownMenuItem(value: 0, child: Text('仅手动')),
+                  ],
+                  onChanged: controller.setUpdateInterval,
+                ),
+              ),
+            ),
             _buildNavigationItem(
               context,
               AppConst.settings.about,
@@ -304,26 +329,34 @@ class SettingsPage extends GetView<SettingsController> {
             width: 30.w,
             height: 30.w,
             decoration: BoxDecoration(
-              color: (iconColor ?? Theme.of(context).primaryColor).withValues(alpha: 0.1),
+              color: (iconColor ?? Theme.of(context).primaryColor).withValues(
+                alpha: 0.1,
+              ),
               borderRadius: BorderRadius.circular(4.w),
             ),
-            child: Icon(icon, size: 20.w, color: iconColor ?? Theme.of(context).primaryColor),
+            child: Icon(
+              icon,
+              size: 20.w,
+              color: iconColor ?? Theme.of(context).primaryColor,
+            ),
           ),
           12.hGap,
           Expanded(
-            child: Obx(() => DropdownButton<String>(
-              value: controller.selectedLocale,
-              dropdownColor: Theme.of(context).cardColor,
-              items: const [
-                DropdownMenuItem(value: 'auto', child: Text('自动（跟随系统）')),
-                DropdownMenuItem(value: 'zh', child: Text('简体中文')),
-                DropdownMenuItem(value: 'en', child: Text('English')),
-              ],
-              onChanged: controller.setLocale,
-              isExpanded: true,
-              borderRadius: BorderRadius.circular(12.w),
-              underline: const SizedBox(),
-            )),
+            child: Obx(
+              () => DropdownButton<String>(
+                value: controller.selectedLocale,
+                dropdownColor: Theme.of(context).cardColor,
+                items: const [
+                  DropdownMenuItem(value: 'auto', child: Text('自动（跟随系统）')),
+                  DropdownMenuItem(value: 'zh', child: Text('简体中文')),
+                  DropdownMenuItem(value: 'en', child: Text('English')),
+                ],
+                onChanged: controller.setLocale,
+                isExpanded: true,
+                borderRadius: BorderRadius.circular(12.w),
+                underline: const SizedBox(),
+              ),
+            ),
           ),
         ],
       ),

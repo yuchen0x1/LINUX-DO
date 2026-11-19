@@ -1,0 +1,36 @@
+name: Repository maintenance
+on:
+  schedule:
+    - cron: '17 4 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  release-health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - run: python3 scripts/check_release_health.py
+        env:
+          GH_TOKEN: ${{ github.token }}
+  ecosystem-scan:
+    if: github.event_name == 'workflow_dispatch' || github.run_number % 4 == 0
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - run: python3 scripts/research_ecosystem.py --output dist/research/latest.json
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        if: always()
+        with:
+          name: ecosystem-evidence
+          path: dist/research/latest.json
+          if-no-files-found: error
+          retention-days: 30

@@ -1,238 +1,156 @@
-import 'dart:math';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:linux_do/const/app_const.dart';
-import 'package:linux_do/const/app_spacing.dart';
-import 'package:linux_do/const/app_theme.dart';
-import 'package:linux_do/models/app_version.dart';
-import 'package:linux_do/net/http_config.dart';
-import 'package:linux_do/net/update_checker.dart';
-import 'package:linux_do/utils/log.dart';
-import 'package:linux_do/widgets/dis_button.dart';
-import 'package:linux_do/widgets/glowing_text_wweep.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../net/update_checker.dart';
+import '../net/update_downloader.dart';
+
 class DisAppUpdate {
-  static void showUpdateDialog(AppVersion appVersion) {
-    // 更新内容列表
-    final List<String> updateItems = appVersion.releaseNotes?.split('\n') ?? [];
-    Get.dialog(
-      Dialog(
-        insetPadding: const EdgeInsets.symmetric(horizontal: 24).w,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16).w,
-        ),
-        backgroundColor: Theme.of(Get.context!).cardColor,
-        child: Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(16).w),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Stack(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 24,
-                    ).w,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          Theme.of(Get.context!).primaryColor,
-                          Theme.of(Get.context!).primaryColor
-                              .withValues(alpha: 0.6),
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(16).w,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '发现新版本',
-                          style: TextStyle(
-                            fontSize: 20.w,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: AppFontFamily.dinPro,
-                            color: Colors.white,
-                          ),
-                        ),
-                        4.vGap,
-                        Text(
-                          'Experience the new upgrade...',
-                          style: TextStyle(
-                            fontSize: 14.w,
-                            fontFamily: AppFontFamily.dinPro,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        16.vGap,
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ).w,
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(4.w),
-                          ),
-                          child: Text(
-                            'v${appVersion.latestVersion}',
-                            style: TextStyle(
-                              fontSize: 12.w,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: AppFontFamily.dinPro,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+  static void showUpdateDialog(ReleaseUpdate update) {
+    Get.dialog<void>(_UpdateDialog(update: update), barrierDismissible: false);
+  }
+}
+
+class _UpdateDialog extends StatefulWidget {
+  const _UpdateDialog({required this.update});
+  final ReleaseUpdate update;
+  @override
+  State<_UpdateDialog> createState() => _UpdateDialogState();
+}
+
+class _UpdateDialogState extends State<_UpdateDialog> {
+  final _downloader = UpdateDownloader();
+  CancelToken? _cancel;
+  File? _apk;
+  double _progress = 0;
+  double _speed = 0;
+  String? _error;
+  bool _busy = false;
+  @override
+  void dispose() {
+    _cancel?.cancel();
+    _downloader.close();
+    super.dispose();
+  }
+
+  Future<void> _install() async {
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
+    final started = DateTime.now();
+    try {
+      _cancel = CancelToken();
+      _apk ??= await _downloader.download(
+        widget.update,
+        cancelToken: _cancel!,
+        onProgress: (received, total) {
+          if (!mounted) return;
+          setState(() {
+            _progress = received / total;
+            _speed =
+                received /
+                (DateTime.now().difference(started).inMilliseconds + 1) *
+                1000 /
+                1024;
+          });
+        },
+      );
+      await UpdateDownloader.install(_apk!);
+      if (mounted) Navigator.of(context).pop();
+    } on PlatformException catch (e) {
+      if (mounted)
+        setState(() {
+          _error = e.code == 'INSTALL_PERMISSION'
+              ? '请在系统设置中允许安装，返回后再次点击安装。'
+              : '系统未能安装更新（${e.code}），请查看发行说明或重试。';
+        });
+    } catch (e) {
+      if (mounted)
+        setState(() {
+          _error = e is DioException && CancelToken.isCancel(e)
+              ? '下载已取消，可重新下载。'
+              : '下载或校验失败，请检查网络与存储空间后重试。';
+        });
+    } finally {
+      if (mounted)
+        setState(() {
+          _busy = false;
+        });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final update = widget.update;
+    return PopScope(
+      canPop: !_busy,
+      child: AlertDialog(
+        title: const Text('LINUX DO 更新'),
+        content: SizedBox(
+          width: 480,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('${update.currentVersion} → ${update.latestVersion}'),
+                const SizedBox(height: 8),
+                Text(
+                  '${(update.size / 1024 / 1024).toStringAsFixed(1)} MB'
+                  '${update.publishedAt == null ? '' : ' · ${update.publishedAt!.toLocal().toString().split(' ').first}'}',
+                ),
+                const SizedBox(height: 16),
+                Text(update.releaseNotes ?? '查看发行说明了解本次更新。'),
+                if (_busy) ...[
+                  const SizedBox(height: 16),
+                  LinearProgressIndicator(value: _progress),
+                  Text(
+                    '${(_progress * 100).toStringAsFixed(0)}% · ${_speed.toStringAsFixed(0)} KB/s',
                   ),
-                  Positioned(
-                    right: -36,
-                    top: 40,
-                    child: Transform.rotate(
-                      angle: pi / 4,
-                      child: GlowingTextSweep(
-                        text: 'LINUX.DO',
-                        style: TextStyle(
-                          fontSize: 52.w,
-                          fontWeight: FontWeight.w500,
-                          fontFamily: AppFontFamily.dinPro,
-                          color: Colors.white.withValues(alpha: 0.2),
-                        ),
-                        glowColor: Colors.white,
-                        sweepDuration: const Duration(seconds: 2),
-                      ),
+                ],
+                if (_error != null) ...[
+                  const SizedBox(height: 12),
+                  Text(
+                    _error!,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
                     ),
                   ),
                 ],
-              ),
-
-              Container(
-                width: double.infinity,
-                constraints: BoxConstraints(maxHeight: 220.w),
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 20,
-                  ).w,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: updateItems.asMap().entries.map((entry) {
-                      final index = entry.key;
-                      final item = entry.value;
-                      return Padding(
-                        padding: EdgeInsets.only(
-                          bottom: index == updateItems.length - 1 ? 0 : 12,
-                        ).w,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(top: 6.w),
-                              width: 6.w,
-                              height: 6.w,
-                              decoration: BoxDecoration(
-                                color: Theme.of(Get.context!)
-                                    .textTheme
-                                    .titleSmall
-                                    ?.color,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                            12.hGap,
-                            Expanded(
-                              child: Text(
-                                item,
-                                style: TextStyle(
-                                  fontSize: 12.w,
-                                  height: 1.5,
-                                  color: Theme.of(Get.context!)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.color,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ),
-
-              // 底部按钮区域
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: const Radius.circular(16).w,
-                    bottomRight: const Radius.circular(16).w,
-                  ),
-                ),
-                padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 24.w),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: DisButton(
-                        text: AppConst.settings.cancelUpdate,
-                        type: ButtonType.outline,
-                        onPressed: () => Get.back(),
-                      ),
-                    ),
-                    12.hGap,
-                    Expanded(
-                      child: DisButton(
-                        text: AppConst.settings.updateNow,
-                        type: ButtonType.primary,
-                        onPressed: () {
-                          Get.back();
-                          final raw = appVersion.downloadUrl;
-                          if (raw == null || raw.isEmpty) return;
-
-                          // GitHub 源给绝对地址；旧自建接口给相对路径
-                          final url = raw.startsWith('http')
-                              ? raw
-                              : '${HttpConfig.otherUrl}$raw';
-
-                          if (!UpdateChecker.isTrustedDownload(url)) {
-                            l.w('拒绝打开非可信下载地址: $url');
-                            return;
-                          }
-                          l.d('下载地址: $url');
-                          launchUrl(
-                            Uri.parse(url),
-                            mode: LaunchMode.externalApplication,
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // 底部提示
-              // Container(
-              //   padding: EdgeInsets.only( bottom: 24).w,
-              //   child: Text(
-              //     '今日不在提示',
-              //   ),
-              // ),
-            ],
+              ],
+            ),
           ),
         ),
+        actions: [
+          TextButton(
+            onPressed: _busy
+                ? null
+                : () => launchUrl(
+                    Uri.parse(update.releaseUrl),
+                    mode: LaunchMode.externalApplication,
+                  ),
+            child: const Text('发行说明'),
+          ),
+          TextButton(
+            onPressed: _busy
+                ? () => _cancel?.cancel()
+                : () async {
+                    await UpdatePreferences.defer(update.latestVersion!);
+                    if (context.mounted) Navigator.of(context).pop();
+                  },
+            child: Text(_busy ? '取消下载' : '七天后提醒'),
+          ),
+          FilledButton(
+            onPressed: _busy ? null : _install,
+            child: Text(_apk == null ? '下载并安装' : '安装更新'),
+          ),
+        ],
       ),
-      barrierColor: Colors.black.withValues(alpha: 0.6),
-      barrierDismissible: true,
     );
   }
 }

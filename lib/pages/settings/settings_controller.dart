@@ -21,8 +21,37 @@ import '../../net/http_config.dart';
 import '../../utils/log.dart';
 import '../../widgets/dis_color_picker.dart';
 import '../web_page.dart';
+import '../../net/update_checker.dart';
+import '../../widgets/dis_app_update.dart';
 
 class SettingsController extends BaseController {
+  final isCheckingUpdate = false.obs;
+  final updateInterval = UpdatePreferences.intervalHours.obs;
+
+  Future<void> checkForUpdates() async {
+    if (isCheckingUpdate.value) return;
+    isCheckingUpdate.value = true;
+    try {
+      final update = await UpdateChecker.check(automatic: false);
+      if (isClosed) return;
+      if (update == null) {
+        showSuccess('当前已是最新版本，或没有适合此设备的更新包');
+      } else {
+        DisAppUpdate.showUpdateDialog(update);
+      }
+    } catch (_) {
+      if (!isClosed) showError('检查更新失败，请检查网络后重试');
+    } finally {
+      isCheckingUpdate.value = false;
+    }
+  }
+
+  Future<void> setUpdateInterval(int? hours) async {
+    if (hours == null || ![0, 24, 168].contains(hours)) return;
+    await StorageManager.setData(UpdatePreferences.frequencyKey, hours);
+    updateInterval.value = hours;
+  }
+
   final ApiService _apiService = Get.find();
   final isAnonymousMode = false.obs;
   final isDoNotDisturb = false.obs;
@@ -89,11 +118,18 @@ class SettingsController extends BaseController {
     if (value == null || !localeOptions.contains(value)) return;
     locale.value = value;
     StorageManager.setData(AppConst.identifier.language, value);
-    Get.updateLocale(value == 'auto' ? _systemLocale() : value == 'en' ? const Locale('en') : const Locale('zh'));
+    Get.updateLocale(
+      value == 'auto'
+          ? _systemLocale()
+          : value == 'en'
+          ? const Locale('en')
+          : const Locale('zh'),
+    );
   }
 
   Locale _systemLocale() {
-    for (final candidate in WidgetsBinding.instance.platformDispatcher.locales) {
+    for (final candidate
+        in WidgetsBinding.instance.platformDispatcher.locales) {
       if (candidate.languageCode == 'en') return const Locale('en');
       if (candidate.languageCode == 'zh') return const Locale('zh');
     }

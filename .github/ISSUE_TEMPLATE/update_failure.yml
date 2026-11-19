@@ -1,0 +1,28 @@
+name: 更新或平台兼容问题
+description: APK 安装、覆盖更新、平板、折叠屏与横屏问题
+body:
+  - type: input
+    id: versions
+    attributes:
+      label: 当前版本 → 目标版本
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Android 版本、设备型号、CPU 架构与窗口尺寸
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤与错误信息
+      description: 注明从哪个 Release 下载、APK 文件名、安装器提示。请删除账号、订阅链接、Cookie、API Key。
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期行为与实际行为
+    validations:
+      required: true
