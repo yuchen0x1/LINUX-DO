@@ -77,7 +77,7 @@ class UpdateDownloader {
       sink = partial.openWrite();
       var received = 0;
       await for (final chunk in response!.data!.stream) {
-        cancelToken.throwIfCancellationRequested();
+        if (cancelToken.isCancelled) throw cancelToken.cancelError!;
         received += chunk.length;
         if (received > update.size) throw const FormatException('下载大小不匹配');
         sink.add(chunk);
@@ -86,7 +86,7 @@ class UpdateDownloader {
       }
       await sink.close();
       sink = null;
-      cancelToken.throwIfCancellationRequested();
+      if (cancelToken.isCancelled) throw cancelToken.cancelError!;
       if (received != update.size ||
           (await sha256.bind(partial.openRead()).first).toString() !=
               update.sha256) {
