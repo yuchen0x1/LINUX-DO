@@ -43,13 +43,7 @@ jobs:
         run: flutter pub get --enforce-lockfile
 
       - name: 格式检查
-        run: |
-          if dart format --output=none --set-exit-if-changed lib test; then
-            exit 0
-          fi
-          dart format --output=show test/update_checker_test.dart > /tmp/update_checker_test.dart
-          diff -u test/update_checker_test.dart /tmp/update_checker_test.dart || true
-          exit 1
+        run: dart format --output=none --set-exit-if-changed lib test
 
       - name: 静态分析
         # 现存历史问题以 info 为主，先只对 warning/error 失败；
