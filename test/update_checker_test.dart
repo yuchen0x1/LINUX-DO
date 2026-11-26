@@ -108,7 +108,13 @@ void main() {
 
   group('正式版更新发现', () {
     test('已发布的旧版本可发现新版本及对应架构 APK', () {
-      for (final current in ['1.1.0', '1.1.1', '1.1.2', '1.1.3', '1.1.4']) {
+      for (final current in [
+        '1.1.0',
+        '1.1.1',
+        '1.1.2',
+        '1.1.3',
+        '1.1.4',
+      ]) {
         final update = UpdateChecker.parseRelease(
           release(),
           currentVersion: current,
@@ -148,9 +154,11 @@ void main() {
         isNull,
       );
       for (final flag in ['draft', 'prerelease']) {
+        final data = release();
+        data[flag] = true;
         expect(
           UpdateChecker.parseRelease(
-            release()..[flag] = true,
+            data,
             currentVersion: '1.1.4',
             supportedAbis: ['arm64-v8a'],
           ),
