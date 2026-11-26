@@ -139,17 +139,19 @@ void main() {
     });
 
     test('相同版本、草稿和预发布版本不提示更新', () {
-      for (final data in [
-        release(),
-        release()..['draft'] = true,
-        release()..['prerelease'] = true,
-      ]) {
+      expect(
+        UpdateChecker.parseRelease(
+          release(),
+          currentVersion: '1.2.0',
+          supportedAbis: ['arm64-v8a'],
+        ),
+        isNull,
+      );
+      for (final flag in ['draft', 'prerelease']) {
         expect(
           UpdateChecker.parseRelease(
-            data,
-            currentVersion: data['draft'] == true || data['prerelease'] == true
-                ? '1.1.4'
-                : '1.2.0',
+            release()..[flag] = true,
+            currentVersion: '1.1.4',
             supportedAbis: ['arm64-v8a'],
           ),
           isNull,
