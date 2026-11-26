@@ -16,7 +16,8 @@ Map<String, dynamic> release({String abi = 'arm64-v8a'}) {
       {
         'name': name,
         'browser_download_url':
-            'https://github.com/yuchen0x1/LINUX-DO/releases/download/$tag/$name',
+            'https://github.com/yuchen0x1/LINUX-DO/releases/download/'
+            '$tag/$name',
         'digest': 'sha256:$_digest',
         'size': 1024,
       },
@@ -57,7 +58,8 @@ void main() {
     test('当前仓库的正式版 APK 地址受信任', () {
       expect(
         UpdateChecker.isTrustedDownload(
-          'https://github.com/yuchen0x1/LINUX-DO/releases/download/v1.2.0/app.apk',
+          'https://github.com/yuchen0x1/LINUX-DO/releases/download/'
+          'v1.2.0/app.apk',
         ),
         isTrue,
       );
@@ -174,7 +176,8 @@ void main() {
         {'size': 0},
         {
           'browser_download_url':
-              'https://github.com/yuchen0x1/LINUX-DO/releases/download/v1.1.4/app.apk',
+              'https://github.com/yuchen0x1/LINUX-DO/releases/download/'
+              'v1.1.4/app.apk',
         },
       ]) {
         final data = release();
