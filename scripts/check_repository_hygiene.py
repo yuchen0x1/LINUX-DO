@@ -12,11 +12,17 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 FORBIDDEN_DIRS = {
-    '.dart_tool', '.gradle', '.kotlin', '.local-archive', '.autonomous-upgrade', 'build',
+    '.dart_tool', '.gradle', '.kotlin', '.local-archive', '.autonomous-upgrade', '__pycache__', 'build',
 }
 FORBIDDEN_ROOT_DIRS = {'dist', 'ios', 'macos', 'windows', 'web', 'linux'}
-FORBIDDEN_SUFFIXES = {'.apk', '.aab', '.ipa', '.jks', '.keystore', '.p12', '.pfx', '.log', '.bak', '.tmp'}
-FORBIDDEN_NAMES = {'key.properties', 'local.properties', '1.2.1', 'ui.xml', 'final_list.png', 'final_list2.png', 'guest_try2.png'}
+FORBIDDEN_SUFFIXES = {
+    '.apk', '.aab', '.ipa', '.jks', '.keystore', '.p12', '.pfx', '.log', '.bak', '.tmp',
+    '.pyc', '.pyo', '.swp', '.swo', '.orig', '.rej',
+}
+FORBIDDEN_NAMES = {
+    'key.properties', 'local.properties', '1.2.1', 'ui.xml', 'final_list.png', 'final_list2.png',
+    'guest_try2.png', '.ds_store', 'thumbs.db', 'desktop.ini',
+}
 SECRET_PATTERNS = {
     'github-token': re.compile(rb'\b(?:gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,})'),
     'private-key': re.compile(rb'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----'),
@@ -46,7 +52,7 @@ def main():
         if (any(part in FORBIDDEN_DIRS for part in relative.parts[:-1])
                 or relative.parts[0] in FORBIDDEN_ROOT_DIRS
                 or relative.suffix.lower() in FORBIDDEN_SUFFIXES
-                or relative.name in FORBIDDEN_NAMES or env_file
+                or relative.name.lower() in FORBIDDEN_NAMES or relative.name.endswith('~') or env_file
                 or name == 'build_unsigned_ipa.sh'
                 or name == '.github/workflows/build_ios.yml'):
             violations.append((name, 'local-data-or-unsupported-platform'))

@@ -21,6 +21,14 @@ def version():
 
 
 def notes(tag):
+    standalone = ROOT / f'docs/releases/release-notes-{tag}.md'
+    if standalone.exists():
+        text = standalone.read_text(encoding='utf-8').strip()
+        if not text:
+            raise ValueError(f'No release notes for {tag}')
+        if text.splitlines()[0] != '## 📢 版本概述':
+            raise ValueError(f'{standalone.name} must start with "## 📢 版本概述"')
+        return text + '\n'
     text = (ROOT / 'docs/releases/release-notes.md').read_text(encoding='utf-8')
     match = re.search(r'^## ' + re.escape(tag) + r'[^\n]*\n(.*?)(?=^## |\Z)', text, re.M | re.S)
     if not match or not match.group(1).strip():

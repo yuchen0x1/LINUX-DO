@@ -125,7 +125,7 @@ def inspect(project):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--output', default='docs/research/ecosystem-snapshot.json')
+    parser.add_argument('--output', default='dist/research/latest.json')
     args = parser.parse_args()
     with ThreadPoolExecutor(max_workers=4) as executor:
         data = list(executor.map(inspect, PROJECTS))

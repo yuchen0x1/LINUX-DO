@@ -14,11 +14,6 @@ v1.1.4 是 Android 客户端维护版本，基于提交 8cba0bbe59288dcbcfa11ee6
 
 <!-- github-release:end -->
 
-### 未发布 · 2026-11-17
-
-- 设置中可选择自动跟随系统、简体中文或 English；自动检测失败时保留中文默认。
-- 语言选择会保存到本机，帖子、用户资料和其他社区内容不做机械翻译。
-
 完整更新记录见 [更新日志](docs/releases/release-notes.md)，目录整理见 [仓库清理说明](docs/REPOSITORY_HYGIENE.md)。
 ## 下载与安装
 

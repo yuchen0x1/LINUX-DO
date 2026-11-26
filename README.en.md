@@ -5,13 +5,14 @@ Historical iOS, macOS, Windows and Web projects are no longer part of the active
 
 ## Latest update
 
-### v1.1.4 · 2026-11-16
+### v1.2.0 · 2026-11-26
 
-- Publish Android maintenance version 1.1.4+23 with the v1.1.3 networking proxy, in-app web entry, verification-page error handling and bottom-navigation fixes retained.
-- This source-only release increments the version and build number; the three ABI APKs are published only after CI artifacts and Release checks complete.
+- Add system, Simplified Chinese and English interface language options.
+- Add ABI-aware in-app update downloads with APK size and SHA-256 verification before Android installation.
+- Use a navigation rail on wide layouts while retaining bottom navigation on narrow screens.
 
 See the [complete release history](docs/releases/release-notes.md).
-The current source version is 1.1.4+23.
+The current source version is 1.2.0+24.
 ## Download
 
 Download Android APKs from [GitHub Releases](https://github.com/yuchen0x1/LINUX-DO/releases).

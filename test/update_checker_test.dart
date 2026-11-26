@@ -1,6 +1,29 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:linux_do/net/update_checker.dart';
 
+final _digest = List<String>.filled(64, 'a').join();
+
+Map<String, dynamic> release({String abi = 'arm64-v8a'}) {
+  const tag = 'v1.2.0';
+  final name = 'linux_do_android_release_1.2.0_$abi.apk';
+  return {
+    'tag_name': tag,
+    'draft': false,
+    'prerelease': false,
+    'body': 'Release notes',
+    'published_at': '2026-11-26T00:00:00Z',
+    'assets': [
+      {
+        'name': name,
+        'browser_download_url':
+            'https://github.com/yuchen0x1/LINUX-DO/releases/download/$tag/$name',
+        'digest': 'sha256:$_digest',
+        'size': 1024,
+      },
+    ],
+  };
+}
+
 void main() {
   group('版本比较', () {
     test('补丁版本更高时判定有更新', () {
@@ -31,21 +54,36 @@ void main() {
   });
 
   group('下载地址可信度', () {
-    test('GitHub 域名受信任', () {
+    test('当前仓库的正式版 APK 地址受信任', () {
       expect(
         UpdateChecker.isTrustedDownload(
-          'https://github.com/yuchen0x1/LINUX-DO/releases/download/v2/app.apk',
+          'https://github.com/yuchen0x1/LINUX-DO/releases/download/v1.2.0/app.apk',
         ),
         isTrue,
       );
     });
 
-    test('objects.githubusercontent.com 受信任', () {
+    test('拒绝其他仓库和不完整的版本标签', () {
+      expect(
+        UpdateChecker.isTrustedDownload(
+          'https://github.com/other/LINUX-DO/releases/download/v1.2.0/app.apk',
+        ),
+        isFalse,
+      );
+      expect(
+        UpdateChecker.isTrustedDownload(
+          'https://github.com/yuchen0x1/LINUX-DO/releases/download/v2/app.apk',
+        ),
+        isFalse,
+      );
+    });
+
+    test('拒绝直接的 GitHub 对象存储地址', () {
       expect(
         UpdateChecker.isTrustedDownload(
           'https://objects.githubusercontent.com/abc/app.apk',
         ),
-        isTrue,
+        isFalse,
       );
     });
 
@@ -65,6 +103,81 @@ void main() {
 
     test('拒绝畸形地址', () {
       expect(UpdateChecker.isTrustedDownload('not a url'), isFalse);
+    });
+  });
+
+  group('正式版更新发现', () {
+    test('已发布的旧版本可发现新版本及对应架构 APK', () {
+      for (final current in ['1.1.0', '1.1.1', '1.1.2', '1.1.3', '1.1.4']) {
+        final update = UpdateChecker.parseRelease(
+          release(),
+          currentVersion: current,
+          supportedAbis: ['arm64-v8a', 'armeabi-v7a'],
+        );
+        expect(update, isNotNull);
+        expect(update!.latestVersion, '1.2.0');
+        expect(update.sha256, _digest);
+        expect(update.downloadUrl, endsWith('_arm64-v8a.apk'));
+      }
+    });
+
+    test('选择设备支持的架构', () {
+      final update = UpdateChecker.parseRelease(
+        release(abi: 'x86_64'),
+        currentVersion: '1.1.4',
+        supportedAbis: ['x86_64'],
+      );
+      expect(update!.downloadUrl, endsWith('_x86_64.apk'));
+      expect(
+        UpdateChecker.parseRelease(
+          release(abi: 'x86_64'),
+          currentVersion: '1.1.4',
+          supportedAbis: ['arm64-v8a'],
+        ),
+        isNull,
+      );
+    });
+
+    test('相同版本、草稿和预发布版本不提示更新', () {
+      for (final data in [
+        release(),
+        release()..['draft'] = true,
+        release()..['prerelease'] = true,
+      ]) {
+        expect(
+          UpdateChecker.parseRelease(
+            data,
+            currentVersion: data['draft'] == true || data['prerelease'] == true
+                ? '1.1.4'
+                : '1.2.0',
+            supportedAbis: ['arm64-v8a'],
+          ),
+          isNull,
+        );
+      }
+    });
+
+    test('缺少摘要或下载地址标签不匹配时拒绝更新', () {
+      for (final changes in [
+        {'digest': null},
+        {'digest': 'sha256:invalid'},
+        {'size': 0},
+        {
+          'browser_download_url':
+              'https://github.com/yuchen0x1/LINUX-DO/releases/download/v1.1.4/app.apk',
+        },
+      ]) {
+        final data = release();
+        (data['assets'] as List).single.addAll(changes);
+        expect(
+          UpdateChecker.parseRelease(
+            data,
+            currentVersion: '1.1.4',
+            supportedAbis: ['arm64-v8a'],
+          ),
+          isNull,
+        );
+      }
     });
   });
 }
