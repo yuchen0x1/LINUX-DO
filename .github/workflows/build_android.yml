@@ -40,7 +40,7 @@ jobs:
 
     steps:
       - name: 检出代码
-        uses: actions/checkout@v7
+        uses: actions/checkout@v7.0.1
 
       - name: 仓库上传边界检查
         run: python3 scripts/check_repository_hygiene.py
